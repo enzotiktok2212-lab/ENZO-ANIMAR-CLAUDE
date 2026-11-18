@@ -38,15 +38,13 @@ for i, w in enumerate(W):
     a0 = max(w[0] + sh, bar); F.append([round(a0, 3), round(max(a0 + .05, w[1] + sh), 3), w[2], w[3]])
     if i in idx:
         k = idx[i]
-        # fin real de la palabra ancla: desde el fin de Whisper, avanzar mientras haya voz (> -45 dB)
-        j = int(w[1] * 100)
-        while j < len(e) - 3 and max(e[j:j + 3]) > -45: j += 1
+        # corte en el primer silencio de >= 70 ms después del inicio de la palabra ancla (no se fía del fin de Whisper)
+        j = int((w[0] + .15) * 100)
+        while j < len(e) - 7 and not all(e[j:j + 7] < -45): j += 1
         t = j / 100 + .03; T = int(t * R)
         out.append(x[p:T])
-        # inicio real de la siguiente palabra: desde su inicio de Whisper, retroceder mientras haya voz
-        nx = W[i + 1][0] if i + 1 < len(W) else t; j = int(nx * 100)
-        while j > t * 100 and e[j - 1] > -45: j -= 1
-        while j < len(e) - 1 and e[j] < -45 and j < nx * 100 + 15: j += 1
+        # reanudar donde vuelve la voz (ataque de la palabra siguiente)
+        while j < len(e) - 1 and e[j] < -45: j += 1
         t2 = max(t, j / 100 - .03); p = int(t2 * R); skip = t2 - t
         f = f'audio/huss{k}-voz.wav' if os.path.exists(f'audio/huss{k}-voz.wav') else f'audio/huss{k}.wav'
         c = rd(f); c = c * (vr / rms(c)) * .95
