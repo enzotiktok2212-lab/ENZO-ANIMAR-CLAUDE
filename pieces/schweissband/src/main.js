@@ -61,7 +61,7 @@ const COURT = court(ST.g); COURT.position.set(0, 0, 0);
 const BOARD = anzeige(ST.g, 18, 8); BOARD.position.set(0, 20, -47);
 for (const s of [-1, 1]) cyl(.4, .4, 16, mat(0x3a3e4a, { metalness: .5 }), 8, ST.g, s * 8.5, 8, -47.6);
 const PED = pedestal(ST.g); PED.position.set(0, 0, -18);
-const TISCH1 = strickTisch(ST.g); TISCH1.position.set(-6, 0, -6); const TISCH2 = strickTisch(ST.g); TISCH2.position.set(6, 0, -6); [TISCH1, TISCH2].forEach(t => t.scale.set(1, .72, 1));
+const TISCH1 = strickTisch(ST.g); TISCH1.position.set(-3.8, 0, -6); const TISCH2 = strickTisch(ST.g); TISCH2.position.set(3.8, 0, -6); [TISCH1, TISCH2].forEach(t => t.scale.set(1, .72, 1));
 const POD = podium(ST.g); POD.position.set(0, 0, 14);
 ST.ban.visible = true;
 box(.8, .8, 72, mat(0x3a3e4a, { metalness: .6 }), .05, ST.g, -32, 22.4, 0); const HALLAMPS = Array.from({ length: 12 }, (_, i) => box(2.2, 1.6, 2.2, mat(0x8a8e9a, { emissive: 0xfff2c8, emissiveIntensity: 0 }), .1, ST.g, -32, 21.2, -30 + i * 5.4));
@@ -118,7 +118,7 @@ function hideAll() {
   for (const h of HATS.values()) h.visible = false; ich.props.gold.visible = false; ich.props.band.visible = true; robo.props.gold.visible = true; robo.props.visor.material.emissiveIntensity = 2.4;
   for (const p of PROPS) { p.visible = false; p.rotation.set(0, 0, 0); p.scale.setScalar(1); if (p.parent !== scene) { p.parent.remove(p); scene.add(p); } }
   CRW.update(0, 'still', false, 0); BULBS.forEach(b => b.material.emissiveIntensity = .1); HALLAMPS.forEach(b => b.material.emissiveIntensity = 0); GLOW.intensity = 0;
-  PED.visible = true; PED.userData.band.visible = true; TISCH1.visible = TISCH2.visible = POD.visible = false; KAST.userData.lid.rotation.x = -1.9;
+  PED.visible = true; PED.userData.band.visible = true; OS.TB.visible = false; TISCH1.visible = TISCH2.visible = POD.visible = false; KAST.userData.lid.rotation.x = -1.9;
   for (const k in SETS) SETS[k].visible = false;
   FILL.color.setRGB(1, .96, .91); sun.color.setRGB(1, .95, .86); grade.uniforms.vig.value = .4; grade.uniforms.flash.value = 0; grade.uniforms.lift.value = 0; grade.uniforms.sat.value = 1.45; grade.uniforms.sharp.value = 1.15; grade.uniforms.sepia.value = 0; DARK = 0; TINT = null; BIRDSON = 1; SHAKE = 0; day(); }
 const use = (...n) => { for (const k of n) SETS[k].visible = true; };
