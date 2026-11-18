@@ -40,3 +40,6 @@ Comedia absurda + meme (como `huss`): **bajo** (≈1,5–2 $) según el catálog
 ## Adaptación
 - Bun Town → **Brötchenburg**; gato del vecino → **el salchicha (Dackel) de Udo**; piedra bonita → **una patata con forma de corazón**.
 - Datos cambiados: 5:00 → **4:30**; 200 → **300** envoltorios; 4 s → **5 s**; 2 s/1 s → **3 s / 1 s**; sábado → **viernes**; 400 personas → **500**; 1 minuto → **50 segundos**.
+
+## HUSS del original (decisión del usuario)
+Los «HUSS» no van en la voz de ElevenLabs: se recortan del audio del vídeo de referencia, **sin la música de fondo** (separación de voz con Demucs), y se insertan en su sitio. Tramos en el original (`huss_ref.json`, s): 2,52–4,26 (×7), 12,90–14,40 (×6), 25,16–26,66 (×5), 37,24–38,78 (×6), 70,42–71,94 (×7), 81,82–83,34 (×6), 89,38–91,02 (×6). El audio del original no se sube al repo.
