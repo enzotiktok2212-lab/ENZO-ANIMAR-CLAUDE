@@ -33,19 +33,23 @@ for i, w in enumerate(W):
     for a, n, k in A:
         if w[2] == a and cnt[a] == n: idx[i] = k
 assert len(idx) == len(A), idx
-out, F, p, sh = [], [], 0, 0.0
+out, F, p, sh, bar = [], [], 0, 0.0, 0.0
 for i, w in enumerate(W):
-    F.append([round(w[0] + sh, 3), round(w[1] + sh, 3), w[2], w[3]])
+    a0 = max(w[0] + sh, bar); F.append([round(a0, 3), round(max(a0 + .05, w[1] + sh), 3), w[2], w[3]])
     if i in idx:
         k = idx[i]; t = max(w[1], real_end(w[0])) + .02; T = int(t * R)
-        out.append(x[p:T]); p = T
+        out.append(x[p:T])
+        # reanudar justo antes del ataque de la siguiente palabra (sin respiración ni restos)
+        nx = W[i + 1][0] if i + 1 < len(W) else t; j = int(max(t, nx - .2) * 100)
+        while j < len(e) - 1 and e[j] < -32: j += 1
+        t2 = max(t, j / 100 - .04); p = int(t2 * R); skip = t2 - t
         f = f'audio/huss{k}-voz.wav' if os.path.exists(f'audio/huss{k}-voz.wav') else f'audio/huss{k}.wav'
         c = rd(f); c = c * (vr / rms(c)) * .95
         out.append(np.concatenate([np.zeros(int(G0 * R), np.float32), c, np.zeros(int(G1 * R), np.float32)]))
         base = t + sh + G0; on = ONS.get(str(k)) or onsets(c); d = len(c) / R
         for m, o in enumerate(on): F.append([round(base + o, 3), round(base + (on[m + 1] if m + 1 < len(on) else min(d, o + .3)), 3), 'HUSS!', -k])
         print(k, w[2], round(t, 2), f, len(on), 'golpes')
-        sh += G0 + d + G1
+        sh += G0 + d + G1 - skip; bar = t + sh + skip - G1 * .5
 out.append(x[p:]); y = np.concatenate(out)
 json.dump(F, open('audio/words.json', 'w'), ensure_ascii=False)
 subprocess.run(['ffmpeg', '-v', 'error', '-y', '-f', 'f32le', '-ar', str(R), '-ac', '1', '-i', '-', 'audio/voz-sin-silencios.wav'], input=y.tobytes(), check=True)
