@@ -61,10 +61,10 @@ const COURT = court(ST.g); COURT.position.set(0, 0, 0);
 const BOARD = anzeige(ST.g, 18, 8); BOARD.position.set(0, 20, -47);
 for (const s of [-1, 1]) cyl(.4, .4, 16, mat(0x3a3e4a, { metalness: .5 }), 8, ST.g, s * 8.5, 8, -47.6);
 const PED = pedestal(ST.g); PED.position.set(0, 0, -18);
-const TISCH1 = strickTisch(ST.g); TISCH1.position.set(-6, 0, -6); const TISCH2 = strickTisch(ST.g); TISCH2.position.set(6, 0, -6);
+const TISCH1 = strickTisch(ST.g); TISCH1.position.set(-6, 0, -6); const TISCH2 = strickTisch(ST.g); TISCH2.position.set(6, 0, -6); [TISCH1, TISCH2].forEach(t => t.scale.set(1, .72, 1));
 const POD = podium(ST.g); POD.position.set(0, 0, 14);
 ST.ban.visible = true;
-const HALLAMPS = Array.from({ length: 12 }, (_, i) => { const b = box(1.6, .8, 1.6, mat(0xffffff, { emissive: 0xfff2c8, emissiveIntensity: 0 }), .1, ST.g, -18 + (i % 6) * 7.2, 26, -30 + Math.floor(i / 6) * 50); return b; });
+box(.8, .8, 72, mat(0x3a3e4a, { metalness: .6 }), .05, ST.g, -32, 22.4, 0); const HALLAMPS = Array.from({ length: 12 }, (_, i) => box(2.2, 1.6, 2.2, mat(0x8a8e9a, { emissive: 0xfff2c8, emissiveIntensity: 0 }), .1, ST.g, -32, 21.2, -30 + i * 5.4));
 // Verliererparty
 const VBAN = signBoard('VERLIERERPARTY', 26, 4.4, '#6a6a7a', '#ffffff', '#3a3a48', .2); VBAN.position.set(0, 12, -15.4); SA.g.add(VBAN);
 // ---------- reparto ----------

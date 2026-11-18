@@ -61,10 +61,10 @@ const COURT = court(ST.g); COURT.position.set(0, 0, 0);
 const BOARD = anzeige(ST.g, 18, 8); BOARD.position.set(0, 20, -47);
 for (const s of [-1, 1]) cyl(.4, .4, 16, mat(0x3a3e4a, { metalness: .5 }), 8, ST.g, s * 8.5, 8, -47.6);
 const PED = pedestal(ST.g); PED.position.set(0, 0, -18);
-const TISCH1 = strickTisch(ST.g); TISCH1.position.set(-6, 0, -6); const TISCH2 = strickTisch(ST.g); TISCH2.position.set(6, 0, -6);
+const TISCH1 = strickTisch(ST.g); TISCH1.position.set(-6, 0, -6); const TISCH2 = strickTisch(ST.g); TISCH2.position.set(6, 0, -6); [TISCH1, TISCH2].forEach(t => t.scale.set(1, .72, 1));
 const POD = podium(ST.g); POD.position.set(0, 0, 14);
 ST.ban.visible = true;
-const HALLAMPS = Array.from({ length: 12 }, (_, i) => { const b = box(1.6, .8, 1.6, mat(0xffffff, { emissive: 0xfff2c8, emissiveIntensity: 0 }), .1, ST.g, -18 + (i % 6) * 7.2, 26, -30 + Math.floor(i / 6) * 50); return b; });
+box(.8, .8, 72, mat(0x3a3e4a, { metalness: .6 }), .05, ST.g, -32, 22.4, 0); const HALLAMPS = Array.from({ length: 12 }, (_, i) => box(2.2, 1.6, 2.2, mat(0x8a8e9a, { emissive: 0xfff2c8, emissiveIntensity: 0 }), .1, ST.g, -32, 21.2, -30 + i * 5.4));
 // Verliererparty
 const VBAN = signBoard('VERLIERERPARTY', 26, 4.4, '#6a6a7a', '#ffffff', '#3a3a48', .2); VBAN.position.set(0, 12, -15.4); SA.g.add(VBAN);
 // ---------- reparto ----------
@@ -334,7 +334,7 @@ shot(tw('außer', 1), 'C', null, L => { town(); const c = put(ich, -6, 0, -10, 0
 shot(tw('Denn', 2), 'R', null, L => { town(); sepia(); const c = put(ich, -6, 0, -10, 0); c.root.scale.setScalar(.6); dribble(c, BBALL, L.T, { f: 2 }); cara(c, L.T, { expr: 'determined' });
   folk(-6, -10, 12, 7, 13, L.T, 25, { face: V(-6, 0, -10) }); orbit(V(-6, 2.6, -10), lerp(15, 12, L.k), .3 - L.k * .4, .2, 46); sh(V(-6, 0, -10), 30); }, [[0, 'film_roll', .4], [.3, 'thud', .3], [.8, 'thud', .3]]);
 // 26 «bin ich über meine Schnürsenkel gefallen.» tropieza con los cordones y cae de bruces; el balón se aleja botando
-shot(tw('bin', 1), 'C', 'punch', L => { town(); sepia(); const c = put(ich, -6, 0, -10, 0); c.root.scale.setScalar(.6); const f = clamp((L.lt - .35) / .35);
+shot(tw('bin', 2), 'C', 'punch', L => { town(); sepia(); const c = put(ich, -6, 0, -10, 0); c.root.scale.setScalar(.6); const f = clamp((L.lt - .35) / .35);
   applyPose(c, f <= 0 ? runPoseL(L.T * 2) : { lean: lerp(.3, 1.5, f), aLx: 2.6, aRx: 2.6, aLe: .2, aRe: .2, lLx: -.6, lRx: .5, crouch: f * .4 }); c.root.position.y = -f * .8; c.root.position.z = -10 + f * 1.2; cara(c, L.T, { expr: f > .2 ? 'shock' : 'determined' });
   show(BBALL, -6 + f * 3, .62 + Math.abs(Math.sin(L.lt * 6)) * 1.5 * (1 - f * .5), -8 + f * 4).rotation.x = L.T * 5; dust(V(-6, 0, -8.5), L.t0 + .7, L.T, 8, .6); badge('tag', 'SCHNÜRSENKEL', W / 2, H * .2, (L.lt - .2) * 4, 1, .8);
   orbit(V(-6, 1.8, -9), lerp(10, 8, L.k), .9, .12, 44); sh(V(-6, 0, -9), 20); }, [[0, 'steps', .4], [.6, 'thud', .7], [.8, 'gasp', .5], [1.0, 'thud', .3]]);
@@ -343,28 +343,28 @@ shot(tw('Seitdem', 1), 'W', null, L => { town(); sepia(); const c = put(ich, -6,
   [K[2], K[6], XT[4], K[1]].forEach((k, i) => { put(k, -6 + [-5, -2, 2, 5][i], 0, -16 + (i % 2) * 1.5, [.5, .2, -.2, -.5][i]); k.root.scale.setScalar(.75); actuar(k, L.lt, [[0, i % 2 ? 'point_l' : 'point']], { T: L.T + i }); laughF(k, L.T + i); });
   badge('red', 'MAX PLUMPS', W / 2, H * .2, (tw('Max', 2) - L.T) * -4, 1, .95); orbit(V(-6, 2.6, -13), lerp(12, 10, L.k), PI + .25, .12, 44); sh(V(-6, 0, -13), 30); }, [[0, 'kids_laugh', .6], [.9, 'laugh_deep', .3]]);
 // 28 «Mama seufzte:» en casa: Mamá, con la mano en la frente, suspira mirando a Max (sentado en el sofá con su muñequera blanca)
-shot(tw('Mama', 1), 'S', null, L => { use('OS'); inside(1, 40); const m = put(mama, OSX + 2, 0, 1, -.6); actuar(m, L.lt, [[0, 'idle'], [.1, 'facepalm', { dur: .4 }]], { T: L.T }); cara(m, L.T, { expr: 'sad', mouth: 'o' });
+shot(tw('Mama', 1), 'S', null, L => { use('OS'); inside(1, 40); const m = put(mama, OSX + 4, 0, -3.5, -.9); actuar(m, L.lt, [[0, 'idle'], [.1, 'facepalm', { dur: .4 }]], { T: L.T }); cara(m, L.T, { expr: 'sad', mouth: 'o' });
   const c = put(ich, OSX + 8, 2.4, -8.4, -.2); actuar(c, L.lt, [[0, { ...SIT, aLx: .4, aRx: .4 }]], { T: L.T }); cara(c, L.T, { expr: 'sad' });
-  orbit(hpC(m, -1), lerp(14, 12, L.k), -.6, .1, 44); sh(V(OSX + 4, 0, -2), 30); }, [[0, 'sigh', .7]]);
+  orbit(V(OSX + 6, 4.5, -5.5), lerp(17, 15, L.k), .5, .1, 44); sh(V(OSX + 6, 0, -5), 30); }, [[0, 'sigh', .7]]);
 // 29 «„Max …» Mamá se inclina hacia él y le habla con paciencia
 shot(tw('Max', 3), 'C', null, L => { use('OS'); inside(1, 40); const m = put(mama, OSX + 5, 0, -4, -.5); actuar(m, L.lt, [[0, 'lean_in']], { T: L.T }); talk(m, L.T, tw('Max', 3), tw('sogar', 1), 'sad');
   const c = put(ich, OSX + 8, 2.4, -8.4, -.4); actuar(c, L.lt, [[0, { ...SIT, aLx: .4, aRx: .4, headY: .3 }]], { T: L.T }); cara(c, L.T, { expr: 'worried' });
   orbit(hpC(m, -.4), lerp(10, 8.5, L.k), -.9, .06, 44); sh(V(OSX + 6, 0, -6), 20); }, [[0, 'cloth', .4]]);
 // 30 «sogar Opa husst, und der ist zweiundneunzig!» Mamá señala al Opa en su sillón; «92»
-shot(tw('sogar', 1), 'W', null, L => { use('OS'); inside(1, 40); const o = opaChair(L); cara(o, L.T, { expr: 'neutral', eyes: 'down' }); const m = put(mama, OSX + 1, 0, 2, -1.6); actuar(m, L.lt, [[0, 'point']], { T: L.T }); talk(m, L.T, tw('sogar', 1), tw('Aber', 2), 'happy');
-  badge('gold', '92', W / 2, H * .2, (tw('zweiundneunzig') - L.T) * -4, 1, 1.3); orbit(V(OSX - 3, 4.5, -1), lerp(19, 16, L.k), .9, .1, 44); sh(V(OSX - 3, 0, -1), 30); }, [[0, 'pop', .3], [1.4, 'pop', .5], [1.5, 'clock_tick', .3]]);
+shot(tw('sogar', 1), 'W', null, L => { use('OS'); inside(1, 40); const o = opaChair(L); cara(o, L.T, { expr: 'neutral', eyes: 'down' }); const m = put(mama, OSX - 1, 0, -8.5, -1.9); actuar(m, L.lt, [[0, 'point']], { T: L.T }); talk(m, L.T, tw('sogar', 1), tw('Aber', 2), 'happy');
+  badge('gold', '92', W / 2, H * .2, (tw('zweiundneunzig') - L.T) * -4, 1, 1.3); orbit(V(OSX - 3.5, 4.5, -5), lerp(19, 16, L.k), .35, .08, 44); sh(V(OSX - 3, 0, -4), 30); }, [[0, 'pop', .3], [1.4, 'pop', .5], [1.5, 'clock_tick', .3]]);
 // 31 «Aber Opa husste schon lange nicht mehr.» el Opa, quieto en su sillón junto a la ventana; un balón viejo cubierto de polvo en el suelo
 shot(tw('Aber', 2), 'S', null, L => { use('OS'); inside(.85, 30); grade.uniforms.sat.value = 1.1; const o = opaChair(L, { headX: .25 }); cara(o, L.T, { expr: 'sad' }); show(BBALL, OSX - 2.4, .62, 0).rotation.set(.3, 0, .2);
   orbit(hpC(o, -.8), lerp(13, 11, L.k), .5 + .35 - L.k * .3, .06, 44); sh(V(OSX - 6, 0, -3), 20); }, [[0, 'clock_tick', .5], [.6, 'sigh', .3]]);
 // 32 «Er starrte nur auf ein leeres Kästchen.» primer plano: la cajita de madera abierta en sus manos, el terciopelo vacío
 shot(tw('Er', 1), 'C', null, L => { use('OS'); inside(1, 40); const o = opaChair(L, { aLx: 1.1, aRx: 1.1, aLe: 1.3, aRe: 1.3, aLz: -.25, aRz: -.25, headX: .35 }); cara(o, L.T, { expr: 'sad', eyes: 'down' });
   POST.push(() => { const h = wpos(o.aL.hand).add(wpos(o.aR.hand)).multiplyScalar(.5); show(KAST, h.x, h.y - .3, h.z, .5, .7); KAST.userData.lid.rotation.x = -1.9; });
-  const p = V(OSX - 6 + Math.sin(.5) * 2.2, 4.4, -3 + Math.cos(.5) * 2.2); orbit(p, lerp(6.5, 5, L.k), .5 + .2, .45, 40); sh(V(OSX - 6, 0, -3), 20); }, [[0, 'wood_creak', .5]]);
+  const p = V(OSX - 6 + Math.sin(.5) * 2.2, 4.2, -3 + Math.cos(.5) * 2.2); orbit(p, lerp(8, 6.5, L.k), .5, .85, 40); sh(V(OSX - 6, 0, -3), 20); }, [[0, 'wood_creak', .5]]);
 // 33 «„Da drin lag mal das allererste goldene Schweißband“, flüsterte er.» (zoom lento): en la cajita aparece, como un recuerdo, la muñequera dorada brillando
 shot(tw('Da', 1), 'Z', 'slow', L => { use('OS'); inside(.9, 40); const o = opaChair(L, { aLx: 1.1, aRx: 1.1, aLe: 1.3, aRe: 1.3, aLz: -.25, aRz: -.25, headX: .35 }); talk(o, L.T, tw('Da', 1), tw('Vor'), 'sad');
-  POST.push(() => { const h = wpos(o.aL.hand).add(wpos(o.aR.hand)).multiplyScalar(.5); show(KAST, h.x, h.y - .3, h.z, .5, .7); const b = show(BANDF, h.x, h.y + .2 + Math.sin(L.T * 2) * .05, h.z, .5, .38); b.rotation.x = -1.2; b.rotation.z = L.T * .5;
+  POST.push(() => { const h = wpos(o.aL.hand).add(wpos(o.aR.hand)).multiplyScalar(.5); show(KAST, h.x, h.y - .3, h.z, .5, .7); const b = show(BANDF, h.x, h.y + .25 + Math.sin(L.T * 2) * .05, h.z, .5, .5); b.rotation.x = -1.2; b.rotation.z = L.T * .5;
     GLOW.intensity = 25 + Math.sin(L.T * 6) * 5; GLOW.position.copy(h).add(V(0, 1.5, .8)); sparks(h.clone().add(V(0, .3, 0)), 0, (L.lt * 1.4) % .9, 8, .15); });
-  const p = V(OSX - 6 + Math.sin(.5) * 2.2, 4.3, -3 + Math.cos(.5) * 2.2); orbit(p, lerp(7, 4, easeInOut(L.k)), .7, .5, 40); sh(V(OSX - 6, 0, -3), 20); }, [[0, 'whisper', .5], [.3, 'sparkle', .5], [1.5, 'choir', .3]]);
+  const p = V(OSX - 6 + Math.sin(.5) * 2.2, 4.2, -3 + Math.cos(.5) * 2.2); orbit(p, lerp(9, 5, easeInOut(L.k)), .5, .8, 40); sh(V(OSX - 6, 0, -3), 20); }, [[0, 'whisper', .5], [.3, 'sparkle', .5], [1.5, 'choir', .3]]);
 // 34 «„Vor sechzig Jahren gewonnen.» (recuerdo, sepia): el Opa en el podio del estadio, alza la muñequera; «60 JAHRE»
 shot(tw('Vor', 1), 'W', null, L => { stadium(); sepia(); POD.visible = true; PED.visible = false; stands(L.T, 'cheer'); const o = put(opa, STX, 4, 14, 0); actuar(o, L.lt, [[0, 'cheer']], { T: L.T }); grin(o, L.T);
   attach(BANDF, o.aR.hand, [0, -.3, 0], [PI / 2, 0, 0], .6); confetti(V(STX, 2, 14), L.t0 + .1, L.T, 40); badge('gold', '60 JAHRE', W / 2, H * .18, (L.lt - .3) * 4, 1, 1);
@@ -376,21 +376,21 @@ shot(tw('Bis', 1), 'C', 'punch', L => { use('OS'); inside(.25, 6); DARK = .35; s
   orbit(V(OSX + 3, 5, 0), lerp(12, 10, L.k), .7, .15, 44); sh(V(OSX + 3, 0, 0), 20); }, [[0, 'creepy_ting', .5], [.4, 'zip', .4], [.8, 'whoosh', .4]]);
 // 36 «Wer, das wollte er nicht sagen.» el Opa gira la cabeza hacia la ventana; signo de interrogación sobre Max
 shot(tw('Wer', 1), 'R', null, L => { use('OS'); inside(1, 40); const o = opaChair(L, { headY: lerp(0, .9, clamp(L.lt / .6)) }); cara(o, L.T, { expr: 'sad' }); const c = put(ich, OSX - 1, 0, 3, -1.9); actuar(c, L.lt, [[0, 'think']], { T: L.T }); cara(c, L.T, { expr: 'confused' });
-  POST.push(() => { const h = hpC(c, 2.6); show(QM, h.x, h.y + Math.sin(L.T * 4) * .15, h.z).lookAt(camera.position); }); orbit(V(OSX - 3.5, 4, -.5), lerp(16, 14, L.k), 1.2, .08, 44); sh(V(OSX - 3, 0, 0), 20); }, [[0, 'whoosh_down', .3], [.4, 'tick', .4]]);
+  POST.push(() => { const h = hpC(c, 2.6); show(QM, h.x, h.y + Math.sin(L.T * 4) * .15, h.z).lookAt(camera.position); }); orbit(V(OSX - 3.5, 4, -.5), lerp(19, 17, L.k), .55, .08, 44); sh(V(OSX - 3, 0, 0), 20); }, [[0, 'whoosh_down', .3], [.4, 'tick', .4]]);
 // 37 «Also trainierte ich jede Nacht,» de noche, la calle mayor vacía bajo la luna; Max bota y regatea solo entre las farolas
 shot(tw('Also', 1), 'F', null, L => { nightRoad(); const z = 40 - L.lt * 3; const c = put(ich, 26, 0, z, PI); dribble(c, BBALL, L.T, { f: 2.6, run: true, rs: 1 }); effort(c, L.T); flick(z, L.T);
   orbit(V(26, 3.6, z), lerp(16, 13, L.k), PI + .35, .14, 46); sh(V(26, 0, z), 30); }, [[0, 'crickets', .5], [.3, 'thud', .4], [.7, 'thud', .4], [1.1, 'thud', .4]]);
 // 38 «während die Stadt schlief.» grúa sobre el pueblo dormido: ventanas apagadas, la luna; Max es un punto bajo una farola
 shot(tw('während', 1), 'S', null, L => { nightRoad(); const c = put(ich, 26, 0, 30, PI); dribble(c, BBALL, L.T, { f: 2.6 }); flick(30, L.T);
-  cm([60, 40, 70, 26, 2, 30, 46], [55, 30, 60, 26, 2, 30, 44], L.k); sh(V(26, 0, 30), 40); }, [[0, 'snore_chorus', .3], [.5, 'owl', .4], [.9, 'thud', .3]]);
+  cm([44, 40, -6, 26, 2, 30, 46], [40, 30, 0, 26, 2, 30, 44], L.k); sh(V(26, 0, 30), 40); }, [[0, 'snore_chorus', .3], [.5, 'owl', .4], [.9, 'thud', .3]]);
 // 39 «Zuerst schaffte ich zwei Huss pro Sekunde.» Max bota despacio, contando; «2 / SEK»
-shot(tw('Zuerst', 1), 'C', null, L => { nightRoad(); const c = put(ich, 26, 0, 30, PI + .2); dribble(c, BBALL, L.T, { f: 2 }); effort(c, L.T); flick(30, L.T); badge('gold', '2 / SEK', W / 2, H * .2, (tw('zwei') - L.T) * -4, 1, 1);
+shot(tw('Zuerst', 1), 'C', null, L => { nightRoad(); const c = put(ich, 26, 0, 30, PI + .2); dribble(c, BBALL, L.T, { f: 2 }); effort(c, L.T); flick(30, L.T); badge('gold', '2 / SEK', W / 2, H * .1, (tw('zwei') - L.T) * -4, 1, 1);
   orbit(hpC(c, -1), lerp(10, 8.5, L.k), PI - .25, .1, 44); sh(V(26, 0, 30), 20); }, [[0, 'thud', .5], [.5, 'thud', .5], [1.0, 'thud', .5], [1.5, 'thud', .5]]);
 // 40 «Dann fünf.» más rápido, gotas de sudor; «5 / SEK»
-shot(tw('Dann', 1), 'C', 'punch', L => { nightRoad(); const c = put(ich, 25, 0, 28, PI - .3); dribble(c, BBALL, L.T, { f: 5, trail: 3 }); effort(c, L.T); sweat(c, L.T); flick(28, L.T); badge('gold', '5 / SEK', W / 2, H * .2, L.lt * 4, 1, 1.05);
+shot(tw('Dann', 1), 'C', 'punch', L => { nightRoad(); const c = put(ich, 25, 0, 28, PI - .3); dribble(c, BBALL, L.T, { f: 5, trail: 3 }); effort(c, L.T); sweat(c, L.T); flick(28, L.T); badge('gold', '5 / SEK', W / 2, H * .1, L.lt * 4, 1, 1.05);
   orbit(hpC(c, -1), lerp(9, 8, L.k), PI + .4, .06, 44); sh(V(25, 0, 28), 20); }, [[0, 'thud', .5], [.2, 'thud', .5], [.4, 'thud', .5], [.6, 'thud', .5]]);
 // 41 «Dann zehn.» la mano es un borrón; «10 / SEK»; las farolas parpadean
-shot(tw('Dann', 2), 'C', 'punch', L => { nightRoad(); const c = put(ich, 26, 0, 26, PI); dribble(c, BBALL, L.T, { f: 10, trail: 6 }); effort(c, L.T); sweat(c, L.T, 3); flick(26, L.T); badge('red', '10 / SEK', W / 2, H * .2, L.lt * 4, 1, 1.1);
+shot(tw('Dann', 2), 'C', 'punch', L => { nightRoad(); const c = put(ich, 26, 0, 26, PI); dribble(c, BBALL, L.T, { f: 10, trail: 6 }); effort(c, L.T); sweat(c, L.T, 3); flick(26, L.T); badge('red', '10 / SEK', W / 2, H * .1, L.lt * 4, 1, 1.1);
   orbit(hpC(c, -1.2), lerp(8.5, 7.5, L.k), PI - .1, .02, 42); sh(V(26, 0, 26), 20); }, [[0, 'thud', .6], [.1, 'thud', .5], [.2, 'thud', .5], [.3, 'thud', .5], [.4, 'thud', .5]]);
 // 42 HUSS ×3: Max arranca por la calle a toda velocidad, estela blanca
 shot(th(7, 1), 'C', 'punch', L => { nightRoad(); const z = 40 - L.lt * 16; const c = put(ich, 26, 0, z, PI); dribble(c, BBALL, L.T, { f: 8, run: true, rs: 2.4, trail: 7 }); effort(c, L.T); flick(z, L.T); hussPop(7, L.T);
@@ -405,6 +405,193 @@ shot(tw('Komisch', 1), 'W', null, L => { nightRoad(); const c = put(ich, 26, 0, 
 shot(tw('Jedes', 1), 'S', null, L => { nightRoad(); const z = 70 - L.lt * 13; const c = put(ich, 25, 0, z, PI); dribble(c, BBALL, L.T, { f: 7, run: true, rs: 2, trail: 4 }); effort(c, L.T);
   BULBS.forEach((b, i) => { const passed = b.position.z > z; b.material.emissiveIntensity = passed ? (Math.sin(L.T * 50 + i) > 0 ? 5 : 1) : .3; }); GLOW.intensity = 40; GLOW.position.set(26, 10, z + 4);
   cm([42, 6, z - 16, 25, 3, z, 46], [40, 6, z - 14, 25, 3, z, 46], L.k); sh(V(25, 0, z), 30); }, [[0, 'run_cobble', .4], [.4, 'switch', .4], [.9, 'switch', .4], [1.4, 'switch', .4], [1.9, 'hum', .3]]);
+// ---------- c: la Weltmeisterschaft, el HUSS-O-MAT 9000, el Strickfinale, las derrotas, «Max … huss für uns», 0 % (66,7 – 106,8 s) ----------
+// robot: anda hacia -z desde la entrada del fondo (+z)
+const roboWalk = (L, z0, sp = 2.4, x = STX) => { const r = put(robo, x, 0, z0 - sp * L.lt, PI); caminar(r, L.lt, { x, z: z0, ry: PI, speed: sp, T: L.T }); return r; };
+const railFolk = (T, mode = 'cheer', z0 = -6) => { [mama, ...XT.slice(0, 3)].forEach((c, i) => { put(c, STX - 19.5, 0, z0 + i * 3.2 - 4, PI / 2); actuar(c, T, [[0, mode === 'cheer' ? 'cheer' : mode === 'laugh' ? (i % 2 ? 'point' : 'point_l') : 'shock']], { T: T + i }); if (mode === 'laugh') laughF(c, T + i); else if (mode === 'cheer') grin(c, T + i); else cara(c, T + i, { expr: 'shock' }); }); };
+const scoreKnit = (a, b) => bText([['STRICKFINALE', .2, 80, '#ffffff'], [`OMA ${a} : ${b} ROBOTER`, .62, 84, '#ffd23f']]);
+
+// 46 «Doch dann kam die Weltmeisterschaft.» grúa sobre el estadio a reventar: fuegos, confeti, todas las banderas
+shot(tw('Doch', 1), 'Z', null, L => { stadium(); stands(L.T * 1.3, 'cheer'); bText([['HUSS-WM', .42, 210, '#ffd23f'], ['HEUTE!', .82, 90, '#ffffff']]); confRain(V(STX - 10, 2, 0), L.T, 60, 40, 50, 26);
+  sparks(V(STX - 10, 22, -20), L.t0 + .2, L.T, 14, 2); cm([STX + 12, 16, 24, STX - 32, 9, -6, 50], [STX + 8, 13, 20, STX - 32, 9, -8, 48], L.k); sh(V(STX - 20, 0, -6), 60); }, [[0, 'firework', .6], [.2, 'cheer', .7], [.8, 'firework', .5], [1.3, 'confetti', .4]]);
+// 47 «Und mit ihr ein Roboter aus der Großstadt:» por el túnel del fondo entra el robot entre humo; la grada enmudece
+shot(tw('Und', 4), 'W', null, L => { stadium(); stands(L.T, 'still', true); const r = roboWalk(L, 30, 2.6); cara(r, L.T, { expr: 'angry' }); smoke(V(STX, 0, 34), L.T, 1.2);
+  orbit(V(STX, 5.5, r.root.position.z), lerp(19, 15, L.k), PI + .25, .02, 46); sh(V(STX, 0, 26), 30); }, [[0, 'steam', .5], [.2, 'machine_hum', .5], [.5, 'thud', .5], [1.1, 'thud', .5], [1.6, 'gasp', .4]]);
+// 48 «der HUSS-O-MAT 9000.» golpe de zoom: el visor rojo se enciende; «9000»
+shot(tw('HUSS-O-MAT', 1), 'C', 'punch', L => { stadium(); stands(L.T, 'still', true); const r = put(robo, STX, 0, 22, PI); actuar(r, L.lt, [[0, 'idle'], [.2, 'fists', { dur: .3 }]], { T: L.T }); cara(r, L.T, { expr: 'angry' }); r.props.visor.material.emissiveIntensity = 1 + clamp(L.lt * 3) * 3;
+  badge('red', '9000', W / 2, H * .66, (tw('9000') - L.T) * -4, 1, 1.2); orbit(hpC(r, -1.4), lerp(13, 11, L.k), PI + .1, .05, 44); sh(V(STX, 0, 22), 20); }, [[0, 'power_on', .6], [.4, 'machine_hum', .4]]);
+// 49 «Er schaute auf unsere Tribüne und sagte nur:» por encima del hombro del robot: la grada entera, en silencio
+shot(tw('Er', 2), 'W', null, L => { stadium(); stands(L.T, 'still', true); const r = put(robo, STX - 6, 0, 2, -PI / 2 + .2); actuar(r, L.lt, [[0, { headY: lerp(.4, 0, clamp(L.lt)) }]], { T: L.T }); railFolk(L.T, 'shock');
+  cm([STX + 6, 9, 6, STX - 30, 6, -2, 48], [STX + 4, 9.5, 5, STX - 30, 6, 0, 46], L.k); sh(V(STX - 14, 0, 0), 40); }, [[0, 'machine_hum', .4], [.5, 'crickets', .3]]);
+// 50 «„Menschen sind langsam.“» primer plano del robot hablando; el visor late con cada palabra
+shot(tw('Menschen', 1), 'C', null, L => { stadium(); stands(L.T, 'still', true); const r = put(robo, STX - 6, 0, 2, -PI / 2 + .2); actuar(r, L.lt, [[0, { headX: -.1 }], [.5, { headX: .05, aRx: .7, aRe: 1.2 }, { dur: .4 }]], { T: L.T });
+  const sp = spoken(L.t0, L.t1).some(w => L.T >= w[0] && L.T < w[1]); r.props.visor.material.emissiveIntensity = sp ? 4 : 1.5; talk(r, L.T, L.t0, L.t1, 'angry');
+  orbit(hpC(r, -1.4), lerp(12, 10.5, L.k), -PI / 2 + .45, .02, 44); sh(V(STX - 6, 0, 2), 20); }, [[0, 'glitch', .4], [.5, 'machine_shake', .3]]);
+// 51 «Opa wurde kreidebleich.» golpe: el Opa en la barandilla, blanco como la tiza, se agarra el pecho
+shot(tw('Opa', 3), 'F', 'punch', L => { stadium(); stands(L.T, 'still', true); const o = put(opa, STX - 19.5, 0, 0, PI / 2 + .2); actuar(o, L.lt, [[0, 'shock'], [.4, { aRx: 1.3, aRz: -.6, aRe: 1.8, lean: -.1 }, { dur: .4 }]], { T: L.T }); cara(o, L.T, { expr: 'shock' });
+  const c = put(ich, STX - 19.5, 0, 3.4, PI / 2 + .3); actuar(c, L.lt, [[0, { headY: -.6 }]], { T: L.T }); cara(c, L.T, { expr: 'worried' }); grade.uniforms.lift.value = .06; grade.uniforms.sat.value = .9;
+  orbit(hpC(o, -.6), lerp(9, 7.5, L.k), PI / 2 + .25, .05, 44); sh(V(STX - 19, 0, 1), 20); }, [[0, 'gasp_old', .6], [.2, 'heartbeat', .5]]);
+// 52 «Denn am Arm des Roboters glänzte etwas Goldenes.» (zoom lento): la muñequera dorada en la muñeca del robot, un destello
+shot(tw('Denn', 3), 'Z', 'slow', L => { stadium(); stands(L.T, 'still', true); const r = put(robo, STX - 6, 0, 2, -PI / 2 + .2); actuar(r, L.lt, [[0, { aLx: 1.1, aLe: 1.2, aLz: -.2 }]], { T: L.T }); cara(r, L.T, { expr: 'angry' });
+  POST.push(() => { const g = wpos(r.props.gold); orbit(g, lerp(10, 4.2, easeInOut(L.k)), -PI / 2 - .7, .15, 40); sparks(g, L.t0 + .9, L.T, 10, .3); GLOW.intensity = 30; GLOW.position.copy(g).add(V(2, 2, 2)); }); sh(V(STX - 6, 0, 2), 20); }, [[0, 'sparkle', .6], [.9, 'magic_hit', .5]]);
+// 53 «Das erste Duell war das Strickfinale.» las dos mesas de punto; Oma Hilde y el robot frente a frente; marcador STRICKFINALE
+shot(tw('Das', 2), 'W', null, L => { stadium(); stands(L.T, 'sway'); TISCH1.visible = TISCH2.visible = true; scoreKnit(0, 0); const o = put(oma, STX - 6, 0, -8.6, 0); actuar(o, L.lt, [[0, 'cross']], { T: L.T }); cara(o, L.T, { expr: 'determined' });
+  const r = put(robo, STX + 6, 0, -8.8, 0); actuar(r, L.lt, [[0, 'fists']], { T: L.T }); cara(r, L.T, { expr: 'angry' }); badge('tag', '1. DUELL', W / 2, H * .13, (L.lt - .2) * 4, 1, 1);
+  orbit(V(STX, 4.2, -8), lerp(22, 19, L.k), .05, .38, 46); sh(V(STX, 0, -7), 30); }, [[0, 'whistle', .6], [.4, 'cheer', .4]]);
+// 54 «Oma Hilde schaffte in einer Minute einen ganzen Pullover.» las agujas de Oma echan humo; el reloj: 1:00 → 0:00
+shot(tw('Oma', 2), 'C', null, L => { stadium(); stands(L.T, 'cheer'); TISCH1.visible = TISCH2.visible = true; const o = put(oma, STX - 6, 0, -8.6, 0); actuar(o, L.lt, [[0, { aLx: 1.3, aRx: 1.3, aLe: 1.2 + Math.sin(L.T * 36) * .3, aRe: 1.2 - Math.sin(L.T * 36) * .3, aLz: -.3, aRz: -.3, headX: .2 }]], { T: L.T }); effort(o, L.T);
+  POST.push(() => { const h = wpos(o.aR.hand); show(NEED, h.x - .5, h.y + .3, h.z + .3); const p = show(PULLI, STX - 6, 2.75, -6.2, 0, lerp(.1, .7, L.k)); p.rotation.x = -PI / 2; }); const sec = Math.max(0, Math.round(60 - L.k * 60));
+  board('t' + sec, (c, w, h) => { txt2(c, 'STRICKFINALE', w / 2, h * .2, 80, '#ffffff'); txt2(c, '0:' + String(sec).padStart(2, '0'), w / 2, h * .62, 200, '#ff5a3a'); }); badge('gold', '1 MINUTE', W / 2, H * .13, (tw('Minute') - L.T) * -4, 1, .9);
+  orbit(V(STX - 6, 4.2, -8.4), lerp(11, 9, L.k), .35, .2, 44); sh(V(STX - 6, 0, -7), 20); }, [[0, 'tick', .4], [.3, 'zip', .4], [.8, 'tick', .4], [1.3, 'zip', .4], [1.8, 'tick', .4], [2.3, 'zip', .4]]);
+// 55 HUSS ×3: Oma levanta el jersey rojo terminado; el marcador: OMA 1
+shot(th(8), 'C', 'punch', L => { stadium(); stands(L.T * 1.3, 'cheer'); TISCH1.visible = TISCH2.visible = true; scoreKnit(1, 0); const o = put(oma, STX - 6, 0, -8.6, 0); actuar(o, L.lt, [[0, 'cheer']], { T: L.T }); grin(o, L.T);
+  POST.push(() => { const h = wpos(o.aR.hand).add(wpos(o.aL.hand)).multiplyScalar(.5); show(PULLI, h.x, h.y + .2, h.z + .2, 0, 1); }); hussPop(8, L.T); confetti(V(STX - 6, 2, -7), L.t0, L.T, 30);
+  orbit(V(STX - 6, 5.5, -8.4), lerp(14, 12, L.k), -.2, .22, 44); sh(V(STX - 6, 0, -7), 20); }, [[0, 'cheer', .6], [.3, 'confetti', .4]]);
+// 56 «Der Roboter strickte zweihundert.» los brazos del robot son un borrón; los jerséis salen disparados y se apilan; 200
+shot(tw('Der', 2), 'W', null, L => { stadium(); stands(L.T, 'still', true); TISCH1.visible = TISCH2.visible = true; const n = Math.round(lerp(0, 200, easeIn(L.k))); scoreKnit(1, n); const r = put(robo, STX + 6, 0, -8.8, 0);
+  actuar(r, L.lt, [[0, { aLx: 1.4 + Math.sin(L.T * 60) * .5, aRx: 1.4 - Math.sin(L.T * 60) * .5, aLe: 1, aRe: 1, aLz: -.3, aRz: -.3 }]], { T: L.T }); cara(r, L.T, { expr: 'angry' });
+  PULLIS.forEach((p, i) => { const k = clamp(L.k * 1.6 - i * .06); if (k <= 0) return; const q = arc(V(STX + 6, 5, -7), V(STX + 13 + (i % 3) * 1.4, .4 + Math.floor(i / 3) * .45, -9 + (i % 2)), 3, k); show(p, q.x, q.y, q.z, i, .7).rotation.x = k < 1 ? L.T * 8 : -PI / 2; });
+  badge('red', '200', W / 2, H * .13, (tw('zweihundert') - L.T) * -4, 1, 1.2); orbit(V(STX + 8, 4.5, -8), lerp(20, 18, L.k), .25, .3, 46); sh(V(STX + 8, 0, -6), 30); }, [[0, 'machine_shake', .5], [.2, 'zip', .4], [.5, 'zip', .4], [.8, 'zip', .4], [1.0, 'cash_reg', .3]]);
+// 57 «Oma fiel in Ohnmacht.» Oma se lleva la mano a la frente y cae de espaldas
+shot(tw('Oma', 3), 'C', 'punch', L => { stadium(); stands(L.T, 'still', true); TISCH1.visible = TISCH2.visible = true; const f = clamp((L.lt - .25) / .45); const o = put(oma, STX - 6, 0, -1.2, 0);
+  applyPose(o, { lean: lerp(0, -1.45, easeIn(f)), aLx: 2.4, aLe: 2, aRx: lerp(.4, 2.8, f), aRz: .6, lLx: lerp(0, .6, f), lRx: lerp(0, .4, f), crouch: f * .2 }); o.root.position.y = -f * 1.5; o.root.position.z = -1.2 - f * 2.2; cara(o, L.T, { expr: 'shock', eyes: f > .6 ? 'closed' : 'wide' });
+  orbit(V(STX - 6, 3.4, -2), lerp(13, 11, L.k), .4, .12, 44); sh(V(STX - 6, 0, -2), 20); }, [[0, 'gasp_old', .5], [.6, 'thud', .7], [.8, 'gasp', .5]]);
+// 58 «Zum ersten Mal in siebzig Jahren.» Oma en el suelo, las agujas a un lado; la gente de la barandilla se lleva las manos a la cabeza; «70 JAHRE»
+shot(tw('Zum', 1), 'S', null, L => { stadium(); stands(L.T, 'still', true); const o = put(oma, STX - 6, .5, -12, 0); o.root.rotation.set(-PI / 2, 0, 0); applyPose(o, { aLx: .2, aRx: .4, aRz: .5 }); cara(o, L.T, { expr: 'sad', eyes: 'closed' }); show(NEED, STX - 3.6, .2, -11).rotation.z = PI / 2;
+  const c = put(ich, STX - 1.5, 0, -12.5, -1.4); actuar(c, L.lt, [[0, 'shock'], [.5, { crouch: .7, lean: .4, lLk: 1.2, lRk: 1.2, aLx: 1.1, aRx: 1.1 }, { dur: .5 }]], { T: L.T }); cara(c, L.T, { expr: 'worried' });
+  badge('gold', '70 JAHRE', W / 2, H * .13, (tw('siebzig') - L.T) * -4, 1, 1); cm([STX - 6, 13, 2, STX - 5, 0, -12, 44], [STX - 4, 12, 0, STX - 5, 0, -12.5, 44], L.k); sh(V(STX - 5, 0, -12), 20); }, [[0, 'heartbeat', .5], [.8, 'sad_tone', .4]]);
+// 59 «Dann verloren die Fußballer.» el robot dispara; el balón pasa por encima del futbolista, que cae de rodillas; marcador
+shot(tw('Dann', 3), 'W', null, L => { stadium(); stands(L.T, 'still', true); bText([['FUSSBALL', .25, 90, '#ffffff'], ['0  :  9', .65, 170, '#ff3a3a']]); const r = put(robo, STX + 3, 0, 8, PI); actuar(r, L.lt, [[0, { lLx: -1.2, lLk: .2, aRx: .8, aLx: -.6 }]], { T: L.T });
+  const f = put(fuss, STX - 1, 0, 1, .2); actuar(f, L.lt, [[0, 'shock'], [.5, { crouch: .9, lLk: 1.6, lRk: 1.6, lLx: 1.4, lRx: 1.4, lean: .3, headX: .4 }, { dur: .4 }]], { T: L.T }); cara(f, L.T, { expr: 'sad' });
+  const p = arc(V(STX + 3, .55, 6.8), V(STX - 4, 3, -30), 4, clamp(L.lt * 1.4)); show(BALL, p.x, p.y, p.z).rotation.x = L.T * 15; trailOn(BALL.position, L.T, 5); orbit(V(STX + 1, 4, 4), lerp(20, 17, L.k), 1.45, .1, 46); sh(V(STX, 0, 2), 30); }, [[0, 'kick', .7], [.3, 'whoosh', .4], [.6, 'sad_tone', .4]]);
+// 60 «Dann die Basketballer.» el robot hace un mate por encima del de baloncesto, que cae sentado
+shot(tw('Dann', 4), 'W', null, L => { stadium(); stands(L.T, 'still', true); bText([['BASKETBALL', .25, 90, '#ffffff'], ['0  :  150', .65, 150, '#ff3a3a']]); const r = put(robo, STX + 2, 0, 0, PI); r.root.position.y = Math.sin(clamp(L.lt * 1.2) * PI) * 2.5; applyPose(r, { aRx: 3, aRe: .2, aLx: 2.6 });
+  POST.push(() => { const h = wpos(r.aR.hand); show(BBALL, h.x, h.y + .6, h.z); }); const b = put(bask, STX - 1, 0, -2.4, 0); applyPose(b, { crouch: 1.0, lLx: 1.5, lRx: 1.5, lLk: 1.4, lRk: 1.4, lean: -.4, aLx: 1.4, aRx: 1.4, aLz: .6, aRz: .6 }); b.root.position.y = -1.2; cara(b, L.T, { expr: 'shock' });
+  orbit(V(STX, 5.5, -1), lerp(22, 19, L.k), PI - .6, .15, 46); sh(V(STX, 0, -1), 30); }, [[0, 'jump', .5], [.4, 'clack', .6], [.6, 'thud', .5]]);
+// 61 «Sogar der Würstchenmann.» el Würstchenmann llora con una salchicha carbonizada humeando; el robot con una bandeja perfecta
+shot(tw('Sogar', 2), 'C', null, L => { stadium(); stands(L.T, 'still', true); const w = put(wm, STX - 3, 0, 4, .3); actuar(w, L.lt, [[0, { aRx: 1.2, aRe: 1.0, lean: .2, headX: .3 }]], { T: L.T }); cara(w, L.T, { expr: 'sad', mouth: 'grimace' }); tears(w, L.T);
+  show(WURST, STX - 1.6, .4, 6, .4, 1.2); smoke(V(STX - 1.6, .6, 6), L.T, .3);
+  orbit(hpC(w, -.8), lerp(9, 7.5, L.k), .45, .05, 44); sh(V(STX - 3, 0, 4), 20); }, [[0, 'cry_girl', .3], [.3, 'fire_crackle', .4], [.8, 'sniff', .5]]);
+// 62 «Noch ein Duell, und die Meisterschaft wäre für immer weg.» (zoom lento): el robot alarga la mano hacia el pedestal; marcador ✗ ✗ ?
+shot(tw('Noch', 1), 'Z', 'slow', L => { stadium(); stands(L.T, 'still', true); board('xx?', (c, w, h) => { txt2(c, 'HUFENBACH', w / 2, h * .22, 80, '#ffffff'); txt2(c, '✗', w * .25, h * .65, 190, '#ff3a3a'); txt2(c, '✗', w * .5, h * .65, 190, '#ff3a3a'); txt2(c, '?', w * .75, h * .65, 190, '#ffd23f'); });
+  const r = put(robo, STX + 4.5, 0, -14, -PI / 2 - .3); actuar(r, L.lt, [[0, 'idle'], [.4, 'reach', { dur: .8 }]], { T: L.T }); cara(r, L.T, { expr: 'smug' }); PED.userData.band.rotation.y = L.T;
+  cm([STX + 8, 7, 4, STX + 1, 6, -18, 48], [STX + 6, 6.5, -4, STX + 1, 6, -18, 42], L.k); sh(V(STX + 2, 0, -16), 20); }, [[0, 'heartbeat', .5], [1.2, 'heartbeat', .5]]);
+// 63 «Da packte Oma meine Hand:» Oma, tumbada, agarra la mano de Max, que está de rodillas a su lado
+shot(tw('Da', 2), 'C', null, L => { stadium(); stands(L.T, 'still', true); const o = put(oma, STX - 6, .5, -12, 0); o.root.rotation.set(-PI / 2, 0, 0); applyPose(o, { aRx: lerp(.4, 1.4, clamp(L.lt * 2)), aRz: .3 }); cara(o, L.T, { expr: 'sad', eyes: 'half' });
+  const c = put(ich, STX - 4, 0, -12.4, -PI / 2 + .1); applyPose(c, { crouch: .8, lean: .35, lLk: 1.3, lRk: 1.3, lLx: .9, lRx: .9, aLx: 1.2, aLe: .4, headX: .3 }); cara(c, L.T, { expr: 'worried' });
+  cm([STX - 5, 14, -7, STX - 5, 0, -12, 44], [STX - 5, 12.5, -8, STX - 5, 0, -12, 42], L.k); sh(V(STX - 5, 0, -12), 20); }, [[0, 'cloth', .5], [.3, 'heartbeat', .3]]);
+// 64 «„Max … huss für uns.“» primer plano de Oma, con los ojos medio cerrados, susurrando
+shot(tw('Max', 4), 'C', null, L => { stadium(); stands(L.T, 'still', true); const o = put(oma, STX - 6, .5, -12, 0); o.root.rotation.set(-PI / 2, 0, 0); talk(o, L.T, tw('Max', 4), tw('Als'), 'sad', { eyes: 'half' });
+  POST.push(() => { const h = hp(o); cam([h.x + .2, h.y + 3.6, h.z + 1.6], [h.x, h.y, h.z], 40); }); sh(V(STX - 6, 0, -12), 20); }, [[0, 'whisper', .6], [.8, 'heartbeat', .3]]);
+// 65 «Als ich in die Mitte trat,» Max camina solo hacia el círculo central; el robot espera
+shot(tw('Als', 1), 'S', null, L => { stadium(); stands(L.T, 'sway'); const z = 12 - L.lt * 3; const c = put(ich, STX, 0, z, PI); caminar(c, L.lt, { x: STX, z: 12, ry: PI, speed: 3, T: L.T }); cara(c, L.T, { expr: 'determined' });
+  const r = put(robo, STX, 0, -6, 0); actuar(r, L.lt, [[0, 'cross']], { T: L.T }); cara(r, L.T, { expr: 'smug' }); cm([STX + 2, 6, z + 10, STX, 4, z - 4, 46], [STX + 1, 5, z + 8, STX, 4, z - 5, 46], L.k); sh(V(STX, 0, 2), 30); }, [[0, 'steps', .5], [.5, 'steps', .5], [1.0, 'murmur', .3]]);
+// 66 «lachte die ganze Halle:» la grada se ríe; la gente de la barandilla señala
+shot(tw('lachte', 1), 'W', null, L => { stadium(); stands(L.T * 1.5, 'sway'); railFolk(L.T, 'laugh'); cm([STX - 4, 8, 14, STX - 30, 6, -4, 50], [STX - 6, 8, 12, STX - 30, 6, -6, 48], L.k); sh(V(STX - 22, 0, 0), 40); }, [[0, 'laugh_deep', .6], [.3, 'kids_laugh', .5]]);
+// 67 «„Max Plumps!“» golpe: los niños de la primera fila le señalan, MAX PLUMPS
+shot(tw('Max', 5), 'C', 'punch', L => { stadium(); stands(L.T, 'sway'); [K[2], K[6], XT[4]].forEach((k, i) => { put(k, STX - 19.5, 0, -2 + i * 3, PI / 2 + (i - 1) * .2); actuar(k, L.lt, [[0, i % 2 ? 'point_l' : 'point']], { T: L.T + i }); laughF(k, L.T + i); });
+  badge('red', 'MAX PLUMPS', W / 2, H * .13, L.lt * 4, 1, 1); orbit(V(STX - 19.5, 4.6, 1), lerp(11, 9.5, L.k), PI / 2, .05, 46); sh(V(STX - 19, 0, 1), 20); }, [[0, 'kids_laugh', .6]]);
+// 68 «Der Roboter rechnete:» el robot inclina la cabeza; números verdes corren por la pantalla del marcador
+shot(tw('Der', 3), 'C', null, L => { stadium(); stands(L.T, 'still', true); const r = put(robo, STX, 0, -6, 0); actuar(r, L.lt, [[0, { headZ: .3, headX: -.1 }]], { T: L.T }); cara(r, L.T, { expr: 'smug' }); r.props.visor.material.emissiveIntensity = 1.5 + Math.abs(Math.sin(L.T * 20)) * 2;
+  const f = Math.floor(L.T * 12); board('calc' + f, (c, w, h) => { const r_ = RNG(f); for (let i = 0; i < 7; i++) txt2(c, Array.from({ length: 14 }, () => Math.floor(r_() * 10)).join(''), w / 2, h * (.1 + i * .13), 52, '#3aff7a'); });
+  orbit(hpC(r, -1.6), lerp(13, 11.5, L.k), -.25, .05, 44); sh(V(STX, 0, -6), 20); }, [[0, 'ticks', .5], [.3, 'glitch', .3]]);
+// 69 «„Siegeschance des Menschen: null Prozent.“» (zoom lento): Max y el robot frente a frente; el marcador: SIEGESCHANCE MENSCH 0 %
+shot(tw('Siegeschance', 1), 'Z', 'slow', L => { stadium(); stands(L.T, 'still', true); bText([['SIEGESCHANCE MENSCH', .25, 70, '#ffffff'], ['0 %', .66, 220, '#ff3a3a']]);
+  const r = put(robo, STX, 0, -5, 0); actuar(r, L.lt, [[0, 'cross']], { T: L.T }); cara(r, L.T, { expr: 'smug' }); const c = put(ich, STX, 0, 2, PI); actuar(c, L.lt, [[0, { aRx: .3, aLx: .3 }]], { T: L.T }); cara(c, L.T, { expr: 'determined' });
+  badge('red', '0 %', W / 2, H * .13, (tw('null') - L.T) * -4, 1, 1.2); cm([STX + 15, 6, 11, STX, 4.5, -1.5, 46], [STX + 12, 6, 9, STX, 4.5, -1.5, 42], L.k); sh(V(STX, 0, -2), 20); }, [[0, 'heartbeat', .5], [.8, 'heartbeat', .5], [1.6, 'heartbeat', .6]]);
+// ---------- d: el duelo (HUSS / Schneller!), las lámparas, el robot sin sudor, la muñequera vuelve al Opa, victoria, sofá, carta, final en bucle (106,8 – 148,5 s) ----------
+const duel = (L, g, o = {}) => { stadium(); stands(L.T * 1.4, 'cheer'); const ang = L.T * (o.spin ?? 3); const R0 = o.r ?? 4;
+  const c = put(ich, STX + Math.cos(ang) * R0, 0, Math.sin(ang) * R0, -ang); dribble(c, BBALL, L.T, { f: o.f ?? 8, run: true, rs: 2.4, trail: 7 }); effort(c, L.T); sweat(c, L.T, 3);
+  const r = put(robo, STX, 0, 0, PI / 2 - ang + PI); actuar(r, L.lt, [[0, { aLx: 1.2, aRx: 1.2, aLz: .4, aRz: .4, crouch: .3, lLx: .3, lRx: .3, lLk: .4, lRk: .4 }]], { T: L.T }); cara(r, L.T, { expr: 'angry' });
+  if (g) hussPop(g, L.T); return { c, r, ang }; };
+// cámara por fuera del círculo, detrás de Max: Max delante, el robot detrás
+const duelCam = (ang, d = 11, pitch = .18, lag = .15, R0 = 4) => { const a = ang - lag; orbit(V(STX + Math.cos(ang) * R0 * .8, 3.6, Math.sin(ang) * R0 * .8), d, Math.atan2(Math.cos(a), Math.sin(a)) + .35, pitch, 46); };
+const lampsOn = k => HALLAMPS.forEach((b, i) => b.material.emissiveIntensity = k * 12 > i ? 6 : 0);
+
+// 70 HUSS ×3: empieza el duelo: Max arranca botando alrededor del robot, con estela
+shot(th(9), 'C', 'punch', L => { const { ang } = duel(L, 9, { spin: 2.4 }); duelCam(ang, lerp(13, 11, L.k)); sh(V(STX, 0, 0), 20); }, [[0, 'whistle', .6], [.15, 'whoosh', .5], [.35, 'thud', .5]]);
+// 71 «Schneller!» la gente de la barandilla grita con los puños en alto (Mamá, el futbolista, el de baloncesto)
+shot(tw('Schneller', 1), 'C', null, L => { stadium(); stands(L.T * 1.5, 'cheer'); [mama, fuss, bask].forEach((k, i) => { put(k, STX - 19.5, 0, -2 + i * 3.4, PI / 2 + (i - 1) * .15); actuar(k, L.lt, [[0, 'fists'], [.1, 'cheer', { dur: .25 }]], { T: L.T + i }); talk(k, L.T + i * .03, L.t0, L.t1, 'shout'); });
+  orbit(V(STX - 19.5, 4.5, 1.4), lerp(11, 9.5, L.k), PI / 2 + .15, .05, 46); sh(V(STX - 19, 0, 1), 20); }, [[0, 'cheer', .7], [.2, 'shout_m', .4]]);
+// 72 HUSS ×2: más rápido: Max es una estela turquesa; el robot gira la cabeza sin seguirle
+shot(th(10), 'C', 'punch', L => { const { r, ang } = duel(L, 10, { spin: 5, f: 11 }); r.root.rotation.y = L.T * 2; duelCam(ang, 11, .35, .2); sh(V(STX, 0, 0), 20); }, [[0, 'whoosh', .6], [.25, 'whoosh', .5]]);
+// 73 «Schneller!» el Opa, en la barandilla, grita con todas sus fuerzas
+shot(tw('Schneller', 2), 'C', 'punch', L => { stadium(); stands(L.T * 1.5, 'cheer'); const o = put(opa, STX - 19.5, 0, 1, PI / 2 + .1); actuar(o, L.lt, [[0, 'fists']], { T: L.T }); talk(o, L.T, L.t0, L.t1, 'shout');
+  orbit(hpC(o, -.5), lerp(8.5, 7.5, L.k), PI / 2 + .3, .04, 44); sh(V(STX - 19, 0, 1), 20); }, [[0, 'shout_m', .6], [.1, 'cheer', .5]]);
+// 74 HUSS ×3: Max da vueltas tan rápido que saltan chispas del suelo; el robot se tambalea
+shot(th(11), 'C', 'punch', L => { const { r } = duel(L, 11, { spin: 8, f: 13, r: 3.6 }); r.root.rotation.z = Math.sin(L.T * 14) * .08; sparks(V(STX, .3, 0), L.t0 + .05, L.T, 14, 1); sparks(V(STX + 2, .3, 2), L.t0 + .4, L.T, 10, .8);
+  orbit(V(STX, 2.5, 0), lerp(15, 13, L.k), .6, .75, 46); sh(V(STX, 0, 0), 20); }, [[0, 'sparks', .6], [.3, 'machine_shake', .5], [.5, 'whoosh', .5]]);
+// 75 «Ich war so schnell, dass jede Lampe in der Halle aufleuchtete.» contrapicado: los focos del estadio se encienden uno tras otro
+shot(tw('Ich', 2), 'W', null, L => { stadium(); stands(L.T * 1.5, 'cheer'); lampsOn(easeIn(L.k) * 1.05); const { c } = duel(L, 0, { spin: 6, f: 12 }); GLOW.intensity = 60 * L.k; GLOW.position.set(STX, 20, 0); bloom.strength = .5;
+  cm([STX + 8, 3, 12, STX - 30, 19, 2, 54], [STX + 6, 3, 10, STX - 30, 21, -2, 54], L.k); sh(V(STX, 0, 0), 30); }, [[0, 'power_on', .4], [.6, 'switch', .5], [1.2, 'switch', .5], [1.8, 'switch', .5], [2.4, 'power_on', .5]]);
+// 76 «Genau wie die Laternen.» recuerdo rápido: la calle de noche, todas las farolas encendidas a la vez
+shot(tw('Genau', 1), 'F', null, L => { town('night'); FILL.intensity = 30; BULBS.forEach(b => b.material.emissiveIntensity = 5); const c = put(ich, 26, 0, 30, PI); dribble(c, BBALL, L.T, { f: 8 }); grade.uniforms.sepia.value = .35;
+  cm([26, 7, 6, 26, 6, 50, 50], [26, 8, 10, 26, 7, 54, 50], L.k); sh(V(26, 0, 30), 30); }, [[0, 'switch', .6], [.1, 'hum', .4]]);
+// 77 «Plötzlich qualmte der Roboter.» el robot se queda quieto; humo negro le sale de la cabeza; el visor parpadea
+shot(tw('Plötzlich', 1), 'Z', null, L => { stadium(); stands(L.T, 'still', true); const r = put(robo, STX, 0, 0, .3); actuar(r, L.lt, [[0, 'shock']], { T: L.T, extra: { headZ: Math.sin(L.T * 30) * .05 } }); cara(r, L.T, { expr: 'shock' }); r.props.visor.material.emissiveIntensity = Math.sin(L.T * 40) > 0 ? 3 : .2;
+  POST.push(() => smoke(hpC(r, 1.2), L.T, .7)); orbit(hpC(r, -.2), lerp(15, 13, L.k), .3, .08, 44); sh(V(STX, 0, 0), 20); }, [[0, 'steam', .6], [.3, 'glitch', .5], [.9, 'sparks', .4]]);
+// 78 «Denn Roboter können nicht schwitzen.» Max, empapado en sudor, junto al robot seco y humeante
+shot(tw('Denn', 4), 'W', null, L => { stadium(); stands(L.T, 'still', true); const r = put(robo, STX + 2.5, 0, 0, -.4); actuar(r, L.lt, [[0, 'shock']], { T: L.T }); cara(r, L.T, { expr: 'shock' }); POST.push(() => smoke(hpC(r, 1.5), L.T, .7));
+  const c = put(ich, STX - 2.5, 0, 3, .4); actuar(c, L.lt, [[0, { lean: .3, aLx: .4, aRx: .4, crouch: .2 }]], { T: L.T }); cara(c, L.T, { expr: 'determined', mouth: 'open_smile' }); sweat(c, L.T, 3); show(BBALL, STX - 1.2, .62, 4.2);
+  badge('tag', 'KEIN SCHWEISS', W / 2, H * .13, (L.lt - .6) * 4, 1, .9); orbit(V(STX, 3.8, 0), lerp(15, 13, L.k), .05, .08, 44); sh(V(STX, 0, 0), 20); }, [[0, 'steam', .5], [.6, 'drip', .5], [1.0, 'drip', .4]]);
+// 79 «Und ohne Schweiß kein HUSS.» primerísimo plano: una gota de sudor cae despacio de la barbilla de Max
+shot(tw('Und', 5), 'C', null, L => { stadium(); stands(L.T, 'still', true); const c = put(ich, STX - 2.5, 0, .5, .4); actuar(c, L.lt, [[0, { lean: .3, aLx: .4, aRx: .4 }]], { T: L.T }); effort(c, L.T);
+  POST.push(() => { const h = hp(c); const d = SWEAT[0]; d.visible = true; d.scale.setScalar(1.15); d.position.copy(h).add(V(Math.sin(.4) * .7 + .45, -.15 - easeIn(L.k) * 2.6, Math.cos(.4) * .7)); orbit(h.clone().add(V(0, -.6, 0)), lerp(5.5, 4.5, L.k), .4, .02, 40); }); sh(V(STX, 0, 0), 20); }, [[0, 'heartbeat', .4], [1.2, 'drip', .7]]);
+// 80 «Mit einem lauten Klonk kippte er um.» KLONK: el robot cae de espaldas y salen volando tornillos y piezas
+shot(tw('Mit', 1), 'C', 'punch', L => { stadium(); stands(L.T * 1.4, 'cheer'); const f = clamp((L.lt - .45) / .5); const r = put(robo, STX, 0, 0, .3); applyPose(r, { lean: -f * 1.5, aLx: 2.4 * f, aRx: 2.6 * f, lLx: f * .5 }); r.root.position.y = -f * 2; r.root.position.z = -f * 3; cara(r, L.T, { expr: 'shock', eyes: f > .7 ? 'closed' : 'wide' }); r.props.visor.material.emissiveIntensity = f > .8 ? 0 : 2;
+  PARTS.forEach((p, i) => { const t = L.lt - .9; if (t < 0) return; const rr = RNG(i * 7 + 2); const a = rr() * 6.28, v = 3 + rr() * 4; show(p, STX + Math.cos(a) * v * t, Math.max(.3, 2 + (6 + rr() * 4) * t - 12 * t * t), -3 + Math.sin(a) * v * t).rotation.set(t * 8, t * 6, 0); });
+  dust(V(STX, 0, -4), L.t0 + .95, L.T, 10, .7); badge('red', 'KLONK!', W / 2, H * .13, (L.lt - .95) * 4, 1, 1.2); orbit(V(STX, 3.5, -1.5), lerp(17, 15, L.k), .35, .12, 46); sh(V(STX, 0, -2), 30); }, [[0, 'machine_shake', .5], [.95, 'slam', .8], [1.0, 'metal_rip', .5], [1.2, 'rubble', .4]]);
+// 81 «Und Opas goldenes Schweißband rollte direkt vor seine Füße.» (zoom lento): la muñequera sale de la muñeca del robot y rueda por la cancha hasta los zapatos del Opa
+shot(tw('Und', 6), 'Z', 'slow', L => { stadium(); stands(L.T, 'still', true); const r = put(robo, STX, -2, -3, .3); r.root.rotation.x = -1.4; r.props.gold.visible = false; r.props.visor.material.emissiveIntensity = 0;
+  const o = put(opa, STX - 19.5, 0, 1, PI / 2); actuar(o, L.lt, [[0, { headX: .45 }]], { T: L.T }); cara(o, L.T, { expr: 'shock', eyes: 'down' }); const k = easeOut(clamp(L.k * 1.15)); const x = lerp(STX - 1, STX - 17.6, k);
+  const B = show(BANDF, x, .55, lerp(-2, 1, k), 0, .55); B.rotation.set(0, PI / 2, -L.T * 6 * (1 - k)); trailOn(V(x + .6, .5, B.position.z), L.T, 3);
+  cm([STX - 10, 2, 7, x, .8, 0, 46], [STX - 14, 2.6, 6, STX - 18.4, 1.5, 1, 44], L.k); sh(V(STX - 12, 0, 0), 30); }, [[0, 'coin_flip', .5], [.4, 'wheels', .3], [1.6, 'ding_soft', .6]]);
+// 82 «Opa stand auf, zum ersten Mal seit Jahren.» el Opa se agacha, recoge la muñequera y se yergue del todo; se la pone
+shot(tw('Opa', 4), 'W', null, L => { stadium(); stands(L.T, 'still', true); const o = put(opa, STX - 18, 0, 1, PI / 2 + .3); const k = clamp(L.lt / .9);
+  actuar(o, L.lt, [[0, { crouch: .6, lean: .6, aRx: 1.2, aRe: .3, lLk: .8, lRk: .8, lLx: .5, lRx: .5 }], [.9, { aLx: 1.2, aLe: 1.4, aRx: 1.1, aRe: 1.6, aRz: -.3 }, { dur: .6 }]], { T: L.T }); cara(o, L.T, { expr: k < 1 ? 'determined' : 'happy' });
+  if (L.lt < .9) attach(BANDF, o.aR.hand, [0, -.4, 0], [PI / 2, 0, 0], .5); else attach(BANDF, o.aL.hand, [0, .3, 0], [PI / 2, 0, 0], .5);
+  orbit(hpC(o, -1), lerp(12, 10, L.k), PI / 2 + .5, .06, 44); sh(V(STX - 18, 0, 1), 20); }, [[0, 'cloth', .4], [.5, 'back_crack', .5], [1.3, 'gasp', .4], [1.8, 'sparkle', .4]]);
+// 83 «Und er husste.» un único bote del balón, firme y perfecto; el suelo retumba
+shot(tw('Und', 7), 'C', 'punch', L => { stadium(); stands(L.T, 'still', true); const o = put(opa, STX - 18, 0, 1, PI / 2 + .3); dribble(o, BBALL, L.T - L.t0 + .25, { f: 1.4 }); cara(o, L.T, { expr: 'determined' }); attach(BANDF, o.aL.hand, [0, .3, 0], [PI / 2, 0, 0], .5);
+  dust(V(STX - 17, 0, 2), L.t0 + .35, L.T, 8, .6); orbit(V(STX - 17.5, 2.8, 1), lerp(9, 8, L.k), PI / 2 + .9, .12, 44); sh(V(STX - 18, 0, 1), 20); }, [[.3, 'thud', .9], [.35, 'impact', .4]]);
+// 84 «Nur ein einziges Mal.» el Opa sonríe con lágrimas en los ojos; «1×»
+shot(tw('Nur', 1), 'C', null, L => { stadium(); stands(L.T, 'still', true); const o = put(opa, STX - 18, 0, 1, PI / 2 + .3); actuar(o, L.lt, [[0, { aLx: .9, aLe: 1.3 }]], { T: L.T }); cara(o, L.T, { expr: 'happy' }); tears(o, L.T); attach(BANDF, o.aL.hand, [0, .3, 0], [PI / 2, 0, 0], .5);
+  badge('gold', '1×', W / 2, H * .13, (tw('einziges') - L.T) * -4, 1, 1.3); orbit(hpC(o, -.5), lerp(8, 7, L.k), PI / 2 + .3, .04, 42); sh(V(STX - 18, 0, 1), 20); }, [[0, 'piano_note', .5], [.8, 'sniff', .4]]);
+// 85 «Aber die ganze Halle stand mit ihm auf.» toda la grada en pie, aplaudiendo; confeti; Opa en primer término de espaldas a la cámara mirando a la grada
+shot(tw('Aber', 3), 'Z', null, L => { stadium(); stands(L.T * 1.5, 'cheer'); railFolk(L.T, 'cheer'); confRain(V(STX - 24, 4, 0), L.T, 60, 20, 50, 20); const o = put(opa, STX - 14, 0, 1, -PI / 2 + .3); actuar(o, L.lt, [[0, 'cheer']], { T: L.T }); attach(BANDF, o.aL.hand, [0, .3, 0], [PI / 2, 0, 0], .5);
+  cm([STX - 2, 5, 8, STX - 30, 7, -2, 50], [STX - 4, 9, 10, STX - 30, 8, -4, 50], L.k); sh(V(STX - 22, 0, 0), 40); }, [[0, 'cheer', .8], [.4, 'confetti', .5], [1.0, 'firework', .4]]);
+// 86 «Ich gewann das neue goldene Schweißband» el podio: Max en el 1 alza la muñequera nueva; Oma y el Opa a los lados
+shot(tw('Ich', 3), 'W', null, L => { stadium(); stands(L.T * 1.4, 'cheer'); POD.visible = true; PED.visible = false; bText([['MAX', .3, 130, '#ffd23f'], ['HUSS-WELTMEISTER', .7, 70, '#ffffff']]); const c = put(ich, STX, 4, 14, 0); actuar(c, L.lt, [[0, 'cheer']], { T: L.T }); grin(c, L.T); attach(BANDF, c.aR.hand, [0, -.3, 0], [PI / 2, 0, 0], .7); sparks(wpos(c.aR.hand), 0, (L.lt * 1.2) % .9, 8, .4);
+  const o = put(opa, STX - 4.4, 2.6, 14, .2); actuar(o, L.lt, [[0, 'wave']], { T: L.T }); grin(o, L.T); const m = put(oma, STX + 4.4, 1.8, 14, -.2); actuar(m, L.lt, [[0, 'cheer']], { T: L.T + 1 }); grin(m, L.T + 1);
+  confetti(V(STX, 6, 14), L.t0 + .2, L.T, 60); orbit(V(STX, 6.5, 14), lerp(23, 20, L.k), -.05, .08, 46); sh(V(STX, 0, 14), 30); }, [[0, 'cheer', .7], [.3, 'firework', .5], [.6, 'confetti', .4]]);
+// 87 «und einen ganzen Tag frei.» el marcador: «MAX: 1 TAG FREI»; Max se tumba en el podio, brazos detrás de la cabeza
+shot(tw('und', 4), 'S', null, L => { stadium(); stands(L.T, 'sway'); POD.visible = true; PED.visible = false; bText([['MAX', .25, 110, '#ffd23f'], ['1 TAG FREI', .66, 130, '#ffffff']]); const c = put(ich, STX, 4, 14, 0); actuar(c, L.lt, [[0, { aLx: 2.8, aRx: 2.8, aLe: 2.2, aRe: 2.2 }]], { T: L.T }); cara(c, L.T, { expr: 'happy' }); ich.props.gold.visible = true;
+  badge('green', '1 TAG FREI', W / 2, H * .13, (L.lt - .3) * 4, 1, 1); orbit(V(STX, 7, 14), lerp(13, 11, L.k), .3, .1, 44); sh(V(STX, 0, 14), 20); }, [[0, 'pop', .5], [.4, 'sip', .3]]);
+// 88 «Ich hielt es genau vier Sekunden auf dem Sofa aus.» en casa, en el sofá, la muñequera dorada puesta; el reloj cuenta 1, 2, 3, 4; el pie no para quieto
+shot(tw('Ich', 4), 'C', null, L => { use('OS'); inside(1, 40); const c = put(ich, OSX + 8, 2.4, -8.4, 0); ich.props.gold.visible = true; actuar(c, L.lt, [[0, { ...SIT, aLx: .4, aRx: .4, lLx: 1.5 + Math.sin(L.T * 22) * .15, headY: Math.sin(L.T * 3) * .3 }]], { T: L.T }); cara(c, L.T, { expr: 'worried' }); show(BBALL, OSX + 11, .62, -5.6);
+  const n = Math.min(4, Math.floor(L.lt / ((L.t1 - L.t0) / 4)) + 1); badge('gold', n + ' SEK', W / 2, H * .13, ((L.lt * 4) % 1) * 4, 1, 1.2); orbit(V(OSX + 8.5, 4.6, -8.4), lerp(13, 11, L.k), .15, .08, 44); sh(V(OSX + 8, 0, -7), 20); }, [[0, 'tick', .5], [.65, 'tick', .5], [1.3, 'tick', .5], [1.95, 'tick', .6]]);
+// 89 HUSS ×3: salta del sofá y bota por el salón; la lámpara tiembla
+shot(th(12), 'C', 'punch', L => { use('OS'); inside(1, 40); const c = put(ich, OSX + 7, 0, -3, .3); ich.props.gold.visible = true; dribble(c, BBALL, L.T, { f: 9, trail: 6 }); effort(c, L.T); hussPop(12, L.T);
+  orbit(hpC(c, -1), lerp(11, 9.5, L.k), .45, .08, 44); sh(V(OSX + 7, 0, -3), 20); }, [[0, 'jump', .4], [.15, 'thud', .6], [.35, 'thud', .6], [.55, 'thud', .6], [.6, 'glass_rattle', .3]]);
+// 90 «Denn gestern kam ein Brief aus der Großstadt.» Mamá le da a Max un sobre con sello rojo; la cara de Max cambia
+shot(tw('Denn', 5), 'W', null, L => { use('OS'); inside(1, 40); const m = put(mama, OSX - 3.4, 0, 7, -1.4); actuar(m, L.lt, [[0, { aRx: 1.4, aRe: .3 }]], { T: L.T }); cara(m, L.T, { expr: 'worried' }); const c = put(ich, OSX - 8, 0, 7, 1.4); ich.props.gold.visible = true;
+  actuar(c, L.lt, [[0, 'idle'], [.6, { aRx: 1.3, aRe: .5 }, { dur: .3 }]], { T: L.T }); cara(c, L.T, { expr: L.lt > 1 ? 'shock' : 'neutral' }); POST.push(() => { const h = wpos(L.lt < .8 ? m.aR.hand : c.aR.hand); const b = show(BRIEF, h.x, h.y + .4, h.z, 0, .9); b.lookAt(camera.position); });
+  orbit(V(OSX - 5.7, 4.3, 7), lerp(13, 11, L.k), .05, .06, 44); sh(V(OSX - 6, 0, 7), 20); }, [[0, 'door_bell', .4], [.5, 'paper', .6], [1.4, 'gasp', .4]]);
+// 91 «Absender: HUSS-O-MAT 10.000.» (zoom lento): la carta en primer plano; detrás, en la ventana, el brillo de dos ojos rojos enormes
+shot(tw('Absender', 1), 'Z', 'slow', L => { use('OS'); inside(.85, 30); const c = put(ich, OSX - 8, 0, 7, 1.4); ich.props.gold.visible = true; actuar(c, L.lt, [[0, { aRx: 1.3, aRe: .5, aLx: 1.2, aLe: .6 }]], { T: L.T }); cara(c, L.T, { expr: 'shock' });
+  POST.push(() => { const h = wpos(c.aR.hand); const b = show(BRIEF, h.x + .3, h.y + .5, h.z, 0, 1.0); b.lookAt(camera.position); orbit(b.position.clone(), lerp(6, 3.4, easeInOut(L.k)), 1.4, .05, 40); });
+  badge('red', '10.000', W / 2, H * .13, (tw('10000') - L.T) * -4, 1, 1.2); sh(V(OSX - 7, 0, 7), 20); }, [[0, 'creepy_ting', .5], [.5, 'machine_hum', .4]]);
+// 92 «Und wer einmal mit dem Hussen anfängt …» de nuevo la calle mayor, como al principio: ahora también el Opa (con su muñequera) y Max corren delante
+shot(tw('Und', 8), 'W', null, L => { town(); const z = 58 - 5 * L.lt; const c = put(ich, 24.5, 0, z, PI); ich.props.gold.visible = true; dribble(c, BBALL, L.T, { run: true, f: 3.2, rs: 1.4 }); grin(c, L.T);
+  const o = put(opa, 28, 0, z + 1, PI); dribble(o, BBALL2, L.T + .2, { run: true, f: 3, rs: 1.3 }); grin(o, L.T); attach(BANDF, o.aL.hand, [0, .3, 0], [PI / 2, 0, 0], .45);
+  runners(L.T, L.lt, 63, 14, 7, { sp: 5 }); orbit(V(26.2, 4.2, z), lerp(20, 15, L.k), PI + .1, .1, 46); sh(V(26, 0, z), 40); }, [[0, 'crowd_run', .6], [.2, 'thud', .4], [.6, 'thud', .4], [1.0, 'thud', .4], [1.4, 'cheer', .4]]);
+// 93 HUSS ×3: Max y el Opa, uno al lado del otro, aceleran a la vez con estela dorada
+shot(th(13), 'C', 'punch', L => { town(); const z = 50 - 14 * L.lt; const c = put(ich, 24.5, 0, z, PI); ich.props.gold.visible = true; dribble(c, BBALL, L.T, { run: true, f: 8, rs: 2.4, trail: 7 }); effort(c, L.T);
+  const o = put(opa, 28, 0, z + .5, PI); dribble(o, BBALL2, L.T + .1, { run: true, f: 8, rs: 2.4 }); effort(o, L.T); attach(BANDF, o.aL.hand, [0, .3, 0], [PI / 2, 0, 0], .45); hussPop(13, L.T);
+  orbit(V(26.2, 3.4, z), 12, PI - .25, .06, 46); sh(V(26, 0, z), 30); }, [[0, 'whoosh', .6], [.2, 'thud', .5], [.4, 'thud', .5]]);
+// 94 «… der kann nie wieder aufhören.» final en bucle: la calle llena, todos botando hacia la cámara bajo la pancarta; la grúa sube hasta el aro dorado
+shot(tw('kann', 1) - .12, 'C', 'slow', L => { town(); const z = 44 - 5 * L.lt; const c = put(ich, 26, 0, z, PI); ich.props.gold.visible = true; dribble(c, BBALL, L.T, { run: true, f: 4, rs: 1.6 }); grin(c, L.T);
+  runners(L.T, L.lt, 48, 16, 31, { sp: 5, cheer: true }); BAN.userData.ring.rotation.y = L.T * 1.5; cm([26, 5, z - 16, 26, 4, z, 46], [26, 12, z - 22, 26, 10, 60, 46], easeInOut(L.k)); sh(V(26, 0, z), 40); }, [[0, 'cheer', .6], [.3, 'thud', .4], [.7, 'thud', .4]]);
 
 
 // ---------- transiciones, sonidos, render ----------

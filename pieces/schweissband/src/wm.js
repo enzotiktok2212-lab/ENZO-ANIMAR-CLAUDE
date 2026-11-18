@@ -28,7 +28,7 @@ export function podium(parent) { const g = G(parent); const cols = [0xffc828, 0x
 // mesa de punto del Strickfinale con ovillos (cada lado), un jersey encima
 export function strickTisch(parent) { const g = G(parent); box(10, .4, 4, mat(0xf4f4f4, { roughness: .4 }), .08, g, 0, 3.4, 0); box(10.2, 3.2, .2, mat(0x6a5aa8, { roughness: .9 }), .05, g, 0, 1.8, 1.9);
   for (const [x, z] of [[-4.6, -1.6], [4.6, -1.6], [-4.6, 1.6], [4.6, 1.6]]) cyl(.15, .15, 3.4, mat(0x3a3a48), 6, g, x, 1.7, z);
-  [0xd8323a, 0x2a6ad8, 0xffd23f, 0x2ab86a].forEach((c, i) => sphere(.55, mat(c, { roughness: 1 }), g, -3.8 + i * .9, 4.1, -1, 12, 8)); return shade(g); }
+  [0xd8323a, 0x2a6ad8, 0xffd23f, 0x2ab86a].forEach((c, i) => sphere(.45, mat(c, { roughness: 1 }), g, 2.0 + i * .85, 4.0, -1.2, 12, 8)); return shade(g); }
 export function pulli(parent, col = 0xd8323a) { const g = G(parent); const m = mat(col, { roughness: 1 }); box(2.4, 2.2, .35, m, .12, g, 0, 0, 0); for (const s of [-1, 1]) { const a = box(1.6, .7, .35, m, .12, g, s * 1.7, .6, 0); a.rotation.z = s * -.5; }
   box(2.42, .3, .37, mat(new THREE.Color(col).multiplyScalar(.75)), .05, g, 0, -1.05, 0); box(.9, .25, .37, mat(new THREE.Color(col).multiplyScalar(.75)), .05, g, 0, 1.08, 0); return shade(g); }
 export function floete(parent) { const g = G(parent); cyl(.12, .16, 2.4, mat(0xe8d2a0, { roughness: .4 }), 10, g, 0, 0, 0); for (let i = 0; i < 4; i++) sphere(.05, mat(0x3a2a1a), g, 0, -.2 + i * .3, .14, 6, 4); return shade(g); }
