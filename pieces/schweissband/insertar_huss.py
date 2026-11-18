@@ -2,7 +2,7 @@
 # si no, audio/hussN.wav) en la voz recortada (audio/voz-de.wav + audio/words-de.json), DESPUÉS del final real de la palabra ancla,
 # y escribe audio/voz-sin-silencios.wav y audio/words.json con un «HUSS!» en cada golpe detectado por energía.
 import json, os, subprocess, numpy as np
-R = 44100; G0, G1 = .10, .10
+R = 44100; G0, G1 = .15, .65
 rd = lambda f: np.frombuffer(subprocess.run(['ffmpeg', '-v', 'error', '-i', f, '-ac', '1', '-ar', str(R), '-f', 'f32le', '-'], capture_output=True).stdout, np.float32)
 x = rd('audio/voz-de.wav'); W = json.load(open('audio/words-de.json'))
 rms = lambda a: np.sqrt(np.mean(a[np.abs(a) > .02] ** 2))
@@ -37,12 +37,17 @@ out, F, p, sh, bar = [], [], 0, 0.0, 0.0
 for i, w in enumerate(W):
     a0 = max(w[0] + sh, bar); F.append([round(a0, 3), round(max(a0 + .05, w[1] + sh), 3), w[2], w[3]])
     if i in idx:
-        k = idx[i]; t = max(w[1], real_end(w[0])) + .02; T = int(t * R)
+        k = idx[i]
+        # fin real de la palabra ancla: desde el fin de Whisper, avanzar mientras haya voz (> -45 dB)
+        j = int(w[1] * 100)
+        while j < len(e) - 3 and max(e[j:j + 3]) > -45: j += 1
+        t = j / 100 + .03; T = int(t * R)
         out.append(x[p:T])
-        # reanudar justo antes del ataque de la siguiente palabra (sin respiración ni restos)
-        nx = W[i + 1][0] if i + 1 < len(W) else t; j = int(max(t, nx - .2) * 100)
-        while j < len(e) - 1 and e[j] < -32: j += 1
-        t2 = max(t, j / 100 - .04); p = int(t2 * R); skip = t2 - t
+        # inicio real de la siguiente palabra: desde su inicio de Whisper, retroceder mientras haya voz
+        nx = W[i + 1][0] if i + 1 < len(W) else t; j = int(nx * 100)
+        while j > t * 100 and e[j - 1] > -45: j -= 1
+        while j < len(e) - 1 and e[j] < -45 and j < nx * 100 + 15: j += 1
+        t2 = max(t, j / 100 - .03); p = int(t2 * R); skip = t2 - t
         f = f'audio/huss{k}-voz.wav' if os.path.exists(f'audio/huss{k}-voz.wav') else f'audio/huss{k}.wav'
         c = rd(f); c = c * (vr / rms(c)) * .95
         out.append(np.concatenate([np.zeros(int(G0 * R), np.float32), c, np.zeros(int(G1 * R), np.float32)]))
