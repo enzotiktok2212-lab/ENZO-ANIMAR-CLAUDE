@@ -1,22 +1,25 @@
-// FAST — «In dieser Stadt gewinnt jeder fast. Außer mir.»: planos sincronizados con audio/words.json (1080×1920, 30 fps).
-// Hufenbach (pueblo alemán de entramado): todos llevan sobre la cabeza su número de fuerza (600–990); yo, un 7 rojo.
-// El Beinahe-Mann roba la fuerza justo antes de cada meta y la guarda en frascos; el Ninja-Parcours con el botón dorado. Planos en src/p/*.js.
+// SCHWEISSBAND — «In dieser Stadt husst einfach jeder.»: planos sincronizados con audio/words.json (1080×1920, 30 fps).
+// Hufenbach (pueblo alemán de entramado) vive para la HUSS-Weltmeisterschaft; Max, el único que no hace HUSS, entrena de noche
+// y en el estadio gana al HUSS-O-MAT 9000, que llevaba la muñequera dorada robada al Opa. Planos en src/p/*.js (los t0 se atan a palabras).
 import { THREE, W, H, FPS, makeRenderer, makeComposer, applyPose, V, lerp, clamp, easeOut, easeIn, easeInOut, spring, RNG, mat, box, sphere, cyl, textPlane, outline } from './engine.js';
 import { nightSky } from './sets.js';
 import { rimLight } from './roblox.js';
-import { FONT, txt, mustache, makeExtra } from './props.js';
-import { makeOma, makeKumpel, makeLena, makeSie, makeEr, makeKassiererin, makeFahrer, makePapa, makeMayor, makeIch, makeJonas, makeMama, makeVerk, makeNachbar } from './gvolk.js';
+import { FONT, lamp, makeExtra, skyscraper, bench } from './props.js';
+import { makeOma, makeKumpel, makeLena, makeSie, makeEr, makeKassiererin, makeMayor, makeMama, makeVerk, makeNachbar } from './gvolk.js';
 import { hufenbach, townhouse } from './gort.js';
-import { numSprite, numTex, doener } from './gsets.js';
-import { crowd, goal, football, punchBag, calendar } from './hsets.js';
-import { omaStube, zimmer, kueche } from './svsets.js';
-import { rain, board } from './hals.js';
-import { makeFahrerin, makeDoener, makeLehrer, makeSchiri, makeBeinahe, tram, rails, fahrschulAuto, cone, orb, jar, jarShelf, grill, kreuzwort, snow, ziel, pullBar, tafel, parcours } from './fast.js';
+import { wurstWagen } from './gsets.js';
+import { goal, football, crowd, stadion, saal, partyHat } from './hsets.js';
+import { omaStube } from './svsets.js';
+import { needles, yarn } from './hals.js';
+import { makeDoener, makeSchiri } from './fast.js';
+import { makeHuss, makeMax, makeBasket, makeOpaK, makeRobo } from './hvolk.js';
+import { bball, hoop, band, pedestal, kaestchen, brief, podium, strickTisch, pulli, floete, strassenBanner, court, fahne, anzeige, wurst, txt as txt2 } from './wm.js';
+import { signBoard } from './wsets.js';
 import { loadKitFaces, kitFace, kitLips, eyesAlive, GEST, actuar, mirar, caminar, saltar, aire, bandada, camaraEnMano, shiver } from './vivo.js';
 
 await document.fonts.load('700 40px Cap'); await loadKitFaces();
 const WORDS = await (await fetch('./audio/words.json')).json();
-const DUR = 149.2, U = W / 720;
+const DUR = 148.5, U = W / 720;
 const stage = document.getElementById('stage'); const renderer = makeRenderer(stage); renderer.domElement.style.display = 'none';
 const out = document.createElement('canvas'); out.width = W; out.height = H; stage.appendChild(out); const octx = out.getContext('2d');
 const scene = new THREE.Scene(); scene.fog = new THREE.FogExp2(0xcfe6ff, .0008);
@@ -26,88 +29,78 @@ const hemi = new THREE.HemisphereLight(0xdfeeff, 0x8aa070, 1.2); scene.add(hemi)
 const sun = new THREE.DirectionalLight(0xfff2e0, 2.4); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048); sun.shadow.bias = -.0004; sun.shadow.normalBias = .3; sun.shadow.radius = 4; scene.add(sun, sun.target);
 const rim = rimLight(scene);
 const FILL = new THREE.PointLight(0xfff4e8, 0, 0, 1.3); scene.add(FILL);
+const GLOW = new THREE.PointLight(0xffc870, 0, 30, 1.5); scene.add(GLOW);
 function sh(p0, s = 30) { const q = 2 * s / 4096 * 4, p = V(Math.round(p0.x / q) * q, Math.round(p0.y / q) * q, Math.round(p0.z / q) * q); const c = sun.shadow.camera; Object.assign(c, { left: -s, right: s, top: s, bottom: -s, near: 1, far: 900 }); c.updateProjectionMatrix(); sun.target.position.copy(p); sun.position.copy(p).add(V(-80, 150, 70)); rim.target.position.copy(p); rim.position.copy(p).add(V(60, 40, -90)); }
+const PI = Math.PI;
 
 // ---------- escenarios ----------
 // Hufenbach (x = 0): plaza adoquinada x ∈ [-64, 52], z ∈ [-80, 70]; Rathaus al norte (x = -6, z ≈ -84); fuente (-18,-24); café (36,-40);
-// carretera x = 26 hacia +z (con vías del tranvía); parada (36, 6); döner (42, 40) mira a -x; mi casa HAUS (4, 96), puerta en mundo ≈ (11.2, 91.3) mirando +x; jardín (16, 96).
-const PCX = 700, OSX = 1100, ZIX = 1300, KUX = 1500;
-const HB = hufenbach(scene), PC = parcours(scene, PCX), OS = omaStube(scene, OSX), ZI = zimmer(scene, ZIX), KU = kueche(scene, KUX);
-ZI.TV.visible = false; const SETS = { HB: HB.G, PC: PC.g, OS: OS.g, ZI: ZI.g, KU: KU.g };
+// carretera x = 26 hacia +z con pancarta HUSS-WM en z = 60 y farolas cada 16; casa de Max HAUS (4, 96); Wurstwagen (40, 30); canasta (-34, -46); portería (-25, -62).
+// Estadio (STX): césped con cancha de madera en el centro; gradas a la izquierda (x = STX-26 … -44) mirando +x; marcador grande en (0, 18, -46).
+// Stube (OSX): sillón de Opa AC (-6,-3), sofá SOFA (8,-9), mesa TB (3,3). Saal (SAX): Verliererparty.
+const STX = 700, OSX = 1100, SAX = 1500;
+const HB = hufenbach(scene), ST = stadion(scene, STX, 'HUSS-WELTMEISTERSCHAFT'), OS = omaStube(scene, OSX), SA = saal(scene, SAX);
+const SETS = { HB: HB.G, ST: ST.g, OS: OS.g, SA: SA.g };
 for (const k in SETS) outline(SETS[k], 1.4);
-[HB.RANK, HB.KINO, HB.BOX, HB.PRICE].forEach(o => o.visible = false);
-townhouse(HB.G, -64, -21, 13, 3, 11, Math.PI / 2); townhouse(HB.G, -64, -34.5, 13, 2, 12, Math.PI / 2);
+[HB.RANK, HB.KINO, HB.BOX, HB.PRICE].forEach(o => o && (o.visible = false));
+townhouse(HB.G, -64, -21, 13, 3, 11, PI / 2); townhouse(HB.G, -64, -34.5, 13, 2, 12, PI / 2);
 for (let i = 0, x = -100; x <= 90; x += 17, i++) townhouse(HB.G, x, -126, 16, 2 + (i % 3) + (Math.abs(x + 6) < 30 ? 1 : 0), 20 + i, 0);
-for (let i = 0, z = 70; z > -112; z -= 17, i++) { townhouse(HB.G, -98, z, 16, 3 + (i % 2), 30 + i, Math.PI / 2); townhouse(HB.G, 88, z, 16, 2 + (i % 3), 40 + i, -Math.PI / 2); }
+for (let i = 0, z = 70; z > -112; z -= 17, i++) { townhouse(HB.G, -98, z, 16, 3 + (i % 2), 30 + i, PI / 2); townhouse(HB.G, 88, z, 16, 2 + (i % 3), 40 + i, -PI / 2); }
 for (let i = 0, x = -140; x <= 140; x += 20, i++) townhouse(HB.G, x, -170, 18, 4 + (i % 3), 50 + i, 0);
-for (let i = 0, z = 130; z < 260; z += 18, i++) townhouse(HB.G, 0, z, 16, 2 + (i % 2), 60 + i, Math.PI / 2);
-for (let i = 0, z = 80; z < 260; z += 18, i++) townhouse(HB.G, 54, z + 40, 16, 2 + (i % 3), 70 + i, -Math.PI / 2);
-rails(HB.G, 26, -70, 300);
-const DOEN = doener(HB.G, 42, 40, -Math.PI / 2);
-// tablón de la plaza: ranking de fuerza
-const RANKB = board(HB.G, 12, 10, (c, w, h) => { c.fillStyle = '#1e3a2a'; c.fillRect(0, 0, w, h); c.strokeStyle = '#c8a050'; c.lineWidth = 14; c.strokeRect(7, 7, w - 14, h - 14); txt(c, 'KRAFT-RANGLISTE', w / 2, 60, 50, '#ffd23f');
-  [['1.', 'Jonas', '990'], ['2.', 'Dönermann', '920'], ['3.', 'Straßenbahn', '870'], ['…', '', ''], ['412.', 'ICH', '7']].forEach(([n, a, b], i) => { const y = 140 + i * 74; const me = i === 4; c.font = `700 ${me ? 50 : 40}px ${FONT}`; c.textAlign = 'left'; c.fillStyle = me ? '#ff6a5a' : '#ffffff'; c.fillText(n + ' ' + a, 40, y); c.textAlign = 'right'; c.fillText(b, w - 40, y); if (me) { c.strokeStyle = '#ff5a4a'; c.lineWidth = 6; c.beginPath(); c.roundRect(22, y - 36, w - 44, 70, 20); c.stroke(); } }); });
-RANKB.position.set(4, 0, -50); RANKB.rotation.y = -.15;
-const POSTER = board(HB.G, 10, 13, (c, w, h) => { const g = c.createLinearGradient(0, 0, 0, h); g.addColorStop(0, '#2a8ad8'); g.addColorStop(1, '#1a3a8a'); c.fillStyle = g; c.fillRect(0, 0, w, h); txt(c, 'GROSSER', w / 2, 70, 56, '#ffffff'); txt(c, 'NINJA-', w / 2, 170, 110, '#ffd23f', '#1a1a3a', 10); txt(c, 'PARCOURS', w / 2, 280, 96, '#ffd23f', '#1a1a3a', 10);
-  c.fillStyle = '#ffc81a'; c.beginPath(); c.arc(w / 2, 450, 90, 0, 7); c.fill(); c.lineWidth = 10; c.strokeStyle = '#1a1a3a'; c.stroke(); txt(c, 'Wer drückt den', w / 2, 600, 44, '#ffffff'); txt(c, 'goldenen Knopf?', w / 2, 650, 44, '#ffffff'); txt(c, 'SAMSTAG · 10 UHR', w / 2, 740, 44, '#ff8a6a'); }, true, .3);
-POSTER.position.set(-24, 0, 6); POSTER.rotation.y = .5;
-const GOAL = goal(HB.G, -25, -62, 0, 12, 5, 3.4);
-const ZIELB = ziel(HB.G); ZIELB.position.set(-6, 0, -30);
-const DAY = textPlane(5, 6, 250, 300, () => {}); scene.add(DAY); DAY.userData.draw = (n, sub, col = '#d8323a') => { const cv = DAY.material.map.image, c = cv.getContext('2d'), w = cv.width, h = cv.height; c.fillStyle = '#ffffff'; c.fillRect(0, 0, w, h); c.fillStyle = col; c.fillRect(0, 0, w, 80); txt(c, sub, w / 2, 46, 40, '#ffffff'); txt(c, n, w / 2, 190, n.length > 3 ? 90 : 140, '#1a1a2a'); DAY.material.map.needsUpdate = true; };
+for (let i = 0, z = 130; z < 330; z += 18, i++) townhouse(HB.G, 0, z, 16, 2 + (i % 2), 60 + i, PI / 2);
+for (let i = 0, z = 80; z < 330; z += 18, i++) townhouse(HB.G, 54, z + 40, 16, 2 + (i % 3), 70 + i, -PI / 2);
+const BAN = strassenBanner(HB.G, 'HUSS-WELTMEISTERSCHAFT', 15); BAN.position.set(26, 0, 60);
+const BAN2 = strassenBanner(HB.G, 'HUSS-WM · HUSS-WM · HUSS-WM', 15); BAN2.position.set(26, 0, 150);
+const BULBS = []; for (let z = 20, i = 0; z < 320; z += 16, i++) { BULBS.push(lamp(HB.G, 18.4, z, -1), lamp(HB.G, 33.6, z + 8, 1)); }
+const WAGEN = wurstWagen(HB.G); WAGEN.position.set(-46, 0, 12); WAGEN.rotation.y = 0;
+const HOOP = hoop(HB.G); HOOP.position.set(-34, 0, -48);
+const GOAL = goal(HB.G, -25, -66, 0, 12, 5, 3.4);
+bench(HB.G, 12, -14, 0); const OMASIGN = (() => { const s = signBoard('OMA HILDE · 70× MEISTERIN', 9, 1.6, '#ffffff', '#8a3ad8', '#8a3ad8', .3); s.position.set(12, 7.2, -17); HB.G.add(s); for (const x of [-4.2, 4.2]) cyl(.15, .15, 7.2, mat(0x8a6a4a), 6, HB.G, 12 + x, 3.6, -17.1); return s; })();
+// estadio: cancha, marcador, pedestal con la muñequera, mesas del Strickfinale, podio, focos de la nave
+const COURT = court(ST.g); COURT.position.set(0, 0, 0);
+const BOARD = anzeige(ST.g, 18, 8); BOARD.position.set(0, 20, -47);
+for (const s of [-1, 1]) cyl(.4, .4, 16, mat(0x3a3e4a, { metalness: .5 }), 8, ST.g, s * 8.5, 8, -47.6);
+const PED = pedestal(ST.g); PED.position.set(0, 0, -18);
+const TISCH1 = strickTisch(ST.g); TISCH1.position.set(-6, 0, -6); const TISCH2 = strickTisch(ST.g); TISCH2.position.set(6, 0, -6);
+const POD = podium(ST.g); POD.position.set(0, 0, 14);
+ST.ban.visible = true;
+const HALLAMPS = Array.from({ length: 12 }, (_, i) => { const b = box(1.6, .8, 1.6, mat(0xffffff, { emissive: 0xfff2c8, emissiveIntensity: 0 }), .1, ST.g, -18 + (i % 6) * 7.2, 26, -30 + Math.floor(i / 6) * 50); return b; });
+// Verliererparty
+const VBAN = signBoard('VERLIERERPARTY', 26, 4.4, '#6a6a7a', '#ffffff', '#3a3a48', .2); VBAN.position.set(0, 12, -15.4); SA.g.add(VBAN);
 // ---------- reparto ----------
-const ich = makeIch(scene), papa = makePapa(scene), jonas = makeJonas(scene), oma = makeOma(scene), fahrerin = makeFahrerin(scene), doenm = makeDoener(scene), lehrer = makeLehrer(scene), schiri = makeSchiri(scene), bm = makeBeinahe(scene);
-const klein = makeIch(scene); klein.spec.scale = .62;  // yo con 8 años
-ich.spec.scale = .82;
-const K = Array.from({ length: 8 }, (_, i) => makeKumpel(scene, i)); const XT = [makeKassiererin(scene), makeVerk(scene), makeNachbar(scene), makeMayor(scene), makeLena(scene), makeSie(scene), makeEr(scene), makeMama(scene)];
-kitFace(ich, 'kid'); kitFace(klein, 'kid'); kitFace(papa, 'mustache'); kitFace(jonas, 'hero'); kitFace(oma, 'girl'); kitFace(fahrerin, 'girl'); kitFace(doenm, 'mustache'); kitFace(lehrer, 'plain'); kitFace(schiri, 'mustache'); kitFace(bm, 'villain');
-K.forEach((c, i) => kitFace(c, ['plain', 'hero', 'kid', 'plain', 'girl', 'girl', 'kid', 'hero'][i])); XT.forEach((c, i) => kitFace(c, ['girl', 'girl', 'plain', 'mustache', 'girl', 'girl', 'plain', 'girl'][i]));
+const ich = makeMax(scene), opa = makeOpaK(scene), oma = makeOma(scene), mama = makeMama(scene), fuss = makeHuss(scene), bask = makeBasket(scene), wm = makeDoener(scene), robo = makeRobo(scene), schiri = makeSchiri(scene);
+const K = Array.from({ length: 8 }, (_, i) => makeKumpel(scene, i)); const XT = [makeKassiererin(scene), makeVerk(scene), makeNachbar(scene), makeMayor(scene), makeLena(scene), makeSie(scene), makeEr(scene)];
+kitFace(ich, 'kid'); kitFace(opa, 'mustache'); kitFace(oma, 'girl'); kitFace(mama, 'girl'); kitFace(fuss, 'kid'); kitFace(bask, 'hero'); kitFace(wm, 'mustache'); kitFace(robo, 'villain'); kitFace(schiri, 'mustache');
+K.forEach((c, i) => kitFace(c, ['plain', 'hero', 'kid', 'plain', 'girl', 'girl', 'kid', 'hero'][i])); XT.forEach((c, i) => kitFace(c, ['girl', 'girl', 'plain', 'mustache', 'girl', 'girl', 'plain'][i]));
 const BG = Array.from({ length: 16 }, (_, i) => makeExtra(scene, i + 3)); BG.forEach((c, i) => kitFace(c, ['plain', 'girl', 'kid', 'hero', 'mustache', 'girl', 'plain', 'kid'][i % 8]));
-const POOL0 = [ich, klein, papa, jonas, oma, fahrerin, doenm, lehrer, schiri, bm, ...K, ...XT, ...BG]; const POOL = POOL0; POOL.forEach(c => { outline(c.root, 2); c.root.rotation.order = 'YXZ'; });
-// número de fuerza sobre la cabeza
-const NUM = new Map(); POOL.forEach(c => { const s = numSprite(); c.head.add(s); s.position.set(0, 3.3, 0); NUM.set(c, s); });
-const NV = new Map([[ich, 7], [klein, 7], [papa, 540], [jonas, 990], [oma, 640], [fahrerin, 870], [doenm, 920], [lehrer, 760], [schiri, 810]]); K.forEach((c, i) => NV.set(c, [910, 780, 860, 950, 690, 820, 740, 880][i])); BG.forEach((c, i) => NV.set(c, [930, 640, 810, 720, 880, 590, 960, 700, 850, 670, 780, 910, 620, 840, 750, 690][i])); XT.forEach((c, i) => NV.set(c, [720, 650, 830, 880, 610, 770, 700, 660][i]));
-const kindOf = n => n >= 1000 ? 'gold' : n < 100 ? 'red' : 'zero';
-const num = (ch, n = NV.get(ch), k = 1, kind) => { const s = NUM.get(ch); s.visible = true; s.material.map = numTex(n, kind || kindOf(n)); const p = spring(clamp(k) * 1.6), wx = String(n).length > 2 ? (String(n).length > 3 ? 2.3 : 2) : 1; s.scale.set(2.2 * p * wx, 1.72 * p, 1); s.position.y = 3.3 + Math.sin((k + ch.seed) * 3) * .06; };
-// ---------- multitud instanciada con números ----------
-const CRW = crowd(scene, 170); CRW.g.children[3].visible = false;
-const NUMX = Array.from({ length: 44 }, (_, i) => { const s = numSprite(); scene.add(s); s.userData.v = [910, 640, 880, 720, 990, 560, 830, 760, 950, 690, 870, 610][i % 12]; return s; });
-function crowdOn(T, mode = 'sway', n = 120, silent = false, nums = true, numV = null) { CRW.update(T, mode, silent, n); NUMX.forEach((s, i) => { const st = CRW.seat[i * 3]; if (!nums || !st || i * 3 >= n) { s.visible = false; return; } s.visible = true; const v = numV ? numV(i) : s.userData.v; s.material.map = numTex(v, kindOf(v)); const j = mode === 'cheer' ? Math.max(0, Math.sin(T * 7 * st.sp + st.ph)) * .7 : 0; s.position.set(st.x, st.y + 6.2 + j, st.z); s.scale.set(4.2, 1.72, 1); }); }
-// gente alrededor de (cx, cz) en la plaza, sin entrar en el radio r0, del lado opuesto a la cámara
-// gente alrededor de (cx, cz): personajes de verdad (modelos del reparto de fondo) con su número, del lado opuesto a la cámara, sin pisarse
-function folk(cx, cz, n, r0, r1, T, seed = 1, o = {}) { POST.push(() => { const r = RNG(seed); const ac = Math.atan2(camera.position.z - cz, camera.position.x - cx); const arc = o.arc || [ac + 1.6, ac + 6.283 - 1.6];
-  const busy = POOL.filter(c => c.root.visible && !BG.includes(c)).map(c => c.root.position.clone()); const P = []; const m = Math.min(n, BG.length, o.max ?? 12);
-  for (let i = 0; i < m; i++) { let x, z, ok = false; for (let t = 0; t < 30 && !ok; t++) { const a = arc[0] + r() * (arc[1] - arc[0]), d = r0 + r() * (r1 - r0); x = cx + Math.cos(a) * d; z = cz + Math.sin(a) * d; ok = [...busy, ...P].every(q => Math.hypot(q.x - x, q.z - z) > 3.6); }
-    if (!ok) continue; P.push(V(x, 0, z)); const c = BG[i]; const ry = o.face ? Math.atan2(o.face.x - x, o.face.z - z) + (r() - .5) * .5 : Math.atan2(camera.position.x - x, camera.position.z - z) + (r() - .5) * .8; put(c, x, o.y || 0, z, ry); num(c);
-    const g = o.mode === 'cheer' ? [[0, 'cheer']] : [[0, ['idle', 'cross', 'idle', 'point', 'idle', 'shrug'][i % 6]]]; actuar(c, T + i * .37, g, { T: T + i, extra: o.mode === 'cheer' ? { hipY: 2.05 + Math.abs(Math.sin(T * 6 + i)) * .3 } : {} });
-    if (o.mode === 'cheer') grin(c, T + i); else cara(c, T + i, { expr: ['smile', 'neutral', 'happy', 'smug'][i % 4] }); } }); }
-// gradas del parcours
-function stands(T, mode = 'cheer', silent = false, nums = true, numV = null) { const n = Math.min(CRW.n, 170); for (let i = 0; i < n; i++) { const s = CRW.seat[i], q = PC.SEATS[(i * 7) % PC.SEATS.length]; s.x = PCX + q.x; s.y = q.y; s.z = q.z; s.ry = q.ry; } crowdOn(T, mode, n, silent, nums, numV); }
-// ---------- atrezo ----------
-const RAIN = rain(scene, 600), SNOW = snow(scene, 500); const SNOWG = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), mat(0xf4f8ff, { roughness: .9 })); SNOWG.rotation.x = -Math.PI / 2; SNOWG.receiveShadow = true; scene.add(SNOWG);
-const TRAM = tram(scene); const AUTO = fahrschulAuto(scene); const CONES = Array.from({ length: 6 }, () => cone(scene));
-const ORB = orb(scene, .7), ORB2 = orb(scene, .7), ORBS = Array.from({ length: 10 }, () => orb(scene, .5));
-const JAR = jar(scene), JAR2 = jar(scene, false), SHELF = jarShelf(scene, 3, 5);
-const GRILL = grill(scene); const PB = pullBar(scene); const BAG = punchBag(scene); const BALL = football(scene);
-const KW = kreuzwort(false), KW2 = kreuzwort(true); scene.add(KW, KW2);
-const LIC = textPlane(3.4, 2.2, 340, 220, (c, w, h) => { c.fillStyle = '#f4b8d0'; c.beginPath(); c.roundRect(0, 0, w, h, 20); c.fill(); txt(c, 'FÜHRERSCHEIN', w / 2, 34, 30, '#1a1a3a'); c.fillStyle = '#ffffff'; c.fillRect(20, 60, 100, 130); c.fillStyle = '#d8a840'; c.fillRect(40, 70, 60, 40); c.fillStyle = '#eab08a'; c.fillRect(45, 100, 50, 60); txt(c, 'JONAS', 220, 100, 34, '#1a1a3a'); txt(c, 'Versuch 38', 220, 150, 28, '#2a6ad8'); txt(c, '✓', 290, 200, 40, '#1ab84a'); }); scene.add(LIC); LIC.material.side = THREE.DoubleSide;
-const CLIP = (() => { const g = new THREE.Group(); scene.add(g); box(2.4, 3.2, .15, mat(0x8a5a2a), .05, g, 0, 0, 0); const p = textPlane(2.1, 2.8, 210, 280, (c, w, h) => { c.fillStyle = '#ffffff'; c.fillRect(0, 0, w, h); txt(c, 'PRÜFUNG', w / 2, 30, 30, '#1a1a3a'); txt(c, 'Nr. 37', w / 2, 80, 44, '#1a1a3a'); txt(c, 'NICHT', w / 2, 160, 46, '#d8323a'); txt(c, 'BESTANDEN', w / 2, 210, 40, '#d8323a'); }); p.position.z = .09; g.add(p); return g; })();
-const PLATE = (() => { const g = new THREE.Group(); scene.add(g); cyl(1.4, 1.1, .2, mat(0xffffff, { roughness: .2 }), 24, g, 0, 0, 0); const f = cyl(1.0, 1.0, .12, mat(0xe8a040), 18, g, 0, .14, 0); g.userData.food = f; return g; })();
-const BOOK = (() => { const g = new THREE.Group(); scene.add(g); box(3, .5, 2.2, mat(0x2a6ad8), .05, g, 0, 0, 0); const pg = textPlane(2.8, 2, 140, 100, (c, w, h) => { c.fillStyle = '#fffaf0'; c.fillRect(0, 0, w, h); txt(c, 'ENDE', w / 2, h / 2 + 4, 44, '#1a1a3a'); }); pg.rotation.x = -Math.PI / 2; pg.position.y = .27; g.add(pg); return g; })();
-const PUZZ = (() => { const p = textPlane(14, 10, 420, 300, (c, w, h) => { const r = RNG(3); for (let i = 0; i < 42; i++) for (let j = 0; j < 30; j++) { const x = i * 10, y = j * 10; const g = c.createLinearGradient(0, 0, w, h); c.fillStyle = `hsl(${(200 + i * 3 + j * 2 + r() * 10) % 360},70%,${45 + (j / 30) * 25}%)`; c.fillRect(x, y, 10, 10); } c.fillStyle = '#ffd23f'; c.beginPath(); c.arc(w * .7, h * .3, 40, 0, 7); c.fill(); c.fillStyle = '#2a8a3a'; c.beginPath(); c.moveTo(0, h); c.lineTo(w * .3, h * .55); c.lineTo(w * .6, h); c.fill(); c.strokeStyle = 'rgba(0,0,0,.15)'; for (let i = 0; i < 42; i++) { c.beginPath(); c.moveTo(i * 10, 0); c.lineTo(i * 10, h); c.stroke(); } for (let j = 0; j < 30; j++) { c.beginPath(); c.moveTo(0, j * 10); c.lineTo(w, j * 10); c.stroke(); } c.fillStyle = '#5a3a1a'; c.fillRect(w * .52, h * .46, 10, 10); }); p.rotation.x = -Math.PI / 2; scene.add(p); return p; })();
-const PIECE = box(.5, .12, .5, mat(0x7ac8ff), .02, scene, 0, 0, 0);
-const DOENW = (() => { const g = new THREE.Group(); scene.add(g); const w = new THREE.Mesh(new THREE.ConeGeometry(.5, 1.6, 10), mat(0xf4e0b0, { roughness: .8 })); w.rotation.z = Math.PI; g.add(w); sphere(.45, mat(0xa86a3a), g, 0, .7, 0, 8, 6); sphere(.25, mat(0x5ac83a), g, .2, .9, .2, 6, 4); return g; })();
-const STEAM = Array.from({ length: 5 }, () => sphere(.4, mat(0xffffff, { transparent: true, opacity: .5, depthWrite: false, roughness: 1 }), scene, 0, 0, 0, 8, 6));
+const POOL = [ich, opa, oma, mama, fuss, bask, wm, robo, schiri, ...K, ...XT, ...BG]; POOL.forEach(c => { outline(c.root, 2); c.root.rotation.order = 'YXZ'; });
+const HATS = new Map(); [...K, ...XT, ...BG].forEach((c, i) => { const h = partyHat(c.head, i, 1.32); h.visible = false; HATS.set(c, h); });
+const hat = (...cs) => cs.forEach(c => HATS.get(c) && (HATS.get(c).visible = true));
+// atrezo en las manos (se colocan con attach)
+const NEED = needles(scene), YARN = yarn(scene, 0xd8323a), YARN2 = yarn(scene, 0x2a6ad8);
+const BALL = football(scene, .55), BBALL = bball(scene, .62), BBALL2 = bball(scene, .62); [BALL, BBALL, BBALL2].forEach(b => outline(b, 1.6));
+const WURST = wurst(scene), BRIEF = brief(scene), KAST = kaestchen(scene), BANDF = band(scene, .55);
+const PULLI = pulli(scene, 0xd8323a); const PULLIS = Array.from({ length: 14 }, (_, i) => pulli(scene, [0x2a6ad8, 0x2ab86a, 0xffd23f, 0x8a3ad8, 0xff8a3a][i % 5]));
+const FLOETEN = Array.from({ length: 4 }, () => floete(scene));
+const FAHNEN = Array.from({ length: 8 }, (_, i) => fahne(scene, i));
+// multitud instanciada en las gradas del estadio
+const CRW = crowd(scene, 196); (() => { let i = 0; for (let r = 0; r < 7; r++) for (let k = 0; k < 28; k++) { const s = CRW.seat[i++]; s.x = STX - 25.3 - r * 2.6; s.y = 1.6 + r * 1.6; s.z = -33 + k * 2.45 + (r % 2) * .6; s.ry = PI / 2; } })();
+const stands = (T, mode = 'cheer', silent = false) => CRW.update(T, mode, silent, 196);
+// ---------- efectos ----------
 const CONF = Array.from({ length: 60 }, (_, i) => { const p = new THREE.Mesh(new THREE.PlaneGeometry(.3, .45), new THREE.MeshBasicMaterial({ color: [0xff4a8a, 0xffd23f, 0x3ab8ff, 0x8ad84a, 0xff8a3a][i % 5], side: THREE.DoubleSide })); scene.add(p); return p; });
 const DUST = Array.from({ length: 16 }, () => sphere(1, mat(0xd8c8a8, { roughness: 1, transparent: true, opacity: .6, depthWrite: false }), scene, 0, 0, 0, 10, 8));
-const SPLASH = Array.from({ length: 18 }, () => sphere(.3, mat(0xbfe8ff, { roughness: .1, transparent: true, opacity: .8 }), scene, 0, 0, 0, 8, 6));
 const SWEAT = Array.from({ length: 3 }, () => sphere(.16, mat(0x9fd8ff, { roughness: .05, transparent: true, opacity: .85 }), scene, 0, 0, 0, 10, 8));
 const TEAR = Array.from({ length: 4 }, () => sphere(.14, mat(0x9fd8ff, { roughness: .05, transparent: true, opacity: .9 }), scene, 0, 0, 0, 10, 8));
-const SHARDS = Array.from({ length: 30 }, (_, i) => { const m = new THREE.Mesh(new THREE.TetrahedronGeometry(.3), mat(0xd8f0ff, { roughness: .05, transparent: true, opacity: .6 })); scene.add(m); return m; });
 const SMOKE = Array.from({ length: 8 }, () => sphere(1, mat(0x3a3a3e, { transparent: true, opacity: .5, depthWrite: false, roughness: 1 }), scene, 0, 0, 0, 8, 6));
+const SPARK = Array.from({ length: 14 }, () => sphere(.18, new THREE.MeshBasicMaterial({ color: 0xffe08a, toneMapped: false }), scene, 0, 0, 0, 6, 4));
+const PARTS = Array.from({ length: 10 }, (_, i) => box([1.2, .8, 1.4, .6][i % 4], [.8, 1.2, .5, .6][i % 4], [.6, .8, .5, 1][i % 4], mat(i % 3 ? 0x8a94a4 : 0x3a4050, { metalness: .7, roughness: .35 }), .05, scene, 0, 0, 0));
+const TRL = Array.from({ length: 7 }, (_, i) => { const m = new THREE.Mesh(new THREE.SphereGeometry(.5, 12, 8), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: .4 * (1 - i / 7), depthWrite: false })); m.renderOrder = 2; scene.add(m); return m; });
 const HEARTS = Array.from({ length: 5 }, () => { const p = textPlane(1, 1, 64, 64, (c, w, h) => { c.fillStyle = '#ff4a7a'; c.beginPath(); c.moveTo(32, 54); c.bezierCurveTo(-10, 26, 12, -6, 32, 16); c.bezierCurveTo(52, -6, 74, 26, 32, 54); c.fill(); }); p.material.depthWrite = false; p.material.transparent = true; scene.add(p); return p; });
-const QM = textPlane(1.6, 1.6, 64, 64, (c, w, h) => txt(c, '?', 32, 34, 60, '#ffd23f', '#1a1a2a', 8)); QM.material.depthWrite = false; scene.add(QM);
-const PROPS = [TRAM, AUTO, ...CONES, ORB, ORB2, ...ORBS, JAR, JAR2, SHELF, GRILL, PB, BAG, BALL, KW, KW2, LIC, CLIP, PLATE, BOOK, PUZZ, PIECE, DOENW, ...STEAM, ...CONF, ...DUST, ...SPLASH, ...SWEAT, ...TEAR, ...SHARDS, ...SMOKE, ...HEARTS, QM, DAY, SNOWG];
+const NOTES = Array.from({ length: 5 }, (_, i) => { const p = textPlane(1.4, 1.4, 64, 64, (c, w, h) => txt2(c, i % 2 ? '♪' : '♫', w / 2, h / 2, 56, '#ffffff', '#1a1a2a', 8)); p.material.depthWrite = false; p.material.transparent = true; scene.add(p); return p; });
+const QM = textPlane(1.6, 1.6, 64, 64, (c, w, h) => txt2(c, '?', 32, 34, 60, '#ffd23f', '#1a1a2a', 8)); QM.material.depthWrite = false; scene.add(QM);
+const PROPS = [NEED, YARN, YARN2, BALL, BBALL, BBALL2, WURST, BRIEF, KAST, BANDF, PULLI, ...PULLIS, ...FLOETEN, ...FAHNEN, ...CONF, ...DUST, ...SWEAT, ...TEAR, ...SMOKE, ...SPARK, ...PARTS, ...TRL, ...HEARTS, ...NOTES, QM];
 PROPS.forEach(p => p.visible = false);
+// ---------- ambiente ----------
 // ---------- ambiente ----------
 const AIR = aire(scene, 300); const BIRDS = bandada(scene, 9);
 function setSky(top, mid, hor) { const u = sky.sky.material.uniforms; u.top.value.setRGB(...top); u.mid.value.setRGB(...mid); u.hor.value.setRGB(...hor); }
@@ -121,13 +114,13 @@ function night(fill = 40) { MODE = 'night'; renderer.toneMappingExposure = 1.0; 
   scene.fog.color.setRGB(.1, .14, .28); scene.fog.density = .0011; bloom.strength = .3; bloom.threshold = .85; FILL.intensity = fill; BIRDSON = 0; }
 function inside(h = .95, fill = 50) { MODE = 'in'; renderer.toneMappingExposure = .95; hemi.intensity = h; hemi.color.setRGB(1, .97, .92); hemi.groundColor.setRGB(.55, .48, .42); sun.intensity = 0; rim.intensity = .6; bloom.strength = .2; bloom.threshold = .88; scene.fog.density = .0002; FILL.intensity = fill; BIRDSON = 0; }
 function hideAll() {
-  for (const c of POOL) { c.root.visible = false; c.root.rotation.set(0, 0, 0); c.root.scale.setScalar(c.spec.scale || 1); applyPose(c, {}); c.setFace({}); NUM.get(c).visible = false; if (c.root.parent !== scene) { c.root.parent.remove(c.root); scene.add(c.root); } }
+  for (const c of POOL) { c.root.visible = false; c.root.rotation.set(0, 0, 0); c.root.scale.setScalar(c.spec.scale || 1); c.root.position.y = 0; applyPose(c, {}); c.setFace({}); if (c.root.parent !== scene) { c.root.parent.remove(c.root); scene.add(c.root); } }
+  for (const h of HATS.values()) h.visible = false; ich.props.gold.visible = false; ich.props.band.visible = true; robo.props.gold.visible = true; robo.props.visor.material.emissiveIntensity = 2.4;
   for (const p of PROPS) { p.visible = false; p.rotation.set(0, 0, 0); p.scale.setScalar(1); if (p.parent !== scene) { p.parent.remove(p); scene.add(p); } }
-  CRW.update(0, 'still', false, 0); NUMX.forEach(s => s.visible = false); RAIN.update(0, V(0, 0, 0), 1, 1, 1, false); SNOW.update(0, V(0, 0, 0), 1, 1, 1, false);
-  RANKB.visible = POSTER.visible = GOAL.visible = ZIELB.visible = false; ZIELB.userData.tape.visible = true; PC.ROPES.forEach(r => r.rotation.set(0, 0, 0)); PC.BTN.position.y = 2.9; PC.BTNL.intensity = 0; PC.SHELF.visible = true; PC.SHELF.userData.J.forEach(j => j.visible = true); PC.vit.visible = true;
-  GRILL.userData.setBurn(0); PUZZ.rotation.set(-Math.PI / 2, 0, 0);
+  CRW.update(0, 'still', false, 0); BULBS.forEach(b => b.material.emissiveIntensity = .1); HALLAMPS.forEach(b => b.material.emissiveIntensity = 0); GLOW.intensity = 0;
+  PED.visible = true; PED.userData.band.visible = true; TISCH1.visible = TISCH2.visible = POD.visible = false; KAST.userData.lid.rotation.x = -1.9;
   for (const k in SETS) SETS[k].visible = false;
-  FILL.color.setRGB(1, .96, .91); sun.color.setRGB(1, .95, .86); grade.uniforms.vig.value = .4; grade.uniforms.flash.value = 0; grade.uniforms.lift.value = 0; grade.uniforms.sat.value = 1.45; grade.uniforms.sharp.value = 1.1; grade.uniforms.sepia.value = 0; DARK = 0; TINT = null; BIRDSON = 1; SHAKE = 0; day(); }
+  FILL.color.setRGB(1, .96, .91); sun.color.setRGB(1, .95, .86); grade.uniforms.vig.value = .4; grade.uniforms.flash.value = 0; grade.uniforms.lift.value = 0; grade.uniforms.sat.value = 1.45; grade.uniforms.sharp.value = 1.15; grade.uniforms.sepia.value = 0; DARK = 0; TINT = null; BIRDSON = 1; SHAKE = 0; day(); }
 const use = (...n) => { for (const k of n) SETS[k].visible = true; };
 function put(ch, x, y, z, ry = 0) { ch.root.visible = true; ch.root.position.set(x, y, z); ch.root.rotation.set(0, ry, 0); return ch; }
 const show = (o, x, y, z, ry = 0, s = 1) => { o.visible = true; o.position.set(x, y, z); o.rotation.set(0, ry, 0); o.scale.setScalar(s); return o; };
@@ -182,7 +175,7 @@ function drawBadge(b) {
   else if (b.kind === 'tag') { c.font = `700 50px ${FONT}`; const w = c.measureText(b.text).width + 60; c.fillStyle = '#0e1226'; c.beginPath(); c.roundRect(-w / 2, -40, w, 80, 40); c.fill(); c.lineWidth = 6; c.strokeStyle = '#ffd23f'; c.stroke(); c.fillStyle = '#fff'; c.fillText(b.text, 0, 3); }
   else if (b.kind === 'bubble') { c.font = `700 42px ${FONT}`; const w = Math.max(160, c.measureText(b.text).width + 60); c.fillStyle = '#fff'; c.strokeStyle = '#1a1a1a'; c.lineWidth = 6; c.beginPath(); c.roundRect(-w / 2, -44, w, 88, 36); c.fill(); c.stroke(); c.beginPath(); c.moveTo(-18, 42); c.lineTo(10, 42); c.lineTo(-24, 78); c.closePath(); c.fill(); c.stroke(); c.fillStyle = '#1a1a1a'; c.fillText(b.text, 0, 3); }
   c.restore(); }
-const KEY = /^(Stadt|fast|FAST|ALMOST|AH|mir|Zahl|Kopf|Kraft|870|920|990|37-mal|Führerschein|Oma|Kreuzworträtsel|25|7|kleinste|fertig|Teller|Buch|Seite|8|5000|Nacht|Beinahe-Mann|Gläser|Papa|HUSS|300|3|Regen|Schnee|Ninja-Parcours|Turm|goldene|Knopf|20|Startlinie|lachten|Wand|Pfiff|Seil|Stangen|Jonas|Stufe|fiel|Finger|Händen|los|zersprangen|still|geschafft|Wahrheit|aufgehört|umarmte|weinte|Morgen|pünktlich|warm|38|Wort|1000|Grillen|alles|Folge)$/;
+const KEY = /^(Stadt|HUSS|HUSS-Weltmeisterschaft|Fußballer|Basketballer|Würstchenmann|Oma|Hilde|siebzigfache|Welt|Preis|goldene|Schweißband|Verliererparty|Drei|Regel|dreimal|Großstadt|zweimal|Max|mir|Schnürsenkel|Plumps|Opa|zweiundneunzig|Kästchen|sechzig|gestohlen|Nacht|zwei|fünf|zehn|Straßenlaternen|Roboter|HUSS-O-MAT|9000|langsam|kreidebleich|Goldenes|Strickfinale|Minute|Pullover|zweihundert|Ohnmacht|siebzig|Duell|Hand|Halle|null|Prozent|Schneller|Lampe|Laternen|qualmte|schwitzen|Schweiß|Klonk|Füße|husste|einziges|frei|vier|Sofa|Brief|10000|10.000|aufhören)$/;
 const CAPS = WORDS.map(w => { const t = w[2].replace(/[„“"”.,!?:…–]/g, '').replace(/^-|-$/g, '').trim(); return { t: w[0], txt: t, key: KEY.test(t) }; }).filter(w => w.txt);
 function caption(T) { let cur = null; for (const w of CAPS) { if (w.t <= T) cur = w; else break; } if (!cur) return;
   const f = (T - cur.t) * FPS, s = f < 1 ? .2 : f < 2 ? 1.12 : 1, size = H * .046 * (cur.key ? 1.35 : 1), c = octx;
@@ -192,9 +185,50 @@ function caption(T) { let cur = null; for (const w of CAPS) { if (w.t <= T) cur 
 
 // ---------- planos ----------
 const POST = []; const S = []; const shot = (t0, tr, zoom, fn, sfx = []) => S.push({ t0, tr, zoom, fn, sfx });
-const PI = Math.PI;
+// tiempos atados a las palabras: tw('Wort', n) = inicio de la n-ésima aparición (sin puntuación); th(g, j) = j-ésimo HUSS de la ráfaga g (1..13)
+const norm_ = s => s.replace(/[„“"”.,!?:…–]/g, '').trim();
+const tw = (w, n = 1) => { let k = 0; for (const x of WORDS) if (norm_(x[2]) === w && ++k === n) return x[0]; throw new Error('palabra ' + w + ' ' + n); };
+const th = (g, j = 1) => { const L = WORDS.filter(x => x[3] === -g); if (!L.length) throw new Error('HUSS ' + g); return L[Math.min(j, L.length) - 1][0]; };
+const hEnd = g => { const L = WORDS.filter(x => x[3] === -g); return L[L.length - 1][1]; };
 let DARK = 0, TINT = null, SHAKE = 0; const COVERS = [];
-let LMODE = 'day'; const town = (m = 'day') => { use('HB'); LMODE = m; if (m === 'night') night(45); else if (m === 'morning') sunset(); else if (m === 'grey') grey(); else if (m === 'winter') winter(); else day(); };
+let LMODE = 'day'; const town = (m = 'day') => { use('HB'); LMODE = m; if (m === 'night') night(45); else if (m === 'morning') sunset(); else if (m === 'grey') grey(); else day(); };
+
+// ---------- ayudas de los planos ----------
+// skyline de la Großstadt (lejos, al norte del pueblo)
+const CITY = new THREE.Group(); HB.G.add(CITY); for (let i = 0; i < 9; i++) skyscraper(CITY, -160 + i * 40, -420 - (i % 3) * 30, 26, 90 + (i * 37) % 80, 26);
+// gente del pueblo alrededor de (cx, cz) (reparto de fondo, sin pisarse, del lado opuesto a la cámara)
+function folk(cx, cz, n, r0, r1, T, seed = 1, o = {}) { POST.push(() => { const r = RNG(seed); const ac = Math.atan2(camera.position.z - cz, camera.position.x - cx); const arc = o.arc || [ac + 1.6, ac + 6.283 - 1.6];
+  const busy = POOL.filter(c => c.root.visible && !BG.includes(c)).map(c => c.root.position.clone()); const P = []; const m = Math.min(n, BG.length);
+  for (let i = 0; i < m; i++) { let x, z, ok = false; for (let t = 0; t < 30 && !ok; t++) { const a = arc[0] + r() * (arc[1] - arc[0]), d = r0 + r() * (r1 - r0); x = cx + Math.cos(a) * d; z = cz + Math.sin(a) * d; ok = [...busy, ...P].every(q => Math.hypot(q.x - x, q.z - z) > 3.6); }
+    if (!ok) continue; P.push(V(x, 0, z)); const c = BG[i]; const ry = o.face ? Math.atan2(o.face.x - x, o.face.z - z) + (r() - .5) * .5 : Math.atan2(camera.position.x - x, camera.position.z - z) + (r() - .5) * .8; put(c, x, o.y || 0, z, ry); if (o.hats) hat(c);
+    const md = o.mode || 'mix'; const g = md === 'cheer' ? [[0, 'cheer']] : md === 'laugh' ? [[0, i % 2 ? 'point' : 'point_l']] : md === 'sad' ? [[0, i % 2 ? 'slump' : 'facepalm']] : md === 'shock' ? [[0, i % 2 ? 'shock' : 'hands_face']] : md === 'ears' ? [[0, 'hands_head']] : [[0, ['idle', 'cross', 'wave', 'point', 'idle', 'shrug'][i % 6]]];
+    actuar(c, T + i * .37, g, { T: T + i, extra: md === 'cheer' ? { hipY: 2.05 + Math.abs(Math.sin(T * 6 + i)) * .3 } : {} });
+    if (md === 'cheer') grin(c, T + i); else if (md === 'laugh') laughF(c, T + i); else cara(c, T + i, { expr: { sad: 'sad', shock: 'shock', ears: 'angry' }[md] || ['smile', 'neutral', 'happy', 'smug'][i % 4] }); } }); }
+// gente corriendo por la carretera (z decreciente: hacia la cámara si la cámara está en -z). balls: botan balones
+function runners(T, lt, z0, n, seed = 3, o = {}) { const r = RNG(seed), dir = o.dir ?? 1, x0 = o.x ?? 26, wd = o.w ?? 11; for (let i = 0; i < Math.min(n, BG.length); i++) { const c = BG[i]; const x = x0 - wd / 2 + r() * wd, z = z0 + i * (o.gap ?? 3.4) + r() * 2, sp = (o.sp ?? 6) + r() * 2;
+    put(c, x, Math.abs(Math.sin(T * 9 + i)) * .25, z - dir * sp * lt, dir > 0 ? PI : 0); applyPose(c, runPoseL(T * 1.6 + i * .7)); if (o.hats) hat(c); if (o.cheer && i % 2) applyPose(c, { ...runPoseL(T * 1.6 + i), aLx: 2.8, aLz: .4, aLe: .2 }); grin(c, T + i);
+    if (o.flags && i < FAHNEN.length) { const f = attach(FAHNEN[i], c.aR.hand, [0, -.4, .2], [0, 0, 0], 1); f.userData.cloth.rotation.y = Math.sin(T * 6 + i) * .3; applyPose(c, { ...runPoseL(T * 1.6 + i * .7), aRx: 2.5, aRe: .3 }); } } }
+const runPoseL = ph => { const s = Math.sin(ph * 5), c2 = Math.cos(ph * 5); return { lLx: s * .9, lRx: -s * .9, lLk: Math.max(0, -c2) * 1.2 + .2, lRk: Math.max(0, c2) * 1.2 + .2, aLx: -s * .9, aRx: s * .9, aLe: 1.2, aRe: 1.2, lean: .22 }; };
+// botar un balón: pose de bote + balón entre la mano y el suelo (fast = HUSS)
+function dribble(ch, b, T, o = {}) { const f = o.f ?? 3, sc = ch.spec.scale || 1; const ph = (T * f) % 1, up = Math.abs(Math.sin(ph * PI)); const hand = o.left ? ch.aL : ch.aR;
+  const base = o.run ? runPoseL(T * (o.rs ?? 1.4)) : { crouch: .25, lean: .18, lLx: .3, lRx: -.2, lLk: .4, lRk: .4 }; const arm = o.left ? { aLx: .9 + up * .5, aLe: .9 - up * .4, aLz: .25 } : { aRx: .9 + up * .5, aRe: .9 - up * .4, aRz: .25 };
+  applyPose(ch, { ...base, ...arm, ...(o.extra || {}) }); POST.push(() => { const h = wpos(hand.hand); const fl = V(h.x, b.geometry.parameters.radius, h.z); b.visible = true; b.position.lerpVectors(fl, h.add(V(0, -.7 * sc, 0)), up); b.rotation.x = T * 9; if (o.trail) trailOn(b.position, T, o.trail); }); }
+function trailOn(p, T, n = 7) { TRL.forEach((m, i) => { if (i >= n) return; m.visible = true; m.position.copy(p).add(V(Math.sin(T * 17 + i) * .2 * i, -i * .05, i * .35)); m.scale.setScalar(1 - i * .1); }); }
+// ráfaga de HUSS!: letrero blanco que entra con golpe en cada sílaba (g = ráfaga)
+function hussPop(g, T, x = W / 2, y = H * .2) { const L_ = WORDS.filter(w => w[3] === -g); let k = -1; L_.forEach((w, i) => { if (T >= w[0]) k = i; }); if (k < 0) return; const lt = T - L_[k][0]; badge('huss', 'HUSS!', x + (k % 2 ? 60 : -60) * U, y + (k % 3) * 18, lt * 6, 1, 1.05); }
+// golpes del HUSS: k 0..1 dentro de cada sílaba (para movimientos rápidos)
+const hk = (g, T) => { const L_ = WORDS.filter(w => w[3] === -g); for (let i = L_.length - 1; i >= 0; i--) if (T >= L_[i][0]) return i + clamp((T - L_[i][0]) / .2); return 0; };
+// cara de esfuerzo
+const effort = (ch, T) => cara(ch, T, { expr: 'determined', mouth: Math.sin(T * 30) > 0 ? 'grimace' : 'open_smile' });
+function sparks(c, T0, T, n = 14, s = 1) { SPARK.forEach((d, i) => { if (i >= n) return; const r = RNG(i * 11 + 5), t = T - T0; if (t < 0 || t > .9) return; d.visible = true; const a = r() * 6.283, v = (4 + r() * 5) * s; d.position.set(c.x + Math.cos(a) * v * t, c.y + (5 + r() * 4) * s * t - 9 * t * t, c.z + Math.sin(a) * v * t); d.scale.setScalar(1 - t); }); }
+function notes(p, T) { NOTES.forEach((z, i) => { const k = (T * .7 + i / 5) % 1; z.visible = true; z.position.set(p.x + Math.sin(i * 1.7 + T) * 1.6, p.y + k * 3.4, p.z + .4); z.scale.setScalar(.6 + k * .5); z.material.opacity = 1 - k; z.lookAt(camera.position); }); }
+// marcador grande del estadio
+const board = (key, fn) => BOARD.userData.draw(key, fn);
+const bText = (lines) => board(lines.map(l => l[0]).join('|'), (c, w, h) => lines.forEach(([t, y, sz, col]) => txt2(c, t, w / 2, h * y, sz, col || '#ffd23f')));
+// sepia para recuerdos
+const sepia = () => { grade.uniforms.sepia.value = .85; grade.uniforms.vig.value = .75; grade.uniforms.sat.value = 1.0; };
+// estadio
+const stadium = (m = 'day') => { use('ST'); if (m === 'night') night(30); else day(); };
 //@@PLANOS@@
 
 // ---------- transiciones, sonidos, render ----------

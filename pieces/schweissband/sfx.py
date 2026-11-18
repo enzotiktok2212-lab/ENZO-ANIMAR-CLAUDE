@@ -452,7 +452,7 @@ for _a, _b in [('applause', 'clap'), ('aww', 'sigh'), ('book_close', 'slam'), ('
 
 if __name__ == '__main__':
     cues_f, voice_f, music_f, out_f = sys.argv[1:5]
-    cues = json.load(open(cues_f)); DUR = 149.2
+    cues = json.load(open(cues_f)); DUR = 148.5
     cues = fill_gaps(cues, DUR); print(len(cues), 'efectos; hueco máximo', max(np.diff(sorted([0] + [c['t'] for c in cues] + [DUR]))).round(2))
     TEN = {'riser', 'braam', 'riser_short', 'braam_short'}
     ten = render([c for c in cues if c['s'] in TEN], DUR); ten = norm(ten, 0.9)

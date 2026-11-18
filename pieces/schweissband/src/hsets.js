@@ -120,7 +120,7 @@ export function crowd(scene, n) { const g = G(scene); const body = new THREE.Ins
 // ---------- estadio de la Sommerparty (X): campo 40 × 70 (x ∈ ±20, z ∈ ±35), portería de casa en z = -35 (mirando +z),
 // gradas a la izquierda (x = -24 … -44, filas que suben), pancarta SOMMERPARTY-SPIEL, marcador detrás de la portería,
 // mesa del DJ y altavoces en la banda derecha (x = 24), banderines y focos.
-export function stadion(scene, X) { const g = G(scene, X); plane(600, 600, mat(0xffffff, { roughness: 1, map: rep(grassT('#4cb83e'), 60, 60) }), g, 0, -.06, 0);
+export function stadion(scene, X, TXT = 'SOMMERPARTY-SPIEL') { const g = G(scene, X); plane(600, 600, mat(0xffffff, { roughness: 1, map: rep(grassT('#4cb83e'), 60, 60) }), g, 0, -.06, 0);
   const pitchT = canvasTex(256, 256, (c, w, h) => { for (let i = 0; i < 10; i++) { c.fillStyle = i % 2 ? '#4fc040' : '#45b036'; c.fillRect(0, i * h / 10, w, h / 10 + 1); } const r = RNG(5); for (let i = 0; i < 1400; i++) { c.fillStyle = `rgba(${r() < .5 ? '20,80,10' : '150,240,120'},.18)`; c.fillRect(r() * w, r() * h, 2, 3); } });
   plane(44, 74, mat(0xffffff, { map: pitchT, roughness: .95 }), g, 0, .0, 0);
   const lm = mat(0xffffff, { roughness: .6 }); const line = (w, d, x, z) => box(w, .05, d, lm, 0, g, x, .04, z);
@@ -134,8 +134,8 @@ export function stadion(scene, X) { const g = G(scene, X); plane(600, 600, mat(0
   box(1, 13, 74, mat(0x8a8e9a), .05, g, -44.5, 6.5, 0); box(4, .3, 74, mat(0xf4f4f4), .05, g, -21.6, 1.2, 0);
   for (let z = -36; z <= 36; z += 4) cyl(.06, .06, 1.2, mat(0xd8dce4), 4, g, -21.6, 1.8, z); const rail = cyl(.08, .08, 74, mat(0xd8dce4, { metalness: .7 }), 6, g, -21.6, 2.4, 0); rail.rotation.x = Math.PI / 2;
   // pancarta
-  const ban = signBoard('SOMMERPARTY-SPIEL', 30, 4.2, '#ffd23f', '#d8323a', '#d8323a', .35); ban.position.set(-30, 17, 0); ban.rotation.y = Math.PI / 2; g.add(ban); for (const s of [-1, 1]) cyl(.3, .3, 19, mat(0xf4f4f4), 8, g, -30, 9.5, s * 15.4);
-  const ban2 = signBoard('SOMMERPARTY-SPIEL', 22, 3.2, '#ff4a8a', '#ffffff', '#ffffff', .4); ban2.position.set(0, 10.5, -44); g.add(ban2); for (const s of [-1, 1]) cyl(.25, .25, 12, mat(0xf4f4f4), 8, g, s * 11.2, 6, -44.1);
+  const ban = signBoard(TXT, 30, 4.2, '#ffd23f', '#d8323a', '#d8323a', .35); ban.position.set(-30, 17, 0); ban.rotation.y = Math.PI / 2; g.add(ban); for (const s of [-1, 1]) cyl(.3, .3, 19, mat(0xf4f4f4), 8, g, -30, 9.5, s * 15.4);
+  const ban2 = signBoard(TXT, 22, 3.2, '#ff4a8a', '#ffffff', '#ffffff', .4); ban2.position.set(0, 10.5, -44); g.add(ban2); for (const s of [-1, 1]) cyl(.25, .25, 12, mat(0xf4f4f4), 8, g, s * 11.2, 6, -44.1);
   const SB = scoreboard(g, 0, 11, -52, 0, 1.25);
   // banderines y globos sobre la banda
   for (let z = -34; z < 34; z += 17) bunting(g, [-21.6, 8, z], [-21.6, 8, z + 17], 14, 1.2); for (let x = -20; x < 20; x += 10) bunting(g, [x, 8, -44], [x + 10, 8, -44], 10, 1);
