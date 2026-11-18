@@ -34,6 +34,9 @@ def tempo(x, f):
 ch = cuts[1]; V = np.concatenate([tempo(V[:int(ch * SR)], HOOK), V[int(ch * SR):]])
 mt = lambda x: x / HOOK if x < ch else x - ch + ch / HOOK
 W = [[mt(w[0]), mt(w[1])] + w[2:] for w in W]; cuts = [mt(c) for c in cuts[:-1]] + [len(V) / SR]
+for c in cuts:   # una palabra que empieza justo antes del corte y sigue después va detrás del HUSS
+    for w in W:
+        if w[0] < c < w[1] - .05: w[0] = c + .002
 def gate(h):   # deja solo los golpes: fuera de ellos, silencio (quita el rastro de la música)
     e = np.sqrt(np.convolve(h ** 2, np.ones(441) / 441, 'same')); m = (e > e.max() * .25).astype(np.float32)
     m = np.convolve(m, np.ones(int(.1 * SR)), 'same') > 0; m = np.roll(m, int(.025 * SR)).astype(np.float32)
