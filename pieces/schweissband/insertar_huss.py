@@ -2,7 +2,7 @@
 # si no, audio/hussN.wav) en la voz recortada (audio/voz-de.wav + audio/words-de.json), DESPUÉS del final real de la palabra ancla,
 # y escribe audio/voz-sin-silencios.wav y audio/words.json con un «HUSS!» en cada golpe detectado por energía.
 import json, os, subprocess, numpy as np
-R = 44100; G0, G1 = .15, .65
+R = 44100; G0, G1 = .10, .12
 rd = lambda f: np.frombuffer(subprocess.run(['ffmpeg', '-v', 'error', '-i', f, '-ac', '1', '-ar', str(R), '-f', 'f32le', '-'], capture_output=True).stdout, np.float32)
 x = rd('audio/voz-de.wav'); W = json.load(open('audio/words-de.json'))
 rms = lambda a: np.sqrt(np.mean(a[np.abs(a) > .02] ** 2))
