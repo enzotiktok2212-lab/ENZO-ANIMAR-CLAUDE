@@ -21,8 +21,12 @@ for k, (wd, n) in enumerate(AFTER):
     idx = [i for i, w in enumerate(W) if norm(w[2]) == wd.lower()]
     lastc = cuts[-1] if cuts else 0
     i = [j for j in idx if norm(W[j - 1][2]) == n and W[j][0] > lastc][0] if isinstance(n, str) else idx[n - 1]
-    cuts.append(W[i][1] + .05)
-HOOK, HSPD = float(os.environ.get('HOOK', 1.1)), float(os.environ.get('HSPD', 1.1))
+    # corte en el punto más silencioso entre el final de la palabra y la siguiente (no se come la cola de la palabra)
+    a = W[i][1]; b = W[i + 1][0] - .02 if i + 1 < len(W) else a + .3
+    if b - a < .08: b = a + .3
+    ev = np.sqrt(np.convolve(V ** 2, np.ones(882) / 882, 'same')); seg_ = ev[int(a * SR):int(b * SR)]
+    cuts.append(a + int(np.argmin(seg_)) / SR)
+HOOK, HSPD = float(os.environ.get('HOOK', 1.1)), float(os.environ.get('HSPD', 1.0))
 def tempo(x, f):
     if abs(f - 1) < 1e-3: return x
     return np.frombuffer(subprocess.run(['ffmpeg', '-v', 'error', '-f', 'f32le', '-ar', str(SR), '-ac', '1', '-i', '-', '-af', f'atempo={f}', '-f', 'f32le', '-'], input=x.astype(np.float32).tobytes(), capture_output=True, check=True).stdout, np.float32).copy()
