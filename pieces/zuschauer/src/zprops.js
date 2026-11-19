@@ -34,7 +34,7 @@ export function tafel(parent) { const g = G(parent); const gm = mat(0xe9b83a, { 
       c.textAlign = 'left'; c.font = `700 64px ${FONT}`; c.fillStyle = r.gone ? '#ff5a4a' : '#ffffff'; c.fillText(fmt(r.t), 160, y + 4); if (r.gone) { c.font = `700 58px ${FONT}`; c.fillText('WEG', 340, y + 4); } });
     if (st.du != null) { const y = 240 + rows.length * 110; const gold = st.gold || 0; c.fillStyle = gold ? '#3a2a00' : '#0a2a14'; c.beginPath(); c.roundRect(36, y - 52, w - 72, 104, 18); c.fill(); c.lineWidth = 6; c.strokeStyle = gold ? '#ffd23f' : '#2ad86a'; c.stroke();
       c.fillStyle = '#3aa8ff'; c.fillRect(56, y - 36, 72, 72); smiley(c, 92, y, 34, 'happy'); c.textAlign = 'left'; c.font = `700 70px ${FONT}`; c.fillStyle = gold ? '#ffd23f' : '#3aff7a'; c.fillText('DU', 160, y + 4); c.textAlign = 'right'; c.fillText(fmt(st.du), w - 60, y + 4);
-      if (st.rec) { txt(c, 'REKORD!', w / 2, y + 110, 64, '#ffd23f', '#3a2400', 10); } }
+      if (st.rec) { c.fillStyle = '#0c1630'; c.fillRect(30, 128, w - 60, 46); txt(c, '★ REKORD! ★', w / 2, 152, 46, '#ffd23f', '#3a2400', 8); } }
   }); };
   g.userData.draw({}); g.userData.bulbs(1); outline(g, 1.2); return g; }
 
@@ -94,7 +94,7 @@ export function sofa(parent) { const g = G(parent); const gm = mat(0xf2c23a, { m
   box(9, 1.6, 4, gm, .5, g, 0, 1.6, 0); box(9, 4.6, 1.2, gm, .5, g, 0, 4.4, -1.6); for (const s of [-1, 1]) { box(1.2, 3.2, 4, gm, .5, g, s * 4.6, 3, 0); for (const z of [-1.4, 1.4]) cyl(.3, .2, .9, gm, 10, g, s * 4, .45, z); }
   for (const s of [-1, 1]) { box(3.8, .9, 3, red, .4, g, s * 2, 2.7, .3); box(3.8, 3, .7, red, .35, g, s * 2, 4.4, -.85); }
   const crown = cyl(1.2, 1.4, .8, gm, 6, g, 0, 7.1, -1.6); for (let k = 0; k < 5; k++) sphere(.22, glowM(0xff4a6a, 1.6), g, -1 + k * .5, 7.6, -1.5 + (k % 2) * .2, 8, 6);
-  const pl = textPlane(4, 1.6, 300, 120, (c, w, h) => { c.fillStyle = '#d8323a'; c.beginPath(); c.roundRect(4, 4, w - 8, h - 8, 18); c.fill(); c.lineWidth = 8; c.strokeStyle = '#ffd23f'; c.stroke(); txt(c, 'DU', w / 2, h / 2 + 4, 84, '#ffffff', '#5a0010', 10); }); pl.position.set(0, 5.4, -.95); g.add(pl);
+  const pl = textPlane(4, 1.6, 300, 120, (c, w, h) => { c.fillStyle = '#d8323a'; c.beginPath(); c.roundRect(4, 4, w - 8, h - 8, 18); c.fill(); c.lineWidth = 8; c.strokeStyle = '#ffd23f'; c.stroke(); txt(c, 'DU', w / 2, h / 2 + 4, 84, '#ffffff', '#5a0010', 10); }); pl.position.set(0, 6.9, -.9); g.add(pl);
   const carpet = box(7, .12, 22, mat(0xc8203a, { roughness: .9 }), .05, g, 0, .08, 12); for (const s of [-1, 1]) for (let k = 0; k < 4; k++) { cyl(.25, .35, 3, gm, 10, g, s * 4.6, 1.5, 4 + k * 5.5); sphere(.4, gm, g, s * 4.6, 3.1, 4 + k * 5.5, 10, 8); if (k < 3) { const r = new THREE.Mesh(new THREE.TorusGeometry(2.75, .12, 6, 16, Math.PI), red); r.position.set(s * 4.6, 2.9, 6.75 + k * 5.5); r.rotation.set(Math.PI, Math.PI / 2, 0); g.add(r); } }
   const cover = G(g); const cv = new THREE.Mesh(new THREE.SphereGeometry(6, 20, 12, 0, 6.283, 0, Math.PI / 2), mat(0x8a1a2a, { roughness: .8 })); cv.scale.set(1, 1.35, .75); cover.add(cv); const q = textPlane(4, 4, 160, 160, (c, w, h) => txt(c, '?', w / 2, h / 2 + 6, 150, '#ffd23f', '#3a2400', 12)); q.position.set(0, 4.2, 4.6); cover.add(q); g.userData.cover = cover;
   outline(g, 1.2); return g; }

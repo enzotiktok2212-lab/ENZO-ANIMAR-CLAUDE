@@ -57,7 +57,6 @@ const RH = riesenHandy(HB.G); RH.position.set(HX, 0, HZ); RH.rotation.y = -.25;
 // en mi cuarto: manta de tienda, móvil en la mano, reloj 3:17
 const DECKE = (() => { const g = new THREE.Group(); scene.add(g); const tx = (() => { const c = document.createElement('canvas'); c.width = c.height = 128; const x = c.getContext('2d'); x.fillStyle = '#3a5ab8'; x.fillRect(0, 0, 128, 128); x.fillStyle = '#ffd23f'; for (let i = 0; i < 14; i++) { x.beginPath(); x.arc((i * 37) % 128, (i * 53) % 128, 4, 0, 7); x.fill(); } const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(3, 2); return t; })();
   const m = mat(0xffffff, { map: tx, roughness: .95, side: THREE.DoubleSide }); const s = new THREE.Mesh(new THREE.SphereGeometry(2.4, 26, 14, Math.PI / 2 + 1.0, 2 * Math.PI - 2.0, 0, Math.PI * .62), m); s.scale.set(1.15, 1.25, 1.1); s.position.y = .9; g.add(s); const lap = box(6, 1.2, 5.4, m, .5, g, 0, -3.3, 2.4); g.userData.lap = lap; return g; })();
-  const m = mat(0xffffff, { map: tx, roughness: .95, side: THREE.DoubleSide }); const s = new THREE.Mesh(new THREE.SphereGeometry(3.4, 24, 14, -Math.PI * .25, Math.PI * 1.5, 0, Math.PI / 2), m); s.scale.set(1, 1.15, 1.2); s.rotation.y = Math.PI; g.add(s); box(9, .8, 9, m, .4, g, 0, -.2, 2.6); return g; })();
 const PH = phone(scene); PH.scale.setScalar(.7); outline(PH, 1);
 const PHS = PH.userData.scr;
 // prismáticos, bote, pepinillo, nevera, calendario, despertador, martillo, escalera, pulgar, bus 42
@@ -65,7 +64,7 @@ const FG = fernglas(scene); outline(FG, 1); const GLAS = gurkenglas(scene); outl
 const FRIDGE = kuehlschrank(KU.g); FRIDGE.position.set(-8, 0, -6);
 const KAL = kalender(scene); const WECK = alarm(scene, .55); outline(WECK, 1); const HAM = hammer(scene); outline(HAM, 1); const LAD = ladder(scene, 22);
 const DAU = daumen(scene); DAU.scale.setScalar(4.2);
-const BUS = bus(HB.G, 0xf2c23a, '42  MARKTPLATZ'); outline(BUS, 1.2); BUS.visible = false;
+const BUS = bus(HB.G, 0xf2c23a, '42'); outline(BUS, 1.2); BUS.visible = false;
 const NEWS = (() => { const g = new THREE.Group(); scene.add(g); const p = textPlane(2.4, 1.6, 240, 160, (c, w, h) => { c.fillStyle = '#f4f0e4'; c.fillRect(0, 0, w, h); txt(c, 'HUFENBACHER', w / 2, 22, 22, '#1a1a1a'); txt(c, 'BOTE', w / 2, 46, 26, '#c8203a'); c.fillStyle = '#9a9a9a'; for (let i = 0; i < 6; i++) c.fillRect(14, 70 + i * 13, w - 28, 6); c.fillStyle = '#1a1a1a'; for (const x of [.36, .64]) { c.beginPath(); c.arc(w * x, h * .55, 14, 0, 7); c.fill(); } }); p.material.side = THREE.DoubleSide; g.add(p); return g; })();
 // ---------- reparto ----------
 const du = makeIch(scene), papa = makePapa(scene), opa = makeOpa(scene), junge = makeJunge(scene), frieda = makeFrieda(scene), kalle = makeKalle(scene), krause = makeKrause(scene);
@@ -158,7 +157,7 @@ const PHONEP = { aRx: .95, aRz: -.32, aRe: 1.25, aLx: .95, aLz: -.32, aLe: 1.25,
 const BINO = { aLx: 2.2, aLz: -.3, aLe: 2.0, aRx: 2.2, aRz: -.3, aRe: 2.0, headX: -.05 };     // prismáticos a los ojos
 const FREEZE = (i) => [{ aLx: 1.6, aRx: .4, aLe: .4, lean: .1, lLx: .5, lLk: .3 }, { aLx: 2.6, aRx: 2.6, aLz: .5, aRz: .5, headX: -.2 }, { crouch: .3, aLx: 1.2, aRx: 1.2, aLe: 1.6, aRe: 1.6 }, { aRx: 1.5, aRe: .1, lRx: -.6, lean: -.05 }][i % 4];
 // móvil delante de la cara (pantalla hacia la cara si toFace; si no, hacia fuera), a dist delante y drop por debajo de los ojos
-function phoneIn(c, toFace = true, s = .7, dist = 1.5, drop = .9) { const h = hp(c), sc = c.spec.scale || 1, a = c.root.rotation.y, f = V(Math.sin(a), 0, Math.cos(a)); PH.visible = true; PH.scale.setScalar(s); PH.position.copy(h).addScaledVector(f, dist * sc).add(V(0, (.75 - drop) * sc, 0));
+function phoneIn(c, toFace = true, s = .7, dist = 1.5, drop = 1.55) { const h = hp(c), sc = c.spec.scale || 1, a = c.root.rotation.y, f = V(Math.sin(a), 0, Math.cos(a)); PH.visible = true; PH.scale.setScalar(s); PH.position.copy(h).addScaledVector(f, dist * sc).add(V(0, (.75 - drop) * sc, 0));
   const tgt = toFace ? h.clone().add(V(0, .75 * sc, 0)) : PH.position.clone().addScaledVector(f, 5).add(V(0, 1.2, 0)); PH.lookAt(tgt); }
 function binoIn(c) { c.root.updateMatrixWorld(true); attach(FG, c.head, [0, .78, .95], [0, 0, 0], 1); }
 // gente de Hufenbach alrededor de (cx, cz), siempre detrás del sujeto según la cámara
@@ -252,7 +251,7 @@ function duEdge(L, o = {}) { use('ZI'); inside(.75, 22); ZI.LMP.intensity = 60; 
   GLOW.position.copy(wpos(PH)).lerp(hp(c), .4); GLOW.intensity = 16; return c; }
 shot(3.25, 'W', null, L => { const c = duEdge(L); onFace(c, 4.2, .2, .6, 40, L.k, 3.6); sh(EDGE, 16); }, [[0, 'swipe', .6], [.3, 'notif', .5], [.8, 'kids_laugh', .3]]);
 // 4b «… über diese Stadt schaust»: por encima del hombro, la pantalla: un vídeo de «In dieser Stadt»
-shot(4.4, 'C', null, L => { const c = duEdge(L); const h = hp(c), ph = wpos(PH); cm([h.x + .9, h.y + 1.4, h.z - 1.3, ph.x, ph.y, ph.z, 34], [h.x + .7, h.y + 1.2, h.z - .8, ph.x, ph.y, ph.z, 30], L.k); sh(EDGE, 16); }, [[0, 'whoosh', .5], [.3, 'mobile', .5]]);
+shot(4.4, 'C', null, L => { const c = duEdge(L); const h = hp(c), ph = wpos(PH); cm([h.x + 1.8, h.y + 2.2, h.z - 2.8, ph.x, ph.y, ph.z, 34], [h.x + 1.4, h.y + 1.9, h.z - 2.2, ph.x, ph.y, ph.z, 30], L.k); sh(EDGE, 16); }, [[0, 'whoosh', .5], [.3, 'mobile', .5]]);
 // 5 «Aber niemand weiß das hier:»: el chico se lleva el dedo a los labios; detrás, todos hacen «psst»
 shot(5.55, 'F', null, L => { town(L); const c = put(junge, P0.x, 0, P0.z, 0); actuar(c, 0, [[0, { aRx: 2.3, aRz: -.4, aRe: 2.3, lean: .12, headX: .05 }]], { T: L.T }); cara(c, L.T, { expr: 'sus', eyes: 'half', mouth: 'o' });
   rowAt(L, P0.x, P0.z - 7, 6, 4.5, -1, 1, 'shh', 5, { from: 2 }); onFace(c, 3.2, .3, -.4, 38, L.k, 2.6); sh(P0, 20); }, [[0, 'whisper', .7], [.4, 'sniff', .3], [.9, 'silence_tick', .5]]);
@@ -280,14 +279,14 @@ shot(15.98, 'C', 'punch', L => { zimmerN(L); const c = duBed(L, { glow: L.lt < .
 // 13 «3:17 Uhr.»: el despertador digital de la mesilla
 shot(16.45, 'Z', null, L => { zimmerN(L, '3:17'); duBed(L, { glow: 26 }); const p = V(ZX + 6, 3.45, -10.6); cm([p.x + 2.2, p.y + 1.8, p.z + 6.4, p.x, p.y + .6, p.z, 40], [p.x + 1.4, p.y + 1.1, p.z + 4.4, p.x, p.y + .4, p.z, 38], L.k); sh(p, 10); }, [[0, 'zoom_in', .5], [.2, 'clock_tick', .7], [.8, 'tick', .5]]);
 // 13b «… Uhr.»: plano general del cuarto a oscuras: tú, iluminado por el móvil, y el reloj en primer término
-shot(17.1, 'C', null, L => { zimmerN(L, '3:17'); duBed(L, { glow: 28 }); cm([ZX + 3, 7.5, 6, ZX + 10, 4.5, -8, 44], [ZX + 4, 7.2, 4.5, ZX + 10, 4.5, -8, 42], L.k); sh(BEDP, 14); }, [[0, 'whoosh', .4], [.2, 'owl', .5]]);
+shot(17.1, 'C', null, L => { zimmerN(L, '3:17'); duBed(L, { glow: 28 }); cm([ZX + 6, 8.5, 9, BEDP.x - 2, 5, BEDP.z, 44], [ZX + 7, 8.2, 7.5, BEDP.x - 2, 5, BEDP.z, 42], L.k); sh(BEDP, 14); }, [[0, 'whoosh', .4], [.2, 'owl', .5]]);
 // 14 «Schon wieder.»: en la ventana, la cara de Frieda con los prismáticos
 shot(17.73, 'S', null, L => { zimmerN(L); const c = put(frieda, ZX - 12, 4.6, -14.0, 0); actuar(c, 0, [[0, BINO]], { T: L.T }); binoIn(c); cara(c, L.T, { expr: 'smug', eyes: 'squint', mouth: 'grin' }); FILL.intensity = 18; FILL.color.setRGB(.6, .7, 1);
   cm([ZX - 11.4, 9.6, -5.4, ZX - 12, 8.6, -14.4, 40], [ZX - 11.7, 9.2, -7.4, ZX - 12, 8.7, -14.4, 38], L.k); sh(V(ZX - 12, 0, -13), 10); }, [[0, 'creepy_ting', .6], [.3, 'glass_rattle', .4], [.6, 'sniff', .3]]);
 // 15 «Deshalb stellt sie sich jede Nacht einen Wecker»: Frieda, en pijama en su cuarto, pone el despertador a las 3:17
 shot(18.6, 'R', null, L => { use('FZ'); inside(.45, 14); const c = put(frieda, FX + 14, 1.3, -6.5, 0); actuar(c, 0, [[0, { ...SIT, aLx: 1.3, aRx: 1.3, aLe: 1.0, aRe: 1.0, aLz: -.2, aRz: -.2, headX: .25 }]], { T: L.T }); cara(c, L.T, { expr: 'determined', mouth: 'smirk' });
   attach(WECK, c.aR.hand, [-.5, -1.0, .5], [0, 0, 0], .55); WECK.userData.draw(L.k < .5 ? '2:00' : '3:17'); FILL.intensity = 26; FILL.color.setRGB(1, .85, .6);
-  cm([FX + 11.5, 7.8, 4.5, FX + 13.6, 5.2, -6.5, 42], [FX + 11.8, 7.4, 2.4, FX + 13.6, 5.2, -6.5, 40], L.k); sh(V(FX + 14, 0, -6), 14); }, [[0, 'whoosh', .5], [.3, 'ratchet', .7], [.9, 'clock_spin', .6], [1.4, 'click_metal', .6]]);
+  cm([FX + 12, 7.6, 2.5, FX + 13.8, 5.0, -6.5, 40], [FX + 12.3, 7.3, 1.0, FX + 13.8, 5.0, -6.5, 38], L.k); sh(V(FX + 14, 0, -6), 14); }, [[0, 'whoosh', .5], [.3, 'ratchet', .7], [.9, 'clock_spin', .6], [1.4, 'click_metal', .6]]);
 cut(19.7, 'C', [-.5, .85, .3], [[0, 'whoosh', .4], [.15, 'watch_click', .6], [.5, 'yawn_f', .5]]);
 // 16 «– damit sie dich nie verpasst.»: suena el despertador y Frieda salta de la cama con los prismáticos
 shot(20.45, 'C', 'punch', L => { use('FZ'); inside(.5, 16); const T = L.T; show(WECK, FX + 10, 3.1, -9.6, .3, .55); WECK.userData.draw('3:17'); WECK.position.x += Math.sin(T * 60) * .06; rings(V(FX + 10, 4, -9.4), T, .9);
@@ -305,21 +304,21 @@ function duFridge(L, o = {}) { kuecheN(L); const c = put(du, FR0.x - .5, 0, FR0.
 // 17 «Metzger Kalle sieht dich.»: Kalle en la puerta de su carnicería de noche, cuchilla en mano, mirándote
 shot(21.97, 'W', null, L => { town(L, 'night'); const c = put(kalle, MZ.x, 0, MZ.z, PI / 2 - .25); actuar(c, 0, [[0, { aRx: 1.2, aRz: -.2, aRe: 1.4, aLx: .3, lean: .05, headY: -.1 }]], { T: L.T }); cara(c, L.T, { expr: 'smug', eyes: 'squint', mouth: 'smirk' });
   FILL.intensity = 30; onFace(c, 4.2, .4, -.4, 40, L.k, 3.4); sh(MZ, 18); }, [[0, 'whoosh', .5], [.2, 'door_bell', .6], [.7, 'steps', .4], [1.2, 'crickets', .4]]);
-cut(22.8, 'C', [.5, .7, .6], [[0, 'whoosh', .4], [.2, 'knock', .4]]);
+cut(22.8, 'C', [.5, 1.05, .3], [[0, 'whoosh', .4], [.2, 'knock', .4]]);
 // 18 «Wie du Gurken direkt aus dem Glas isst.»: tú, delante de la nevera abierta, comiendo pepinillos del bote
-shot(23.46, 'F', null, L => { const c = duFridge(L); cm([FR0.x + 1.8, 6.2, FR0.z + 13, FR0.x, 4.6, FR0.z + 3, 44], [FR0.x + 1.2, 5.8, FR0.z + 11, FR0.x, 4.6, FR0.z + 3, 42], L.k); sh(FR0, 14); }, [[0, 'flash', .4], [.15, 'hum', .5], [.4, 'lid_click', .6], [.8, 'chew', .7]]);
-cut(24.4, 'C', [-.35, .55, .2], [[0, 'whoosh', .4], [.1, 'chew', .7], [.5, 'sip', .5]]);
+shot(23.46, 'F', null, L => { const c = duFridge(L); const h = hp(c); cm([h.x + 1.5, 6.4, h.z + 11, h.x, 4.2, h.z, 44], [h.x + 1, 6.0, h.z + 9.5, h.x, 4.2, h.z, 42], L.k); sh(FR0, 14); }, [[0, 'flash', .4], [.15, 'hum', .5], [.4, 'lid_click', .6], [.8, 'chew', .7]]);
+cut(24.4, 'C', [-.6, .75, .6], [[0, 'whoosh', .4], [.1, 'chew', .7], [.5, 'sip', .5]]);
 // 19 «Weil du glaubst, dass es keiner merkt.»: miras a un lado y a otro, a escondidas
 shot(25.6, 'S', null, L => { const c = duFridge(L, { pose: { ...GEST.sneak, aLx: 1.0, aLe: 1.1, aRx: 1.0, aRe: 1.2, headY: Math.sin(L.lt * 6) * .7 }, face: { expr: 'sus', eyes: Math.sin(L.lt * 6) > 0 ? 'side_l' : 'side_r', mouth: 'grimace' }, bite: false });
   onFace(c, 3.4, .3, .5, 40, L.k, 2.9); sh(FR0, 14); }, [[0, 'whoosh', .4], [.3, 'creepy_ting', .4], [.6, 'squeak', .4]]);
 // 20 «Aber Kalle merkt alles.»: Kalle asoma detrás de la puerta de la nevera, apuntando en su libreta
 shot(27.28, 'C', 'punch', L => { const c = duFridge(L, { pose: GEST.shock, face: { expr: 'shock', eyes: 'wide', mouth: 'scream' }, bite: false }); const k = put(kalle, FR0.x + 6.2, 0, FR0.z + 2.2, -.7); actuar(k, 0, [[0, { lean: .2, twist: .2, aRx: 1.3, aRe: 1.6, aLx: 1.2, aLe: 1.4, headY: -.2 }]], { T: L.T }); cara(k, L.T, { expr: 'smug', eyes: 'squint', mouth: 'grin' });
-  NEWS.visible = false; cm([FR0.x + 2.2, 6.2, FR0.z + 14, FR0.x + 2.6, 5.0, FR0.z + 2, 46], [FR0.x + 2.2, 5.8, FR0.z + 12, FR0.x + 2.6, 5.0, FR0.z + 2, 44], L.k); sh(FR0, 16); }, [[0, 'impact', .6], [.05, 'gasp', .7], [.4, 'pencil', .6], [.6, 'evil_laugh', .4]]);
+  NEWS.visible = false; cm([FR0.x + 3, 6.8, FR0.z + 21, FR0.x + 3, 4.6, FR0.z + 3, 46], [FR0.x + 3, 6.5, FR0.z + 19, FR0.x + 3, 4.6, FR0.z + 3, 44], L.k); sh(FR0, 16); }, [[0, 'impact', .6], [.05, 'gasp', .7], [.4, 'pencil', .6], [.6, 'evil_laugh', .4]]);
 // 21 «Opa Heinz sieht dich.»: en la parada del bus, por la mañana: Opa con el periódico agujereado
 const OP0 = V(35, 0, 6);
 shot(28.9, 'Z', null, L => { town(L); const c = put(opa, OP0.x, 0, OP0.z, -PI / 2); actuar(c, 0, [[0, { aLx: 1.5, aRx: 1.5, aLe: .9, aRe: .9, aLz: -.25, aRz: -.25 }]], { T: L.T }); coatWind(c, L.T, .3); cara(c, L.T, { expr: 'sus', eyes: 'squint', mouth: 'flat' });
-  const h = hp(c); show(NEWS, h.x - 1.6, h.y + .6, h.z, -PI / 2, 1.2); if (L.k > .5) NEWS.position.y -= (L.k - .5) * 1.2;
-  crowdAt(L, OP0.x - 3, OP0.z, 4, 6, 12, 21, { mode: 'phone' }); cm([OP0.x - 9, 6, OP0.z + 1.5, OP0.x - 1, 5.2, OP0.z, 40], [OP0.x - 7.4, 5.8, OP0.z + 1, OP0.x - 1, 5.4, OP0.z, 38], L.k); sh(OP0, 18); }, [[0, 'zoom_in', .5], [.2, 'paper', .7], [.6, 'birds', .4], [.9, 'cough', .4]]);
+  const h = hp(c); show(NEWS, h.x - 1.6, h.y - .2, h.z, -PI / 2, 1.2);
+  crowdAt(L, OP0.x - 3, OP0.z, 4, 6, 12, 21, { mode: 'phone' }); cm([OP0.x - 13, 6.4, OP0.z + 2, OP0.x - 1, 4.8, OP0.z, 42], [OP0.x - 11, 6.2, OP0.z + 1.5, OP0.x - 1, 5, OP0.z, 40], L.k); sh(OP0, 18); }, [[0, 'zoom_in', .5], [.2, 'paper', .7], [.6, 'birds', .4], [.9, 'cough', .4]]);
 // 22 «Im Bus.»: dentro del bus 42: tú, sentado, mirando el móvil; otros pasajeros
 const SEAT = V(BX + 2.9, .75, -1.0);
 function busScene(L) { busIn(L); const c = put(du, SEAT.x, SEAT.y, SEAT.z, 0); actuar(c, 0, [[0, { ...SIT, ...PHONEP }]], { T: L.T }); phoneIn(c, true, .7, 1.3, 1.0); PH.userData.set('plain', { prog: .6 }); cara(c, L.T, { expr: 'happy', mouth: 'smile' });
@@ -327,11 +326,10 @@ function busScene(L) { busIn(L); const c = put(du, SEAT.x, SEAT.y, SEAT.z, 0); a
 shot(30.07, 'W', null, L => { busScene(L); cm([BX - 1.5, 7.4, 16, BX + 1.2, 4.2, -4, 46], [BX - 1, 7, 13, BX + 1.2, 4.2, -4, 44], L.k); sh(V(BX, 0, 0), 20); }, [[0, 'whoosh', .5], [.1, 'car', .6], [.4, 'wheels', .4]]);
 // 23 «Hinter dem Sitz versteckt.»: Opa asoma por encima del respaldo, detrás de ti, con el periódico
 shot(30.78, 'C', null, L => { const c = busScene(L); const o = put(opa, SEAT.x, 0, SEAT.z - 3.2, 0); actuar(o, 0, [[0, { crouch: .25 + Math.max(0, Math.sin(L.lt * 3)) * .1, aLx: 1.5, aRx: 1.5, aLe: .9, aRe: .9, aLz: -.25, aRz: -.25, lean: .1 }]], { T: L.T }); cara(o, L.T, { expr: 'sus', eyes: 'side_r', mouth: 'flat' });
-  const h = hp(o); show(NEWS, h.x, h.y + .2, h.z + 1.3, 0, 1.15); cm([SEAT.x - 1.2, 6.8, SEAT.z + 7.8, SEAT.x, 5.3, SEAT.z - 1.6, 40], [SEAT.x - .8, 6.6, SEAT.z + 6.6, SEAT.x, 5.3, SEAT.z - 1.6, 38], L.k); sh(SEAT, 14); }, [[0, 'impact', .4], [.1, 'paper', .7], [.6, 'creepy_ting', .5]]);
-cut(31.4, 'C', [-.5, .85, .4], [[0, 'whoosh', .4], [.2, 'wheels', .4]]);
+  const h = hp(o); show(NEWS, h.x, h.y + .2, h.z + 1.3, 0, 1.15); cm([BX - .4, 7.6, SEAT.z + 4.2, SEAT.x, 4.8, SEAT.z - 1.4, 46], [BX - .2, 7.4, SEAT.z + 3.6, SEAT.x, 4.9, SEAT.z - 1.4, 44], L.k); sh(SEAT, 14); }, [[0, 'impact', .4], [.1, 'paper', .7], [.6, 'creepy_ting', .5]]);
 // 24 «Denn er fährt jeden Morgen dieselbe Linie wie du –»: el bus amarillo por la calle del pueblo, al amanecer
 shot(31.89, 'S', null, L => { town(L); BUS.visible = true; const z = lerp(60, 110, L.k); BUS.position.set(26, 0, z); BUS.rotation.y = 0; BUS.userData.wheels.forEach(w => w.rotation.x = L.T * 6); sun.color.setRGB(1, .85, .7);
-  crowdAt(L, 37, z + 30, 4, 4, 10, 24, { mode: 'wave' }); cm([16, 4.5, z + 34, 26, 5.5, z + 6, 44], [18, 4.2, z + 30, 26, 5.5, z + 9, 42], L.k); sh(V(26, 0, z + 10), 30); }, [[0, 'whoosh', .5], [.1, 'car_pass', .7], [.9, 'birds', .4], [1.6, 'rooster', .4]]);
+  crowdAt(L, 37, z + 30, 4, 4, 10, 24, { mode: 'wave' }); cm([23, 4.2, z + 38, 26, 5.5, z + 6, 44], [23.5, 4.0, z + 34, 26, 5.5, z + 9, 42], L.k); sh(V(26, 0, z + 10), 30); }, [[0, 'whoosh', .5], [.1, 'car_pass', .7], [.9, 'birds', .4], [1.6, 'rooster', .4]]);
 // 25 «die 42.»: golpe de zoom al letrero «42»
 shot(34.3, 'C', 'punch', L => { town(L); BUS.visible = true; BUS.position.set(26, 0, 118); BUS.userData.wheels.forEach(w => w.rotation.x = L.T * 6); const s = V(26, 7.6, 131.1); cm([26.6, 8.4, 139, s.x, s.y, s.z, 34], [26.4, 8.1, 136.5, s.x, s.y, s.z, 30], L.k); badge('gold', '42', W / 2, H * .3, (L.lt - .1) * 3); sh(s, 16); }, [[0, 'impact', .7], [.1, 'ding_soft', .6], [.5, 'car', .4]]);
 // 26 «Frau Krause sieht dich.»: Frau Krause en el banco de la plaza con unos prismáticos de ópera
@@ -342,7 +340,7 @@ shot(35.47, 'I', null, L => { town(L); const c = put(krause, KR0.x, .9, KR0.z, P
 function rhScene(L, st, mode, expr) { town(L); RH.userData.draw(st); rowAt(L, HX, HZ + 7, 6, 4, -1.2, 1.2, mode, 27, { from: 0, face: V(HX, 0, HZ + 40) }); const k = put(krause, HX - 6.5, 0, HZ + 9, .5); actuar(k, 0, [[0, expr === 'shock' ? GEST.hands_face : expr === 'joy' ? GEST.cheer : GEST.slump]], { T: L.T }); cara(k, L.T, { expr, mouth: expr === 'joy' ? 'open_smile' : expr === 'shock' ? 'scream' : 'frown' }); }
 shot(36.7, 'W', null, L => { rhScene(L, { swipe: easeInOut(clamp(L.lt / .9)) }, 'shock', 'shock'); cm([HX - 3, 7, HZ + 30, HX, 9, HZ, 46], [HX - 2, 7, HZ + 27, HX, 9, HZ, 44], L.k); sh(V(HX, 0, HZ), 24); }, [[0, 'swipe', .8], [.15, 'whoosh_up', .6], [.6, 'gasp', .6]]);
 // 28 «Dreimal.»: tres veces seguidas: 3×
-shot(37.94, 'C', 'punch', L => { rhScene(L, { swipe: 1 + clamp(L.lt / .8) * 2 }, 'sad', 'sad'); cm([HX + 2, 9, HZ + 20, HX, 10, HZ, 44], [HX + 1.6, 9.2, HZ + 18, HX, 10, HZ, 42], L.k); badge('red', '3×', W / 2, H * .22, (L.lt - .05) * 3); sh(V(HX, 0, HZ), 24); }, [[0, 'swipe', .7], [.25, 'swipe', .7], [.5, 'swipe', .7], [.6, 'sad_tone', .5]]);
+shot(37.94, 'C', 'punch', L => { rhScene(L, { swipe: 1 + clamp(L.lt / .8) * 2 }, 'sad', 'sad'); cm([HX + 2, 7, HZ + 30, HX, 9, HZ, 46], [HX + 1.6, 7.2, HZ + 27, HX, 9, HZ, 44], L.k); badge('red', '3×', W / 2, H * .3, (L.lt - .05) * 3); sh(V(HX, 0, HZ), 24); }, [[0, 'swipe', .7], [.25, 'swipe', .7], [.5, 'swipe', .7], [.6, 'sad_tone', .5]]);
 // 29 «Und trotzdem kamst du zurück.»: el vídeo vuelve hacia abajo: el pueblo otra vez. ¡Todos lo celebran!
 shot(38.9, 'S', null, L => { rhScene(L, { swipe: 3, back: easeInOut(clamp(L.lt / .7)) }, L.lt > .6 ? 'cheer' : 'shock', L.lt > .6 ? 'joy' : 'shock'); if (L.lt > .6) confetti(V(HX, 2, HZ + 6), L.t0 + .6, L.T, 50); cm([HX - 2, 6.5, HZ + 26, HX, 8.5, HZ, 46], [HX - 1, 6.8, HZ + 23, HX, 8.5, HZ, 44], L.k); sh(V(HX, 0, HZ), 24); }, [[0, 'whoosh_down', .7], [.6, 'cheer', .7], [.65, 'confetti', .5]]);
 // 30 «Da wussten wir: Du bist anders.»: Frau Krause, con las manos en el corazón, se emociona
@@ -353,11 +351,11 @@ function papaLadder(L) { town(L); TAF.userData.draw({ off: true }); TAF.userData
   const p = put(papa, TX + 11.6, 13.2, TZ + 2.4, -PI / 2 + .35); actuar(p, 0, [[0, { aRx: 1.6 + hit * .9, aRz: -.1, aRe: .3 + hit * .5, aLx: 1.2, aLe: .5, lLx: .4, lLk: .5 }]], { T }); cara(p, T, { expr: 'determined', mouth: 'grimace' });
   p.root.updateMatrixWorld(true); attach(HAM, p.aR.hand, [0, -.5, .35], [PI / 2, 0, 0], 1);
   const j = put(junge, TX + 13.6, 0, TZ + 4.2, -.6); actuar(j, 0, [[0, { aLx: 1.6, aRx: 1.6, aLe: .4, aRe: .4, headX: -.5 }]], { T }); cara(j, T, { expr: 'happy', eyes: 'up', mouth: 'open_smile' }); return p; }
-shot(42.32, 'Z', null, L => { papaLadder(L); cm([TX + 22, 5, TZ + 22, TX + 9, 13, TZ, 46], [TX + 20, 5.4, TZ + 19, TX + 9, 14, TZ, 44], L.k); sh(V(TX + 8, 0, TZ), 30); }, [[0, 'zoom_in', .5], [.1, 'hammer', .8], [.45, 'hammer', .8], [.8, 'hammer', .8], [1.2, 'wood_creak', .5], [1.6, 'hammer', .7]]);
-cut(43.5, 'C', [.6, .55, 3], [[0, 'whoosh', .4], [.1, 'hammer', .8], [.5, 'hammer', .7]]);
+shot(42.32, 'Z', null, L => { const p = papaLadder(L); const h = hp(p); cm([h.x + 6, 6, h.z + 30, h.x - 1, 13, h.z, 46], [h.x + 5, 7, h.z + 26, h.x - 1, 13.5, h.z, 44], L.k); sh(V(TX + 8, 0, TZ), 30); }, [[0, 'zoom_in', .5], [.1, 'hammer', .8], [.45, 'hammer', .8], [.8, 'hammer', .8], [1.2, 'wood_creak', .5], [1.6, 'hammer', .7]]);
+shot(43.5, 'C', null, L => { const p = papaLadder(L); onFace(p, 3.6, .3, .6, 40, L.k, 3.1); }, [[0, 'whoosh', .4], [.1, 'hammer', .8], [.5, 'hammer', .7], [.9, 'hammer', .7]]);
 // 32 «Mit 600 Glühbirnen.»: se encienden las bombillas una a una alrededor del marco
 shot(44.92, 'C', 'punch', L => { town(L); TAF.userData.draw({}); TAF.userData.bulbs(easeOut(clamp(L.lt / 1.0)), L.T, 0); grade.uniforms.flash.value = L.lt < .1 ? .3 : 0; const p = put(papa, TX + 5, 0, TZ + 8, -.3); actuar(p, 0, [[0, GEST.cheer]], { T: L.T }); cara(p, L.T, { expr: 'joy', mouth: 'open_smile' });
-  cm([TX + 3, 8, TZ + 34, TX, 17, TZ, 46], [TX + 2.4, 8.6, TZ + 31, TX, 17.4, TZ, 44], L.k); badge('gold', '600', W / 2, H * .2, (L.lt - .1) * 3); sh(V(TX, 0, TZ), 30); }, [[0, 'power_on', .8], [.1, 'sparkle', .6], [.3, 'switch', .5], [.6, 'ding_soft', .5]]);
+  cm([TX + 3, 8, TZ + 34, TX, 17, TZ, 46], [TX + 2.4, 8.6, TZ + 31, TX, 17.4, TZ, 44], L.k); badge('gold', '600', W / 2, H * .45, (L.lt - .1) * 3); sh(V(TX, 0, TZ), 30); }, [[0, 'power_on', .8], [.1, 'sparkle', .6], [.3, 'switch', .5], [.6, 'ding_soft', .5]]);
 // 33 «Jeder, der zuschaut, bekommt eine Zeile.»: la Tafel encendida; Papa la presenta y el pueblo mira
 shot(46.2, 'W', null, L => { town(L); tafelAt(46, {}); TAF.userData.bulbs(1, L.T, 1); const p = put(papa, TX - 7, 0, TZ + 7, .6); actuar(p, 0, [[0, { ...GEST.point_l, aLx: 2.0 }]], { T: L.T }); talk(p, L.T, 46.2, 48.3, 'happy');
   rowAt(L, TX, TZ + 22, 9, 6, -1.0, 1.0, 'stare', 33, { from: 0, face: V(TX, 0, TZ) }); cm([TX + 8, 6, TZ + 40, TX, 15, TZ, 46], [TX + 6, 6.5, TZ + 36, TX, 15.5, TZ, 44], L.k); sh(V(TX, 0, TZ + 10), 30); }, [[0, 'whoosh', .5], [.3, 'crowd_run', .3], [.9, 'notif', .5], [1.4, 'pop', .5]]);
@@ -365,7 +363,7 @@ shot(46.2, 'W', null, L => { town(L); tafelAt(46, {}); TAF.userData.bulbs(1, L.T
 const TS = V(TX, 0, TZ + .34);   // pantalla de la Tafel (y 9..29)
 const rowY = i => 29 - (240 + i * 110) / 680 * 20;
 // primer plano de una fila de la Tafel (icono a la izquierda)
-function rowShot(L, i, extra = {}) { town(L); tafelAt(L.T); TAF.userData.bulbs(1, L.T, 1); const y = rowY(i); cm([TX - .5, y + .6, TZ + 15, TX - .5, y, TZ, 38], [TX - .4, y + .4, TZ + 12.5, TX - .4, y, TZ, 36], L.k); sh(V(TX, 0, TZ), 30); }
+function rowShot(L, i, extra = {}) { town(L); tafelAt(L.T); TAF.userData.bulbs(1, L.T, 1); const y = rowY(i); cm([TX + .5, y - 1, TZ + 24, TX + .5, y - 1.2, TZ, 38], [TX + .6, y - 1, TZ + 21, TX + .6, y - 1.2, TZ, 36], L.k); sh(V(TX, 0, TZ), 30); }
 // el pueblo delante de la Tafel, mirando a la cámara
 function crowdTafel(L, mode, seed, o = {}) { town(L); tafelAt(L.T, o); TAF.userData.bulbs(1, L.T, 1); rowAt(L, TX, TZ + 2, 7, 13, -.5, .5, mode, seed, { from: 0, face: V(TX, 0, TZ + 60) }); rowAt(L, TX, TZ + 2, 8, 9.5, -.62, .62, mode, seed + 1, { from: 7, face: V(TX, 0, TZ + 60) }); }
 // 34 «Drei Sekunden? Weg.»: la primera fila: 0:03… y la cruz roja
@@ -376,32 +374,32 @@ shot(49.55, 'S', null, L => { crowdTafel(L, L.T > 50.88 ? 'sad' : 'stare', 35); 
 shot(50.93, 'C', 'punch', L => { rowShot(L, 2); }, [[0, 'pop', .6], [.4, 'tick', .5], [1.2, 'glitch', .6]]);
 // 36b «… weg.»: Kalle se lleva la mano a la cara; Frau Krause, triste
 shot(52.07, 'W', null, L => { town(L); tafelAt(L.T); const k = put(kalle, TX - 2.2, 0, TZ + 16, .15); actuar(k, 0, [[0, GEST.facepalm]], { T: L.T }); cara(k, L.T, { expr: 'sad', mouth: 'frown' }); const r = put(krause, TX + 2.2, 0, TZ + 16.5, -.15); actuar(r, 0, [[0, GEST.slump]], { T: L.T }); cara(r, L.T, { expr: 'sad', mouth: 'frown' });
-  cm([TX, 5.6, TZ + 27, TX, 5, TZ + 16, 40], [TX, 5.4, TZ + 25.5, TX, 5, TZ + 16, 38], L.k); sh(V(TX, 0, TZ + 16), 20); }, [[0, 'whoosh', .4], [.1, 'sad_tone', .5], [.3, 'sigh', .5]]);
+  cm([TX, 6, TZ + 30, TX, 4.6, TZ + 16, 42], [TX, 5.8, TZ + 28.5, TX, 4.6, TZ + 16, 40], L.k); sh(V(TX, 0, TZ + 16), 20); }, [[0, 'whoosh', .4], [.1, 'sad_tone', .5], [.3, 'sigh', .5]]);
 // 37 «Und du? Immer noch da?» (zoom lento): tu fila, verde: «DU 0:24» y subiendo; todos se giran hacia ti
 shot(52.7, 'Z', 'slow', L => { crowdTafel(L, 'stare', 37); const y = rowY(3); cm([TX + 1, 8, TZ + 34, TX, y, TZ, 44], [TX + .5, 10, TZ + 24, TX, y, TZ, 38], L.k); sh(V(TX, 0, TZ + 12), 30); }, [[0, 'heartbeat', .6], [.5, 'tick', .4]]);
 // 38 «Plötzlich wurde es ganz still.»: grúa sobre la plaza: nadie se mueve, solo grillos
-shot(53.93, 'F', null, L => { crowdTafel(L, 'freeze', 38); orb(L.k, V(TX, 6, TZ + 12), null, [46, .5, .45, 46], [42, .3, .38, 44]); sh(V(TX, 0, TZ + 10), 34); }, [[0, 'freeze', .6], [.2, 'crickets', .7], [.9, 'wind', .4]]);
+shot(53.93, 'F', null, L => { crowdTafel(L, 'freeze', 38); orb(L.k, V(TX, 6, TZ + 12), null, [34, .45, .32, 46], [31, .3, .28, 44]); sh(V(TX, 0, TZ + 10), 34); }, [[0, 'freeze', .6], [.2, 'crickets', .7], [.9, 'wind', .4]]);
 cut(54.8, 'C', [-.7, .6, -6], [[0, 'whoosh', .3], [.2, 'silence_tick', .6]]);
 // 39 «Keiner bewegt sich!»: Papa abre los brazos: ¡quietos! El pueblo, congelado a media pose
 shot(55.62, 'C', 'punch', L => { crowdTafel(L, 'freeze', 39); const p = put(papa, TX, 0, TZ + 20, 0); actuar(p, 0, [[0, { aLx: .3, aLz: 1.4, aRx: .3, aRz: 1.4, aLe: .2, aRe: .2, lean: .05 }]], { T: L.T }); cara(p, L.T, { expr: 'shout', eyes: 'wide', mouth: 'scream' });
   onFace(p, 4.6, .4, .3, 42, L.k, 4.0); sh(V(TX, 0, TZ + 16), 26); }, [[0, 'slam', .7], [.1, 'shout_m', .6], [.5, 'freeze', .5]]);
 // 40 «Er ist bei 29 Sekunden.» (zoom lento): «DU 0:29», enorme
-shot(56.84, 'Z', 'slow', L => { town(L); tafelAt(L.T); TAF.userData.bulbs(1, L.T, 1); const y = rowY(3); cm([TX, y + 1, TZ + 20, TX, y, TZ, 40], [TX + .5, y + .6, TZ + 11, TX + .5, y, TZ, 36], L.k); sh(V(TX, 0, TZ), 30); }, [[0, 'tick', .6], [.4, 'clock_tick', .6], [.9, 'tick', .5]]);
+shot(56.84, 'Z', 'slow', L => { town(L); tafelAt(L.T); TAF.userData.bulbs(1, L.T, 1); const y = rowY(3); cm([TX, y, TZ + 34, TX, y - 1, TZ, 40], [TX + .5, y, TZ + 24, TX + .5, y - 1, TZ, 36], L.k); sh(V(TX, 0, TZ), 30); }, [[0, 'tick', .6], [.4, 'clock_tick', .6], [.9, 'tick', .5]]);
 // 41 «So weit ist noch nie jemand gekommen.»: la Tafel se pone dorada: ¡REKORD! Kalle y Frau Krause, boquiabiertos
 shot(58.6, 'W', null, L => { town(L); tafelAt(L.T, { gold: 1, rec: true }); TAF.userData.bulbs(1, L.T, 1); const k = put(kalle, TX - 2.4, 0, TZ + 15, .2); actuar(k, 0, [[0, GEST.hands_face]], { T: L.T }); cara(k, L.T, { expr: 'shock', mouth: 'o' }); const r = put(krause, TX + 2.4, 0, TZ + 15.5, -.2); actuar(r, 0, [[0, GEST.shock]], { T: L.T }); cara(r, L.T, { expr: 'shock', mouth: 'scream' }); tears(r, L.T);
   cm([TX, 7, TZ + 31, TX, 9.5, TZ + 6, 44], [TX, 7.4, TZ + 28, TX, 10, TZ + 6, 42], L.k); sh(V(TX, 0, TZ + 10), 26); }, [[0, 'whoosh', .5], [.1, 'fanfare', .4], [.4, 'gasp', .6], [1.2, 'gasp_old', .5]]);
-cut(59.6, 'C', [.55, .55, -2], [[0, 'whoosh', .4], [.2, 'sparkle', .5]]);
+cut(59.6, 'C', [.4, .8, 0], [[0, 'whoosh', .4], [.2, 'sparkle', .5]]);
 // 42 «Doch dann kam der Daumen.»: el cielo se oscurece y baja un pulgar gigante sobre el Rathaus
 shot(60.67, 'F', null, L => { town(L); const q = easeOut(L.k); setSky([.1, .12, .3], [.3, .3, .5], [.6, .55, .7]); sun.intensity = 1.2; hemi.intensity = .9; daumenAt(TX + 2, lerp(140, 70, q), TZ - 30, L.T); crowdTafel(L, 'point', 42);
-  cm([TX - 4, 3, TZ + 46, TX, 40, TZ - 20, 50], [TX - 3, 3.2, TZ + 44, TX, 46, TZ - 20, 50], L.k); sh(V(TX, 0, TZ), 40); }, [[0, 'thunder', .6], [.2, 'whoosh_down', .7], [.8, 'drone', .6], [1.2, 'gasp', .5]]);
+  cm([TX - 4, 3, TZ + 46, TX, 46, TZ - 20, 52], [TX - 3, 3.2, TZ + 44, TX, 54, TZ - 20, 52], L.k); sh(V(TX, 0, TZ), 40); }, [[0, 'thunder', .6], [.2, 'whoosh_down', .7], [.8, 'drone', .6], [1.2, 'gasp', .5]]);
 cut(61.5, 'C', [-.4, .8, 2], [[0, 'whoosh', .4], [.1, 'hum_low', .6]]);
 // 43 «Riesig.»: desde abajo, la yema del pulgar con su huella, enorme
 shot(62.27, 'C', 'punch', L => { town(L); setSky([.1, .12, .3], [.3, .3, .5], [.6, .55, .7]); sun.intensity = 1.2; daumenAt(TX + 2, 60, TZ - 10, L.T, { rx: -.6 }); crowdTafel(L, 'shock', 43); cm([TX + 2, 4, TZ + 30, TX + 2, 60, TZ - 10, 56], [TX + 2, 4, TZ + 28, TX + 2, 61, TZ - 10, 54], L.k); sh(V(TX, 0, TZ), 40); }, [[0, 'impact', .7], [.05, 'braam_short', .5], [.2, 'gasp', .6]]);
 // 44 «Direkt über der Stadt.»: plano aéreo: el pulgar flota sobre la plaza, su sombra sobre el pueblo
-shot(62.87, 'S', null, L => { town(L); setSky([.1, .12, .3], [.3, .3, .5], [.6, .55, .7]); sun.intensity = 1.6; daumenAt(TX, 48, TZ + 10, L.T); crowdTafel(L, 'cower', 44); orb(L.k, V(TX, 30, TZ + 8), null, [120, .9, .4, 46], [110, .7, .35, 44]); sh(V(TX, 0, TZ + 10), 60); }, [[0, 'whoosh', .5], [.2, 'wind', .6], [.6, 'heli', .3]]);
+shot(62.87, 'S', null, L => { town(L); setSky([.1, .12, .3], [.3, .3, .5], [.6, .55, .7]); sun.intensity = 1.6; daumenAt(TX, 48, TZ + 10, L.T); crowdTafel(L, 'cower', 44); orb(L.k, V(TX, 40, TZ + 8), null, [130, .9, .32, 48], [120, .7, .28, 46]); sh(V(TX, 0, TZ + 10), 60); }, [[0, 'whoosh', .5], [.2, 'wind', .6], [.6, 'heli', .3]]);
 // 45 «Alle – festhalten!»: todos se agarran: a las farolas, unos a otros; Papa abraza al chico
 shot(64.1, 'C', 'punch', L => { town(L); setSky([.1, .12, .3], [.3, .3, .5], [.6, .55, .7]); sun.intensity = 1.2; daumenAt(TX, 44, TZ + 10, L.T); crowdTafel(L, 'hold', 45); const p = put(papa, TX, 0, TZ + 20, 0); actuar(p, 0, [[0, shv(GEST.brace, L.T, 2)]], { T: L.T }); cara(p, L.T, { expr: 'shout', eyes: 'angry', mouth: 'scream' });
-  const j = put(junge, TX + .2, 0, TZ + 22, 0); actuar(j, 0, [[0, shv(GEST.cower, L.T, 2)]], { T: L.T }); cara(j, L.T, { expr: 'worried', eyes: 'closed', mouth: 'grimace_wide' }); SHAKE = .3; onFace(p, 6, 1.5, .5, 46, L.k, 5.4); sh(V(TX, 0, TZ + 16), 26); }, [[0, 'slam', .6], [.1, 'shout_m', .6], [.4, 'wind', .6], [.8, 'shiver', .5]]);
+  const j = put(junge, TX + 3, 0, TZ + 19, -.3); actuar(j, 0, [[0, shv(GEST.cower, L.T, 2)]], { T: L.T }); cara(j, L.T, { expr: 'worried', eyes: 'closed', mouth: 'grimace_wide' }); SHAKE = .3; onFace(p, 6, 1.5, .5, 46, L.k, 5.4); sh(V(TX, 0, TZ + 16), 26); }, [[0, 'slam', .6], [.1, 'shout_m', .6], [.4, 'wind', .6], [.8, 'shiver', .5]]);
 // 46 (silencio de tensión, zoom lento): el pulgar justo encima de la Tafel; tu contador sigue corriendo
 shot(65.35, 'Z', 'slow', L => { town(L); setSky([.1, .12, .3], [.3, .3, .5], [.6, .55, .7]); sun.intensity = 1.2; tafelAt(L.T); TAF.userData.bulbs(1, L.T, 1); daumenAt(TX, 40 - L.k * 3, TZ + 4, L.T, { rx: -.1 }); crowdTafel(L, 'hold', 46);
   const y = rowY(3); cm([TX + 4, 6, TZ + 40, TX, 22, TZ, 50], [TX + 1.5, 9, TZ + 22, TX, 18, TZ, 44], L.k); SHAKE = .12; sh(V(TX, 0, TZ + 10), 34); }, [[0, 'heartbeat', .8], [.9, 'heartbeat', .8], [1.8, 'heartbeat', .8], [.3, 'tick', .5], [1.3, 'tick', .5], [2.3, 'tick', .5]]);
@@ -413,7 +411,7 @@ shot(68.13, 'F', null, L => { town(L); const q = easeIn(clamp(L.lt / .8)); daume
 // 48 «Die ganze Stadt hat geschrien.»: fuegos artificiales; Papa sube al chico a hombros
 shot(69.14, 'C', null, L => { town(L); tafelAt(L.T, { gold: 1 }); TAF.userData.bulbs(1, L.T, 1); const p = put(papa, TX, 0, TZ + 20, 0); actuar(p, 0, [[0, { aLx: 2.6, aRx: 2.6, aLz: .2, aRz: .2, aLe: .6, aRe: .6, headX: -.2 }]], { T: L.T }); cara(p, L.T, { expr: 'joy', mouth: 'laugh' });
   const h = hp(p); const j = put(junge, h.x, h.y + .2, h.z - .2, 0); actuar(j, 0, [[0, { ...GEST.cheer, lLx: -1.4, lRx: -1.4, lLk: 1.4, lRk: 1.4 }]], { T: L.T }); cara(j, L.T, { expr: 'joy', mouth: 'open_smile' });
-  crowdAt(L, TX, TZ + 20, 18, 4, 16, 48, { mode: 'cheer' }); fireworks(V(TX, 10, TZ - 10), L.T); onFace(p, 6, 1.8, -.4, 46, L.k, 5.2); sh(V(TX, 0, TZ + 20), 26); }, [[0, 'firework', .6], [.2, 'cheer', .7], [.6, 'firework', .5], [1.0, 'whistle', .4]]);
+  crowdAt(L, TX, TZ + 20, 18, 4, 16, 48, { mode: 'cheer' }); fireworks(V(TX, 10, TZ - 10), L.T); onFace(p, 9, 3.5, -.4, 46, L.k, 8.2); sh(V(TX, 0, TZ + 20), 26); }, [[0, 'firework', .6], [.2, 'cheer', .7], [.6, 'firework', .5], [1.0, 'whistle', .4]]);
 cut(70.0, 'C', [.7, 1.3, 4], [[0, 'firework', .6], [.3, 'clap_crowd', .6]]);
 // 49 «Und als es wieder ruhig war, sagte Papa:»: atardecer tranquilo; Papa, móvil en mano, te habla
 const PP = V(TX + 2, 0, TZ + 30);
@@ -426,14 +424,14 @@ shot(72.72, 'Z', null, L => { const p = papaPhone(L, { s: 1.4 }); const ph = wpo
 // 51 «In dein Zimmer.»: tu cuarto de noche: tú en la cama con el móvil
 shot(74.03, 'Z', null, L => { zimmerN(L); const c = duBed(L, { glow: 26, expr: 'happy', mouth: 'smile' }); droste(PHS, 6); const ph = wpos(PH); cm([ZX + 13, 8.5, 9, BEDP.x, 4.6, BEDP.z, 44], [ph.x + .2, ph.y + .4, ph.z + 4.5, ph.x, ph.y, ph.z, 40], easeIn(L.k), x => x); sh(BEDP, 14); }, [[0, 'zoom_in', .7], [.3, 'cloth', .4]]);
 // 52 «In dein Handy.»: tu pantalla, cada vez más cerca
-shot(74.82, 'Z', null, L => { zimmerN(L); duBed(L, { glow: 26, expr: 'happy', mouth: 'smile' }); droste(PHS, 7); const ph = wpos(PH); PH.updateMatrixWorld(true); const n = V(0, 0, 1).applyQuaternion(PH.getWorldQuaternion(new THREE.Quaternion())); cm([ph.x + n.x * 3.4, ph.y + n.y * 3.4, ph.z + n.z * 3.4, ph.x, ph.y, ph.z, 40], [ph.x + n.x * .95, ph.y + n.y * .95, ph.z + n.z * .95, ph.x, ph.y, ph.z, 40], easeIn(L.k), x => x); sh(BEDP, 14); }, [[0, 'zoom_in', .7], [.4, 'glitch', .4]]);
+shot(74.82, 'Z', null, L => { zimmerN(L); duBed(L, { glow: 26, expr: 'happy', mouth: 'smile', blanket: false }); droste(PHS, 7); const ph = wpos(PH); PH.updateMatrixWorld(true); const n = V(0, 0, 1).applyQuaternion(PH.getWorldQuaternion(new THREE.Quaternion())); cm([ph.x + n.x * 3.4, ph.y + n.y * 3.4, ph.z + n.z * 3.4, ph.x, ph.y, ph.z, 40], [ph.x + n.x * .95, ph.y + n.y * .95, ph.z + n.z * .95, ph.x, ph.y, ph.z, 40], easeIn(L.k), x => x); sh(BEDP, 14); }, [[0, 'zoom_in', .7], [.4, 'glitch', .4]]);
 // 53 «In unsere Stadt.»: desde el cielo, en picado hacia el móvil gigante de la plaza
 shot(75.64, 'Z', null, L => { town(L); RH.userData.draw({}); droste(RH.userData.scr, 6); crowdAt(L, HX, HZ + 10, 14, 6, 18, 53, { mode: 'wave' }); const c = V(HX, 10.2, HZ); const f = V(Math.sin(-.25), 0, Math.cos(-.25));
   cm([c.x + f.x * 70, 60, c.z + f.z * 70, c.x, 6, c.z, 46], [c.x + f.x * 11.5, 10.6, c.z + f.z * 11.5, c.x, 10.2, c.z, 44], easeIn(L.k), x => x); sh(V(HX, 0, HZ), 40); }, [[0, 'whoosh_down', .7], [.5, 'zoom_in', .6], [.8, 'city_amb', .4]]);
 // 54 «In dein Zimmer.»: otra vez tu cuarto, desde la tele
 shot(76.75, 'Z', null, L => { zimmerN(L); duBed(L, { glow: 26, expr: 'happy', mouth: 'smile' }); droste(PHS, 7); const ph = wpos(PH); cm([ZX + 4, 9, 11, BEDP.x, 4.4, BEDP.z, 44], [ph.x - .3, ph.y + .3, ph.z + 3.6, ph.x, ph.y, ph.z, 40], easeIn(L.k), x => x); sh(BEDP, 14); }, [[0, 'zoom_in', .7], [.4, 'whoosh', .4]]);
 // 55 «Für immer.»: espiral infinita: la pantalla dentro de la pantalla, girando
-shot(77.7, 'R', null, L => { zimmerN(L); duBed(L, { glow: 26, expr: 'happy', mouth: 'smile' }); droste(PHS, 10); const ph = wpos(PH); PH.updateMatrixWorld(true); const n = V(0, 0, 1).applyQuaternion(PH.getWorldQuaternion(new THREE.Quaternion())); const d = lerp(2.2, 1.0, easeIn(L.k)); cam([ph.x + n.x * d, ph.y + n.y * d, ph.z + n.z * d], [ph.x, ph.y, ph.z], 40); ROLL = L.lt * 2.4; sh(BEDP, 14); }, [[0, 'whoosh', .6], [.2, 'clock_spin', .6], [.5, 'magic_hit', .5]]);
+shot(77.7, 'R', null, L => { zimmerN(L); duBed(L, { glow: 26, expr: 'happy', mouth: 'smile', blanket: false }); droste(PHS, 10); const ph = wpos(PH); PH.updateMatrixWorld(true); const n = V(0, 0, 1).applyQuaternion(PH.getWorldQuaternion(new THREE.Quaternion())); const d = lerp(2.2, 1.0, easeIn(L.k)); cam([ph.x + n.x * d, ph.y + n.y * d, ph.z + n.z * d], [ph.x, ph.y, ph.z], 40); ROLL = L.lt * 2.4; sh(BEDP, 14); }, [[0, 'whoosh', .6], [.2, 'clock_spin', .6], [.5, 'magic_hit', .5]]);
 // 56 «Denn hinter dem letzten Bild war ein Tunnel.»: un túnel de marcos de pantalla que brillan; la cámara vuela dentro
 function tunnel(L, z0, z1) { use('TUN'); MODE = 'in'; renderer.toneMappingExposure = 1; hemi.intensity = .4; sun.intensity = 0; FILL.intensity = 0; bloom.strength = .5; bloom.threshold = .6; scene.fog.color.setRGB(.02, .02, .06); scene.fog.density = .004; setSky([0, 0, .02], [0, 0, .04], [.02, .02, .06]);
   TUN.fr.forEach((f, i) => f.rotation.z = L.T * .4 + i * .15); const z = lerp(z0, z1, L.k); cam([NX + Math.sin(L.T * 1.3) * .6, Math.cos(L.T * 1.1) * .6, z], [NX, 0, z - 30], 60); }
@@ -445,7 +443,7 @@ function sofaScene(L, mode = 'clap', seed = 58) { town(L); BEAM.visible = true; 
 shot(81.98, 'F', 'slow', L => { sofaScene(L); confRain(V(SX, 0, SZ + 4), L.T, 50, 30, 20, 18); orb(L.k, V(SX, 4, SZ), null, [38, .4, .16, 46], [24, .15, .12, 42]); sh(V(SX, 0, SZ), 30); }, [[0, 'flash', .6], [.1, 'choir', .6], [.4, 'clap_crowd', .6], [1.4, 'sparkle', .5]]);
 cut(83.4, 'C', [-.6, .9, 1], [[0, 'whoosh', .4], [.2, 'fanfare', .4]]);
 // 59 «Mit deinem Namen drauf.»: la placa roja con «DU»
-shot(84.8, 'C', 'punch', L => { sofaScene(L, 'clap', 59); const p = V(SX, 5.4, SZ - .9); cm([SX + .8, 6.4, SZ + 9, p.x, p.y, p.z, 40], [SX + .5, 6.0, SZ + 6.5, p.x, p.y, p.z, 38], L.k); sh(V(SX, 0, SZ), 20); }, [[0, 'impact', .6], [.1, 'sparkle', .7], [.6, 'ding_soft', .5]]);
+shot(84.8, 'C', 'punch', L => { sofaScene(L, 'clap', 59); const p = V(SX, 6.4, SZ - .9); cm([SX + .8, 7.4, SZ + 14, p.x, p.y, p.z, 40], [SX + .5, 7.0, SZ + 11.5, p.x, p.y, p.z, 38], L.k); sh(V(SX, 0, SZ), 20); }, [[0, 'impact', .6], [.1, 'sparkle', .7], [.6, 'ding_soft', .5]]);
 // 60 «Weil du der Erste bist, der geblieben ist.»: Papa presenta el sofá; «#1»
 shot(86.2, 'W', null, L => { sofaScene(L, 'cheer', 60); const p = put(papa, SX + 6.5, 0, SZ + 6, -.5); actuar(p, 0, [[0, { aLx: 1.2, aLz: .9, aLe: .2, aRx: .3, headX: -.05 }]], { T: L.T }); cara(p, L.T, { expr: 'happy', eyes: 'happy', mouth: 'open_smile' }); const r = put(krause, SX - 6, 0, SZ + 6.5, .5); actuar(r, 0, [[0, { aLx: 1.2, aLz: -.6, aLe: 1.9, aRx: 1.2, aRz: -.6, aRe: 1.9 }]], { T: L.T }); cara(r, L.T, { expr: 'happy', eyes: 'cry', mouth: 'smile' }); tears(r, L.T);
   cm([SX, 7, SZ + 26, SX, 4.5, SZ + 3, 46], [SX, 7.2, SZ + 23, SX, 4.6, SZ + 3, 44], L.k); badge('gold', '#1', W / 2, H * .2, (L.lt - .2) * 3); sh(V(SX, 0, SZ + 4), 26); }, [[0, 'whoosh', .5], [.2, 'fanfare', .5], [.6, 'cheer', .5]]);
@@ -455,11 +453,11 @@ shot(88.59, 'Z', null, L => { town(L); setSky([.3, .3, .7], [.9, .55, .45], [1, 
   for (const [ch, x] of [[frieda, -4.5], [kalle, -1.5], [opa, 1.5], [krause, 4.5]]) { put(ch, P0.x + x, 0, P0.z - 4, 0); actuar(ch, 0, [[0, { aLx: .2, aRx: .2 }]], { T: L.T }); cara(ch, L.T, { expr: 'happy', eyes: 'happy', mouth: 'smile' }); }
   cm([P0.x, 5.2, P0.z + 15, P0.x, 4.2, P0.z - 6, 46], [P0.x, 4.9, P0.z + 11, P0.x, 4.3, P0.z - 6, 44], L.k); sh(P0, 30); }, [[0, 'zoom_in', .5], [.3, 'strings', .5], [1.0, 'heartbeat', .4]]);
 // 62 «Du wohnst hier.»: desde el sofá (tus ojos): todos te saludan; Papa te tiende la mano
-shot(90.24, 'C', 'punch', L => { sofaScene(L, 'wave', 62); const p = put(papa, SX, 0, SZ + 6.5, PI); actuar(p, 0, [[0, { aRx: 1.5, aRe: .2, aLx: .3, lean: .1 }]], { T: L.T }); cara(p, L.T, { expr: 'happy', eyes: 'happy', mouth: 'open_smile' }); const j = put(junge, SX - 3.5, 0, SZ + 7.5, PI + .3); actuar(j, 0, [[0, { ...GEST.wave, aRz: .4 + Math.sin(L.T * 8) * .3 }]], { T: L.T }); cara(j, L.T, { expr: 'joy', mouth: 'open_smile' });
+shot(90.24, 'C', 'punch', L => { sofaScene(L, 'wave', 62); const p = put(papa, SX + 1.5, 0, SZ + 10, PI + .15); actuar(p, 0, [[0, { aRx: 1.5, aRe: .2, aLx: .3, lean: .1 }]], { T: L.T }); cara(p, L.T, { expr: 'happy', eyes: 'happy', mouth: 'open_smile' }); const j = put(junge, SX - 3.5, 0, SZ + 7.5, PI + .3); actuar(j, 0, [[0, { ...GEST.wave, aRz: .4 + Math.sin(L.T * 8) * .3 }]], { T: L.T }); cara(j, L.T, { expr: 'joy', mouth: 'open_smile' });
   crowdAt(L, SX, SZ + 10, 12, 6, 14, 62, { from: 18, mode: 'wave' }); cm([SX, 5.6, SZ + 1, SX, 4.6, SZ + 12, 50], [SX, 5.6, SZ + 1.5, SX, 4.6, SZ + 12, 48], L.k); sh(V(SX, 0, SZ + 8), 24); }, [[0, 'impact', .4], [.1, 'cheer', .5], [.5, 'kids_laugh', .4]]);
 // 63 «Also … in dieser Stadt … alle –»: vuelta al principio (bucle): la plaza, la gente corriendo, la Tafel al fondo
 shot(91.24, 'W', null, L => { hookStreet(L); }, [[0, 'whoosh', .6], [.1, 'run_cobble', .6], [.5, 'cheer', .4]]);
-cut(92.5, 'C', [.35, .6, -.4], [[0, 'whoosh', .4], [.2, 'kids_laugh', .4]]);
+cut(92.5, 'C', [.3, .85, .6], [[0, 'whoosh', .4], [.2, 'kids_laugh', .4]]);
 
 
 // ---------- transiciones, sonidos, render ----------

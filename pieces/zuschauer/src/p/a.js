@@ -21,7 +21,7 @@ function duEdge(L, o = {}) { use('ZI'); inside(.75, 22); ZI.LMP.intensity = 60; 
   GLOW.position.copy(wpos(PH)).lerp(hp(c), .4); GLOW.intensity = 16; return c; }
 shot(3.25, 'W', null, L => { const c = duEdge(L); onFace(c, 4.2, .2, .6, 40, L.k, 3.6); sh(EDGE, 16); }, [[0, 'swipe', .6], [.3, 'notif', .5], [.8, 'kids_laugh', .3]]);
 // 4b «… über diese Stadt schaust»: por encima del hombro, la pantalla: un vídeo de «In dieser Stadt»
-shot(4.4, 'C', null, L => { const c = duEdge(L); const h = hp(c), ph = wpos(PH); cm([h.x + .9, h.y + 1.4, h.z - 1.3, ph.x, ph.y, ph.z, 34], [h.x + .7, h.y + 1.2, h.z - .8, ph.x, ph.y, ph.z, 30], L.k); sh(EDGE, 16); }, [[0, 'whoosh', .5], [.3, 'mobile', .5]]);
+shot(4.4, 'C', null, L => { const c = duEdge(L); const h = hp(c), ph = wpos(PH); cm([h.x + 1.8, h.y + 2.2, h.z - 2.8, ph.x, ph.y, ph.z, 34], [h.x + 1.4, h.y + 1.9, h.z - 2.2, ph.x, ph.y, ph.z, 30], L.k); sh(EDGE, 16); }, [[0, 'whoosh', .5], [.3, 'mobile', .5]]);
 // 5 «Aber niemand weiß das hier:»: el chico se lleva el dedo a los labios; detrás, todos hacen «psst»
 shot(5.55, 'F', null, L => { town(L); const c = put(junge, P0.x, 0, P0.z, 0); actuar(c, 0, [[0, { aRx: 2.3, aRz: -.4, aRe: 2.3, lean: .12, headX: .05 }]], { T: L.T }); cara(c, L.T, { expr: 'sus', eyes: 'half', mouth: 'o' });
   rowAt(L, P0.x, P0.z - 7, 6, 4.5, -1, 1, 'shh', 5, { from: 2 }); onFace(c, 3.2, .3, -.4, 38, L.k, 2.6); sh(P0, 20); }, [[0, 'whisper', .7], [.4, 'sniff', .3], [.9, 'silence_tick', .5]]);
@@ -49,14 +49,14 @@ shot(15.98, 'C', 'punch', L => { zimmerN(L); const c = duBed(L, { glow: L.lt < .
 // 13 «3:17 Uhr.»: el despertador digital de la mesilla
 shot(16.45, 'Z', null, L => { zimmerN(L, '3:17'); duBed(L, { glow: 26 }); const p = V(ZX + 6, 3.45, -10.6); cm([p.x + 2.2, p.y + 1.8, p.z + 6.4, p.x, p.y + .6, p.z, 40], [p.x + 1.4, p.y + 1.1, p.z + 4.4, p.x, p.y + .4, p.z, 38], L.k); sh(p, 10); }, [[0, 'zoom_in', .5], [.2, 'clock_tick', .7], [.8, 'tick', .5]]);
 // 13b «… Uhr.»: plano general del cuarto a oscuras: tú, iluminado por el móvil, y el reloj en primer término
-shot(17.1, 'C', null, L => { zimmerN(L, '3:17'); duBed(L, { glow: 28 }); cm([ZX + 3, 7.5, 6, ZX + 10, 4.5, -8, 44], [ZX + 4, 7.2, 4.5, ZX + 10, 4.5, -8, 42], L.k); sh(BEDP, 14); }, [[0, 'whoosh', .4], [.2, 'owl', .5]]);
+shot(17.1, 'C', null, L => { zimmerN(L, '3:17'); duBed(L, { glow: 28 }); cm([ZX + 6, 8.5, 9, BEDP.x - 2, 5, BEDP.z, 44], [ZX + 7, 8.2, 7.5, BEDP.x - 2, 5, BEDP.z, 42], L.k); sh(BEDP, 14); }, [[0, 'whoosh', .4], [.2, 'owl', .5]]);
 // 14 «Schon wieder.»: en la ventana, la cara de Frieda con los prismáticos
 shot(17.73, 'S', null, L => { zimmerN(L); const c = put(frieda, ZX - 12, 4.6, -14.0, 0); actuar(c, 0, [[0, BINO]], { T: L.T }); binoIn(c); cara(c, L.T, { expr: 'smug', eyes: 'squint', mouth: 'grin' }); FILL.intensity = 18; FILL.color.setRGB(.6, .7, 1);
   cm([ZX - 11.4, 9.6, -5.4, ZX - 12, 8.6, -14.4, 40], [ZX - 11.7, 9.2, -7.4, ZX - 12, 8.7, -14.4, 38], L.k); sh(V(ZX - 12, 0, -13), 10); }, [[0, 'creepy_ting', .6], [.3, 'glass_rattle', .4], [.6, 'sniff', .3]]);
 // 15 «Deshalb stellt sie sich jede Nacht einen Wecker»: Frieda, en pijama en su cuarto, pone el despertador a las 3:17
 shot(18.6, 'R', null, L => { use('FZ'); inside(.45, 14); const c = put(frieda, FX + 14, 1.3, -6.5, 0); actuar(c, 0, [[0, { ...SIT, aLx: 1.3, aRx: 1.3, aLe: 1.0, aRe: 1.0, aLz: -.2, aRz: -.2, headX: .25 }]], { T: L.T }); cara(c, L.T, { expr: 'determined', mouth: 'smirk' });
   attach(WECK, c.aR.hand, [-.5, -1.0, .5], [0, 0, 0], .55); WECK.userData.draw(L.k < .5 ? '2:00' : '3:17'); FILL.intensity = 26; FILL.color.setRGB(1, .85, .6);
-  cm([FX + 11.5, 7.8, 4.5, FX + 13.6, 5.2, -6.5, 42], [FX + 11.8, 7.4, 2.4, FX + 13.6, 5.2, -6.5, 40], L.k); sh(V(FX + 14, 0, -6), 14); }, [[0, 'whoosh', .5], [.3, 'ratchet', .7], [.9, 'clock_spin', .6], [1.4, 'click_metal', .6]]);
+  cm([FX + 12, 7.6, 2.5, FX + 13.8, 5.0, -6.5, 40], [FX + 12.3, 7.3, 1.0, FX + 13.8, 5.0, -6.5, 38], L.k); sh(V(FX + 14, 0, -6), 14); }, [[0, 'whoosh', .5], [.3, 'ratchet', .7], [.9, 'clock_spin', .6], [1.4, 'click_metal', .6]]);
 cut(19.7, 'C', [-.5, .85, .3], [[0, 'whoosh', .4], [.15, 'watch_click', .6], [.5, 'yawn_f', .5]]);
 // 16 «– damit sie dich nie verpasst.»: suena el despertador y Frieda salta de la cama con los prismáticos
 shot(20.45, 'C', 'punch', L => { use('FZ'); inside(.5, 16); const T = L.T; show(WECK, FX + 10, 3.1, -9.6, .3, .55); WECK.userData.draw('3:17'); WECK.position.x += Math.sin(T * 60) * .06; rings(V(FX + 10, 4, -9.4), T, .9);

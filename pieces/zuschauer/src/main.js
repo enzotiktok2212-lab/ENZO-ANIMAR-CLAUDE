@@ -57,7 +57,6 @@ const RH = riesenHandy(HB.G); RH.position.set(HX, 0, HZ); RH.rotation.y = -.25;
 // en mi cuarto: manta de tienda, móvil en la mano, reloj 3:17
 const DECKE = (() => { const g = new THREE.Group(); scene.add(g); const tx = (() => { const c = document.createElement('canvas'); c.width = c.height = 128; const x = c.getContext('2d'); x.fillStyle = '#3a5ab8'; x.fillRect(0, 0, 128, 128); x.fillStyle = '#ffd23f'; for (let i = 0; i < 14; i++) { x.beginPath(); x.arc((i * 37) % 128, (i * 53) % 128, 4, 0, 7); x.fill(); } const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(3, 2); return t; })();
   const m = mat(0xffffff, { map: tx, roughness: .95, side: THREE.DoubleSide }); const s = new THREE.Mesh(new THREE.SphereGeometry(2.4, 26, 14, Math.PI / 2 + 1.0, 2 * Math.PI - 2.0, 0, Math.PI * .62), m); s.scale.set(1.15, 1.25, 1.1); s.position.y = .9; g.add(s); const lap = box(6, 1.2, 5.4, m, .5, g, 0, -3.3, 2.4); g.userData.lap = lap; return g; })();
-  const m = mat(0xffffff, { map: tx, roughness: .95, side: THREE.DoubleSide }); const s = new THREE.Mesh(new THREE.SphereGeometry(3.4, 24, 14, -Math.PI * .25, Math.PI * 1.5, 0, Math.PI / 2), m); s.scale.set(1, 1.15, 1.2); s.rotation.y = Math.PI; g.add(s); box(9, .8, 9, m, .4, g, 0, -.2, 2.6); return g; })();
 const PH = phone(scene); PH.scale.setScalar(.7); outline(PH, 1);
 const PHS = PH.userData.scr;
 // prismáticos, bote, pepinillo, nevera, calendario, despertador, martillo, escalera, pulgar, bus 42
@@ -65,7 +64,7 @@ const FG = fernglas(scene); outline(FG, 1); const GLAS = gurkenglas(scene); outl
 const FRIDGE = kuehlschrank(KU.g); FRIDGE.position.set(-8, 0, -6);
 const KAL = kalender(scene); const WECK = alarm(scene, .55); outline(WECK, 1); const HAM = hammer(scene); outline(HAM, 1); const LAD = ladder(scene, 22);
 const DAU = daumen(scene); DAU.scale.setScalar(4.2);
-const BUS = bus(HB.G, 0xf2c23a, '42  MARKTPLATZ'); outline(BUS, 1.2); BUS.visible = false;
+const BUS = bus(HB.G, 0xf2c23a, '42'); outline(BUS, 1.2); BUS.visible = false;
 const NEWS = (() => { const g = new THREE.Group(); scene.add(g); const p = textPlane(2.4, 1.6, 240, 160, (c, w, h) => { c.fillStyle = '#f4f0e4'; c.fillRect(0, 0, w, h); txt(c, 'HUFENBACHER', w / 2, 22, 22, '#1a1a1a'); txt(c, 'BOTE', w / 2, 46, 26, '#c8203a'); c.fillStyle = '#9a9a9a'; for (let i = 0; i < 6; i++) c.fillRect(14, 70 + i * 13, w - 28, 6); c.fillStyle = '#1a1a1a'; for (const x of [.36, .64]) { c.beginPath(); c.arc(w * x, h * .55, 14, 0, 7); c.fill(); } }); p.material.side = THREE.DoubleSide; g.add(p); return g; })();
 // ---------- reparto ----------
 const du = makeIch(scene), papa = makePapa(scene), opa = makeOpa(scene), junge = makeJunge(scene), frieda = makeFrieda(scene), kalle = makeKalle(scene), krause = makeKrause(scene);
@@ -158,7 +157,7 @@ const PHONEP = { aRx: .95, aRz: -.32, aRe: 1.25, aLx: .95, aLz: -.32, aLe: 1.25,
 const BINO = { aLx: 2.2, aLz: -.3, aLe: 2.0, aRx: 2.2, aRz: -.3, aRe: 2.0, headX: -.05 };     // prismáticos a los ojos
 const FREEZE = (i) => [{ aLx: 1.6, aRx: .4, aLe: .4, lean: .1, lLx: .5, lLk: .3 }, { aLx: 2.6, aRx: 2.6, aLz: .5, aRz: .5, headX: -.2 }, { crouch: .3, aLx: 1.2, aRx: 1.2, aLe: 1.6, aRe: 1.6 }, { aRx: 1.5, aRe: .1, lRx: -.6, lean: -.05 }][i % 4];
 // móvil delante de la cara (pantalla hacia la cara si toFace; si no, hacia fuera), a dist delante y drop por debajo de los ojos
-function phoneIn(c, toFace = true, s = .7, dist = 1.5, drop = .9) { const h = hp(c), sc = c.spec.scale || 1, a = c.root.rotation.y, f = V(Math.sin(a), 0, Math.cos(a)); PH.visible = true; PH.scale.setScalar(s); PH.position.copy(h).addScaledVector(f, dist * sc).add(V(0, (.75 - drop) * sc, 0));
+function phoneIn(c, toFace = true, s = .7, dist = 1.5, drop = 1.55) { const h = hp(c), sc = c.spec.scale || 1, a = c.root.rotation.y, f = V(Math.sin(a), 0, Math.cos(a)); PH.visible = true; PH.scale.setScalar(s); PH.position.copy(h).addScaledVector(f, dist * sc).add(V(0, (.75 - drop) * sc, 0));
   const tgt = toFace ? h.clone().add(V(0, .75 * sc, 0)) : PH.position.clone().addScaledVector(f, 5).add(V(0, 1.2, 0)); PH.lookAt(tgt); }
 function binoIn(c) { c.root.updateMatrixWorld(true); attach(FG, c.head, [0, .78, .95], [0, 0, 0], 1); }
 // gente de Hufenbach alrededor de (cx, cz), siempre detrás del sujeto según la cámara
