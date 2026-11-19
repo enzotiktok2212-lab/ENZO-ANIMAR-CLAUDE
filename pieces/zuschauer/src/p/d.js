@@ -1,84 +1,54 @@
-// ---------- d: Glanz dispara a Opa, el cohete da la vuelta a la ciudad, la estatua, ∞, la Robbe alcaldesa, Papa en chanclas, mi pelo (145,02 – 175,2 s) ----------
-const GL = V(-6, 0, -30);   // Glanz en la plaza (delante de la carroza)
-const glanzLaunch = (L, aim, o = {}) => { town(L, 'storm'); STORM.visible = true; STORM.userData.at(V(DOMX, 172, DOMZ - 10), 1); const g = put(glanz, GL.x, 0, GL.z, faceTo(GL, DTOP()) + (o.dry || 0));
-  actuar(g, 0, [[0, aim ? { aRx: 2.0, aRz: -.1, aRe: .2, aLx: 1.9, aLz: -.4, aLe: .5, headX: -.2, lean: -.1 } : { aRx: 1.0, aRe: 1.0, aLx: 1.0, aLe: 1.0 }]], { T: L.T }); cara(g, L.T, o.face || { expr: 'angry', eyes: 'angry', mouth: 'grimace' });
-  attach(LAUNCH, g.aR.hand, [0, -.6, .2], [PI / 2 - .35, 0, 0], 1.05); return g; };
-const tp = () => DTOP().add(V(0, 3.4, 0));
-// trayectoria: de Glanz a Opa, vuelta alrededor de Opa, vuelta a la ciudad, persecución por la calle, estatua
-const R1 = u => { const a = V(GL.x, 6, GL.z), b = tp(); return a.clone().lerp(b, u).add(V(0, Math.sin(u * PI) * 20, 0)); };
-const orbitOpa = u => { const t = tp(); const a = u * PI * 2 + PI * .75; return V(t.x + Math.sin(a) * 7, t.y + Math.sin(u * PI) * 2, t.z + Math.cos(a) * 7); };
-const lap = u => { const t = tp(); const a = u * PI * 1.6; return V(lerp(t.x, 0, u) + Math.cos(a) * 60, lerp(t.y, 40, u), lerp(t.z, -20, u) + Math.sin(a) * 60); };
-// 108 «Also schnappte sich Glanz selbst»: le arranca el lanzacohetes a un soldado
-shot(145.02, 'W', null, L => { town(L, 'storm'); const k = clamp(L.lt / .5); const g = put(glanz, GL.x, 0, GL.z, .6); actuar(g, 0, [[0, { aRx: lerp(1.2, 1.6, k), aRz: -.3, aRe: .3, lean: .1 }]], { T: L.T }); cara(g, L.T, { expr: 'angry', eyes: 'angry', mouth: 'grimace' }); const s = put(SOL[4], GL.x + 3.6, 0, GL.z + 2.4, -2.2); actuar(s, 0, [[0, GEST.shock]], { T: L.T }); cara(s, L.T, { expr: 'shock', mouth: 'o' });
-  attach(LAUNCH, k < .6 ? s.aR.hand : g.aR.hand, [0, -.6, .2], [PI / 2, 0, 0], 1.05); orbit(V(GL.x + 1.8, 4, GL.z + 1.2), 15, -.4, .1, 44); sh(GL, 14); }, [[.3, 'grab', .6], [.4, 'metal_hit', .4]]);
-// «einen Raketenwerfer»: se lo apoya al hombro, apunta hacia el Dom
-shot(146.06, 'C', 'punch', L => { const g = glanzLaunch(L, true); orbit(V(GL.x, 4.6, GL.z), 12, g.root.rotation.y - 1.25, .08, 44); badge('red', 'RAKETENWERFER', W / 2, H * .15, (L.lt - .2) * 3, 1, .85); sh(GL, 12); }, [[0, 'click_set', .7], [.4, 'ratchet', .5]]);
-cut(146.62, null, [0.7, 1, 0], [[0, 'tick', .4]]);
-// 109 «und schoss auf Opa.»: ¡fuego! el cohete sale hacia la aguja
-shot(147.32, 'F', null, L => { const g = glanzLaunch(L, true); rocketPath(0, R1, L.k * .35); grade.uniforms.flash.value = L.lt < .1 ? .4 : 0; orbit(V(GL.x, 5, GL.z), 18, faceTo(GL, DTOP()) + 1.1, .15, 48); sh(GL, 20); }, [[0, 'ignite', .8], [.1, 'whoosh', .7]]);
-cut(147.96, null, [0.5, 1.1, 0], [[0, 'pling', .4]]);
-// 110 «Opa bewegte sich nicht.»: Opa tranquilo; el cohete se acerca por detrás de la cámara
-shot(148.69, 'S', null, L => { town(L, 'storm'); const t = DTOP(); STORM.visible = true; STORM.userData.at(V(t.x, t.y + 40, t.z), 1); const c = opaCool(t.x, t.y, t.z, faceTo(t, GL), L.T); auraOn(c, L.T); rocketPath(0, R1, .6 + L.k * .3); onFace(c, 7.6, .4, .8, 42, L.k, 6.6); sh(t, 14); }, [[0, 'whoosh', .5], [.4, 'wind', .4]]);
-cut(149.48, null, [0.6, 1, 0], [[0, 'whoosh_soft', .4]]);
-// 111 «Die Rakete flog um ihn herum,»: órbita alrededor de Opa con estela
-shot(150.01, 'Z', null, L => { town(L, 'storm'); const t = DTOP(); STORM.visible = true; STORM.userData.at(V(t.x, t.y + 40, t.z), 1); const c = opaCool(t.x, t.y, t.z, faceTo(t, GL), L.T); auraOn(c, L.T); rocketPath(0, orbitOpa, L.k * .95, 18); orbit(V(t.x, t.y + 3, t.z), 22, faceTo(t, GL) + .4, .25, 46); sh(t, 20); }, [[0, 'whoosh', .6], [.6, 'whoosh_soft', .5]]);
-cut(150.85, null, [1.2, 1, 0], [[0, 'cloth', .4]]);
-// 112 «drehte eine Runde über die Stadt»: vista aérea, el cohete da la vuelta a Glanzheim
-shot(151.66, 'W', null, L => { town(L, 'storm'); rocketPath(0, lap, .1 + L.k * .8, 22); const p = ROCK[0].position; cam([20, 150, 120], [p.x * .5, 20, p.z * .5 - 30], 52); sh(V(0, 0, -40), 120); }, [[0, 'whoosh_up', .6], [.4, 'jet', .4]]);
-// 113 «und jagte den Bürgermeister die Straße entlang,»: Glanz corre aterrorizado, el cohete detrás
-const chase = u => V(26, 6 - u * 3, 60 - u * 70);
-shot(152.82, 'C', null, L => { town(L); const z = 50 - L.lt * 9; const g = put(glanz, 26, 0, z, PI); actuar(g, 0, [[0, runP(L.T, 0)]], { T: L.T }); cara(g, L.T, { expr: 'shock', eyes: 'terror', mouth: 'scream' }); sweat(g, L.T); rocketPath(0, u => V(26, 5.5, z + 10 - u * .2), .5);
-  orbit(V(26, 3.6, z), 16, PI - .25, .12, 46); sh(V(26, 0, z), 20); }, [[0, 'steps_run', .6], [.1, 'scream_girl', .3]]);
-shot(153.66, 'S', null, L => { town(L); const z = 42 - L.lt * 9; const g = put(glanz, 26, 0, z, PI); actuar(g, 0, [[0, runP(L.T, 0)]], { T: L.T }); cara(g, L.T, { expr: 'shock', eyes: 'terror', mouth: 'scream' }); rocketPath(0, u => V(26, 5, z + 7 + Math.sin(L.T * 9) * .4 - u), .5);
-  crowdAt(L, 26, z, 8, 8, 18, 53, { mode: 'point' }); orbit(V(26, 4, z + 3), 24, -.7, .18, 48); sh(V(26, 0, z), 24); }, [[0, 'run_cobble', .6], [.4, 'whoosh', .5]]);
-shot(154.34, 'R', null, L => { town(L); const z = 36 - L.lt * 10; const g = put(glanz, 26, 0, z, PI); actuar(g, 0, [[0, runP(L.T, 0)]], { T: L.T }); cara(g, L.T, { expr: 'shock', eyes: 'terror', mouth: 'scream' }); rocketPath(0, u => V(26, 4.8, z + 6 - u), .5);
-  const h = hp(g); cam([h.x + 2.6, h.y + 1, h.z - 10.5], [h.x, h.y - 1.2, h.z], 44); sh(V(26, 0, z), 14); }, [[0, 'scream_girl', .4]]);
-// 114 «direkt in seine eigene riesige Goldstatue.»: corre hacia la estatua… el cohete impacta
-shot(155.18, 'W', null, L => { town(L); const k = L.k; const p = V(lerp(24, STX + 1, k), 0, lerp(-10, STZ + 7, k)); const g = put(glanz, p.x, 0, p.z, faceTo(p, V(STX, 0, STZ))); actuar(g, 0, [[0, runP(L.T, 0)]], { T: L.T }); cara(g, L.T, { expr: 'shock', eyes: 'terror', mouth: 'scream' }); put(STAT, STX, 6, STZ, 0);
-  orbit(V(STX + 2, 8, STZ + 8), lerp(44, 38, k), .2, .15, 50); sh(V(STX, 0, STZ), 40); }, [[0, 'run_cobble', .5]]);
-shot(156.25, 'C', 'punch', L => { town(L); const g = put(glanz, STX + 1, 0, STZ + 7, PI); actuar(g, 0, [[0, GEST.cower]], { T: L.T }); cara(g, L.T, { expr: 'shock', eyes: 'terror', mouth: 'scream' }); put(STAT, STX, 6, STZ, 0); if (L.lt < .3) rocketPath(0, u => V(STX + 30 - u * 30, 20 - u * 4, STZ + 20 - u * 20), L.lt / .3); else boom(0, V(STX, 14, STZ + 3), L.t0 + .3, L.T, 1.8);
-  orbit(V(STX, 10, STZ), 40, -.3, .15, 50); SHAKE = L.lt > .3 ? .5 : 0; sh(V(STX, 0, STZ), 40); }, [[.3, 'explosion', 1], [.4, 'metal_rip', .6]]);
-cut(156.79, null, [-.5, 1, 0], [[0, 'swipe', .4]]);
-// 115 «Der Kopf fiel ab»: la cabeza dorada se tambalea y cae
-shot(157.69, 'S', null, L => { town(L); put(STAT, STX, 6, STZ, 0); STATHEAD.visible = false; const k = clamp(L.lt / 1.0); const top = V(STX, 6 + 4.15 * 3.1 + .3, STZ); const p = top.clone().lerp(V(STX + .5, 0, STZ + 7), easeIn(k)); show(GHEAD, p.x, p.y, p.z, 0, 3.1); GHEAD.rotation.set(k * 1.2, 0, k * .4);
-  const g = put(glanz, STX + 1, 0, STZ + 7, PI); actuar(g, 0, [[0, GEST.cower]], { T: L.T }); cara(g, L.T, { expr: 'shock', eyes: 'up', mouth: 'scream' }); dust(V(STX, 6, STZ), L.t0 - .3, L.T, 8, 1.4); orbit(V(STX, 12, STZ + 2), 36, .3, .1, 50); sh(V(STX, 0, STZ), 40); }, [[0, 'metal_creak', .6], [.5, 'whoosh_down', .6]]);
-// 116 «und machte ihn platt»: ¡PLAF!
-shot(158.85, 'C', 'punch', L => { town(L); put(STAT, STX, 6, STZ, 0); STATHEAD.visible = false; show(GHEAD, STX + .5, 2.2, STZ + 7, 0, 3.1); GHEAD.rotation.set(1.2, 0, .4); const g = put(glanz, STX + 2.6, 0, STZ + 9.4, PI); g.root.scale.set(1.3, .12, 1.4); dust(V(STX, 0, STZ + 7), L.t0, L.T, 14, 1.6);
-  orbit(V(STX + 1, 3, STZ + 8), 18, .4, .25, 46); SHAKE = L.lt < .2 ? .7 : 0; badge('red', 'PLATT!', W / 2, H * .17, (L.lt - .1) * 4, 1, 1.2); sh(V(STX, 0, STZ + 7), 20); }, [[0, 'slam', 1], [.1, 'rubble', .6]]);
-// «wie ein Schnitzel.»: Glanz aplastado como un escalope (vista cenital, piernas asomando)
-shot(159.69, 'Z', null, L => { town(L); show(GHEAD, STX + .5, 2.2, STZ + 7, 0, 3.1); GHEAD.rotation.set(1.2, 0, .4); const g = put(glanz, STX + 2.6, .1, STZ + 9.4, PI); g.root.scale.set(1.3, .12, 1.4); cara(g, L.T, { expr: 'confused', eyes: 'closed', mouth: 'wavy' }); crowdAt(L, STX, STZ + 9, 10, 7, 16, 55, { mode: 'point', face: V(STX, 0, STZ + 9) });
-  cam([STX + 3, 22, STZ + 16], [STX + 1.5, 0, STZ + 8.5], 46); badge('gold', 'SCHNITZEL', W / 2, H * .17, (L.lt - .2) * 3, 1, 1); sh(V(STX, 0, STZ + 8), 20); }, [[0, 'pan_sizzle', .5], [.3, 'laugh_m', .4]]);
-// 117 «Der Aura-Meter versuchte es nicht einmal mehr.»: la aguja da vueltas, chispas
-shot(160.69, 'W', null, L => { town(L); METER.userData.set(75 + Math.sin(L.T * 30) * 75, 'OPA'); dust(V(-6, 46, -89), L.t0, L.T, 8, .8); grade.uniforms.flash.value = Math.max(0, Math.sin(L.T * 22)) * .1; orbit(V(-6, 49, -91), lerp(36, 32, L.k), .2, .05, 44); SHAKE = .25; sh(V(-6, 40, -91), 30); }, [[0, 'sparks', .6], [.3, 'glitch', .5]]);
-shot(161.91, 'C', null, L => { town(L); const t = DTOP(); const c = opaCool(t.x, t.y, t.z, faceTo(t, GL), L.T, { wind: .8 }); mtag(c, 'OPA', Math.round(150 + L.lt * 900), 1); orbit(V(t.x, t.y + 3.2, t.z), 15, faceTo(t, GL) + .3, .05, 44); sh(t, 14); }, [[0, 'riser_short', .5]]);
-// 118 «Er zeigte nur noch: unendlich.» (zoom lento): la placa OPA ∞
-shot(162.78, 'F', 'slow', L => { town(L); METER.userData.set(150, 'OPA', 'inf'); orbit(V(-6, 48, -91), lerp(36, 28, L.k), -.1, .02, 44); sh(V(-6, 40, -91), 30); }, [[0, 'choir', .5]]);
-shot(163.79, 'C', 'punch', L => { town(L); METER.userData.set(150, 'OPA', 'inf'); const t = DTOP(); const c = opaCool(t.x, t.y, t.z, faceTo(t, GL), L.T, { wind: .8 }); cara(c, L.T, { expr: 'smug', mouth: 'smirk' }); onFace(c, 7, .2, .3, 40, L.k, 6); badge('gold', '∞', W / 2, H * .15, (L.lt - .2) * 3, 1, 1.6); sh(t, 14); }, [[0, 'ding_reveal', .7]]);
-// 119 «Jetzt ist Aura-Farmen Pflicht,»: todo el pueblo posando chulo; cartel nuevo PFLICHT
-const PF = (() => { const p = plakat(scene, 'AURA-FARMEN', 'PFLICHT!', 10, 5, '#1aa04a'); p.visible = false; PROPS.push(p); return p; })();
-shot(164.62, 'W', null, L => { town(L); crowdAt(L, P0.x, P0.z + 10, 20, 4, 22, 57, { mode: 'cheer' }); EX.slice(0, 8).forEach((c, i) => { if (c.root.visible) { actuar(c, 0, [[0, COOL]], { T: L.T }); cara(c, L.T + i, { expr: 'smug', mouth: 'smirk' }); } }); show(PF, P0.x, 9, P0.z + 2, 0);
-  orb(L.k, V(P0.x, 6, P0.z + 6), null, [34, .05, .2, 50], [30, -.05, .18, 50]); sh(V(P0.x, 0, P0.z + 6), 30); }, [[0, 'cheer', .6], [.3, 'stamp', .5]]);
-shot(165.76, 'C', 'punch', L => { town(L); show(PF, P0.x, 9, P0.z + 2, 0); const c = put(EX[16], P0.x, 0, P0.z + 6, 0); actuar(c, 0, [[0, FARM]], { T: L.T }); cara(c, L.T, { expr: 'smug', mouth: 'smirk' }); orbit(V(P0.x, 5.2, P0.z + 5), 19, .1, .08, 46); sh(P0, 14); }, [[0, 'impact', .6]]);
-// 120 «und die Robbe ist unsere neue Bürgermeisterin.»: la Robbe en la escalinata del Rathaus con la cadena de alcalde, confeti
-const CHAIN = (() => { const g = new THREE.Group(); scene.add(g); const gm = mat(0xe9c23a, { metalness: .9, roughness: .2, emissive: 0x5a4000, emissiveIntensity: .25 }); for (let i = 0; i < 13; i++) { const a = Math.PI + i / 12 * Math.PI; box(.3, .2, .12, gm, .04, g, Math.cos(a) * 1.2, Math.sin(a) * 1.0, 0); } const m = cyl(.5, .5, .12, gm, 18, g, 0, -1.1, 0); m.rotation.x = PI / 2; outline(g, 1); g.visible = false; PROPS.push(g); return g; })();
-shot(166.12, 'S', null, L => { town(L); const r = robbe(-6, 3.6, -79, 0, L.T, { salute: 1 }); attach(CHAIN, r.body, [0, 3.6, 1.2], [0, 0, 0], 1); confRain(V(-6, 3.6, -76), L.T, 50, 16, 10, 14); crowdAt(L, -6, -64, 16, 3, 16, 59, { mode: 'cheer', face: V(-6, 4, -79) });
-  orbit(V(-6, 7.6, -79), lerp(16, 13.5, L.k), -.2, .05, 44); sh(V(-6, 0, -79), 16); }, [[0, 'fanfare', .6], [.2, 'cheer', .5]]);
-shot(167.22, 'Z', null, L => { town(L); const r = robbe(-6, 3.6, -79, 0, L.T, { clap: 1, bounce: 1 }); attach(CHAIN, r.body, [0, 3.6, 1.2], [0, 0, 0], 1); confRain(V(-6, 3.6, -76), L.T, 60, 16, 10, 14); fireworks(V(-6, 20, -100), L.T, 3, 14); badge('gold', 'BÜRGERMEISTERIN', W / 2, H * .15, (L.lt - .2) * 3, 1, .85);
-  orbit(V(-6, 6.8, -79), lerp(11, 9.5, L.k), .25, .05, 42); sh(V(-6, 0, -79), 14); }, [[0, 'confetti', .5], [.3, 'firework', .5], [.6, 'clap', .5]]);
-// 121 «Papa hat Opas Pose in Badelatschen probiert.»: Papa encima de la valla del jardín, brazos cruzados, en chanclas
-const PW = V(20.5, 0, 100);   // valla delante de la casa (HAUS en (4, 0, 96))
-const papaPose = (L, wob = 0, fall = 0) => { town(L); const c = put(papa, PW.x, 1.5 - fall * 1.2, PW.z, PI / 2); c.root.rotation.z = Math.sin(L.T * 9) * .12 * wob + fall * 1.2; actuar(c, 0, [[0, fall ? GEST.shock : { ...COOL, aLz: -.72 + Math.sin(L.T * 9) * .3 * wob }]], { T: L.T }); cara(c, L.T, fall ? { expr: 'shock', mouth: 'scream' } : { expr: wob ? 'worried' : 'smug', mouth: wob ? 'grimace' : 'smirk' });
-  for (const l of [c.lL, c.lR]) l.shoe.material = SLIPM; return c; };
-const SLIPM = mat(0x2a8ad8, { roughness: .5 });
-shot(168.39, 'W', null, L => { const c = papaPose(L); orb(L.k, V(PW.x, 4.6, PW.z), null, [17, PI / 2 + .35, .1, 44], [15, PI / 2 + .2, .1, 44]); sh(PW, 18); }, [[0, 'whistle_inno', .4]]);
-shot(169.45, 'F', null, L => { const c = papaPose(L, .3); const p = wpos(c.lL.kn); cm([p.x + 8, 2.2, p.z + 4.5, p.x, 1.2, p.z, 42], [p.x + 13, 5, p.z + 6.5, p.x, 3.6, p.z, 48], L.k); badge('gold', 'BADELATSCHEN', W / 2, H * .17, (L.lt - .2) * 3, 1, .9); sh(PW, 10); }, [[0, 'squeak', .5], [.4, 'squeak', .4]]);
-cut(170.19, null, [-0.6, 1, 0], [[0, 'tick', .4]]);
-// 122 «Er hielt drei Sekunden durch.»: tiembla… 3·2·1… y se cae al seto
-shot(170.72, 'S', null, L => { const c = papaPose(L, 1); sweat(c, L.T); const n = 3 - Math.floor(L.lt / .2); badge('num', String(Math.max(1, n)), W / 2, H * .16, ((L.lt % .2) / .2) * 2 + .3, 1, 1.2); orbit(V(PW.x, 4.6, PW.z), 14, PI / 2 + .25, .1, 44); sh(PW, 16); }, [[0, 'tick', .5], [.2, 'tick', .5], [.4, 'tick', .5]]);
-shot(171.32, 'C', 'punch', L => { const q = clamp(L.lt / .3); const c = papaPose(L, 0, q); if (q >= 1) dizzy(c, L.T); badge('red', '3 SEK.', W / 2, H * .16, (L.lt - .2) * 3, 1, 1.1); orbit(V(PW.x, 3.4, PW.z), 15, PI / 2 - .3, .15, 44); sh(PW, 16); }, [[.2, 'crash_wood', .7], [.3, 'leaves', .5]]);
-// 123 «Und ich?»
-shot(172.24, 'Z', null, L => { town(L); const c = ichCool(P0.x, P0.z + 8, 0, L.T, { expr: 'smug', mouth: 'smirk' }); setHair(c, false); BOWL.visible = false; onFace(c, 7, .2, .3, 40, L.k, 6.2); sh(P0, 14); }, [[0, 'whoosh_soft', .5]]);
-// 124 «Ich bin endlich den Suppenschüssel-Schnitt los.»: me revuelvo el pelo — ¡pelo cool! — capucha al viento, el pueblo aplaude
-shot(172.79, 'C', 'punch', L => { town(L); const c = ichCool(P0.x, P0.z + 8, 0, L.T, { pose: { aRx: 2.8, aRz: .1, aRe: 2.1, aLx: .3, aLz: -.3, aLe: .6, headX: -.15 }, expr: 'smug', mouth: 'smirk' }); setHair(c, true); breeze(c, L.T, 2.4, 14); onFace(c, 7.4, .2, -.3, 40, L.k, 6.6); sh(P0, 14); }, [[0, 'sparkle', .7], [.2, 'wind', .5]]);
-shot(173.46, 'I', 'slow', L => { town(L); const c = ichCool(P0.x, P0.z + 8, 0, L.T, { wind: 1.6 }); setHair(c, true); breeze(c, L.T, 2.6, 18); mtag(c, 'ICH', 150, 1); crowdAt(L, P0.x, P0.z + 8, 18, 6, 22, 61, { mode: 'cheer' }); confRain(V(P0.x, 0, P0.z + 8), L.T, 50, 18, 14, 14);
-  orb(L.k, V(P0.x, 4, P0.z + 8), null, [20, .05, .12, 46], [13, 0, .1, 44]); sh(V(P0.x, 0, P0.z + 8), 24); }, [[0, 'cheer', .5], [.4, 'confetti', .4]]);
+// ---------- d: «Er ist geblieben», la fiesta, el zoom infinito, el túnel, el sofá dorado con «DU», el bucle (68,13 – 93,9 s) ----------
+// 47 «Er ist geblieben.»: el pulgar se va hacia arriba, vuelve el sol, todos saltan
+shot(68.13, 'F', null, L => { town(L); const q = easeIn(clamp(L.lt / .8)); daumenAt(TX, 40 + q * 120, TZ + 4, L.T); tafelAt(L.T, { gold: 1 }); TAF.userData.bulbs(1, L.T, 1); crowdTafel(L, 'cheer', 47, { gold: 1 }); confetti(V(TX, 4, TZ + 12), L.t0 + .1, L.T, 70, 1.4);
+  cm([TX + 3, 5, TZ + 36, TX, 12, TZ, 46], [TX + 2, 5.4, TZ + 33, TX, 12.5, TZ, 44], L.k); sh(V(TX, 0, TZ + 10), 30); }, [[0, 'whoosh_up', .8], [.1, 'cheer', .8], [.2, 'confetti', .6], [.5, 'party_horn', .5]]);
+// 48 «Die ganze Stadt hat geschrien.»: fuegos artificiales; Papa sube al chico a hombros
+shot(69.14, 'C', null, L => { town(L); tafelAt(L.T, { gold: 1 }); TAF.userData.bulbs(1, L.T, 1); const p = put(papa, TX, 0, TZ + 20, 0); actuar(p, 0, [[0, { aLx: 2.6, aRx: 2.6, aLz: .2, aRz: .2, aLe: .6, aRe: .6, headX: -.2 }]], { T: L.T }); cara(p, L.T, { expr: 'joy', mouth: 'laugh' });
+  const h = hp(p); const j = put(junge, h.x, h.y + .2, h.z - .2, 0); actuar(j, 0, [[0, { ...GEST.cheer, lLx: -1.4, lRx: -1.4, lLk: 1.4, lRk: 1.4 }]], { T: L.T }); cara(j, L.T, { expr: 'joy', mouth: 'open_smile' });
+  crowdAt(L, TX, TZ + 20, 18, 4, 16, 48, { mode: 'cheer' }); fireworks(V(TX, 10, TZ - 10), L.T); onFace(p, 6, 1.8, -.4, 46, L.k, 5.2); sh(V(TX, 0, TZ + 20), 26); }, [[0, 'firework', .6], [.2, 'cheer', .7], [.6, 'firework', .5], [1.0, 'whistle', .4]]);
+cut(70.0, 'C', [.7, 1.3, 4], [[0, 'firework', .6], [.3, 'clap_crowd', .6]]);
+// 49 «Und als es wieder ruhig war, sagte Papa:»: atardecer tranquilo; Papa, móvil en mano, te habla
+const PP = V(TX + 2, 0, TZ + 30);
+function papaPhone(L, o = {}) { town(L); setSky([.3, .3, .7], [.9, .55, .45], [1, .75, .45]); sun.color.setRGB(1, .7, .45); tafelAt(L.T, { gold: 1 }); const p = put(papa, PP.x, 0, PP.z, 0); actuar(p, 0, [[0, { aRx: 1.3, aRz: -.15, aRe: .5, aLx: .2, headX: .05 }]], { T: L.T }); talk(p, L.T, 71.9, 74, 'happy');
+  p.root.updateMatrixWorld(true); const h = hp(p); PH.visible = true; PH.scale.setScalar(o.s ?? 1.1); PH.position.copy(h).add(V(.9, -1.2, 2.2)); PH.lookAt(PH.position.clone().add(V(0, 0, 10))); PH.userData.set('plain', { prog: .9 }); return p; }
+shot(70.81, 'W', null, L => { const p = papaPhone(L); crowdAt(L, PP.x, PP.z, 10, 6, 16, 49, { mode: 'stare' }); onFace(p, 5, .6, .4, 42, L.k, 4.4); sh(PP, 24); }, [[0, 'whoosh', .5], [.2, 'birds', .4], [.9, 'wind', .3]]);
+cut(71.8, 'C', [-.45, .8, .3], [[0, 'whoosh', .3], [.2, 'mobile', .4]]);
+// 50 «Zoom rein. Ins Handy.»: la cámara se mete en el móvil de Papa (efecto Droste: el vídeo dentro del vídeo)
+shot(72.72, 'Z', null, L => { const p = papaPhone(L, { s: 1.4 }); const ph = wpos(PH); droste(PHS, 6); const e = easeIn(L.k); cm([ph.x, ph.y + .1, ph.z + 7, ph.x, ph.y, ph.z, 40], [ph.x, ph.y, ph.z + 1.25, ph.x, ph.y, ph.z, 40], e, x => x); sh(PP, 24); }, [[0, 'zoom_in', .8], [.4, 'whoosh', .5], [.9, 'magic_hit', .5]]);
+// 51 «In dein Zimmer.»: tu cuarto de noche: tú en la cama con el móvil
+shot(74.03, 'Z', null, L => { zimmerN(L); const c = duBed(L, { glow: 26, expr: 'happy', mouth: 'smile' }); droste(PHS, 6); const ph = wpos(PH); cm([ZX + 13, 8.5, 9, BEDP.x, 4.6, BEDP.z, 44], [ph.x + .2, ph.y + .4, ph.z + 4.5, ph.x, ph.y, ph.z, 40], easeIn(L.k), x => x); sh(BEDP, 14); }, [[0, 'zoom_in', .7], [.3, 'cloth', .4]]);
+// 52 «In dein Handy.»: tu pantalla, cada vez más cerca
+shot(74.82, 'Z', null, L => { zimmerN(L); duBed(L, { glow: 26, expr: 'happy', mouth: 'smile' }); droste(PHS, 7); const ph = wpos(PH); PH.updateMatrixWorld(true); const n = V(0, 0, 1).applyQuaternion(PH.getWorldQuaternion(new THREE.Quaternion())); cm([ph.x + n.x * 3.4, ph.y + n.y * 3.4, ph.z + n.z * 3.4, ph.x, ph.y, ph.z, 40], [ph.x + n.x * .95, ph.y + n.y * .95, ph.z + n.z * .95, ph.x, ph.y, ph.z, 40], easeIn(L.k), x => x); sh(BEDP, 14); }, [[0, 'zoom_in', .7], [.4, 'glitch', .4]]);
+// 53 «In unsere Stadt.»: desde el cielo, en picado hacia el móvil gigante de la plaza
+shot(75.64, 'Z', null, L => { town(L); RH.userData.draw({}); droste(RH.userData.scr, 6); crowdAt(L, HX, HZ + 10, 14, 6, 18, 53, { mode: 'wave' }); const c = V(HX, 10.2, HZ); const f = V(Math.sin(-.25), 0, Math.cos(-.25));
+  cm([c.x + f.x * 70, 60, c.z + f.z * 70, c.x, 6, c.z, 46], [c.x + f.x * 11.5, 10.6, c.z + f.z * 11.5, c.x, 10.2, c.z, 44], easeIn(L.k), x => x); sh(V(HX, 0, HZ), 40); }, [[0, 'whoosh_down', .7], [.5, 'zoom_in', .6], [.8, 'city_amb', .4]]);
+// 54 «In dein Zimmer.»: otra vez tu cuarto, desde la tele
+shot(76.75, 'Z', null, L => { zimmerN(L); duBed(L, { glow: 26, expr: 'happy', mouth: 'smile' }); droste(PHS, 7); const ph = wpos(PH); cm([ZX + 4, 9, 11, BEDP.x, 4.4, BEDP.z, 44], [ph.x - .3, ph.y + .3, ph.z + 3.6, ph.x, ph.y, ph.z, 40], easeIn(L.k), x => x); sh(BEDP, 14); }, [[0, 'zoom_in', .7], [.4, 'whoosh', .4]]);
+// 55 «Für immer.»: espiral infinita: la pantalla dentro de la pantalla, girando
+shot(77.7, 'R', null, L => { zimmerN(L); duBed(L, { glow: 26, expr: 'happy', mouth: 'smile' }); droste(PHS, 10); const ph = wpos(PH); PH.updateMatrixWorld(true); const n = V(0, 0, 1).applyQuaternion(PH.getWorldQuaternion(new THREE.Quaternion())); const d = lerp(2.2, 1.0, easeIn(L.k)); cam([ph.x + n.x * d, ph.y + n.y * d, ph.z + n.z * d], [ph.x, ph.y, ph.z], 40); ROLL = L.lt * 2.4; sh(BEDP, 14); }, [[0, 'whoosh', .6], [.2, 'clock_spin', .6], [.5, 'magic_hit', .5]]);
+// 56 «Denn hinter dem letzten Bild war ein Tunnel.»: un túnel de marcos de pantalla que brillan; la cámara vuela dentro
+function tunnel(L, z0, z1) { use('TUN'); MODE = 'in'; renderer.toneMappingExposure = 1; hemi.intensity = .4; sun.intensity = 0; FILL.intensity = 0; bloom.strength = .5; bloom.threshold = .6; scene.fog.color.setRGB(.02, .02, .06); scene.fog.density = .004; setSky([0, 0, .02], [0, 0, .04], [.02, .02, .06]);
+  TUN.fr.forEach((f, i) => f.rotation.z = L.T * .4 + i * .15); const z = lerp(z0, z1, L.k); cam([NX + Math.sin(L.T * 1.3) * .6, Math.cos(L.T * 1.1) * .6, z], [NX, 0, z - 30], 60); }
+shot(78.49, 'Z', null, L => { tunnel(L, 20, -60); }, [[0, 'whoosh', .7], [.3, 'drone', .6], [1.0, 'whoosh', .5], [1.6, 'whoosh', .5]]);
+// 57 «Und ganz am Ende des Tunnels»: la luz al final, cada vez más cerca
+shot(80.64, 'F', null, L => { tunnel(L, -120, -225); grade.uniforms.flash.value = Math.max(0, (L.k - .7) / .3) * .7; }, [[0, 'whoosh', .6], [.5, 'choir', .5], [1.0, 'riser_short', .5]]);
+// 58 «stand ein goldenes Sofa auf unserem Marktplatz.» (zoom lento): el sofá dorado bajo el foco; el pueblo aplaude alrededor
+function sofaScene(L, mode = 'clap', seed = 58) { town(L); BEAM.visible = true; rowAt(L, SX, SZ - 3, 9, 11, -1.6, -.55, mode, seed, { from: 0, face: V(SX, 0, SZ + 26) }); rowAt(L, SX, SZ - 3, 9, 11, .55, 1.6, mode, seed + 1, { from: 9, face: V(SX, 0, SZ + 26) }); }
+shot(81.98, 'F', 'slow', L => { sofaScene(L); confRain(V(SX, 0, SZ + 4), L.T, 50, 30, 20, 18); orb(L.k, V(SX, 4, SZ), null, [38, .4, .16, 46], [24, .15, .12, 42]); sh(V(SX, 0, SZ), 30); }, [[0, 'flash', .6], [.1, 'choir', .6], [.4, 'clap_crowd', .6], [1.4, 'sparkle', .5]]);
+cut(83.4, 'C', [-.6, .9, 1], [[0, 'whoosh', .4], [.2, 'fanfare', .4]]);
+// 59 «Mit deinem Namen drauf.»: la placa roja con «DU»
+shot(84.8, 'C', 'punch', L => { sofaScene(L, 'clap', 59); const p = V(SX, 5.4, SZ - .9); cm([SX + .8, 6.4, SZ + 9, p.x, p.y, p.z, 40], [SX + .5, 6.0, SZ + 6.5, p.x, p.y, p.z, 38], L.k); sh(V(SX, 0, SZ), 20); }, [[0, 'impact', .6], [.1, 'sparkle', .7], [.6, 'ding_soft', .5]]);
+// 60 «Weil du der Erste bist, der geblieben ist.»: Papa presenta el sofá; «#1»
+shot(86.2, 'W', null, L => { sofaScene(L, 'cheer', 60); const p = put(papa, SX + 6.5, 0, SZ + 6, -.5); actuar(p, 0, [[0, { aLx: 1.2, aLz: .9, aLe: .2, aRx: .3, headX: -.05 }]], { T: L.T }); cara(p, L.T, { expr: 'happy', eyes: 'happy', mouth: 'open_smile' }); const r = put(krause, SX - 6, 0, SZ + 6.5, .5); actuar(r, 0, [[0, { aLx: 1.2, aLz: -.6, aLe: 1.9, aRx: 1.2, aRz: -.6, aRe: 1.9 }]], { T: L.T }); cara(r, L.T, { expr: 'happy', eyes: 'cry', mouth: 'smile' }); tears(r, L.T);
+  cm([SX, 7, SZ + 26, SX, 4.5, SZ + 3, 46], [SX, 7.2, SZ + 23, SX, 4.6, SZ + 3, 44], L.k); badge('gold', '#1', W / 2, H * .2, (L.lt - .2) * 3); sh(V(SX, 0, SZ + 4), 26); }, [[0, 'whoosh', .5], [.2, 'fanfare', .5], [.6, 'cheer', .5]]);
+cut(87.4, 'C', [.5, .75, .5], [[0, 'whoosh', .4], [.2, 'clap', .5]]);
+// 61 «Du schaust diese Stadt nämlich nicht.»: todo el pueblo, en filas, te mira y sonríe
+shot(88.59, 'Z', null, L => { town(L); setSky([.3, .3, .7], [.9, .55, .45], [1, .75, .45]); sun.color.setRGB(1, .75, .5); rowAt(L, P0.x, P0.z - 30, 9, 22, -.34, .34, 'stare', 61, { from: 0, face: V(P0.x, 0, 40) }); rowAt(L, P0.x, P0.z - 30, 9, 17, -.42, .42, 'stare', 62, { from: 9, face: V(P0.x, 0, 40) });
+  for (const [ch, x] of [[frieda, -4.5], [kalle, -1.5], [opa, 1.5], [krause, 4.5]]) { put(ch, P0.x + x, 0, P0.z - 4, 0); actuar(ch, 0, [[0, { aLx: .2, aRx: .2 }]], { T: L.T }); cara(ch, L.T, { expr: 'happy', eyes: 'happy', mouth: 'smile' }); }
+  cm([P0.x, 5.2, P0.z + 15, P0.x, 4.2, P0.z - 6, 46], [P0.x, 4.9, P0.z + 11, P0.x, 4.3, P0.z - 6, 44], L.k); sh(P0, 30); }, [[0, 'zoom_in', .5], [.3, 'strings', .5], [1.0, 'heartbeat', .4]]);
+// 62 «Du wohnst hier.»: desde el sofá (tus ojos): todos te saludan; Papa te tiende la mano
+shot(90.24, 'C', 'punch', L => { sofaScene(L, 'wave', 62); const p = put(papa, SX, 0, SZ + 6.5, PI); actuar(p, 0, [[0, { aRx: 1.5, aRe: .2, aLx: .3, lean: .1 }]], { T: L.T }); cara(p, L.T, { expr: 'happy', eyes: 'happy', mouth: 'open_smile' }); const j = put(junge, SX - 3.5, 0, SZ + 7.5, PI + .3); actuar(j, 0, [[0, { ...GEST.wave, aRz: .4 + Math.sin(L.T * 8) * .3 }]], { T: L.T }); cara(j, L.T, { expr: 'joy', mouth: 'open_smile' });
+  crowdAt(L, SX, SZ + 10, 12, 6, 14, 62, { from: 18, mode: 'wave' }); cm([SX, 5.6, SZ + 1, SX, 4.6, SZ + 12, 50], [SX, 5.6, SZ + 1.5, SX, 4.6, SZ + 12, 48], L.k); sh(V(SX, 0, SZ + 8), 24); }, [[0, 'impact', .4], [.1, 'cheer', .5], [.5, 'kids_laugh', .4]]);
+// 63 «Also … in dieser Stadt … alle –»: vuelta al principio (bucle): la plaza, la gente corriendo, la Tafel al fondo
+shot(91.24, 'W', null, L => { hookStreet(L); }, [[0, 'whoosh', .6], [.1, 'run_cobble', .6], [.5, 'cheer', .4]]);
+cut(92.5, 'C', [.35, .6, -.4], [[0, 'whoosh', .4], [.2, 'kids_laugh', .4]]);
