@@ -24,4 +24,4 @@
 ## Cambios en la nuestra
 - Pueblo nuevo de entramado, con vecinos inventados: Frieda, Metzger Kalle, Opa Heinz y Frau Krause.
 - 3:17 Uhr en vez de 2 a. m.; pepinillos del bote en vez de cereales; en el bus en vez de en clase; tres veces en vez de dos.
-- Marcador a 3 s y 7 s, y TÚ a 58 s (el tiempo real del vídeo en ese momento). Un sofá dorado en la plaza en vez de la silla.
+- Marcador a 3 s y 7 s, y TÚ a 29 s (lo que dice la voz). Un sofá dorado en la plaza en vez de la silla.
