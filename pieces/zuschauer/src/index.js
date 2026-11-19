@@ -217,7 +217,8 @@ function drawBadge(b) {
   c.restore(); }
 const KEY = /^(Stadt|Moment|schaut|Videos|niemand|Wir|Wochen|Ende|Marktplatz|keiner|Frieda|Decke|Handy|3:17|Uhr|Wecker|verpasst|Metzger|Kalle|Gurken|Glas|alles|Opa|Heinz|Bus|versteckt|42|Krause|vorbeigewischt|Dreimal|zurück|anders|Papa|Tafel|600|Glühbirnen|Zeile|Drei|Sieben|Zwölf|Sekunden|Weg|weg|still|Keiner|29|Daumen|Riesig|festhalten|geblieben|geschrien|Zoom|Zimmer|immer|Tunnel|goldenes|Sofa|Namen|Erste|wohnst|hier|alle|du)$/;
 const CAPS = WORDS.map(w => { const t = w[2].replace(/[„“"”.,…–?!]/g, '').replace(/(?<!\d):|:(?!\d)/g, '').replace(/^-|-$/g, '').trim(); return { t: w[0], txt: t, key: KEY.test(t), huss: false }; }).filter(w => w.txt);
-function caption(T) { let cur = null; for (const w of CAPS) { if (w.t <= T) cur = w; else break; } if (!cur) return;
+let NOCAP = 0;
+function caption(T) { if (NOCAP) return; let cur = null; for (const w of CAPS) { if (w.t <= T) cur = w; else break; } if (!cur) return;
   const f = (T - cur.t) * FPS, s = f < 1 ? .2 : f < 2 ? 1.12 : 1, size = H * .046 * (cur.huss ? 1.5 : cur.key ? 1.35 : 1), c = octx;
   c.save(); c.translate(W / 2, H * .74); c.scale(s, s); if (cur.huss) c.rotate(((Math.round(cur.t * 10) % 2) ? -1 : 1) * .06); c.font = `700 ${size}px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.lineJoin = 'round';
   const tw = c.measureText(cur.txt).width; if (tw > W * .9) { const k = W * .9 / tw; c.scale(k, k); }
@@ -458,6 +459,18 @@ shot(90.24, 'C', 'punch', L => { sofaScene(L, 'wave', 62); const p = put(papa, S
 // 63 «Also … in dieser Stadt … alle –»: vuelta al principio (bucle): la plaza, la gente corriendo, la Tafel al fondo
 shot(91.24, 'W', null, L => { hookStreet(L); }, [[0, 'whoosh', .6], [.1, 'run_cobble', .6], [.5, 'cheer', .4]]);
 cut(92.5, 'C', [-.3, .85, .6], [[0, 'whoosh', .4], [.2, 'kids_laugh', .4]]);
+// ---------- portadas (fuera del vídeo): v0 el pueblo mirándote delante de la Tafel; v1 la Tafel con «DU 0:29» y el pulgar gigante encima ----------
+function coverTxt(l1, l2, y0) { const c = octx; c.save(); c.textAlign = 'center'; c.textBaseline = 'middle'; c.lineJoin = 'round';
+  for (const [t, y, sz] of [[l1, H * y0, 118], [l2, H * (y0 + .072), 132]]) { c.font = `700 ${sz}px ${FONT}`; const tw = c.measureText(t).width, k = Math.min(1, W * .86 / tw); c.save(); c.translate(W / 2, y); c.scale(k, k);
+    c.shadowColor = 'rgba(0,0,0,.55)'; c.shadowBlur = 22; c.shadowOffsetY = 8; c.lineWidth = sz * .24; c.strokeStyle = '#000'; c.strokeText(t, 0, 0); c.shadowColor = 'transparent'; c.fillStyle = '#E2FD07'; c.fillText(t, 0, 0); c.restore(); }
+  c.restore(); }
+// coverAt: renderiza el instante T del vídeo sin subtítulo; con fn, sustituye el plano por una composición propia
+window.coverAt = (T, l1, l2, y0, fn) => { const s = S[shotAt(T)], o = [s.fn, s.alt, s.zoom]; if (fn) { s.fn = fn; s.alt = null; s.zoom = null; }
+  NOCAP = 1; renderAt(T); NOCAP = 0; [s.fn, s.alt, s.zoom] = o; if (l1) coverTxt(l1, l2, y0); };
+const CV = window.CV = { y: 25, d: 56, fov: 68, dx: 0, th: [TX + 1, 43, TZ - 8], txt: .15 };
+window.renderCover = v => v === 0 ? coverAt(8.3, 'SIE ALLE', 'SCHAUEN DIR ZU', .14)
+  : coverAt(61.0, 'NIEMAND BLEIBT', 'SO LANGE WIE DU', CV.txt, L => { town(L); setSky([.1, .12, .3], [.3, .3, .5], [.6, .55, .7]); sun.intensity = 1.3; hemi.intensity = .9;
+    crowdTafel(L, 'point', 42, { max: 29 }); daumenAt(...CV.th, L.T, { rx: -.35 }); cm([TX + CV.dx, 4, TZ + CV.d, TX, CV.y, TZ, CV.fov], [TX + CV.dx, 4, TZ + CV.d, TX, CV.y, TZ, CV.fov], 0); sh(V(TX, 0, TZ), 40); });
 
 
 // ---------- transiciones, sonidos, render ----------

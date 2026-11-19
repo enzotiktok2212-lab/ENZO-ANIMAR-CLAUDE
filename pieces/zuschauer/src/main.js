@@ -217,7 +217,8 @@ function drawBadge(b) {
   c.restore(); }
 const KEY = /^(Stadt|Moment|schaut|Videos|niemand|Wir|Wochen|Ende|Marktplatz|keiner|Frieda|Decke|Handy|3:17|Uhr|Wecker|verpasst|Metzger|Kalle|Gurken|Glas|alles|Opa|Heinz|Bus|versteckt|42|Krause|vorbeigewischt|Dreimal|zurück|anders|Papa|Tafel|600|Glühbirnen|Zeile|Drei|Sieben|Zwölf|Sekunden|Weg|weg|still|Keiner|29|Daumen|Riesig|festhalten|geblieben|geschrien|Zoom|Zimmer|immer|Tunnel|goldenes|Sofa|Namen|Erste|wohnst|hier|alle|du)$/;
 const CAPS = WORDS.map(w => { const t = w[2].replace(/[„“"”.,…–?!]/g, '').replace(/(?<!\d):|:(?!\d)/g, '').replace(/^-|-$/g, '').trim(); return { t: w[0], txt: t, key: KEY.test(t), huss: false }; }).filter(w => w.txt);
-function caption(T) { let cur = null; for (const w of CAPS) { if (w.t <= T) cur = w; else break; } if (!cur) return;
+let NOCAP = 0;
+function caption(T) { if (NOCAP) return; let cur = null; for (const w of CAPS) { if (w.t <= T) cur = w; else break; } if (!cur) return;
   const f = (T - cur.t) * FPS, s = f < 1 ? .2 : f < 2 ? 1.12 : 1, size = H * .046 * (cur.huss ? 1.5 : cur.key ? 1.35 : 1), c = octx;
   c.save(); c.translate(W / 2, H * .74); c.scale(s, s); if (cur.huss) c.rotate(((Math.round(cur.t * 10) % 2) ? -1 : 1) * .06); c.font = `700 ${size}px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.lineJoin = 'round';
   const tw = c.measureText(cur.txt).width; if (tw > W * .9) { const k = W * .9 / tw; c.scale(k, k); }
