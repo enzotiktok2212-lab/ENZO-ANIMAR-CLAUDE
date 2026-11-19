@@ -35,6 +35,8 @@ Orden cronológico. Dur = duración de la voz recortada (s). RPM según lo que c
 | 28 | `kreide` | «alles, was du mit Kreide malst, wird lebendig … bis es regnet» | 255 | — (fantasía mágica: buen candidato) | voz robótica del «Sistema» estilo IA suave; sin música en las partes del Sistema; segundo plano en el gancho; encuadres centrados; más nitidez |
 | 29 | `hals` | «dein Hals wird länger, wenn du aufs Handy schaust» | 117 | — | motor y escenarios propios; revisión de 91 planos |
 
+| 30 | `einpacken` | «In dieser Stadt sind alle feiern, außer mir» — secuela del HUSS: envuelvo hamburguesas para la entrevista en la Brötchenburg, no sé freír, aprendo, 500 en 50 s | 111 | (esperado bajo: comedia/meme) | HUSS **sacados del audio original** (Demucs en npm `demucs`, 2 pasadas + puerta entre golpes, `huss_insert.py`); solo el gancho a 1,1×; corte en el punto más silencioso tras la palabra; **nada de multitud instanciada**: solo extras Roblox reales (`makeExtra`); 115 planos (~0,96 s); revisión al 12/50/60 %; primeros planos con `onFace` ×1,45 |
+
 \* `traumsammler` tiene `words.json` parcial; el vídeo final era más largo.
 
 ## Patrones que funcionan (de los análisis «por qué se hizo viral»)

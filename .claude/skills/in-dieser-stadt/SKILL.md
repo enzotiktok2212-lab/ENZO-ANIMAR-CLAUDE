@@ -5,7 +5,7 @@ description: Produce a German TikTok storytime for the channel «In dieser Stadt
 
 # «In dieser Stadt» — storytimes 3D en alemán
 
-Esta skill recoge **todo lo aprendido en los 29 vídeos** del canal (de `schlafstadt`, el primero, a `hals`, el último). Catálogo con temas, duraciones, RPM y lecciones de cada uno: [references/catalogo.md](references/catalogo.md). API del motor y recetas de código: [references/motor.md](references/motor.md). Checklist de revisión: [references/checklist.md](references/checklist.md).
+Esta skill recoge **todo lo aprendido en los 29 vídeos** del canal (de `schlafstadt`, el primero, a `einpacken`, el último). Catálogo con temas, duraciones, RPM y lecciones de cada uno: [references/catalogo.md](references/catalogo.md). API del motor y recetas de código: [references/motor.md](references/motor.md). Checklist de revisión: [references/checklist.md](references/checklist.md).
 
 Documentos del repo que siguen siendo la referencia detallada (léelos al empezar):
 - `CLAUDE.md`, `ENCARGO-NUEVO-CHAT.md` (lecciones), `MENSAJE-NUEVO-CHAT.md`
@@ -54,7 +54,7 @@ Documentos del repo que siguen siendo la referencia detallada (léelos al empeza
 - Todo el texto en pantalla en **alemán**; todo número dicho aparece en el mundo.
 
 ## 3. Plantilla y motor
-- Copia **la última pieza terminada** (mira `git log` en `pieces/`; hoy `pieces/hals/`, antes `teddy`, `kreide`, `goon`): `index.html, render.sh, render2.mjs, mids.mjs, sheet.py, cues.mjs, sfx.py, mezclar.sh, marca.py, finish.sh, cover.mjs, prep_audio.py, armar.py, package.json`, `src/*.js`, `src/caras/`, `audio/{campanita-recortada.wav,musica.mp3,musica-fondo.wav}`, y `node_modules` (o `npm install`).
+- Copia **la última pieza terminada** (mira `git log` en `pieces/`; hoy `pieces/einpacken/`, antes `hals`, `teddy`, `kreide`): `index.html, render.sh, render2.mjs, mids.mjs, sheet.py, cues.mjs, sfx.py, mezclar.sh, marca.py, finish.sh, cover.mjs, prep_audio.py, armar.py, package.json`, `src/*.js`, `src/caras/`, `audio/{campanita-recortada.wav,musica.mp3,musica-fondo.wav}`, y `node_modules` (o `npm install`).
 - Cambia: `DUR` en `src/main.js`, la duración en `render.sh`/`mezclar.sh`/`sfx.py` (`DUR =`), el **puerto** (`render.sh`, `cues.mjs`, `cover.mjs`, servidor `python3 -m http.server <puerto>`), el nombre en `finish.sh`, las horas de campanita en `marca.py` (0 s y cada ≤10 s al empezar frase).
 - Escenarios y reparto nuevos van en archivos propios (`gsets.js`, `gcast.js`…). Detalles del API: [references/motor.md](references/motor.md).
 
@@ -73,3 +73,10 @@ Mira cada hoja de 10 planos (al 12 % y al 60 %) y corrige: **nadie de espaldas s
 - **≈ $3 o más**: fantasía con **regla mágica + número** (`schlafstadt`, `zehn-neins`, `zehn-luegen`, `traumsammler`, `mauern`, `meins` 3,61 $), niño débil/diferente que se vuelve héroe, villano sobrenatural que roba algo, final emotivo con la familia, 2:15–3:00.
 - **$1,5–2 o sin adicionales**: terror/violencia/sangre (monstruos, `dunkel`, `augen`, `tuer`, `spiegelbild`, `abschluss`), temas reales delicados (`haende`), comedia absurda de dinero/normas sin héroe (`bodensteuer`, `pech`, `diamant`, `stadtvideos`), memes/deporte (`tierwurf`, `huss`, `gaense`). Insinuación sexual (`gaense`, `goon`): muchas vistas, RPM esperado bajo.
 - Casi todos los vídeos son réplicas: la copia no explica el RPM; **el tema sí**. Al elegir entre referencias, puntúa cada una con este patrón + potencial viral y recomienda **las 2 mejores** con el porqué.
+
+## 8. Lecciones de `einpacken` (fijas)
+- **Multitudes: solo personajes Roblox reales** (extras de `makeExtra` en `ecast.js`, con gorro y baile). Nunca la multitud instanciada de bloques simples (se ve pobre y atraviesa el suelo).
+- **Onomatopeyas del original (HUSS)**: el usuario puede pedir usar las del vídeo de referencia. Se quitan del guion de ElevenLabs, se aísla la voz con Demucs (`npm i demucs`, `node node_modules/demucs/dist/cli.js`; segunda pasada solo sobre los trozos), se pone una puerta entre golpes y se insertan con `huss_insert.py` (mismo nivel que la voz, corte en el silencio tras la palabra, sin acelerar). Mandar una prueba de audio antes de seguir.
+- Acelerar **solo** lo que pida el usuario (p. ej. el gancho a 1,1×).
+- Encuadre vertical estrecho: dos personajes a ambos lados de un mostrador no caben en horizontal; desplázalos en x y pon la cámara de lado o alta. Nunca la cámara dentro de un personaje o de la campana de la cocina.
+- Objetos de primer plano (cronómetros, relojes) por encima del subtítulo (súbelos sobre un paquete y apunta la cámara más abajo).
