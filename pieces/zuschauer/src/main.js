@@ -192,7 +192,7 @@ function daumenAt(x, y, z, T, o = {}) { show(DAU, x, y + Math.sin(T * 2.2) * .6,
 // mi cuarto de noche (DU en la cama con la manta y el móvil)
 function zimmerN(L, clock = '3:17') { use('ZI'); inside(.42, 0); ZI.LMP.intensity = 0; ZI.BLUE.intensity = 30; ZI.clk.userData.draw(clock, (c, w, h) => { c.fillStyle = '#0a0a0e'; c.fillRect(0, 0, w, h); txt(c, clock, w / 2, h / 2 + 2, 46, '#ff3a2a'); }); ZI.tvS.userData.draw('off', (c, w, h) => { c.fillStyle = '#0a0a10'; c.fillRect(0, 0, w, h); }); ZI.lapS.userData.draw('off', (c, w, h) => { c.fillStyle = '#0a0a10'; c.fillRect(0, 0, w, h); }); }
 const BEDP = V(ZX + 13, 1.5, -7);    // donde me siento en la cama (mirando a +z)
-function duBed(L, o = {}) { const c = put(du, BEDP.x, BEDP.y, BEDP.z, o.ry ?? 0); actuar(c, 0, [[0, { ...SIT, lLk: 0, lRk: 0, ...PHONEP, lean: .15, ...(o.pose || {}) }]], { T: L.T }); phoneIn(c, true); cara(c, L.T, { expr: o.expr || 'neutral', eyes: o.eyes, mouth: o.mouth || 'flat' });
+function duBed(L, o = {}) { const c = put(du, BEDP.x, BEDP.y, BEDP.z, o.ry ?? 0); actuar(c, 0, [[0, { ...SIT, lLk: 0, lRk: 0, ...PHONEP, lean: .15, ...(o.pose || {}) }]], { T: L.T }); phoneIn(c, o.out ? false : true); cara(c, L.T, { expr: o.expr || 'neutral', eyes: o.eyes, mouth: o.mouth || 'flat' });
   if (o.blanket !== false) { const h = hp(c); show(DECKE, h.x, h.y, h.z, c.root.rotation.y, 1); } c.root.updateMatrixWorld(true); GLOW.position.copy(wpos(PH)).add(V(0, .3, 0)).lerp(hp(c), .3); GLOW.intensity = o.glow ?? 26; GLOW.color.setRGB(.6, .75, 1); return c; }
 // cocina de noche con la nevera abierta
 function kuecheN(L) { use('KU'); inside(.38, 0); KU.T.visible = false; FRIDGE.userData.L.intensity = 70; }

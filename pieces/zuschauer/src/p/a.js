@@ -21,7 +21,7 @@ function duEdge(L, o = {}) { use('ZI'); inside(.75, 22); ZI.LMP.intensity = 60; 
   GLOW.position.copy(wpos(PH)).lerp(hp(c), .4); GLOW.intensity = 16; return c; }
 shot(3.25, 'W', null, L => { const c = duEdge(L); onFace(c, 4.2, .2, .6, 40, L.k, 3.6); sh(EDGE, 16); }, [[0, 'swipe', .6], [.3, 'notif', .5], [.8, 'kids_laugh', .3]]);
 // 4b «… über diese Stadt schaust»: por encima del hombro, la pantalla: un vídeo de «In dieser Stadt»
-shot(4.4, 'C', null, L => { const c = duEdge(L); const h = hp(c), ph = wpos(PH); cm([h.x + 1.8, h.y + 2.2, h.z - 2.8, ph.x, ph.y, ph.z, 34], [h.x + 1.4, h.y + 1.9, h.z - 2.2, ph.x, ph.y, ph.z, 30], L.k); sh(EDGE, 16); }, [[0, 'whoosh', .5], [.3, 'mobile', .5]]);
+shot(4.4, 'C', null, L => { const c = duEdge(L); const h = hp(c), ph = wpos(PH); cm([h.x + 2.8, h.y + 2.6, h.z - 2.4, ph.x, ph.y, ph.z, 38], [h.x + 2.4, h.y + 2.3, h.z - 1.9, ph.x, ph.y, ph.z, 34], L.k); sh(EDGE, 16); }, [[0, 'whoosh', .5], [.3, 'mobile', .5]]);
 // 5 «Aber niemand weiß das hier:»: el chico se lleva el dedo a los labios; detrás, todos hacen «psst»
 shot(5.55, 'F', null, L => { town(L); const c = put(junge, P0.x, 0, P0.z, 0); actuar(c, 0, [[0, { aRx: 2.3, aRz: -.4, aRe: 2.3, lean: .12, headX: .05 }]], { T: L.T }); cara(c, L.T, { expr: 'sus', eyes: 'half', mouth: 'o' });
   rowAt(L, P0.x, P0.z - 7, 6, 4.5, -1, 1, 'shh', 5, { from: 2 }); onFace(c, 3.2, .3, -.4, 38, L.k, 2.6); sh(P0, 20); }, [[0, 'whisper', .7], [.4, 'sniff', .3], [.9, 'silence_tick', .5]]);

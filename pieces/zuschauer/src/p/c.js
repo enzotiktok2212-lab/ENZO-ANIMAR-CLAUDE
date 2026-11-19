@@ -2,7 +2,7 @@
 const TS = V(TX, 0, TZ + .34);   // pantalla de la Tafel (y 9..29)
 const rowY = i => 29 - (240 + i * 110) / 680 * 20;
 // primer plano de una fila de la Tafel (icono a la izquierda)
-function rowShot(L, i, extra = {}) { town(L); tafelAt(L.T); TAF.userData.bulbs(1, L.T, 1); const y = rowY(i); cm([TX + .5, y - 1, TZ + 24, TX + .5, y - 1.2, TZ, 38], [TX + .6, y - 1, TZ + 21, TX + .6, y - 1.2, TZ, 36], L.k); sh(V(TX, 0, TZ), 30); }
+function rowShot(L, i, extra = {}) { town(L); tafelAt(L.T); TAF.userData.bulbs(1, L.T, 1); const y = rowY(i); cm([TX + .8, y - 1.5, TZ + 34, TX + .8, y - 1.8, TZ, 38], [TX + .9, y - 1.5, TZ + 30, TX + .9, y - 1.8, TZ, 36], L.k); sh(V(TX, 0, TZ), 30); }
 // el pueblo delante de la Tafel, mirando a la cámara
 function crowdTafel(L, mode, seed, o = {}) { town(L); tafelAt(L.T, o); TAF.userData.bulbs(1, L.T, 1); rowAt(L, TX, TZ + 2, 7, 13, -.5, .5, mode, seed, { from: 0, face: V(TX, 0, TZ + 60) }); rowAt(L, TX, TZ + 2, 8, 9.5, -.62, .62, mode, seed + 1, { from: 7, face: V(TX, 0, TZ + 60) }); }
 // 34 «Drei Sekunden? Weg.»: la primera fila: 0:03… y la cruz roja
@@ -13,17 +13,17 @@ shot(49.55, 'S', null, L => { crowdTafel(L, L.T > 50.88 ? 'sad' : 'stare', 35); 
 shot(50.93, 'C', 'punch', L => { rowShot(L, 2); }, [[0, 'pop', .6], [.4, 'tick', .5], [1.2, 'glitch', .6]]);
 // 36b «… weg.»: Kalle se lleva la mano a la cara; Frau Krause, triste
 shot(52.07, 'W', null, L => { town(L); tafelAt(L.T); const k = put(kalle, TX - 2.2, 0, TZ + 16, .15); actuar(k, 0, [[0, GEST.facepalm]], { T: L.T }); cara(k, L.T, { expr: 'sad', mouth: 'frown' }); const r = put(krause, TX + 2.2, 0, TZ + 16.5, -.15); actuar(r, 0, [[0, GEST.slump]], { T: L.T }); cara(r, L.T, { expr: 'sad', mouth: 'frown' });
-  cm([TX, 6, TZ + 30, TX, 4.6, TZ + 16, 42], [TX, 5.8, TZ + 28.5, TX, 4.6, TZ + 16, 40], L.k); sh(V(TX, 0, TZ + 16), 20); }, [[0, 'whoosh', .4], [.1, 'sad_tone', .5], [.3, 'sigh', .5]]);
+  cm([TX, 6.6, TZ + 28, TX, 6.2, TZ + 16, 42], [TX, 6.4, TZ + 27, TX, 6.2, TZ + 16, 40], L.k); sh(V(TX, 0, TZ + 16), 20); }, [[0, 'whoosh', .4], [.1, 'sad_tone', .5], [.3, 'sigh', .5]]);
 // 37 «Und du? Immer noch da?» (zoom lento): tu fila, verde: «DU 0:24» y subiendo; todos se giran hacia ti
 shot(52.7, 'Z', 'slow', L => { crowdTafel(L, 'stare', 37); const y = rowY(3); cm([TX + 1, 8, TZ + 34, TX, y, TZ, 44], [TX + .5, 10, TZ + 24, TX, y, TZ, 38], L.k); sh(V(TX, 0, TZ + 12), 30); }, [[0, 'heartbeat', .6], [.5, 'tick', .4]]);
 // 38 «Plötzlich wurde es ganz still.»: grúa sobre la plaza: nadie se mueve, solo grillos
-shot(53.93, 'F', null, L => { crowdTafel(L, 'freeze', 38); orb(L.k, V(TX, 6, TZ + 12), null, [34, .45, .32, 46], [31, .3, .28, 44]); sh(V(TX, 0, TZ + 10), 34); }, [[0, 'freeze', .6], [.2, 'crickets', .7], [.9, 'wind', .4]]);
+shot(53.93, 'F', null, L => { crowdTafel(L, 'freeze', 38); orb(L.k, V(TX, 5, TZ + 16), null, [24, .45, .25, 46], [22, .3, .22, 44]); sh(V(TX, 0, TZ + 10), 34); }, [[0, 'freeze', .6], [.2, 'crickets', .7], [.9, 'wind', .4]]);
 cut(54.8, 'C', [-.7, .6, -6], [[0, 'whoosh', .3], [.2, 'silence_tick', .6]]);
 // 39 «Keiner bewegt sich!»: Papa abre los brazos: ¡quietos! El pueblo, congelado a media pose
 shot(55.62, 'C', 'punch', L => { crowdTafel(L, 'freeze', 39); const p = put(papa, TX, 0, TZ + 20, 0); actuar(p, 0, [[0, { aLx: .3, aLz: 1.4, aRx: .3, aRz: 1.4, aLe: .2, aRe: .2, lean: .05 }]], { T: L.T }); cara(p, L.T, { expr: 'shout', eyes: 'wide', mouth: 'scream' });
   onFace(p, 4.6, .4, .3, 42, L.k, 4.0); sh(V(TX, 0, TZ + 16), 26); }, [[0, 'slam', .7], [.1, 'shout_m', .6], [.5, 'freeze', .5]]);
 // 40 «Er ist bei 29 Sekunden.» (zoom lento): «DU 0:29», enorme
-shot(56.84, 'Z', 'slow', L => { town(L); tafelAt(L.T); TAF.userData.bulbs(1, L.T, 1); const y = rowY(3); cm([TX, y, TZ + 34, TX, y - 1, TZ, 40], [TX + .5, y, TZ + 24, TX + .5, y - 1, TZ, 36], L.k); sh(V(TX, 0, TZ), 30); }, [[0, 'tick', .6], [.4, 'clock_tick', .6], [.9, 'tick', .5]]);
+shot(56.84, 'Z', 'slow', L => { town(L); tafelAt(L.T); TAF.userData.bulbs(1, L.T, 1); const y = rowY(3); cm([TX + 1, y - 1, TZ + 40, TX + 1, y - 2, TZ, 40], [TX + 1, y - 1, TZ + 31, TX + 1, y - 2, TZ, 36], L.k); sh(V(TX, 0, TZ), 30); }, [[0, 'tick', .6], [.4, 'clock_tick', .6], [.9, 'tick', .5]]);
 // 41 «So weit ist noch nie jemand gekommen.»: la Tafel se pone dorada: ¡REKORD! Kalle y Frau Krause, boquiabiertos
 shot(58.6, 'W', null, L => { town(L); tafelAt(L.T, { gold: 1, rec: true }); TAF.userData.bulbs(1, L.T, 1); const k = put(kalle, TX - 2.4, 0, TZ + 15, .2); actuar(k, 0, [[0, GEST.hands_face]], { T: L.T }); cara(k, L.T, { expr: 'shock', mouth: 'o' }); const r = put(krause, TX + 2.4, 0, TZ + 15.5, -.2); actuar(r, 0, [[0, GEST.shock]], { T: L.T }); cara(r, L.T, { expr: 'shock', mouth: 'scream' }); tears(r, L.T);
   cm([TX, 7, TZ + 31, TX, 9.5, TZ + 6, 44], [TX, 7.4, TZ + 28, TX, 10, TZ + 6, 42], L.k); sh(V(TX, 0, TZ + 10), 26); }, [[0, 'whoosh', .5], [.1, 'fanfare', .4], [.4, 'gasp', .6], [1.2, 'gasp_old', .5]]);
