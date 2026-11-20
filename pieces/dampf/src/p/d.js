@@ -48,9 +48,9 @@ shot(80.60, 'C', 'punch', L => { use('HB'); darkNight(); const c = put(ich, -30,
 // 70 «Die ganze Stadt verschwand im Nebel.»: de día, vista aérea: Hufenbach entero bajo un mar de vapor; solo asoman los tejados y la cúpula
 shot(81.40, 'Z', 'slow', L => { use('HB'); fogCity(L, .9, 9, 46, .0055 + L.k * .004); setSky([.75, .8, .9], [.85, .88, .94], [.9, .92, .96]);
   cm([60, 70, 110, -6, 8, -30, 46], [40, 55, 90, -6, 8, -30, 46], L.k); sh(V(-6, 0, -20), 60); DOF = 0; }, [[0, 'wind_howl', .6], [.3, 'whoosh_down', .4]]);
-// 71 «Autos krachten ineinander,»: en la niebla, el taxi choca contra el deportivo; chispas
-shot(83.60, 'C', 'punch', L => { use('HB'); fogCity(L, .5, 4); const k = clamp(L.lt / .35); show(CAR, 22, 0, 20 + (1 - easeIn(k)) * 18, PI, 1); show(TAXI, 30 - (1 - easeIn(k)) * 18, 0, 20, -PI / 2 + (L.lt > .35 ? .3 : 0), 1); if (L.lt > .35) { sparks(V(26, 2.5, 20), L.t0 + .35, L.T, 40, 1.2); CAR.rotation.y = PI + .25; SHAKE = Math.exp(-(L.lt - .35) * 8); }
-  cm([10, 6, 36, 25, 2.5, 20, 44], [12, 5.5, 34, 25, 2.5, 20, 44], L.k); sh(V(25, 0, 20), 20); }, [[0, 'car_pass', .5], [.35, 'car_hit', .9], [.4, 'glass_break', .6]]);
+// 71 «Autos krachten ineinander,»: en la carretera con niebla, el taxi choca contra el deportivo; chispas y cristales
+shot(83.60, 'C', 'punch', L => { use('HB'); fogCity(L, .35, 4, 20, .006); const k = clamp(L.lt / .35); show(CAR, 26, 0, 80 + (1 - easeIn(k)) * 22, PI, 1); show(TAXI, 26, 0, 68 - (1 - easeIn(k)) * 22, 0, 1); if (L.lt > .35) { sparks(V(26, 2.5, 74), L.t0 + .35, L.T, 40, 1.2); CAR.rotation.y = PI + .35; TAXI.rotation.y = -.3; SHAKE = Math.exp(-(L.lt - .35) * 8); SMK.puff(V(26, 2, 74), V(0, 1, .2), L.T, L.t0 + .35, .3, { n: 20, pow: 3, size: 2, dens: .6, seed: 71 }); }
+  cm([40, 9, 96, 26, 2.5, 74, 44], [38, 8.5, 92, 26, 2.5, 74, 42], L.k); sh(V(26, 0, 74), 24); }, [[0, 'car_pass', .5], [.35, 'car_hit', .9], [.4, 'glass_break', .6]]);
 // 72 «Ampeln explodierten,»: un semáforo parpadea como loco y estalla en chispas
 shot(84.90, 'W', null, L => { use('HB'); fogCity(L, .45, 4); show(AMPEL, 18, 0, 4, -.3, 1); const bad = L.lt > .45; AMPEL.userData.set(bad ? -1 : Math.floor(L.T * 12) % 3); AMPEL.userData.hd.rotation.z = bad ? -.6 : 0; AMPEL.userData.hd.position.y = bad ? 10.4 : 11.2;
   if (bad) { sparks(V(18, 11, 4.6), L.t0 + .45, L.T, 40, 1); grade.uniforms.flash.value = Math.max(0, .8 - (L.lt - .45) * 3); SMK.puff(V(18, 11, 4.6), V(0, 1, .3), L.T, L.t0 + .45, .4, { n: 25, pow: 4, size: 1.6, dens: .7, seed: 81 }); }

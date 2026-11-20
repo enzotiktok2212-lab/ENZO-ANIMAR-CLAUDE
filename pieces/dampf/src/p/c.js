@@ -2,7 +2,7 @@
 const meterClose = (c, L, a, b, col) => { const m = WM.get(c); m.visible = true; m.userData.set(a, b, col); };
 // 32 «Die Regierung nimmt das sehr ernst.»: el funcionario del Amt für Dampf da un discurso ante el Rathaus
 shot(37.70, 'W', null, L => { use('HB'); show(PODIUM, -6, 0, -65.6, 0, .72); show(BANNER, -6, 15, -73, 0, 1); const c = put(beam, -6, 0, -68.6, 0); talk(c, L.T, L.t0, L.t0 + 2, 'angry'); actuar(c, 0, [[0, { aRx: 1.2, aRz: -.1, aRe: .4, aLx: .5, aLe: .8 }], [.5, { aRx: .6, aRe: 1.6, aLx: 1.2, aLe: .3 }]], { T: L.T }); FACES.push(c);
-  vapeCrowd(L, -6, -62, 10, 5, 11, 61, { face: V(-6, 6, -68), gap: 2.3 });
+  
   orb(L.k, V(-6, 7.4, -68.6), null, [15, .1, .22, 44], [12.5, -.05, .18, 44]); sh(V(-6, 0, -66), 26); }, [[0, 'whoosh', .3], [.2, 'murmur', .4], [.8, 'table_bang', .5]]);
 // 33 «sehr ernst.»: primer plano serio; sella con un golpe «STRENG KONTROLLIERT»
 shot(38.70, 'C', 'punch', L => { use('HB'); show(PODIUM, -6, 0, -65.6, 0, .72); show(BANNER, -6, 15, -73, 0, 1); const c = put(beam, -6, 0, -68.6, 0); const hit = L.lt > .35;
