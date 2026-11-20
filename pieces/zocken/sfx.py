@@ -422,6 +422,10 @@ LIB['guitar'] = (lambda s, c: norm(np.tanh(6 * sum(saw(f * (1 + .003 * i), 1.0) 
 LIB['net'] = (lambda s, c: norm(hp(noise(.5, s), 1800) * adsr(.5, .02, .35) + lp(noise(.5, s + 1), 200) * env(.5, .002, .12) * 1.5), .5)
 LIB['record_scratch'] = (lambda s, c: norm(svf_bp(noise(.5, s), glide(2400, 300, .5, .6), 3) * adsr(.5, .01, .15)), .55)
 
+ALIAS = {'air_horn': 'party_horn', 'ball_roll': 'wheels', 'body_fall': 'collapse', 'bus_engine': 'car', 'button_click': 'button', 'button_mash': 'clack', 'buzzer': 'alarm_soft', 'car_rev': 'car_pass', 'church_bell': 'bell_far', 'crowd_boo': 'crowd_run', 'crowd_cheer': 'cheer', 'crowd_murmur': 'classroom', 'dog_bark': 'bark', 'dog_whine': 'sniff', 'door': 'door_open', 'doorbell': 'door_bell', 'footsteps': 'steps', 'game_beep': 'blink', 'game_engine': 'car_pass', 'game_start': 'power_on', 'grunt': 'breath', 'horn': 'party_horn', 'lamp_on': 'switch', 'laugh_group': 'kids_laugh', 'megaphone': 'shout_m', 'metal_clank': 'click_metal', 'net': 'rip', 'oma_laugh': 'kids_laugh', 'panting': 'breath', 'pause_beep': 'ding_soft', 'pen': 'pencil', 'plastic_drop': 'clack', 'shop_bell': 'door_bell', 'sob': 'cry_girl', 'sofa_flop': 'thud', 'stick_drop': 'land', 'swoosh': 'whoosh_up', 'thump': 'thud', 'tires': 'car_hit', 'tram': 'wheels', 'tram_bell': 'bells', 'wall_hit': 'trash_hit'}
+for _k, _v in ALIAS.items():
+    if _k not in LIB: LIB[_k] = LIB[_v]
+
 def render(cues, dur):
     out = np.zeros(int((dur + 3) * SR))
     for i, c in enumerate(cues):
@@ -445,7 +449,7 @@ def fill_gaps(cues, dur, maxgap=1.1):
 
 if __name__ == '__main__':
     cues_f, voice_f, music_f, out_f = sys.argv[1:5]
-    cues = json.load(open(cues_f)); DUR = 76.2
+    cues = json.load(open(cues_f)); DUR = 111.6
     cues = fill_gaps(cues, DUR); print(len(cues), 'efectos; hueco máximo', max(np.diff(sorted([0] + [c['t'] for c in cues] + [DUR]))).round(2))
     TEN = {'riser', 'braam', 'riser_short', 'braam_short'}
     ten = render([c for c in cues if c['s'] in TEN], DUR); ten = norm(ten, 0.9)

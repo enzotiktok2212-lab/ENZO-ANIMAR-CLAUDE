@@ -219,7 +219,7 @@ const kirch = (m = 'day') => { use('KF'); m === 'sunset' ? sunset() : m === 'nig
 // estadio (SX): campo x ∈ ±20, z ∈ ±35; portería G1 en z = -35 (nosotros atacamos hacia G2, z = +35); gradas a la izquierda (x < -22)
 const stadium = () => { use('ST'); day(); sun.intensity = 2.6; };
 // Zockerhalle (ZX): oscura con neón; pantallas por todas partes
-const halle = () => { use('ZH'); inside(.55, 14); renderer.toneMappingExposure = 1.0; bloom.strength = .38; bloom.threshold = .8; };
+const halle = () => { use('ZH'); inside(.6, 0); renderer.toneMappingExposure = .92; bloom.strength = .22; bloom.threshold = .95; };
 const room = (k, h = .95) => { use(k); inside(h, 40); };
 // ---------- poses ----------
 // sentado (asiento a ~1,15) jugando: pulgares a toda velocidad, cabeza hacia la pantalla

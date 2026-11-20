@@ -112,7 +112,7 @@ export function kirchfeld(scene, X) { const g = G(scene, X);
   return { g: shade(g), CONES, wall }; }
 
 // ---------- tranvía amarillo vacío (largo en z, de -9 a 9) ----------
-export function tram(parent) { const g = G(parent); const y = mat(0xffd23f, { roughness: .4 }), w = mat(0xf4f4f4, { roughness: .4 }), gl = mat(0x9ad8ff, { roughness: .05, metalness: .3, transparent: true, opacity: .55 });
+export function tram(parent) { const g = G(parent); const y = mat(0xffd23f, { roughness: .4 }), w = mat(0xf4f4f4, { roughness: .4 }), gl = mat(0x9ad8ff, { roughness: .05, metalness: .3, transparent: true, opacity: .2 });
   box(4.2, 1.6, 18, w, .3, g, 0, 1.4, 0); box(4.2, 3.4, 18, y, .3, g, 0, 3.9, 0); box(3.8, .3, 17.6, mat(0x8a8e9a), .1, g, 0, 5.75, 0);
   for (let k = 0; k < 6; k++) for (const s of [-1, 1]) { const p = box(.12, 2.2, 2.3, gl, .02, g, s * 2.11, 4, -7 + k * 2.8); p.castShadow = false; }
   for (const s of [-1, 1]) { const f = box(3.6, 2.4, .12, gl, .02, g, 0, 4.1, s * 9.02); f.castShadow = false; box(1.4, .5, .1, glowM(0xfff2c8, 2), .02, g, 0, 2.3, s * 9.06); }
