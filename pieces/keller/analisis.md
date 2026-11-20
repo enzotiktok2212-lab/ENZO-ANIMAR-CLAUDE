@@ -31,5 +31,5 @@ Mini-ganchos: «ein Albtraum», «etwas Seltsames», «das ist mein Satz», «de
 Fantasía con regla del mundo + giro de cuarta pared, sin violencia: **medio-alto** (patrón de `schlafstadt`/`meins`).
 
 ## Adaptación
-- Ben → **Mats**; pueblo de ladrillo rojo → pueblo alemán de entramado con Rathaus.
+- Ben → **Thomas**; pueblo de ladrillo rojo → pueblo alemán de entramado con Rathaus.
 - Datos cambiados: huracán → **tornado**; 7 pueblos → **9**; casa → **el Rathaus**; galleta → **Brezel**; moneda de oro → **lingote de oro**; coche del vecino → **coche de la señora Pohl**; 50 pueblos → **80**; helicóptero → **zepelín**.
