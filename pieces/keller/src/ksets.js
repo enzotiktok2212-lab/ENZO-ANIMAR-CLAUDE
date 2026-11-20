@@ -2,7 +2,7 @@
 // el sótano (Keller) con la mesa y la maqueta de la ciudad, la escalera que baja al sótano y la casa de Thomas (ladrillo rojo).
 // La maqueta es un clon de la ciudad a escala: así el zoom infinito empalma sin costuras.
 import { THREE, mat, box, cyl, sphere, canvasTex, textPlane, RNG, rrect } from './engine.js';
-import { noiseTex, tree, lamp, bench, fountain } from './props.js';
+import { noiseTex, tree, lamp, bench, fountain, rathaus } from './props.js';
 import { glass } from './pech.js';
 
 const rep = (t, a, b) => { t.repeat.set(a, b); return t; };
@@ -33,7 +33,10 @@ function windowAt(g, x, y, z, s, shut) { box(2.6 * s, 3.2 * s, .35, WIN_FR, .08,
 export function kHaus(parent, x, z, ry, o = {}) {
   const g = G(parent, x, 0, z, ry); const w = o.w ?? 18, d = o.d ?? 16, fl = o.floors ?? 2, fh = 7, h = fl * fh + 1.2;
   const wallM = o.brick ? mat(0xffffff, { map: rep(brickTex(o.brick, '#f0e2d2'), w / 6, h / 6), roughness: .85 }) : mat(0xffffff, { map: rep(plaster(o.wall || '#f6d04a'), w / 8, h / 8), roughness: .8 });
-  box(w, h, d, wallM, .1, g, 0, h / 2, 0);
+  if (!o.openDoor) box(w, h, d, wallM, .1, g, 0, h / 2, 0);
+  else { const t = .6; box(w, h, t, wallM, 0, g, 0, h / 2, -d / 2 + t / 2); for (const sd of [-1, 1]) box(t, h, d, wallM, 0, g, sd * (w / 2 - t / 2), h / 2, 0); box(w, t, d, wallM, 0, g, 0, h - t / 2, 0);
+    const ddx = -w / 2 + (Math.floor(Math.max(2, Math.floor(w / 6)) / 2) + .5) * (w / Math.max(2, Math.floor(w / 6))), hw = 1.8, dh = 5.6, fzz = d / 2 - t / 2;
+    box(ddx - hw + w / 2, h, t, wallM, 0, g, (-w / 2 + ddx - hw) / 2, h / 2, fzz); box(w / 2 - ddx - hw, h, t, wallM, 0, g, (w / 2 + ddx + hw) / 2, h / 2, fzz); box(hw * 2, h - dh, t, wallM, 0, g, ddx, dh + (h - dh) / 2, fzz); }
   box(w + .6, 1.2, d + .6, mat(o.base ?? 0xe8e2d6, { roughness: .8 }), .1, g, 0, .6, 0);   // zócalo
   for (let f = 1; f < fl; f++) box(w + .3, .4, d + .3, mat(0xffffff, { roughness: .5 }), .05, g, 0, f * fh + .6, 0);   // cornisa entre pisos
   // tejado a dos aguas (prisma) con alero
@@ -54,14 +57,17 @@ export function kHaus(parent, x, z, ry, o = {}) {
   for (let f = 0; f < fl; f++) for (let i = 0; i < cols; i++) { const wx = -w / 2 + (i + .5) * (w / cols); if (f === 0 && i === Math.floor(cols / 2)) continue; windowAt(g, wx, f * fh + 4.4, fz, 1, shut);
     if (f > 0) for (let k = 0; k < 4; k++) sphere(.36, mat([0xe8323a, 0xff8ad0, 0xffd23f, 0xe8323a][(k + i) % 4], { roughness: .7 }), g, wx - 1.05 + k * .7, f * fh + 2.95, fz + .7, 8, 6); }
   const dx = -w / 2 + (Math.floor(cols / 2) + .5) * (w / cols);
-  box(3.6, 5.6, .4, WIN_FR, .1, g, dx, 3.2, fz); box(3.0, 5.0, .3, mat(o.door ?? 0x2a5aa8, { roughness: .45 }), .08, g, dx, 3.1, fz + .15); sphere(.2, mat(0xe9c23a, { metalness: .8, roughness: .3 }), g, dx + 1.0, 3.0, fz + .45, 10, 8);
-  for (let k = 0; k < 2; k++) box(2.6, .12, .1, mat(0xffffff), 0, g, dx, 4.2 - k * 2.2, fz + .32);
+  let doorPiv = null;
+  if (!o.openDoor) { box(3.6, 5.6, .4, WIN_FR, .1, g, dx, 3.2, fz); box(3.0, 5.0, .3, mat(o.door ?? 0x2a5aa8, { roughness: .45 }), .08, g, dx, 3.1, fz + .15); sphere(.2, mat(0xe9c23a, { metalness: .8, roughness: .3 }), g, dx + 1.0, 3.0, fz + .45, 10, 8);
+    for (let k = 0; k < 2; k++) box(2.6, .12, .1, mat(0xffffff), 0, g, dx, 4.2 - k * 2.2, fz + .32); }
+  else { for (const sd of [-1, 1]) box(.4, 5.8, .6, WIN_FR, .05, g, dx + sd * 1.9, 2.9, fz); box(4.2, .4, .6, WIN_FR, .05, g, dx, 5.8, fz);
+    doorPiv = G(g, dx - 1.7, 0, fz + .1); box(3.4, 5.0, .25, mat(o.door ?? 0x2a5aa8, { roughness: .45 }), .06, doorPiv, 1.7, 3.1, 0); sphere(.2, mat(0xe9c23a, { metalness: .8, roughness: .3 }), doorPiv, 2.9, 3.0, .25, 10, 8); for (let k = 0; k < 2; k++) box(2.8, .12, .1, mat(0xffffff), 0, doorPiv, 1.7, 4.2 - k * 2.2, .16); }
   const can = box(4.6, .3, 2.2, mat(new THREE.Color(rb).getHex()), .08, g, dx, 6.3, fz + 1); can.rotation.x = .25;
   box(4.4, .5, 2.4, mat(0xd8d4cc), .05, g, dx, .25, fz + 1.2); box(3.8, .5, 1.4, mat(0xd8d4cc), .05, g, dx, .75, fz + .8);   // escalones
   for (const sd of [-1, 1]) { const p = cyl(.7, .55, 1.2, mat(0xc8642e, { roughness: .8 }), 12, g, dx + sd * 3.1, .6, fz + 1.2); sphere(.9, mat(0x3a9a40, { roughness: .9 }), g, dx + sd * 3.1, 1.7, fz + 1.2, 10, 8); }
   // valla blanca delante (opcional)
   if (o.fence) { const fm = mat(0xffffff, { roughness: .5 }); for (let i = -w / 2 - 1; i <= w / 2 + 1; i += 1.1) { if (Math.abs(i - dx) < 2.6) continue; box(.35, 2.2, .25, fm, .06, g, i, 1.1, fz + 5.5); } for (const y of [.8, 1.7]) { box((dx - 2.6) - (-w / 2 - 1), .25, .15, fm, 0, g, (-w / 2 - 1 + dx - 2.6) / 2, y, fz + 5.5); box((w / 2 + 1) - (dx + 2.6), .25, .15, fm, 0, g, (w / 2 + 1 + dx + 2.6) / 2, y, fz + 5.5); } }
-  g.userData = { w, d, h, rh, front: fz, door: new THREE.Vector3(dx, 0, fz) }; return shade(g); }
+  g.userData = { w, d, h, rh, front: fz, door: new THREE.Vector3(dx, 0, fz), doorPiv }; return shade(g); }
 
 // ---------- coche de juguete ----------
 export function toyCar(parent, col = 0xff6aa8) { const g = new THREE.Group(); parent.add(g); const b = mat(col, { roughness: .3, metalness: .15 }), dk = mat(0x1a1a1e, { roughness: .6 }), ch = mat(0xd8dce4, { metalness: .85, roughness: .2 });
@@ -74,7 +80,7 @@ export function toyCar(parent, col = 0xff6aa8) { const g = new THREE.Group(); pa
 // plaza x,z ∈ [-32, 32]; carretera en cuadro de 32 a 44; acera 44–48; casas a partir de 50. Casa de Thomas al norte (0, -60), ladrillo rojo.
 export const RING = 38;   // centro del carril
 export function ciudad(parent, o = {}) { const T = G(parent); const mini = !!o.mini;
-  const gr = plane(250, 250, mat(0xffffff, { map: rep(grassT(), 30, 30), roughness: 1 }), T, 0, 0, 0);
+  const gr = plane(250, 250, mat(0xffffff, { map: rep(grassT(), 30, 30), roughness: 1 }), T, 0, 0, 0); gr.userData.noCast = true;
   if (mini) box(250, 6, 250, mat(0x7a4a2a, { roughness: .9 }), 0, T, 0, -3.02, 0);   // canto de tierra de la maqueta
   // carretera en cuadro con aceras y pasos de cebra
   const am = mat(0xffffff, { map: rep(asphalt(), 2, 20), roughness: .9 }), sw = mat(0xe4e0d8, { roughness: .85 }), curb = mat(0xf4f2ee, { roughness: .6 });
@@ -99,34 +105,37 @@ export function ciudad(parent, o = {}) { const T = G(parent); const mini = !!o.m
   const make = (x, z, ry, fl, kind, i, w = 19) => { const roof = kind === 'y' ? (i % 2 ? ['#e0402e', '#9a2418'] : ['#d84a3a', '#8a2a1a']) : ['#f2b83a', '#a8701a'];
     const hh = kHaus(T, x, z, ry, { w, d: 16, floors: fl, wall: kind === 'y' ? YEL[i % 3] : null, brick: kind === 'r' ? RED[i % 2] : null, roof, shut: kind === 'y' ? [0x2a8a4a, 0xd8402e, 0x2a6ad8][i % 3] : 0xffffff, door: [0x2a5aa8, 0xd8402e, 0x2a8a4a][i % 3], fence: !mini && i % 2 === 0 }); HOUSES.push(hh); return hh; };
   north.forEach(([x, fl, k], i) => make(x, -60, 0 + 0, fl + 1, k, i));
-  [[-48, 'r'], [-24, 'y'], [0, 'y'], [24, 'r'], [48, 'y']].forEach(([x, k], i) => make(x, 60, Math.PI, 2 + (i % 2), k, i + 4));
+  [[-48, 'r'], [-24, 'y'], [24, 'r'], [48, 'y']].forEach(([x, k], i) => make(x, 60, Math.PI, 2 + (i % 2), k, i + 4));
+  const RH = rathaus(T, 0); RH.g.position.set(0, 0, 60); RH.g.rotation.y = Math.PI; RH.g.scale.setScalar(.55);
   [[-48, 'y'], [-24, 'r'], [0, 'y'], [24, 'y'], [48, 'r']].forEach(([z, k], i) => make(60, z, -Math.PI / 2, 2 + ((i + 1) % 2), k, i + 9));
   [[-48, 'r'], [-24, 'y'], [0, 'r'], [24, 'y'], [48, 'y']].forEach(([z, k], i) => make(-60, z, Math.PI / 2, 2 + (i % 2), k, i + 14));
   // la casa de Thomas: grande, ladrillo rojo, ventana blanca grande
-  const TH = kHaus(T, 0, -62, 0, { w: 26, d: 20, floors: 3, brick: '#e0402e', roof: ['#f2b83a', '#a8701a'], shut: 0xffffff, door: 0xffffff, fence: !mini });
+  const TH = kHaus(T, 0, -62, 0, { w: 26, d: 20, floors: 3, brick: '#e0402e', roof: ['#f2b83a', '#a8701a'], shut: 0xffffff, door: 0xffffff, fence: !mini, openDoor: !mini });
   // fondo: segunda fila de tejados y árboles
   const r = RNG(31); for (let i = 0; i < 26; i++) { const a = i / 26 * 6.283, d = 100 + r() * 14; tree(T, Math.cos(a) * d, Math.sin(a) * d, 1.1 + r() * .5); }
-  for (const [x, z, ry, k] of [[-30, -92, 0, 'r'], [0, -96, 0, 'y'], [30, -92, 0, 'y'], [-30, 92, Math.PI, 'y'], [30, 92, Math.PI, 'r'], [92, -26, -Math.PI / 2, 'y'], [92, 26, -Math.PI / 2, 'r'], [-92, -26, Math.PI / 2, 'y'], [-92, 26, Math.PI / 2, 'r']]) make(x, z, ry, 2, k, Math.abs(x + z) | 0, 22);
+  for (const [x, z, ry, k] of [[-30, -92, 0, 'r'], [30, -92, 0, 'y'], [-30, 92, Math.PI, 'y'], [30, 92, Math.PI, 'r'], [92, -26, -Math.PI / 2, 'y'], [92, 26, -Math.PI / 2, 'r'], [-92, -26, Math.PI / 2, 'y'], [-92, 26, Math.PI / 2, 'r']]) make(x, z, ry, 2, k, Math.abs(x + z) | 0, 22);
   // coches dando vueltas por el cuadro
   const CARS = mini ? [] : [0xff6aa8, 0xffd23f, 0x3ac8c8, 0xff5a3a, 0xffffff, 0x8a5ad8].map(c => toyCar(T, c));
-  T.userData = { HOUSES, TH, fo, CARS, update: (Tm) => { fo.userData.update && fo.userData.update(Tm);
+  T.userData = { HOUSES, TH, fo, CARS, RH, update: (Tm) => { fo.userData.update && fo.userData.update(Tm);
     CARS.forEach((c, i) => { const u = ((Tm * .028 + i / CARS.length) % 1 + 1) % 1, L = 4, q = u * L, side = Math.floor(q), f = q - side, s = 76, lane = RING + (i % 2 ? 2.6 : -2.6);
       const P = [[-lane, -lane], [lane, -lane], [lane, lane], [-lane, lane]]; const a = P[side], b = P[(side + 1) % 4]; c.position.set(a[0] + (b[0] - a[0]) * f, 0, a[1] + (b[1] - a[1]) * f); c.rotation.y = Math.atan2(b[0] - a[0], b[1] - a[1]); }); } };
-  shade(T); if (mini) T.traverse(m => { if (m.isMesh) m.castShadow = false; });
+  shade(T); gr.castShadow = false; if (mini) T.traverse(m => { if (m.isMesh) m.castShadow = false; });
   return T; }
 
 // ---------- el sótano (Keller) ----------
 // sala de 60 × 44, techo a 24; mesa centrada en (0, 5.2, 0) con la maqueta encima; ventana grande al fondo (z = -22); escalera en la pared derecha.
 export const TABLE_Y = 2.7, MINI_S = .038;
-export function keller(scene, X, cityTemplate) { const g = G(scene, X, 0, 0);
+export function keller(scene, X, cityTemplate, o = {}) { const g = G(scene, X, o.y || 0, o.z || 0);
   const fl = plane(60, 44, mat(0xffffff, { map: rep(plankTex(), 6, 4), roughness: .7 }), g, 0, 0, 0);
   const bw = mat(0xffffff, { map: rep(brickTex('#b8583e', '#e2cdb6'), 6, 3), roughness: .9 });
-  box(60, 24, 1, bw, 0, g, 0, 12, 22.5); box(1, 24, 44, bw, 0, g, -30.5, 12, 0); box(1, 24, 44, bw, 0, g, 30.5, 12, 0);
+  if (o.door) { box(26, 24, 1, bw, 0, g, -17, 12, 22.5); box(26, 24, 1, bw, 0, g, 17, 12, 22.5); box(8, 8, 1, bw, 0, g, 0, 20, 22.5); const fr = mat(0x6a4224); for (const sd of [-1, 1]) box(.8, 16, 1.4, fr, .05, g, sd * 4.2, 8, 22.5); box(9.2, .8, 1.4, fr, .05, g, 0, 16, 22.5); }
+  else box(60, 24, 1, bw, 0, g, 0, 12, 22.5);
+  box(1, 24, 44, bw, 0, g, -30.5, 12, 0); box(1, 24, 44, bw, 0, g, 30.5, 12, 0);
   // pared del fondo con la gran ventana (hueco 30 × 13) y cielo detrás
-  const bwm = bw; box(60, 6, 1, bwm, 0, g, 0, 3, -22.5); box(60, 5, 1, bwm, 0, g, 0, 21.5, -22.5); box(15, 13, 1, bwm, 0, g, -22.5, 12.5, -22.5); box(15, 13, 1, bwm, 0, g, 22.5, 12.5, -22.5);
+  const bwm = bw; if (o.window === false) box(60, 24, 1, bwm, 0, g, 0, 12, -22.5); else { box(60, 6, 1, bwm, 0, g, 0, 3, -22.5); box(60, 5, 1, bwm, 0, g, 0, 21.5, -22.5); box(15, 13, 1, bwm, 0, g, -22.5, 12.5, -22.5); box(15, 13, 1, bwm, 0, g, 22.5, 12.5, -22.5);
   const frm = mat(0x8a5a30, { roughness: .6 }); box(31.6, .8, 1.6, frm, .1, g, 0, 6.2, -22); box(31.6, .8, 1.6, frm, .1, g, 0, 18.8, -22); box(.8, 13, 1.6, frm, .1, g, -15.4, 12.5, -22); box(.8, 13, 1.6, frm, .1, g, 15.4, 12.5, -22);
   const sky = plane(80, 50, new THREE.MeshBasicMaterial({ map: skyTex(), toneMapped: false }), g, 0, 18, -40, 0); sky.material.color.setScalar(1.05);
-  const outG = plane(80, 30, mat(0xffffff, { map: rep(grassT(), 8, 4) }), g, 0, 6.1, -35); for (let i = 0; i < 5; i++) tree(g, -24 + i * 12, -34 - (i % 2) * 4, .8);
+  const outG = plane(80, 30, mat(0xffffff, { map: rep(grassT(), 8, 4) }), g, 0, 6.1, -35); for (let i = 0; i < 5; i++) tree(g, -24 + i * 12, -34 - (i % 2) * 4, .8); }
   // techo de madera con vigas
   const ceil = plane(60, 44, mat(0xffffff, { map: rep(plankTex('#9a6a3a', '#86582e'), 4, 3), roughness: .8 }), g, 0, 24, 0, Math.PI / 2);
   for (let i = -3; i <= 3; i++) box(1.4, 1.6, 44, mat(0x6a4224, { roughness: .8 }), .1, g, i * 8.5, 23.2, 0);
@@ -151,7 +160,7 @@ export function keller(scene, X, cityTemplate) { const g = G(scene, X, 0, 0);
   const ST = G(g, 26, 0, 10); for (let k = 0; k < 12; k++) { box(6, .5, 2.2, wd, .05, ST, 0, 1.8 + k * 1.8, -k * 2); box(6, 1.8 + k * 1.8, .3, wdk, 0, ST, 0, (1.8 + k * 1.8) / 2, -k * 2 + 1.1); }
   for (let k = 0; k < 12; k++) cyl(.15, .15, 4, wdk, 6, ST, -3, 3.8 + k * 1.8, -k * 2);
   const rail = box(.4, .4, 27, wdk, .1, ST, -3, 13.6, -11); rail.rotation.x = Math.atan2(1.8, 2);
-  g.userData = { MINI, LAMPS, sky, rug }; outlineSafe(g); return g; }
+  g.userData = { MINI, LAMPS, rug }; outlineSafe(g); return g; }
 function outlineSafe() {}
 
 // ---------- escalera que baja al sótano (hueco estrecho, paredes claras, puerta abajo con luz cálida) ----------
@@ -202,3 +211,17 @@ export function puppenhaus(scene, X, cityTemplate) { const g = G(scene, X, 0, 0)
   cyl(.15, .15, 7, mat(0x2a2a2a), 8, H, 10, 4.3, -10); const ls = cyl(.8, 1.5, 1.6, mat(0xfff0c8, { emissive: 0xffc870, emissiveIntensity: .6 }), 16, H, 10, 8.2, -10);
   const pl2 = new THREE.PointLight(0xfff0d8, 80, 0, 1.6); pl2.position.set(0, 12, -2); H.add(pl2);
   g.userData = { ...g.userData, MINI, ty }; return shade(g); }
+
+// ---------- pasillo y escalera bajo la casa de Thomas (coordenadas de la ciudad) ----------
+// puerta en (3.25, 0.6, -52); pasillo hasta z = -57 a y = .6; escalera hasta el sótano (suelo y = -26, pared delantera z = -82).
+export function flurTreppe(parent, dx = 3.25) { const g = G(parent, dx, 0, 0); const wl = mat(0xffffff, { map: rep(plaster('#f2dcb6'), 2, 2), roughness: .85 }), wd = mat(0xffffff, { map: rep(plankTex('#c8843e', '#b0702e'), 1, 1), roughness: .6 }), wdk = mat(0x7a4a24, { roughness: .6 });
+  const flo = box(7, .4, 6, wd, 0, g, 0, .4, -54.6); for (const sd of [-1, 1]) box(.5, 7.5, 6, wl, 0, g, sd * 3.75, 4, -54.6); box(7, .5, 6, wl, 0, g, 0, 7.4, -54.6);
+  // cuadros y perchero en el pasillo
+  box(.2, 2.6, 3.2, mat(0xffffff, { map: skyTex() }), .05, g, -3.45, 4.2, -54.6); box(.15, 3, 3.6, mat(0x6a4224), .05, g, -3.5, 4.2, -54.6); cyl(.12, .12, 5, wdk, 6, g, 2.9, 2.6, -53.6); sphere(.5, mat(0x2a6ad8), g, 2.9, 5.1, -53.6, 10, 8);
+  const N = 18, z0 = -57.6, z1 = -81.5, y0 = .6, y1 = -26; for (let k = 0; k < N; k++) { const z = z0 + (z1 - z0) * (k + .5) / N, y = y0 + (y1 - y0) * (k + 1) / N; box(6.8, .5, (z0 - z1) / N + .1, wd, .04, g, 0, y, z); box(6.8, (y0 - y1) / N, .25, mat(0xf4f0e6), 0, g, 0, y + (y0 - y1) / N / 2, z + (z0 - z1) / N / 2); }
+  const len = Math.hypot(z0 - z1, y0 - y1), ang = Math.atan2(y0 - y1, z0 - z1), cz = (z0 + z1) / 2, cy = (y0 + y1) / 2;
+  for (const sd of [-1, 1]) { const w = box(.5, 16, len + 6, wl, 0, g, sd * 3.75, cy + 3.5, cz); w.rotation.x = -ang; }
+  const ceil = box(7.5, .5, len + 2, wl, 0, g, 0, cy + 10, cz + .0); ceil.rotation.x = -ang;
+  const rail = box(.35, .35, len, wdk, .1, g, -2.9, cy + 3.4, cz); rail.rotation.x = -ang; for (let k = 0; k < N; k += 2) { const z = z0 + (z1 - z0) * (k + .5) / N, y = y0 + (y1 - y0) * (k + 1) / N; cyl(.1, .1, 3.2, mat(0xffffff), 6, g, -2.9, y + 1.6, z); }
+  const LP = []; for (const [y, z] of [[6.4, -55], [-8, -68], [-20, -79]]) { sphere(.45, new THREE.MeshBasicMaterial({ color: new THREE.Color(2.2, 2, 1.6), toneMapped: false }), g, z < -60 ? -3.3 : 0, y + (z < -60 ? 5 : 0.6), z, 10, 8); const pl = new THREE.PointLight(0xffe2b8, 45, 0, 1.6); pl.position.set(0, y + (z < -60 ? 6 : 0), z); g.add(pl); LP.push(pl); }
+  g.traverse(m => { if (m.isMesh) { m.castShadow = false; m.receiveShadow = true; } }); g.userData.LP = LP; return g; }

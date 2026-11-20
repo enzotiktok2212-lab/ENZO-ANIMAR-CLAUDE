@@ -438,6 +438,10 @@ def render(cues, dur):
         if name in REC: at(out, rec(REC[name]) * lvl * .8 * c.get('g', 1), max(0, c['t']))
     return out[:int(dur * SR)]
 
+# alias de keller
+for _a, _b in {'car_alarm': 'alarm', 'crash': 'crash_wood', 'crowd': 'murmur', 'crowd_gasp': 'gasp', 'crunch': 'chew', 'ding': 'ding_soft', 'door': 'door_open', 'glass_knock': 'hand_glass', 'grab': 'glove_grab', 'groan': 'sigh', 'grunt': 'strain', 'metal_crash': 'car_hit', 'mumble': 'murmur', 'phone_buzz': 'vibrate', 'propeller': 'heli', 'scream': 'shout_m', 'sneeze': 'fake_sneeze', 'whistle_fall': 'whoosh_down'}.items():
+    LIB.setdefault(_a, LIB[_b])
+
 def fill_gaps(cues, dur, maxgap=1.1):
     ts = sorted(c['t'] for c in cues); extra = []; fill = ['cloth', 'steps', 'breath', 'paper', 'steps_heavy', 'wind', 'drip', 'wood_creak']
     prev = 0.0

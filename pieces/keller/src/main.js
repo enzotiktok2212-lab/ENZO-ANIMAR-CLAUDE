@@ -1,12 +1,13 @@
 // KELLER — «In dieser Stadt gibt es eine Stadt!»: en cada sótano hay una ciudad diminuta, y en la suya otra… hasta el móvil del espectador. 1080×1920, 30 fps.
 // Réplica de la estructura del vídeo de referencia con otra ciudad (casas amarillas y rojas), otro reparto (Thomas) y otros datos.
 // Planos en src/p/*.js; armar.py los une en src/index.js.
-import { THREE, W, H, FPS, makeRenderer, makeComposer, applyPose, V, lerp, clamp, easeOut, easeIn, easeInOut, spring, RNG, mat, box, sphere, cyl, textPlane, outline } from './engine.js';
+import { THREE, W, H, FPS, makeRenderer, makeComposer, applyPose, runPose, idlePose, V, lerp, clamp, easeOut, easeIn, easeInOut, spring, RNG, mat, box, sphere, cyl, textPlane, outline } from './engine.js';
 import { nightSky } from './sets.js';
 import { rimLight } from './roblox.js';
 import { FONT, txt } from './props.js';
-import { ciudad, keller, treppe, puppenhaus, toyCar, kHaus, TABLE_Y, MINI_S, RING, skyTex } from './ksets.js';
+import { ciudad, keller, treppe, puppenhaus, flurTreppe, toyCar, kHaus, TABLE_Y, MINI_S, RING, skyTex } from './ksets.js';
 import { makeThomas, makePohl } from './kcast.js';
+import { lupe, brezel, goldbar, goldpile, tornado, explosion, deckel, leiter, zeppelin, handyRect, daumen, bulb, zimmer } from './kprops.js';
 import { makeExtra } from './ecast.js';
 import { loadKitFaces, kitFace, kitLips, eyesAlive, GEST, actuar, mirar, caminar, saltar, aire, bandada, camaraEnMano, shiver } from './vivo.js';
 
@@ -31,20 +32,31 @@ function sh(p0, s = 30) { const q = 2 * s / 4096 * 4, p = V(Math.round(p0.x / q)
 const KX = 900, TX = 1300, PX = 1700;
 const CITY = ciudad(scene); const MINI_T = ciudad(null, { mini: true });
 const KE = keller(scene, KX, MINI_T), TR = treppe(scene, TX), PU = puppenhaus(scene, PX, MINI_T);
-const SETS = { CI: CITY, KE: KE, TR: TR, PU: PU };
-outline(CITY, 1.4); outline(KE, 1.2); outline(TR, 1.2); outline(PU, 1.2);
+// gancho: la casa de Thomas por dentro (pasillo + escalera) y su sótano justo debajo, con la maqueta (todo conectado)
+const FT = flurTreppe(scene), HK = keller(scene, 3.25, MINI_T, { y: -26, z: -104.5, door: true, window: false });
+HK.traverse(m => { if (m.isMesh) m.castShadow = false; }); HK.userData.MINI.traverse(m => { if (m.isMesh) m.castShadow = true; }); HK.userData.LAMPS.forEach(l => l.intensity = 25);
+const HMC = V(3.25, -26 + TABLE_Y + 6 * MINI_S, -104.5);   // centro de la maqueta del gancho
+const SETS = { CI: CITY, KE: KE, TR: TR, PU: PU, FT: FT, HK: HK };
+outline(CITY, 1.4); outline(FT, 1.2); outline(HK, 1.2); outline(KE, 1.2); outline(TR, 1.2); outline(PU, 1.2);
 // ---------- reparto ----------
-const ich = makeThomas(scene), pohl = makePohl(scene);
-kitFace(ich, 'hero'); kitFace(pohl, 'girl');
+const ich = makeThomas(scene), ichG = makeThomas(scene), ichT = makeThomas(scene), ichT2 = makeThomas(scene), pohl = makePohl(scene);
+[ich, ichG, ichT, ichT2].forEach(c => kitFace(c, 'hero')); kitFace(pohl, 'girl');
+// el espectador (la cara detrás del móvil): sudadera con capucha gris, pelo castaño
+const fan = makeExtra(scene, 30); kitFace(fan, 'plain');
 const EX = Array.from({ length: 24 }, (_, i) => makeExtra(scene, i)); EX.forEach((c, i) => kitFace(c, ['plain', 'hero', 'kid', 'girl', 'mustache', 'girl'][i % 6]));
-const POOL = [ich, pohl, ...EX]; POOL.forEach(c => outline(c.root, 2));
+const POOL = [ich, ichG, ichT, ichT2, pohl, fan, ...EX]; POOL.forEach(c => outline(c.root, 2));
 // ---------- atrezo ----------
 const CONF = Array.from({ length: 70 }, (_, i) => { const p = new THREE.Mesh(new THREE.PlaneGeometry(.3, .45), new THREE.MeshBasicMaterial({ color: [0xff4a8a, 0xffd23f, 0x3ab8ff, 0x8ad84a, 0xff8a3a][i % 5], side: THREE.DoubleSide })); scene.add(p); return p; });
 const DUST = Array.from({ length: 16 }, () => sphere(1, mat(0xd8c8a8, { roughness: 1, transparent: true, opacity: .6, depthWrite: false }), scene, 0, 0, 0, 10, 8));
 const SWEAT = Array.from({ length: 3 }, () => sphere(.16, mat(0x9fd8ff, { roughness: .05, transparent: true, opacity: .85 }), scene, 0, 0, 0, 10, 8));
 const TEAR = Array.from({ length: 2 }, () => sphere(.14, mat(0x9fd8ff, { roughness: .05, transparent: true, opacity: .9 }), scene, 0, 0, 0, 10, 8));
 const FW = []; const NOTES = []; const HEARTS = []; const STEAM = []; const FIRE = [];
-const PROPS = [...CONF, ...DUST, ...SWEAT, ...TEAR];
+const LUPE = lupe(scene), LUPE2 = lupe(scene), BRZ = brezel(scene), BRZ2 = brezel(scene), GB = goldbar(scene), GB2 = goldbar(scene), GPILE = goldpile(scene), TOR = tornado(scene), EXP = explosion(scene);
+const DECK = deckel(scene), LEI = leiter(scene), ZEP = zeppelin(scene), HANDY = handyRect(scene), THUMB = daumen(scene), BULB = bulb(scene);
+const CAR_P = toyCar(scene, 0x3ac8c8);   // el coche de Frau Pohl
+const ZIM = zimmer(scene, 2400); SETS.ZI = ZIM;
+[LUPE, LUPE2, BRZ, BRZ2, GB, GB2, GPILE, LEI, ZEP, THUMB, CAR_P].forEach(o => outline(o, 1.4)); outline(ZIM, 1.2);
+const PROPS = [...CONF, ...DUST, ...SWEAT, ...TEAR, LUPE, LUPE2, BRZ, BRZ2, GB, GB2, GPILE, TOR, EXP, DECK, LEI, ZEP, HANDY, THUMB, BULB, CAR_P];
 // ---------- ambiente ----------
 const AIR = aire(scene, 300); const BIRDS = bandada(scene, 9);
 function setSky(top, mid, hor) { const u = sky.sky.material.uniforms; u.top.value.setRGB(...top); u.mid.value.setRGB(...mid); u.hor.value.setRGB(...hor); }
@@ -57,7 +69,7 @@ function inside(h = 1.0, fill = 50) { MODE = 'in'; renderer.toneMappingExposure 
 function hideAll() {
   for (const c of POOL) { c.root.visible = false; c.root.rotation.set(0, 0, 0); c.root.scale.setScalar(c.spec.scale || 1); applyPose(c, {}); c.setFace({}); if (c.root.parent !== scene) { c.root.parent.remove(c.root); scene.add(c.root); } }
   for (const p of PROPS) { p.visible = false; p.rotation.set(0, 0, 0); p.scale.setScalar(1); if (p.parent !== scene) { p.parent.remove(p); scene.add(p); } }
-  for (const k in SETS) SETS[k].visible = false; SPEED = 0; PU.userData.roof.visible = true;
+  for (const k in SETS) SETS[k].visible = false; SPEED = 0; GRID = null; sky.sky.visible = true; PU.userData.roof.visible = true; CITY.userData.CARS.forEach(c => c.visible = true); if (CITY.userData.TH.userData.doorPiv) CITY.userData.TH.userData.doorPiv.rotation.y = 0;
   FILL.color.setRGB(1, .96, .91); sun.color.setRGB(1, .95, .86); grade.uniforms.vig.value = .4; grade.uniforms.flash.value = 0; grade.uniforms.lift.value = 0; grade.uniforms.sat.value = 1.45; grade.uniforms.sharp.value = 1.12; grade.uniforms.sepia.value = 0; DARK = 0; TINT = null; BIRDSON = 1; SHAKE = 0; day(); }
 const use = (...n) => { for (const k of n) SETS[k].visible = true; };
 function put(ch, x, y, z, ry = 0) { ch.root.visible = true; ch.root.position.set(x, y, z); ch.root.rotation.set(0, ry, 0); return ch; }
@@ -105,6 +117,8 @@ function flames(p, T, w = 5) { FIRE.forEach((f, i) => { f.visible = true; const 
 const arc = (a, b, h, k) => V(lerp(a[0], b[0], k), lerp(a[1], b[1], k) + 4 * h * k * (1 - k), lerp(a[2], b[2], k));
 
 // ---------- gente ----------
+const runPoseK = (T, i = 0) => runPose(T + i * .3, 1.2);
+const idlePoseK = (T, i = 0) => idlePose(T, i);
 const walkP = (T, i, sp = 9) => { const p = Math.sin(T * sp + i); return { aLx: p * .6, aRx: -p * .6, lLx: -p * .5, lRx: p * .5, lLk: Math.max(0, p) * .5, lRk: Math.max(0, -p) * .5, lean: .08 }; };
 // paseante: camina de a a b (en bucle de período per), mirando hacia donde va
 function stroll(c, a, b, T, per = 8, i = 0, expr = 'joy') { const u = ((T / per + i * .37) % 1), k = u < .5 ? u * 2 : 2 - u * 2, x = lerp(a[0], b[0], k), z = lerp(a[1], b[1], k), dir = u < .5 ? 1 : -1;
@@ -138,7 +152,7 @@ function caption(T) { let cur = null; for (const w of CAPS) { if (w.t <= T) cur 
 // ---------- planos ----------
 const POST = []; const S = []; const shot = (t0, tr, zoom, fn, sfx = []) => S.push({ t0, tr, zoom, fn, sfx });
 const PI = Math.PI;
-let DARK = 0, TINT = null, SHAKE = 0, SPEED = 0;
+let DARK = 0, TINT = null, SHAKE = 0, SPEED = 0, GRID = null;
 //@@PLANOS@@
 
 // ---------- transiciones, sonidos, render ----------
@@ -180,7 +194,9 @@ function renderAt(T) {
   if (tr === 'R') { octx.rotate((ph < 0 ? 1 : -1) * a2 * .55); octx.scale(1 + a2 * .3, 1 + a2 * .3); octx.filter = `blur(${(a * 7).toFixed(1)}px)`; }
   if (tr === 'C' && ph > 0) { const sc = 1 + a * .22; octx.scale(sc, sc); }
   if (tr === 'I') { octx.beginPath(); octx.arc(0, 0, Math.max(1, (1 - a2) * H * .62), 0, 7); octx.clip(); }
-  octx.drawImage(renderer.domElement, -W / 2, -H / 2, W, H);
+  if (GRID) { const [nx, ny, z] = GRID; const tw = W / nx * z, th = H / ny * z, a = tw / th; let sw = W, sh = W / a; if (sh > H) { sh = H; sw = H * a; } const sx = (W - sw) / 2, sy = clamp(H * .42 - sh / 2, 0, H - sh);
+    for (let ix = 0; ix < nx; ix++) for (let iy = 0; iy < ny; iy++) octx.drawImage(renderer.domElement, sx, sy, sw, sh, -W / 2 * z + ix * tw, -H / 2 * z + iy * th, tw - 6, th - 6); }
+  else octx.drawImage(renderer.domElement, -W / 2, -H / 2, W, H);
   if (tr === 'W') octx.drawImage(renderer.domElement, -W / 2 - ph * W, -H / 2, W, H); if (tr === 'S') octx.drawImage(renderer.domElement, -W / 2, -H / 2 - ph * H, W, H);
   octx.restore(); octx.filter = 'none';
   if (TINT) { octx.fillStyle = TINT; octx.fillRect(0, 0, W, H); }
@@ -190,4 +206,4 @@ function renderAt(T) {
   for (const b of BAD_) drawBadge(b); caption(T);
 }
 window.renderAt = renderAt; window.DUR = DUR; window.FPS = FPS; window.CUES = CUES; window.SHOTS = S.map(s => [s.t0, s.t1, s.tr, s.zoom]); window.__ready = true;
-window.DBG = { hp, ich, renderer, composer, bloom, sun, grade, scene, camera };
+window.DBG = { THREE, hp, ich, renderer, composer, bloom, sun, grade, scene, camera };

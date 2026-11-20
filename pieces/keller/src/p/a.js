@@ -1,38 +1,31 @@
-// ---------- a: gancho (zoom infinito) y presentación (0 – 15,35 s) ----------
-// Ciclo del zoom infinito, como el original: A ciudad desde el aire → B fachada roja de la casa de Thomas (ventana) → C escalera que baja → D sótano: la maqueta,
-// y la cámara se mete en la maqueta hasta que vuelve a ser A. Cada paso empuja la cámara hacia delante (acelera) con rayas de velocidad.
-const MC = V(KX, TABLE_Y + 6 * MINI_S, 0);   // centro de la maqueta en el sótano
-const zIn = k => easeIn(clamp(k)) * .55 + clamp(k) * .45;
-// A: la ciudad desde el aire, empujando hacia la plaza y la casa de Thomas
-function stepA(L, v = 0) { use('CI'); day(); plazaLife(L.T, 14, 3 + v); const k = zIn(L.k);
-  cm([v * 6, 92, 92, 0, 0, -18, 46], [v * 4, 58, 52, 0, 2, -30, 42], k, x => x); SPEED = .5 * L.k; sh(V(0, 0, -20), 80); }
-// B: fachada de ladrillo de la casa de Thomas, la cámara se lanza hacia la ventana blanca del primer piso
-function stepB(L, v = 0) { use('CI'); day(); const wx = [-3.25, 3.25, -9.75][v % 3], wy = 11.4; const k = zIn(L.k);
-  for (let i = 0; i < 3; i++) stroll(EX[16 + i], [-14 + i * 9, -44], [-6 + i * 9, -44], L.T, 6, i);
-  cm([wx * .6, 9, -16, wx, wy, -52, 42], [wx, wy, -44.5, wx, wy, -52, 38], k, x => x); SPEED = .45 * L.k; sh(V(0, 0, -50), 30); }
-// C: la escalera que baja al sótano (desde arriba), cayendo hacia la puerta con luz
-function stepC(L) { use('TR'); inside(.9, 0); const k = zIn(L.k);
-  cm([TX, 36, 8, TX, 6, -30, 52], [TX, 18, -16, TX, 2, -35, 48], k, x => x); SPEED = .5 * L.k; sh(V(TX, 0, -14), 30); }
-// D: el sótano: la mesa con la maqueta; la cámara cae dentro de la maqueta (al final encaja con A)
-function stepD(L, v = 0) { use('KE'); inside(.95, 0); const k = zIn(L.k);
-  const a = [KX + v * 2, 17, 19, KX, TABLE_Y, -2, 50], b = [KX, MC.y + 92 * MINI_S, 92 * MINI_S + .2, KX, MC.y, -18 * MINI_S, 46];
-  cm(a, b, k, x => x); SPEED = .5 * L.k; sh(V(KX, 0, 0), 30); }
-// ciclo 1: «In dieser Stadt gibt es eine Stadt!»
-shot(0, null, null, L => stepA(L, 0), [[0, 'whoosh', .6], [.1, 'city_amb', .4]]);
-shot(.51, null, null, L => stepB(L, 0), [[0, 'whoosh', .5]]);
-shot(.87, null, null, L => stepC(L), [[0, 'whoosh', .5], [.1, 'steps', .4]]);
-shot(1.29, null, null, L => stepD(L, 0), [[0, 'whoosh', .6], [.2, 'sparkle', .4]]);
-// ciclo 2: «Und in dieser Stadt gibt es noch eine Stadt!»
-shot(2.19, 'C', 'punch', L => stepA(L, 1), [[0, 'impact', .5]]);
-shot(2.65, null, null, L => stepB(L, 1), [[0, 'whoosh', .5]]);
-shot(2.95, null, null, L => stepC(L), [[0, 'whoosh', .5], [.1, 'steps', .4]]);
-shot(3.41, null, null, L => stepD(L, 1), [[0, 'whoosh', .6], [.3, 'sparkle', .4]]);
-// ciclo 3: «Und in dieser Stadt – jap – noch eine Stadt!»
-shot(4.50, 'C', 'punch', L => stepA(L, -1), [[0, 'impact', .5]]);
-shot(5.05, null, null, L => stepB(L, 2), [[0, 'whoosh', .5]]);
-shot(5.42, null, null, L => stepC(L), [[0, 'whoosh', .5], [.1, 'steps', .4]]);
-shot(5.83, null, null, L => stepD(L, 2), [[0, 'whoosh', .6]]);
-shot(6.60, 'F', 'punch', L => stepA(L, 2), [[0, 'impact', .6], [.1, 'sparkle', .5]]);
+// ---------- a: gancho (zoom infinito CONTINUO, sin cortes) y presentación (0 – 15,35 s) ----------
+// Un solo movimiento de cámara por ciclo, en un espacio conectado: la ciudad desde el aire → la puerta de la casa de Thomas (se abre) → el pasillo →
+// la escalera que baja → el sótano justo debajo de la casa → la maqueta de la mesa. La pose final dentro de la maqueta es exactamente la pose inicial
+// a escala, así que el siguiente ciclo empieza en la ciudad grande sin que se note: zoom infinito.
+const MC = V(KX, TABLE_Y + 6 * MINI_S, 0);   // centro de la maqueta del sótano de los demás planos
+const HP0 = [[0, 100, 36], [0, 0, -30], 46];   // pose aérea de la ciudad (relativa al centro de la plaza)
+const toMini = p => V(HMC.x + p[0] * MINI_S, HMC.y + p[1] * MINI_S, HMC.z + p[2] * MINI_S);
+const HK_KEYS = [   // u, posición, objetivo, fov
+  [0, V(...HP0[0]), V(...HP0[1]), 46], [.16, V(1.5, 42, -6), V(3.25, 4, -52), 46], [.30, V(3.25, 3.6, -41), V(3.25, 3.2, -60), 50], [.37, V(3.25, 3.4, -51.5), V(3.25, 2.4, -62), 54],
+  [.44, V(3.25, 3.2, -56), V(3.25, -8, -68), 56], [.58, V(3.25, -9.5, -69), V(3.25, -21, -86), 56], [.70, V(3.25, -16.5, -86), V(3.25, -23, -102), 52], [.84, V(3.25, -17.5, -96), V(3.25, -23, -104.5), 48],
+  [1, toMini(HP0[0]), toMini(HP0[1]), 46]];
+const HK_P = new THREE.CatmullRomCurve3(HK_KEYS.map(k => k[1]), false, 'centripetal'), HK_T = new THREE.CatmullRomCurve3(HK_KEYS.map(k => k[2]), false, 'centripetal');
+function hookCam(u) { u = clamp(u); let i = 0; while (i < HK_KEYS.length - 2 && u > HK_KEYS[i + 1][0]) i++; const a = HK_KEYS[i], b = HK_KEYS[i + 1], f = clamp((u - a[0]) / (b[0] - a[0])), t = (i + f) / (HK_KEYS.length - 1);
+  const p = HK_P.getPoint(t), q = HK_T.getPoint(t); cam([p.x, p.y, p.z], [q.x, q.y, q.z], lerp(a[3], b[3], easeInOut(f))); return p; }
+// la velocidad dentro de cada ciclo: arranca rápido, se frena un pelín en la puerta y acelera al caer en la maqueta
+const hookU = k => clamp(k * .82 + .18 * easeIn(k));
+function hookLoop(L, cycles) { day(); scene.fog.density = 0; use('CI', 'FT', 'HK'); CITY.userData.CARS.forEach(c => c.visible = false);
+  // ciclo actual según la hora absoluta
+  let c = 0; while (c + 1 < cycles.length && L.T >= cycles[c + 1]) c++; const t0 = cycles[c], t1 = c + 1 < cycles.length ? cycles[c + 1] : t0 + 2.2, u = hookU((L.T - t0) / (t1 - t0));
+  const p = hookCam(u); CITY.userData.TH.userData.doorPiv.rotation.y = 1.55 * easeOut(clamp((u - .2) / .12));
+  const under = p.z < -52.6; CITY.visible = !under;   // bajo la casa no se ve la ciudad (y no tapa el sol de la maqueta)
+  SPEED = .35 + .35 * Math.sin(u * Math.PI); BLUR = .006 * Math.sin(u * Math.PI);
+  if (under) sh(V(HMC.x, HMC.y, HMC.z), 12); else sh(V(0, 0, -30), 90);
+  // golpe de zoom al empezar cada frase (sin corte)
+  const since = L.T - t0; if (c > 0 && since < .2) camera.fov *= lerp(.75, 1, easeOut(since / .2)); }
+const HOOK_C = [0, 2.19, 4.50, 6.60, 8.8];
+shot(0, 'W', null, L => hookLoop(L, HOOK_C), [[0, 'whoosh', .6], [.45, 'door', .5], [.75, 'steps', .5], [1.15, 'whoosh', .5], [1.5, 'sparkle', .4],
+  [2.19, 'impact', .5], [2.64, 'door', .5], [2.95, 'steps', .5], [3.4, 'whoosh', .5], [3.8, 'sparkle', .4], [4.50, 'impact', .5], [4.95, 'door', .5], [5.25, 'steps', .5], [5.7, 'whoosh', .5], [6.1, 'sparkle', .4], [6.60, 'impact', .6]]);
 
 // «Ich heiße Thomas, und»: yo en el sótano junto a la maqueta, saludo a cámara
 shot(7.13, 'W', null, L => { use('KE'); inside(.95, 0); const c = put(ich, KX - 7.5, 0, 3, .3);
@@ -59,5 +52,3 @@ shot(12.85, 'W', 'slow', L => { use('PU'); day(); PU.userData.roof.visible = fal
 // «in ihrem Keller.»: primer plano de la mesa del sótano diminuto, con su maqueta aún más pequeña
 shot(14.37, 'C', 'punch', L => { use('PU'); day(); const c = put(EX[2], PX + .6, -15, -6.6, 0); actuar(c, 0, [[0, { lean: .12, headX: .12, aRx: .8 + Math.sin(L.T * 3) * .1, aLx: .8, aRe: .5, aLe: .5 }]], { T: L.T }); cara(c, L.T, { expr: 'joy', eyes: 'happy', mouth: 'open_smile' });
   cm([PX + 1.5, -6.5, 12, PX + .5, -11, -3, 50], [PX + 1.2, -7.4, 9.5, PX + .5, -11.3, -3, 48], L.k); sh(V(PX, -15, 0), 20); }, [[0, 'impact', .5], [.2, 'sparkle', .4]]);
-// (provisional: fin de la prueba del gancho)
-shot(15.35, null, null, L => { use('KE'); inside(.95, 0); orbit(MC, 20, 0, .5, 44); sh(V(KX, 0, 0), 22); });
