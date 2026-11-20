@@ -13,7 +13,7 @@ import { football, stadion, bolzplatz } from './hsets.js';
 import { dackel } from './esets.js';
 import { makeExtra } from './ecast.js';
 import { makeMalte, makeBaecker, makePostbote, makeGegner } from './zcast.js';
-import { viceScreen, logoTex, screen, zockerhalle, kirchfeld, tram, rails, controller, tv, letterBig, teamBus, wohnzimmer, baeckerei, glowM } from './zsets.js';
+import { hookDesks, viceScreen, logoTex, screen, zockerhalle, kirchfeld, tram, rails, controller, tv, letterBig, teamBus, wohnzimmer, baeckerei, glowM } from './zsets.js';
 import { loadKitFaces, kitFace, kitLips, eyesAlive, GEST, actuar, mirar, caminar, saltar, aire, bandada, camaraEnMano, shiver } from './vivo.js';
 
 await document.fonts.load('700 40px Cap'); await loadKitFaces();
@@ -39,6 +39,7 @@ const ZX = 600, BX = 1000, KX = 1400, SX = 1800, OX = 2200, MX = 2600, HX = 3000
 const OR = ort(scene), ZH = zockerhalle(scene, ZX, VICE), BZ = bolzplatz(scene, BX), KF = kirchfeld(scene, KX), ST = stadion(scene, SX), OS = omaStube(scene, OX);
 const MZ = wohnzimmer(scene, MX, VICE2.tex, '#9ad87a', '#8ac86a', 0x2a6ad8), HZ = wohnzimmer(scene, HX, VICE.tex, '#7ab8f4', '#6aa8e8', 0xd8323a), BK = baeckerei(scene, BKX, VICE.tex);
 const OTV = tv(OS.g, VICE2.tex, 4, -9, -.25, 9);   // tele de la abuela
+const HOOKS = [[-3, -9], [3, -9], [-4.8, -13], [4.8, -13], [-1.6, -16.5], [1.6, -16.5]]; const HD = hookDesks(ZH.g, VICE.tex, HOOKS); outline(HD, 1.2);
 const SETS = { OR: OR.G, ZH: ZH.g, BZ: BZ.g, KF: KF.g, ST: ST.g, OS: OS.g, MZ: MZ.g, HZ: HZ.g, BK: BK.g };
 for (const k in SETS) outline(SETS[k], 1.4);
 OR.zoo.visible = false;
@@ -85,7 +86,7 @@ function hideAll() {
   for (const c of POOL) { c.root.visible = false; c.root.rotation.set(0, 0, 0); c.root.scale.setScalar(c.spec.scale || 1); applyPose(c, {}); c.setFace({}); if (c.root.parent !== scene) { c.root.parent.remove(c.root); scene.add(c.root); } }
   for (const p of PROPS) { p.visible = false; p.rotation.set(0, 0, 0); p.scale.setScalar(1); if (p.parent !== scene && !GLV.includes(p)) { p.parent.remove(p); scene.add(p); } }
   BZ.SPOT.intensity = 0; SPOTL.intensity = 0; OR.FEST.visible = false; ST.SB.userData.set(0, 0); ST.G1.userData.bulge(0); ST.G2.userData.bulge(0); BZ.GO.userData.bulge(0); GLV.forEach(g => g.visible = false); VMODE = 'game'; VMODE2 = 'game'; BUS.userData.door.position.x = 2.53;
-  ZH.LP.intensity = 110; ZH.LC.intensity = 110;
+  ZH.LP.intensity = 110; ZH.LC.intensity = 110; HD.visible = false;
   for (const k in SETS) SETS[k].visible = false;
   FILL.color.setRGB(1, .96, .91); sun.color.setRGB(1, .95, .86); grade.uniforms.vig.value = .4; grade.uniforms.flash.value = 0; grade.uniforms.lift.value = 0; grade.uniforms.sat.value = 1.45; grade.uniforms.sharp.value = 1.08; grade.uniforms.sepia.value = 0; DARK = 0; TINT = null; BIRDSON = 1; SHAKE = 0; day(); }
 const use = (...n) => { for (const k of n) SETS[k].visible = true; };
@@ -234,6 +235,8 @@ const gamer = (ch, x, y, z, ry, T, i, k, expr = 'determined', f = 1) => { put(ch
 const padStand = (ch, x, z, ry, T, i, k, expr = 'determined') => { put(ch, x, 0, z, ry); applyPose(ch, standPadP(T, i)); padAt(ch, k); cara(ch, T + i, { expr, mouth: expr === 'joy' ? 'open_smile' : 'flat' }); return ch; };
 // la sala llena: extras sentados en los sillones gamer (se saltan los índices de 'skip')
 function hallCrowd(L, n = 18, skip = [], expr = null) { let k = 0; ZH.CH.forEach((c, i) => { if (k >= n || skip.includes(i)) return; const e = EX[k]; gamer(e, c.x, 0, c.z, (c.x - ZX) * -.012, L.T, k * 1.7, k + 4, expr || ['determined', 'joy', 'determined', 'laugh', 'shock'][k % 5]); k++; }); }
+// jugones del gancho: sentados en los taburetes, detrás de la barra, mirando a cámara por encima de sus monitores
+function hookCrowd(L) { HD.visible = true; HOOKS.forEach(([x, z], i) => { const e = EX[20 + i]; gamer(e, ZX + x, 0, z, (x < 0 ? .25 : -.25), L.T, i * 1.9, 24 + i, ['determined', 'joy', 'laugh', 'determined', 'joy', 'shock'][i]); }); }
 // grada (a la izquierda del campo): extras de pie animando en los escalones; zc = centro en z, rows = filas
 function tribune(L, zc, n = 24, rows = 4, mode = 'cheer', list = EX) { for (let i = 0; i < n; i++) { const c = list[i % list.length], r = i % rows, k = Math.floor(i / rows), per = Math.ceil(n / rows);
   const x = SX - 24 - r * 2.6, y = 1.6 + r * 1.6, z = zc + (k - per / 2) * 2.3 + (r % 2) * 1.1; put(c, x, y, z, PI / 2 + Math.sin(i * 1.7) * .2);
@@ -305,5 +308,27 @@ function renderAt(T) {
   if (DARK > 0) { octx.fillStyle = `rgba(0,0,0,${DARK})`; octx.fillRect(0, 0, W, H); }
   for (const b of BAD_) drawBadge(b); caption(T);
 }
+
+// ---------- portadas (node cover.mjs → renders/portada-1.png, portada-2.png) ----------
+function coverText(lines) { const c = octx; for (const L_ of lines) { const [txt_, y, size, c1, c2, rot] = L_; c.save(); c.translate(W / 2, y); c.rotate(rot || 0); c.font = `700 ${size}px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.lineJoin = 'round';
+  const tw = c.measureText(txt_).width; if (tw > W * .9) { const k = W * .9 / tw; c.scale(k, k); }
+  c.shadowColor = 'rgba(0,0,0,.75)'; c.shadowBlur = 30; c.shadowOffsetY = 14; c.lineWidth = size * .26; c.strokeStyle = '#0a0612'; c.strokeText(txt_, 0, 0); c.shadowColor = 'transparent';
+  const g = c.createLinearGradient(0, -size / 2, 0, size / 2); g.addColorStop(0, c1); g.addColorStop(1, c2); c.fillStyle = g; c.fillText(txt_, 0, 0);
+  c.lineWidth = size * .04; c.strokeStyle = 'rgba(255,255,255,.55)'; c.strokeText(txt_, 0, -size * .03); c.restore(); } }
+window.renderCover = v => { const T = 5.2; hideAll(); BAD_.length = 0; halle(); VMODE = 'both'; hallCrowd({ T }, 18); hookCrowd({ T });
+  if (v === 0) { const me = put(ich, ZX, 0, -3, 0); juggle(me, BALL, T, [5.0, 5.35], { h: 2.2 }); applyPose(me, { aLx: .4, aRx: .4, aLz: 1.1, aRz: 1.1, aLe: .3, aRe: .3, lRx: 1.1, lRk: .9, headX: .25 }); show(BALL, ZX + .5, 2.6, -1.6); cara(me, T, { expr: 'smug', eyes: 'half', mouth: 'smirk' });
+    orbit(V(ZX, 4.6, -5), 19, .05, .1, 50); }
+  else { hang(ich, ZX, -4, .95, T); cara(ich, T, { expr: 'determined', eyes: 'angry', mouth: 'grimace' }); sweat(ich, T, 2); orbit(V(ZX, 7, -6), 22, -.06, .06, 52); }
+  sh(V(ZX, 0, -6), 30); VICE.update(T, VMODE); VICE2.update(T, VMODE2);
+  grade.uniforms.sharp.value = 1.5; grade.uniforms.vig.value = .62; grade.uniforms.sat.value = 1.55; grade.uniforms.lift.value = .01; grade.uniforms.blurAmt.value = 0; grade.uniforms.flash.value = 0;
+  camera.updateProjectionMatrix(); FILL.intensity = 30; const dir = new THREE.Vector3(); camera.getWorldDirection(dir); FILL.position.copy(camera.position).add(V(0, 3, 0)).addScaledVector(dir, 4);
+  sun.castShadow = sun.intensity >= .45; sky.sky.position.copy(camera.position); composer.render();
+  octx.fillStyle = '#000'; octx.fillRect(0, 0, W, H); octx.drawImage(renderer.domElement, 0, 0, W, H);
+  // franjas superior e inferior más oscuras y limpias (TikTok recorta)
+  let g = octx.createLinearGradient(0, 0, 0, 300); g.addColorStop(0, 'rgba(8,4,20,.85)'); g.addColorStop(1, 'rgba(8,4,20,0)'); octx.fillStyle = g; octx.fillRect(0, 0, W, 300);
+  g = octx.createLinearGradient(0, H - 320, 0, H); g.addColorStop(0, 'rgba(8,4,20,0)'); g.addColorStop(1, 'rgba(8,4,20,.9)'); octx.fillStyle = g; octx.fillRect(0, H - 320, W, 320);
+  if (v === 0) coverText([['JEDER ZOCKT', 420, 150, '#ffffff', '#ffd6f0', -.03], ['GTA 6…', 575, 170, '#ffb04a', '#ff3a9a', -.03], ['…AUSSER MIR!', 1480, 150, '#f4ff7a', '#E2FD07', .03]]);
+  else coverText([['SIE ZOCKEN.', 1250, 150, '#ffffff', '#cfe8ff', -.03], ['ICH TRAINIERE.', 1420, 130, '#f4ff7a', '#E2FD07', .02]]);
+};
 window.renderAt = renderAt; window.DUR = DUR; window.FPS = FPS; window.CUES = CUES; window.SHOTS = S.map(s => [s.t0, s.t1, s.tr, s.zoom]); window.__ready = true;
 window.DBG = { renderer, composer, bloom, sun, grade, scene, camera };

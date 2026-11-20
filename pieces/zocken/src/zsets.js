@@ -188,3 +188,10 @@ export function baeckerei(scene, X, tex) { const g = G(scene, X); const wall = m
   const TVW = screen(g, 6, 3.4, tex, 0, 9, -11.6);
   const LB = new THREE.PointLight(0xfff0d8, 140, 50, 1.4); LB.position.set(0, 12, 4); g.add(LB);
   return { g: shade(g), TVW, LB }; }
+
+// ---------- jugones del gancho: taburetes y monitores (pantalla por las dos caras) detrás de la barra ----------
+export function hookDesks(parent, tex, spots) { const g = G(parent); spots.forEach(([x, z]) => { const d = G(g, x, 0, z); const sd = x < 0 ? -1 : 1;
+  cyl(1.1, 1.2, 1.15, mat(0x1a1a24, { roughness: .5 }), 14, d, 0, .58, 0); cyl(1.15, 1.15, .1, mat(0xff3a9a, { roughness: .4, emissive: 0xff3a9a, emissiveIntensity: .6 }), 14, d, 0, 1.18, 0);
+  // mesita a un lado con el monitor girado hacia el jugón (se ve la imagen del juego en diagonal)
+  const t = G(d, sd * 2.6, 0, 1.2); t.rotation.y = -sd * .9; box(2.4, .2, 1.4, mat(0x2a2a34, { roughness: .4 }), .05, t, 0, 2.6, 0); for (const s2 of [-1, 1]) box(.15, 2.6, 1.2, mat(0x2a2a34), .02, t, s2 * 1.05, 1.3, 0);
+  const m = screen(t, 2.6, 1.46, tex, 0, 3.7, -.2, Math.PI); const back = new THREE.Mesh(new THREE.PlaneGeometry(2.6, 1.46), basic(tex)); back.rotation.y = Math.PI; back.position.z = -.45; m.add(back); }); return shade(g); }

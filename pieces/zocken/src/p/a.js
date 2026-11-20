@@ -2,11 +2,11 @@
 const tsH = (a, b) => hussIn(a, b);
 const ballUnder = (ch) => { applyPose(ch, { aRx: .35, aRz: .15, aRe: 1.6, aLz: .15, aLe: .3, headX: .02 }); const w = loc(ch, 1.2, 2.55, .45); show(BALL, w.x, w.y, w.z); return w; };
 // 1 «In dieser Stadt zockt» (zoom lento): la Zockerhalle llena de jugones y pantallas del juego; yo en el centro haciendo flexiones y, de golpe, dominadas
-shot(0, 'F', 'slow', L => { halle(); VMODE = 'both'; hallCrowd(L, 18);
+shot(0, 'F', 'slow', L => { halle(); VMODE = 'both'; hallCrowd(L, 18); hookCrowd(L);
   const t = L.lt; if (t < .5) { pushup(ich, ZX, -3.2, (Math.sin(t * 19 - 1.5) + 1) / 2, L.T); cara(ich, L.T, { expr: 'determined', eyes: 'angry', mouth: 'grimace' }); }
   else if (t < .66) { const k = (t - .5) / .16; put(ich, ZX, k * 2.2, -4, 0); applyPose(ich, { aLx: lerp(1, 3.05, k), aRx: lerp(1, 3.05, k), aLz: .32, aRz: .32, lLk: .4, lRk: .4, crouch: (1 - k) * .4 }); cara(ich, L.T, { expr: 'determined', eyes: 'angry', mouth: 'flat' }); }
   else { const e = (Math.sin((t - .66) * 15 - 1.5) + 1) / 2; hang(ich, ZX, -4, e, L.T); cara(ich, L.T, { expr: 'determined', eyes: 'angry', mouth: e > .5 ? 'grimace' : 'flat' }); sweat(ich, L.T, 2); }
-  orb(L.k, V(ZX, lerp(2.6, 6.4, clamp((L.lt - .35) / .4)), -3.6), null, [21, .12, .08, 50], [14, .04, .06, 46]); sh(V(ZX, 0, -2), 30); },
+  orb(L.k, V(ZX, lerp(2.6, 7.6, clamp((L.lt - .35) / .4)), -3.6), null, [21, .12, .08, 50], [14, .04, .06, 46]); sh(V(ZX, 0, -2), 30); },
   [[0, 'crowd_murmur', .4], [.05, 'game_beep', .4], [.15, 'grunt', .4], [.35, 'grunt', .4], [.55, 'whoosh', .4], [.7, 'metal_clank', .5], [.95, 'grunt', .4], [1.15, 'grunt', .4]]);
 // 2 «jeder GTA 6,»: fila de jugones machacando los mandos; detrás, la gran pantalla con el logo
 shot(1.33, 'W', null, L => { halle(); VMODE = 'logo'; const r = ZH.CH; [0, 3, 6].forEach((ci, j) => { const c = r[ci]; gamer(EX[j], c.x, 0, c.z, -.15, L.T, j * 1.7, j + 4, ['determined', 'joy', 'laugh'][j]); });
