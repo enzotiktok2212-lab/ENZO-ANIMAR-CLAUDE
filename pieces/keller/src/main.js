@@ -1,22 +1,18 @@
-// EINPACKEN — «In dieser Stadt sind alle feiern, außer mir»: el que solo sabe envolver hamburguesas (secuela del HUSS). 1080×1920, 30 fps.
-// Réplica de la estructura del vídeo de referencia con otra ciudad (Hufenbach de noche, de fiesta), otro reparto y otros datos.
-// Los HUSS vienen del audio original (audio/huss.json: [inicio, fin, [golpes]] por ráfaga). Planos en src/p/*.js; armar.py los une en src/index.js.
+// KELLER — «In dieser Stadt gibt es eine Stadt!»: en cada sótano hay una ciudad diminuta, y en la suya otra… hasta el móvil del espectador. 1080×1920, 30 fps.
+// Réplica de la estructura del vídeo de referencia con otra ciudad (casas amarillas y rojas), otro reparto (Thomas) y otros datos.
+// Planos en src/p/*.js; armar.py los une en src/index.js.
 import { THREE, W, H, FPS, makeRenderer, makeComposer, applyPose, V, lerp, clamp, easeOut, easeIn, easeInOut, spring, RNG, mat, box, sphere, cyl, textPlane, outline } from './engine.js';
 import { nightSky } from './sets.js';
 import { rimLight } from './roblox.js';
 import { FONT, txt } from './props.js';
-import { makeOma, makeKumpel, makeLena, makeSie, makeEr, makeKassiererin, makeFahrer, makeJonas, makeMayor, makeLeo, makeNachbar } from './gvolk.js';
-import { hufenbach, townhouse } from './gort.js';
-import { partyHat, crowd, cake, calendar, balloons, speaker, djDesk, discoBall } from './hsets.js';
-import { bunting } from './wsets.js';
-import { stube, broetchenburg, burger, wrapper, parcel, tower, alarm, stopwatch, plate, wrappedPlate, dackel, clipboard, letter, potatoHeart, tie, spatula, paperHat, patty, glowM } from './esets.js';
-import { makeMats, makeChef, makeExtra } from './ecast.js';
+import { ciudad, keller, treppe, puppenhaus, toyCar, kHaus, TABLE_Y, MINI_S, RING, skyTex } from './ksets.js';
+import { makeThomas, makePohl } from './kcast.js';
+import { makeExtra } from './ecast.js';
 import { loadKitFaces, kitFace, kitLips, eyesAlive, GEST, actuar, mirar, caminar, saltar, aire, bandada, camaraEnMano, shiver } from './vivo.js';
 
 await document.fonts.load('700 40px Cap'); await loadKitFaces();
 const WORDS = await (await fetch('./audio/words.json')).json();
-const HU = await (await fetch('./audio/huss.json')).json();   // 7 ráfagas: [t0, t1, [golpes]]
-const DUR = 111.6, U = W / 720;
+const DUR = 129.15, U = W / 720;
 const stage = document.getElementById('stage'); const renderer = makeRenderer(stage); renderer.domElement.style.display = 'none';
 const out = document.createElement('canvas'); out.width = W; out.height = H; stage.appendChild(out); const octx = out.getContext('2d');
 const scene = new THREE.Scene(); scene.fog = new THREE.FogExp2(0xcfe6ff, .0008);
@@ -29,68 +25,26 @@ const FILL = new THREE.PointLight(0xfff4e8, 0, 0, 1.3); scene.add(FILL);
 function sh(p0, s = 30) { const q = 2 * s / 4096 * 4, p = V(Math.round(p0.x / q) * q, Math.round(p0.y / q) * q, Math.round(p0.z / q) * q); const c = sun.shadow.camera; Object.assign(c, { left: -s, right: s, top: s, bottom: -s, near: 1, far: 900 }); c.updateProjectionMatrix(); sun.target.position.copy(p); sun.position.copy(p).add(V(-80, 150, 70)); rim.target.position.copy(p); rim.position.copy(p).add(V(60, 40, -90)); }
 
 // ---------- escenarios ----------
-// Hufenbach (x = 0) de noche y de fiesta: plaza x ∈ [-64, 52], z ∈ [-80, 70]; Rathaus al norte (-6, -92); fuente (-18, -24); café (36, -40); DJ en (24, 6).
-// Stube (SX = 900): mi cuarto; mesa centrada en (SX, 3.4, 0), yo detrás en z = -3.2 mirando +z, ventana detrás (z = -10) con la fiesta fuera.
-// Brötchenburg (BX = 1300): mostrador en z = 0 (jefe detrás en z = -2.4, cliente delante en z = 2.6); plancha en z = -9; fachada en z = 40.
-const SX = 900, BX = 1300;
-const HB = hufenbach(scene), ST = stube(scene, SX), BB = broetchenburg(scene, BX);
-const SETS = { HB: HB.G, ST: ST.g, BB: BB.g };
-for (const k in SETS) outline(SETS[k], 1.4);
-[HB.RANK, HB.KINO, HB.BOX, HB.PRICE].forEach(o => o && (o.visible = false));
-// relleno del pueblo
-townhouse(HB.G, -64, -21, 13, 3, 11, Math.PI / 2); townhouse(HB.G, -64, -34.5, 13, 2, 12, Math.PI / 2);
-for (let i = 0, x = -100; x <= 90; x += 17, i++) townhouse(HB.G, x, -126, 16, 2 + (i % 3), 20 + i, 0);
-for (let i = 0, z = 70; z > -112; z -= 17, i++) { townhouse(HB.G, -98, z, 16, 3 + (i % 2), 30 + i, Math.PI / 2); townhouse(HB.G, 88, z, 16, 2 + (i % 3), 40 + i, -Math.PI / 2); }
-// decoración de fiesta: guirnaldas, bombillas, globos, altavoces, DJ
-const FEST = new THREE.Group(); HB.G.add(FEST);
-for (let k = 0; k < 6; k++) bunting(FEST, [-54, 16 + (k % 2) * 2, -60 + k * 22], [44, 17, -50 + k * 22], 34, 2.2);
-const BULBS = []; for (let k = 0; k < 4; k++) for (let i = 0; i < 26; i++) { const x = -50 + i * 3.8, z = -40 + k * 26; const b = sphere(.3, glowM([0xffd23f, 0xff4a8a, 0x3ab8ff, 0x8ad84a][(i + k) % 4], 3), FEST, x, 19 - Math.sin(i / 25 * Math.PI) * 3, z, 8, 6); BULBS.push(b); }
-for (const [x, z, n, s] of [[-30, 10, 4, 3], [10, -20, 5, 5], [30, 30, 3, 7], [-40, -40, 4, 9], [0, 40, 4, 11]]) balloons(FEST, x, 6, z, n, s);
-speaker(FEST, 18, 0, 1.2, -.6); speaker(FEST, 30, 12, 1.2, -1.2); djDesk(FEST, 24, 6, -.9); discoBall(FEST, 0, 22, 0, 2.2);
-outline(FEST, 1.2);
+// Ciudad (x = 0): plaza [-32, 32], carretera en cuadro (carril a ±38), casas desde ±50; casa de Thomas al norte (0, -62).
+// Keller (KX = 900): mesa en (KX, 5.4, 0) con la maqueta (escala .062); ventana al fondo (z = -22); escalera a la derecha.
+// Treppe (TX = 1300): escalera estrecha que baja hacia -z, puerta con luz abajo.
+const KX = 900, TX = 1300, PX = 1700;
+const CITY = ciudad(scene); const MINI_T = ciudad(null, { mini: true });
+const KE = keller(scene, KX, MINI_T), TR = treppe(scene, TX), PU = puppenhaus(scene, PX, MINI_T);
+const SETS = { CI: CITY, KE: KE, TR: TR, PU: PU };
+outline(CITY, 1.4); outline(KE, 1.2); outline(TR, 1.2); outline(PU, 1.2);
 // ---------- reparto ----------
-const ich = makeMats(scene), udo = makeNachbar(scene), chef = makeChef(scene), mayor = makeMayor(scene), oma = makeOma(scene), kid = makeLeo(scene);
-const K = Array.from({ length: 8 }, (_, i) => makeKumpel(scene, i)); const XT = [makeLena(scene), makeSie(scene), makeEr(scene), makeKassiererin(scene), makeFahrer(scene), makeJonas(scene)];
-kitFace(ich, 'hero'); kitFace(udo, 'mustache'); kitFace(chef, 'mustache'); kitFace(mayor, 'mustache'); kitFace(oma, 'girl'); kitFace(kid, 'kid');
-K.forEach((c, i) => kitFace(c, ['plain', 'hero', 'kid', 'plain', 'girl', 'girl', 'kid', 'hero'][i])); XT.forEach((c, i) => kitFace(c, ['girl', 'girl', 'kid', 'girl', 'plain', 'hero'][i]));
+const ich = makeThomas(scene), pohl = makePohl(scene);
+kitFace(ich, 'hero'); kitFace(pohl, 'girl');
 const EX = Array.from({ length: 24 }, (_, i) => makeExtra(scene, i)); EX.forEach((c, i) => kitFace(c, ['plain', 'hero', 'kid', 'girl', 'mustache', 'girl'][i % 6]));
-const POOL = [ich, udo, chef, mayor, oma, kid, ...K, ...XT, ...EX];
-const EXTRA = [...K, ...XT, ...EX]; POOL.forEach(c => outline(c.root, 2));
-const HATS = new Map(); POOL.forEach((c, i) => HATS.set(c, partyHat(c.head, i, 1.32 + (c === oma ? .25 : 0) + (c === udo ? .5 : 0))));
-const hat = (...cs) => cs.forEach(c => HATS.get(c).visible = true);
-const PHAT = paperHat(ich.head); PHAT.visible = false; outline(PHAT, 1.2);
-const TIE = tie(chef.spine); TIE.position.set(0, 1.95, .62); outline(TIE, 1.2);
+const POOL = [ich, pohl, ...EX]; POOL.forEach(c => outline(c.root, 2));
 // ---------- atrezo ----------
-const WR = [wrapper(scene), wrapper(scene)]; WR.forEach(w => outline(w, 1.2));
-const PARC = [parcel(scene), parcel(scene), parcel(scene)]; PARC.forEach(p => outline(p, 1.2));
-const BUR = [burger(scene), burger(scene)]; BUR.forEach(b => outline(b, 1.2));
-const TWR = [tower(scene, 40, 1, 11), tower(scene, 40, 1, 13), tower(scene, 40, 1, 17)]; TWR.forEach(t => outline(t, 1.2));
-const ALM = alarm(scene); outline(ALM, 1.2); const SW = stopwatch(scene); outline(SW, 1.2);
-const PLT = plate(scene), WPLT = wrappedPlate(scene); outline(PLT, 1.2); outline(WPLT, 1.2);
-const EGG = (() => { const g = new THREE.Group(); scene.add(g); const w = cyl(.7, .7, .06, mat(0xffffff, { roughness: .3 }), 20, g, -.3, .24, .1); w.scale.z = .8; sphere(.3, mat(0xffc020, { roughness: .2 }), g, -.3, .3, .1, 12, 8).scale.y = .5; for (const z of [-.5, -.2]) box(1.4, .08, .3, mat(0xb8402a, { roughness: .6 }), .03, g, .6, .27, z); outline(g, 1); return g; })();
-const DOG = dackel(scene); outline(DOG, 1.4);
-const CLIP = clipboard(scene); outline(CLIP, 1.2); const LET = letter(scene); const POT = potatoHeart(scene); outline(POT, 1.4);
-const CAKE = cake(scene, 5, 1.2); outline(CAKE, 1.2); const CALD = calendar(scene, 'DIENSTAG', 'PARTY!'); outline(CALD, 1.2);
-const PTAB = (() => { const g = new THREE.Group(); scene.add(g); cyl(2.0, 2.0, .2, mat(0xffffff, { roughness: .4 }), 20, g, 0, 2.1, 0); cyl(2.05, 2.05, .5, mat(0xff8ad0, { roughness: .7 }), 20, g, 0, 1.85, 0); cyl(.25, .25, 2.1, mat(0x2a2a2a, { metalness: .6 }), 8, g, 0, 1.05, 0); outline(g, 1.2); return g; })();
-const CALDI = textPlane(4, 4.8, 200, 240, (c, w, h) => { c.fillStyle = '#ffffff'; c.fillRect(0, 0, w, h); c.fillStyle = '#d8323a'; c.fillRect(0, 0, w, 64); txt(c, 'DIENSTAG', w / 2, 34, 36, '#ffffff'); c.fillStyle = '#ff4a8a'; c.font = `700 70px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('PARTY!', w / 2, 140); }); CALDI.material.side = THREE.DoubleSide; scene.add(CALDI);
-const SPAT = spatula(scene); outline(SPAT, 1);
-const PAT = Array.from({ length: 6 }, () => patty(scene)); PAT.forEach(p => outline(p, 1));
-const MGR = (() => { const g = new THREE.Group(); scene.add(g); box(7, .9, 3.6, mat(0x2a2a2e, { metalness: .5, roughness: .4 }), .1, g, 0, .45, 0); box(6.6, .1, 3.2, mat(0x101012, { roughness: .3, metalness: .6 }), 0, g, 0, .92, 0); for (const s of [-1, 1]) box(.3, .3, .3, mat(0xd8323a), .05, g, s * 3, .5, 1.85); outline(g, 1.2); return g; })();
-const FIRE = Array.from({ length: 8 }, (_, i) => { const m = new THREE.Mesh(new THREE.ConeGeometry(.35, 1.2, 6), new THREE.MeshBasicMaterial({ color: new THREE.Color(1.6, .7, .2), transparent: true, opacity: .85, toneMapped: false })); scene.add(m); return m; });
-const STEAM = Array.from({ length: 8 }, () => sphere(.5, mat(0xffffff, { roughness: 1, transparent: true, opacity: .4, depthWrite: false }), scene, 0, 0, 0, 8, 6));
 const CONF = Array.from({ length: 70 }, (_, i) => { const p = new THREE.Mesh(new THREE.PlaneGeometry(.3, .45), new THREE.MeshBasicMaterial({ color: [0xff4a8a, 0xffd23f, 0x3ab8ff, 0x8ad84a, 0xff8a3a][i % 5], side: THREE.DoubleSide })); scene.add(p); return p; });
-const FW = Array.from({ length: 60 }, (_, i) => { const s = new THREE.Mesh(new THREE.SphereGeometry(.5, 6, 4), new THREE.MeshBasicMaterial({ color: new THREE.Color().setHSL((i % 6) / 6, 1, .6).multiplyScalar(2.5), toneMapped: false })); scene.add(s); return s; });
 const DUST = Array.from({ length: 16 }, () => sphere(1, mat(0xd8c8a8, { roughness: 1, transparent: true, opacity: .6, depthWrite: false }), scene, 0, 0, 0, 10, 8));
 const SWEAT = Array.from({ length: 3 }, () => sphere(.16, mat(0x9fd8ff, { roughness: .05, transparent: true, opacity: .85 }), scene, 0, 0, 0, 10, 8));
 const TEAR = Array.from({ length: 2 }, () => sphere(.14, mat(0x9fd8ff, { roughness: .05, transparent: true, opacity: .9 }), scene, 0, 0, 0, 10, 8));
-const NOTES = Array.from({ length: 4 }, (_, i) => { const p = textPlane(1.4, 1.4, 64, 64, (c, w, h) => { c.font = `700 56px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.lineWidth = 8; c.strokeStyle = '#1a1a2a'; c.strokeText(i % 2 ? '♪' : '♫', w / 2, h / 2); c.fillStyle = '#ffd23f'; c.fillText(i % 2 ? '♪' : '♫', w / 2, h / 2); }); p.material.depthWrite = false; scene.add(p); return p; });
-const HEARTS = Array.from({ length: 5 }, () => { const p = textPlane(1.2, 1.2, 64, 64, (c, w, h) => { c.fillStyle = '#ff3a6a'; c.beginPath(); c.moveTo(32, 54); c.bezierCurveTo(0, 30, 8, 4, 32, 18); c.bezierCurveTo(56, 4, 64, 30, 32, 54); c.fill(); }); p.material.depthWrite = false; scene.add(p); return p; });
-// rayas de velocidad (manos que ya no se ven)
-const STREAK = Array.from({ length: 14 }, () => { const m = new THREE.Mesh(new THREE.PlaneGeometry(.12, 2.6), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: .8, depthWrite: false, side: THREE.DoubleSide })); scene.add(m); return m; });
-// brazos fantasma (borrón de las manos): copias de las manos del personaje
-const GHOST = Array.from({ length: 6 }, () => { const m = box(.8, .52, .82, new THREE.MeshBasicMaterial({ color: 0xc68b5e, transparent: true, opacity: .35, depthWrite: false }), .16, scene, 0, 0, 0); return m; });
-
-const PROPS = [CALDI, PTAB, ...WR, ...PARC, ...BUR, ...TWR, ALM, SW, PLT, WPLT, EGG, DOG, CLIP, LET, POT, CAKE, CALD, SPAT, ...PAT, MGR, ...FIRE, ...STEAM, ...CONF, ...FW, ...DUST, ...SWEAT, ...TEAR, ...NOTES, ...HEARTS, ...STREAK, ...GHOST];
+const FW = []; const NOTES = []; const HEARTS = []; const STEAM = []; const FIRE = [];
+const PROPS = [...CONF, ...DUST, ...SWEAT, ...TEAR];
 // ---------- ambiente ----------
 const AIR = aire(scene, 300); const BIRDS = bandada(scene, 9);
 function setSky(top, mid, hor) { const u = sky.sky.material.uniforms; u.top.value.setRGB(...top); u.mid.value.setRGB(...mid); u.hor.value.setRGB(...hor); }
@@ -101,11 +55,9 @@ function night(fill = 40) { MODE = 'night'; renderer.toneMappingExposure = 1.05;
   scene.fog.color.setRGB(.12, .12, .3); scene.fog.density = .001; bloom.strength = .32; bloom.threshold = .82; FILL.intensity = fill; BIRDSON = 0; }
 function inside(h = 1.0, fill = 50) { MODE = 'in'; renderer.toneMappingExposure = .95; hemi.intensity = h; hemi.color.setRGB(1, .97, .92); hemi.groundColor.setRGB(.55, .48, .42); sun.intensity = 0; rim.intensity = .6; bloom.strength = .22; bloom.threshold = .86; scene.fog.density = .0002; FILL.intensity = fill; BIRDSON = 0; }
 function hideAll() {
-  for (const c of POOL) { c.root.visible = false; c.root.rotation.set(0, 0, 0); c.root.scale.setScalar(c.spec.scale || 1); applyPose(c, {}); c.setFace({}); if (c.root.parent !== scene) { c.root.parent.remove(c.root); scene.add(c.root); } HATS.get(c).visible = false; }
-  PHAT.visible = false; TIE.userData.wrap.visible = false; CLIP.userData.wrap.visible = false; DOG.userData.wrap.visible = false; WR.forEach(w => w.userData.set(0));
+  for (const c of POOL) { c.root.visible = false; c.root.rotation.set(0, 0, 0); c.root.scale.setScalar(c.spec.scale || 1); applyPose(c, {}); c.setFace({}); if (c.root.parent !== scene) { c.root.parent.remove(c.root); scene.add(c.root); } }
   for (const p of PROPS) { p.visible = false; p.rotation.set(0, 0, 0); p.scale.setScalar(1); if (p.parent !== scene) { p.parent.remove(p); scene.add(p); } }
-  ST.TW.forEach(t => t.userData.set(0)); BB.PARTY.visible = false; FEST.visible = true;
-  for (const k in SETS) SETS[k].visible = false;
+  for (const k in SETS) SETS[k].visible = false; SPEED = 0; PU.userData.roof.visible = true;
   FILL.color.setRGB(1, .96, .91); sun.color.setRGB(1, .95, .86); grade.uniforms.vig.value = .4; grade.uniforms.flash.value = 0; grade.uniforms.lift.value = 0; grade.uniforms.sat.value = 1.45; grade.uniforms.sharp.value = 1.12; grade.uniforms.sepia.value = 0; DARK = 0; TINT = null; BIRDSON = 1; SHAKE = 0; day(); }
 const use = (...n) => { for (const k of n) SETS[k].visible = true; };
 function put(ch, x, y, z, ry = 0) { ch.root.visible = true; ch.root.position.set(x, y, z); ch.root.rotation.set(0, ry, 0); return ch; }
@@ -134,7 +86,7 @@ function ojos(expr, T, sd) { const n = Math.sin(T * .9 + sd) * .55 + Math.sin(T 
     case 'sus': case 'smug': return n > .2 ? 'squint' : 'half';
     default: return null; } }
 function cara(ch, T, f = {}) { const s = { ...f }; if (!s.eyes && !s.noBlink) { const b = eyesAlive(T, ch.seed, 'normal'); const o = ojos(s.expr, T, ch.seed); if (b === 'closed') s.eyes = 'closed'; else if (o) s.eyes = o; } delete s.noBlink; ch.setFace(s); }
-const spoken = (a, b) => WORDS.filter(w => w[0] >= a - .01 && w[0] < b && w[2] !== 'HUSS!');
+const spoken = (a, b) => WORDS.filter(w => w[0] >= a - .01 && w[0] < b);
 const talk = (ch, T, a, b, expr = 'talk', extra = {}) => cara(ch, T, { expr, mouth: kitLips(T, spoken(a, b)) || 'flat', ...extra });
 const grin = (ch, T, ex = {}) => cara(ch, T, { expr: 'grin', eyes: 'happy', mouth: 'grin', ...ex });
 const laughF = (ch, T) => cara(ch, T, { eyes: 'happy', mouth: Math.sin(T * 22) > 0 ? 'laugh' : 'open_smile' });
@@ -152,45 +104,16 @@ function steam(p, T, n = 6) { STEAM.forEach((s, i) => { if (i >= n) return; cons
 function flames(p, T, w = 5) { FIRE.forEach((f, i) => { f.visible = true; const r = RNG(i * 7 + 1); f.position.set(p.x + (i / 7 - .5) * w, p.y + .4 + Math.abs(Math.sin(T * 12 + i)) * .3, p.z + (r() - .5) * 1.2); f.scale.set(.35, (.7 + Math.abs(Math.sin(T * 15 + i * 2)) * .9) * .35, .35); f.position.y = p.y + .1; }); }
 const arc = (a, b, h, k) => V(lerp(a[0], b[0], k), lerp(a[1], b[1], k) + 4 * h * k * (1 - k), lerp(a[2], b[2], k));
 
-// ---------- envolver ----------
-// golpes de la ráfaga n (1..7); cuántos han pasado en T y fracción hacia el siguiente
-const hits = n => HU[n - 1][2];
-const hitN = (T, hs) => { let n = 0; for (const h of hs) if (T >= h) n++; return n; };
-const sinceHit = (T, hs) => { let l = -9; for (const h of hs) if (T >= h) l = h; return T - l; };
-// progreso del envoltorio: arranca en p0 y avanza un paso por golpe (con remate)
-const wrapP = (T, hs, p0 = 0, step = .34) => { const n = hitN(T, hs); const d = sinceHit(T, hs); return p0 + (n - 1 + (n ? easeOut(clamp(d / .12)) : 0)) * step + (n ? step : 0) * 0; };
-// pose de envolver: brazos sobre la mesa; en cada golpe las manos se juntan de golpe (izquierda/derecha alternas)
-function wrapPose(T, hs, speed = 1) { const n = hitN(T, hs), d = sinceHit(T, hs), j = Math.exp(-d * 18) * (n % 2 ? 1 : -1), s = Math.sin(T * 22 * speed) * .12;
-  return { aLx: 1.35 + s, aRx: 1.35 - s, aLz: -.35 - j * .45, aRz: -.35 + j * .45, aLe: .7 + Math.abs(j) * .5, aRe: .7 + Math.abs(j) * .5, lean: .22, headX: .32, crouch: .05 }; }
-const wrapLoop = (T, rate = 2.2) => (T * rate) % 1;   // envoltorio continuo (sin golpes)
-function wrapIdle(T, rate = 2.2) { const ph = Math.floor(T * rate * 4), j = Math.exp(-((T * rate * 4) % 1) * 3) * (ph % 2 ? 1 : -1);
-  return { aLx: 1.35, aRx: 1.35, aLz: -.35 - j * .35, aRz: -.35 + j * .35, aLe: .7 + Math.abs(j) * .4, aRe: .7 + Math.abs(j) * .4, lean: .2, headX: .3 }; }
-// ich detrás de la mesa de la Stube, mirando a cámara (+z)
-const atDesk = (pose, T) => { const c = put(ich, SX, 0, -3.0, 0); actuar(c, 0, [[0, pose]], { T }); return c; };
-const DESK = V(SX, 2.3, -.3);
-// multitud de extras reales (EX) alrededor de (cx, cz), por detrás del sujeto según la cámara (nunca entre la cámara y el sujeto)
-function partyCrowd(L, cx, cz, n, r0, r1, seed = 1, o = {}) { const list = (o.list || EX).slice(0, n); POST.push(() => { const r = RNG(seed); const ac = Math.atan2(camera.position.z - cz, camera.position.x - cx); const arc = o.full ? [0, 6.283] : [ac + (o.gap ?? 1.4), ac + 6.283 - (o.gap ?? 1.4)];
-  list.forEach((c, i) => { const a = arc[0] + (i + r() * .8) / list.length * (arc[1] - arc[0]); const d = r0 + r() * (r1 - r0); const x = cx + Math.cos(a) * d, z = cz + Math.sin(a) * d;
-    const face = o.face || camera.position; const ry = Math.atan2(face.x - x, face.z - z) + (r() - .5) * .9;
-    if (o.mode === 'walk') { put(c, x, 0, z, ry); actuar(c, 0, [[0, walkP(L.T, i)]], { T: L.T }); cara(c, L.T + i, { expr: o.expr || 'joy', mouth: o.mouth || 'open_smile' }); }
-    else if (o.mode === 'hungry') { put(c, x, 0, z, ry); actuar(c, 0, [[0, { aLx: .6, aRx: .6, aLz: -.3, aRz: -.3, aLe: 1.6, aRe: 1.6, headX: -.15 + Math.sin(L.T * 6 + i) * .05 }]], { T: L.T }); cara(c, L.T + i, { expr: 'shock', mouth: Math.sin(L.T * 8 + i) > 0 ? 'o' : 'ah' }); }
-    else partyGuy(c, x, z, ry, L.T, i * 1.7, i % 3 ? 'joy' : 'laugh');
-    if (o.hats !== false) hat(c); }); }); }
-const walkP = (T, i) => { const p = Math.sin(T * 9 + i); return { aLx: p * .6, aRx: -p * .6, lLx: -p * .5, lRx: p * .5, lLk: Math.max(0, p) * .5, lRk: Math.max(0, -p) * .5, lean: .08 }; };
-// la Stube por la noche: luces de fiesta fuera, gente bailando detrás de la ventana
-function stubeN(L, crowdN = 12) { use('ST'); inside(.85, 18); ST.LO.intensity = 70 + Math.sin(L.T * 9) * 30; ST.BULB.forEach((b, i) => b.material.emissiveIntensity = 2 + Math.sin(L.T * 6 + i) * 1.5);
-  if (crowdN) { const r = RNG(5); EX.slice(0, crowdN).forEach((c, i) => { partyGuy(c, SX - 22 + i * (44 / crowdN) + r() * 2, -15 - r() * 9, (r() - .5) * .8, L.T, i * 1.3); }); }
-  fireworks(V(SX, 12, -60), L.T, 3, 12); }
-// Hufenbach de noche y de fiesta (extras reales alrededor de (cx, cz))
-function townN(L, crowdN = 24, cx = -6, cz = -10, r0 = 7, r1 = 26, seed = 9, o = {}) { use('HB'); night(45); FEST.visible = true; BULBS.forEach((b, i) => b.material.emissiveIntensity = 2.2 + Math.sin(L.T * 5 + i * .7) * 1.4);
-  if (crowdN) partyCrowd(L, cx, cz, crowdN, r0, r1, seed, o);
-  fireworks(V(cx, 20, cz - 60), L.T, 3, 14); }
-// Brötchenburg
-function burgIn(L, light = 1) { use('BB'); inside(.78 * light, 18); BB.LI.intensity = 70; BB.LK.intensity = 30; }
-function burgOut(L, nightM = false) { use('BB'); if (nightM) night(45); else day(); }
-const dance = (ch, T, i = 0) => ({ aLx: 2.6 + Math.sin(T * 8 + i) * .4, aRx: 2.6 + Math.cos(T * 8 + i) * .4, aLz: .5, aRz: .5, aLe: .6, aRe: .6, hipY: Math.sin(T * 8 + i) * .25, crouch: .1 + Math.abs(Math.sin(T * 8 + i)) * .12, headZ: Math.sin(T * 4 + i) * .15 });
-function partyGuy(ch, x, z, ry, T, i = 0, expr = 'joy') { put(ch, x, Math.abs(Math.sin(T * 8 + i)) * .35, z, ry); hat(ch); actuar(ch, 0, [[0, dance(ch, T, i)]], { T }); if (expr === 'laugh') laughF(ch, T + i); else cara(ch, T + i, { expr, mouth: Math.sin(T * 6 + i) > 0 ? 'open_smile' : 'grin' }); return ch; }
-
+// ---------- gente ----------
+const walkP = (T, i, sp = 9) => { const p = Math.sin(T * sp + i); return { aLx: p * .6, aRx: -p * .6, lLx: -p * .5, lRx: p * .5, lLk: Math.max(0, p) * .5, lRk: Math.max(0, -p) * .5, lean: .08 }; };
+// paseante: camina de a a b (en bucle de período per), mirando hacia donde va
+function stroll(c, a, b, T, per = 8, i = 0, expr = 'joy') { const u = ((T / per + i * .37) % 1), k = u < .5 ? u * 2 : 2 - u * 2, x = lerp(a[0], b[0], k), z = lerp(a[1], b[1], k), dir = u < .5 ? 1 : -1;
+  put(c, x, 0, z, Math.atan2((b[0] - a[0]) * dir, (b[1] - a[1]) * dir)); actuar(c, 0, [[0, walkP(T, i * 1.3)]], { T }); cara(c, T + i, { expr, mouth: 'smile' }); return c; }
+// gente en la plaza: unos pasean, otros charlan, uno riega flores (solo extras reales)
+function plazaLife(T, n = 14, seed = 3, avoid = null) { const r = RNG(seed); for (let i = 0; i < n; i++) { const c = EX[i]; const x0 = (r() - .5) * 52, z0 = (r() - .5) * 52, ang = r() * 6.283, L = 6 + r() * 8;
+  if (Math.hypot(x0, z0) < 11) continue; if (avoid && avoid(x0, z0)) continue;
+  if (i % 3 === 2) { put(c, x0, .5, z0, r() * 6.283); actuar(c, 0, [[0, { aLx: .5 + Math.sin(T * 3 + i) * .3, aLe: 1.2, aRx: .2, headY: Math.sin(T + i) * .3 }]], { T }); cara(c, T + i, { expr: 'happy', mouth: kitLips(T * 1.3 + i, [[0, 1e6]]) || 'smile' }); }
+  else { stroll(c, [x0, z0], [x0 + Math.cos(ang) * L, z0 + Math.sin(ang) * L], T, 7 + i % 4, i); c.root.position.y = .5; } } }
 // ---------- capa 2D ----------
 const BAD_ = []; const badge = (kind, text, x, y, k, a = 1, sc = 1) => BAD_.push({ kind, text, x, y, s: spring(clamp(k) * 1.6) * sc, a, on: k > 0 });
 const badge3 = (kind, text, w3, k, sc = 1) => BAD_.push({ kind, text, w3, s: spring(clamp(k) * 1.6) * sc, a: 1, on: k > 0 });
@@ -204,8 +127,8 @@ function drawBadge(b) {
   else if (b.kind === 'bubble') { c.font = `700 42px ${FONT}`; const w = Math.max(160, c.measureText(b.text).width + 60); c.fillStyle = '#fff'; c.strokeStyle = '#1a1a1a'; c.lineWidth = 6; c.beginPath(); c.roundRect(-w / 2, -44, w, 88, 36); c.fill(); c.stroke(); c.beginPath(); c.moveTo(-18, 42); c.lineTo(10, 42); c.lineTo(-24, 78); c.closePath(); c.fill(); c.stroke(); c.fillStyle = '#1a1a1a'; c.fillText(b.text, 0, 3); }
   else if (b.kind === 'q') { c.font = `700 120px ${FONT}`; c.lineWidth = 18; c.strokeStyle = '#0e1226'; c.strokeText(b.text || '?', 0, 0); c.fillStyle = '#ffd23f'; c.fillText(b.text || '?', 0, 0); }
   c.restore(); }
-const KEY = /^(Stadt|feiern|außer|mir|HUSS!|Geburtstag|Dienstag|Kartoffel|Herzform|übrigens|Vorstellungsgespräch|Job|Burger|Brötchenburg|trainiere|Halb|fünf|Handgelenke|Dreihundert|Frühstück|kein|Falten|falten|stecken|rollen|Fünf|Sekunden|langsam|Teller|Dackel|warm|gut|Udo|Nacht|einmal|Genau|Leben|Drei|Eine|Sekunde|Hände|Gespräch|Chef|Theke|eingewickelt|Klemmbrett|Krawatte|beeindruckt|einzige|Frage|braten|gebraten|nie|gegessen|nur|nicht|Brief|fast|Fast|eingestellt|angefangen|Freitagnacht|Party|Mitternacht|ganze|Hungrig|Fünfhundert|Leute|ich|Fünfzig|Bürgermeister|gefeiert)$/;
-const CAPS = WORDS.map(w => { const t = w[2].replace(/[„“"”.,:…–]/g, '').replace(/^-|-$/g, '').trim(); return { t: w[0], txt: t, key: KEY.test(t), huss: w[2] === 'HUSS!' }; }).filter(w => w.txt);
+const KEY = /^(Stadt|Thomas|Keller|winzige|winzigere|Albtraum|Tornado|Erdbeben|Neun|Rathaus|explodiert|Seltsames|Junge|Lupe|Satz|Hunderte|dasselbe|Himmel|Deckel|Auge|Riesen-Thomas|Brezel|BUMM|Haus|Brezeln|Goldbarren|Auto|Pohl|reichste|oben|Leiter|größeren|achtzig|Zeppelin|Handy|Gesicht|Deins|Daumen|Nein|weiterscrollen|Frage|vielleicht|Sekunde|Eine|ich)$/;
+const CAPS = WORDS.map(w => { const t = w[2].replace(/[„“"”.,:…–]/g, '').replace(/^-|-$/g, '').trim(); return { t: w[0], txt: t, key: KEY.test(t), huss: w[2] === 'BUMM!' }; }).filter(w => w.txt);
 function caption(T) { let cur = null; for (const w of CAPS) { if (w.t <= T) cur = w; else break; } if (!cur) return;
   const f = (T - cur.t) * FPS, s = f < 1 ? .2 : f < 2 ? 1.12 : 1, size = H * .046 * (cur.huss ? 1.5 : cur.key ? 1.35 : 1), c = octx;
   c.save(); c.translate(W / 2, H * .74); c.scale(s, s); if (cur.huss) c.rotate(((Math.round(cur.t * 10) % 2) ? -1 : 1) * .06); c.font = `700 ${size}px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.lineJoin = 'round';
@@ -215,32 +138,7 @@ function caption(T) { let cur = null; for (const w of CAPS) { if (w.t <= T) cur 
 // ---------- planos ----------
 const POST = []; const S = []; const shot = (t0, tr, zoom, fn, sfx = []) => S.push({ t0, tr, zoom, fn, sfx });
 const PI = Math.PI;
-let DARK = 0, TINT = null, SHAKE = 0;
-// cronómetro subido encima de un paquete (para que quede por encima del subtítulo)
-const swAt = (x, y, z, ry, s, t, col, k) => { show(PARC[2], x, y, z, ry, s * 1.05); show(SW, x, y + s * 1.4, z, ry, s); SW.userData.draw(t, col, k); };
-// ---------- planos de HUSS (ráfaga n, golpes en hits(n)) ----------
-// progreso del envoltorio: cada 3 golpes un paquete (0,3 → 0,6 → paquete)
-const tripleP = (T, hs) => { const n = hitN(T, hs); if (!n) return 0; const i = (n - 1) % 3, d = sinceHit(T, hs), q = easeOut(clamp(d / .1)); return i === 2 ? .86 + .14 * clamp(d / .2) : lerp(i * .33, (i + 1) * .33, q); };
-const hitFlash = (T, hs) => Math.exp(-sinceHit(T, hs) * 14);
-// dónde: 'ST' cuarto (de noche), 'BB' mostrador de la Brötchenburg (fiesta), 'GR' aprendiendo a freír (plancha en el cuarto)
-function hussSet(L, where) { if (where === 'BB') { burgIn(L); BB.PARTY.visible = true; return V(BX, 2.7, .3); } stubeN(L, 40); return DESK.clone(); }
-function hussShot(L, n, kind, where = 'ST', o = {}) { const hs = hits(n), T = L.T, D = hussSet(L, where), fl = hitFlash(T, hs), base = o.base ?? 0;
-  const me = where === 'BB' ? put(ich, BX, 0, -2.2, 0) : put(ich, SX, 0, -3.0, 0); if (where === 'BB') PHAT.visible = true;
-  actuar(me, 0, [[0, wrapPose(T, hs, 1.2)]], { T }); cara(me, T, { expr: 'determined', eyes: 'angry', mouth: fl > .4 ? 'grimace' : 'flat' });
-  const cnt = base + hitN(T, hs); const tw = where === 'BB' ? TWR[0] : ST.TW[0]; if (where === 'BB') { show(TWR[0], BX - 3.2, 2.7, .4, 0, .5); show(TWR[1], BX - 5.4, 2.7, .1, .3, .5); TWR[1].userData.set(Math.min(40, 12 + Math.floor(cnt / 2))); }
-  tw.userData.set(Math.min(30, 4 + Math.floor(cnt / 3)));
-  if (where === 'GR') { show(MGR, D.x, D.y, D.z, 0, .5); PAT.forEach((p, i) => { show(p, D.x - 1.2 + (i % 3) * 1.2, D.y + .55, D.z - .3 + Math.floor(i / 3) * .7, 0, .5); p.userData.set(i % 3 === (hitN(T, hs) % 3) ? clamp(sinceHit(T, hs) / .3) : 0, D.y + .55); }); attach(SPAT, me.aR.hand, [0, -.5, .3], [-1.4, 0, 0], .55); steam(V(D.x, D.y + .8, D.z), T, 6); flames(V(D.x, D.y + .2, D.z), T, 3); }
-  else { show(WR[0], D.x, D.y, D.z, 0, .5); WR[0].userData.set(tripleP(T, hs)); }
-  const H_ = hp(me);
-  if (kind === 'top') cam([D.x + .2, D.y + 7.4 - fl * .5, D.z + 2.6], [D.x, D.y, D.z - .2], 42);
-  else if (kind === 'face') { const s = o.side ?? .25; cam([H_.x + s * 6, H_.y + 1.0, H_.z + 6.8 - fl * .6], [H_.x, H_.y - .9, H_.z], 42); if (where !== 'BB') sweat(me, T, 2); }
-  else if (kind === 'side') cam([D.x + 7, D.y + 2.6, D.z + 5.5 - fl * .4], [D.x - .3, D.y + 1.4, D.z - 1.2], 42);
-  else if (kind === 'low') cam([D.x - 3.6, D.y + .9, D.z + 6.2], [D.x, D.y + 1.6, D.z - 1.4], 46);
-  else if (kind === 'wide') orbit(V(D.x, D.y + 1.4, D.z - 1.4), lerp(13, 11, L.k), o.yaw ?? -.35, where === 'BB' ? .42 : .14, 44);
-  if (o.clock) { const v = o.clock(T); swAt(D.x - 2.6, D.y, D.z + .4, .35, .38, v[0], v[1], v[2]); }
-  if (o.counter) badge('gold', o.counter(cnt), W / 2, H * .17, 1, 1, .85);
-  SHAKE = Math.max(SHAKE, fl * .5); BLUR = fl * .03; sh(V(D.x, 0, D.z), 14); }
-const hussSfx = (n, t0, t1, kind = 'paper') => hits(n).filter(h => h >= t0 - .001 && h < t1).map(h => [h - t0, ['paper', 'cloth', 'rip'][Math.round(h * 10) % 3], .7]).concat(kind === 'grill' ? [[0, 'pan_sizzle', .5]] : []);
+let DARK = 0, TINT = null, SHAKE = 0, SPEED = 0;
 //@@PLANOS@@
 
 // ---------- transiciones, sonidos, render ----------
@@ -249,13 +147,13 @@ const TRW = { W: 4, Z: 4, F: 3, S: 4, R: 5, I: 6, C: 4 };
 const CUES = [];
 S.forEach((s, i) => { for (const [lt, n, g] of s.sfx) CUES.push({ t: +(s.t0 + lt).toFixed(3), s: n, g: g ?? 1 });
   if (s.zoom === 'slow') { CUES.push({ t: s.t0 + .05, s: 'riser', g: .9, d: +(s.t1 - s.t0 - .05).toFixed(3) }); CUES.push({ t: s.t1 - .02, s: 'braam', g: 1 }); } });
-CUES.push({ t: 0, s: 'zoom_fast', g: .9 });
+CUES.push({ t: 0, s: 'zoom_fast', g: .9 }); CUES.push({ t: .05, s: 'riser', g: .9, d: 6.5 }); CUES.push({ t: 6.6, s: 'braam', g: 1 });   // gancho: riser de principio a fin + golpe
 CUES.sort((a, b) => a.t - b.t);
 const shotAt = T => { for (let i = 0; i < S.length; i++) if (T < S[i].t1) return i; return S.length - 1; };
 let COVER = null;
 function renderShot(i, T, tr, a) {
   const s = S[i], lt = T - s.t0, d = s.t1 - s.t0, L = { lt, k: clamp(lt / d), T, d, t0: s.t0, t1: s.t1 };
-  hideAll(); BAD_.length = 0; s.fn(L); while (POST.length) POST.shift()();
+  hideAll(); BAD_.length = 0; s.fn(L); while (POST.length) POST.shift()(); CITY.userData.update(T);
   if (s.zoom === 'slow') { const e = easeIn(L.k); grade.uniforms.vig.value = lerp(grade.uniforms.vig.value, .8, e); camera.fov *= lerp(1, .86, e); }
   if (s.zoom === 'punch') { const e = clamp(lt / .18); camera.fov *= lerp(.72, 1, easeOut(e)); }
   if (i === 0) { const k = clamp(T / .22); camera.fov *= lerp(.58, 1, easeOut(k)); }
@@ -287,7 +185,9 @@ function renderAt(T) {
   octx.restore(); octx.filter = 'none';
   if (TINT) { octx.fillStyle = TINT; octx.fillRect(0, 0, W, H); }
   if (DARK > 0) { octx.fillStyle = `rgba(0,0,0,${DARK})`; octx.fillRect(0, 0, W, H); }
+  if (SPEED > 0) { const r = RNG(Math.floor(T * FPS) * 7 + 3); octx.save(); octx.strokeStyle = `rgba(255,255,255,${(.55 * SPEED).toFixed(2)})`; octx.lineCap = 'round';
+    for (let k = 0; k < 26; k++) { const a = r() * 6.283, r0 = 380 + r() * 260, r1 = r0 + 160 + r() * 420; octx.lineWidth = 3 + r() * 6; octx.beginPath(); octx.moveTo(W / 2 + Math.cos(a) * r0, H * .44 + Math.sin(a) * r0 * 1.2); octx.lineTo(W / 2 + Math.cos(a) * r1, H * .44 + Math.sin(a) * r1 * 1.2); octx.stroke(); } octx.restore(); }
   for (const b of BAD_) drawBadge(b); caption(T);
 }
 window.renderAt = renderAt; window.DUR = DUR; window.FPS = FPS; window.CUES = CUES; window.SHOTS = S.map(s => [s.t0, s.t1, s.tr, s.zoom]); window.__ready = true;
-window.DBG = { hp, ich, chef, udo, renderer, composer, bloom, sun, grade, scene, camera };
+window.DBG = { hp, ich, renderer, composer, bloom, sun, grade, scene, camera };
