@@ -43,8 +43,8 @@ shot(80.03, 'C', 'slow', L => { pool(L); deck(L, { turned: true }); const d = de
   cm([d.x + .5, 6.5, d.z + 15], [d.x + .3, 5.2, d.z + 9.5], easeIn(L.k)); camera.lookAt(d.x, 2.2, d.z - 1); camera.fov = 44; sh(V(d.x, 0, d.z), 16); }, [[0, 'heartbeat', .4]]);
 // 65 «Denn wenn jemand deinen Namen ruft,»: en la plaza, una mujer llama a un hombre que se aleja
 shot(81.91, 'W', null, L => { town(L); const p = V(-14, 0, 30); const a = put(EX[17], p.x - 3, 0, p.z, PI / 2 - .3); actuar(a, 0, [[0, { aRx: 2.2, aRz: .2, aRe: 2.0, aLx: .3 }]], { T: L.T }); talk(a, L.T, 81.9, 83.7, 'happy');
-  walkTo(EX[16], p.x + 3, p.z, PI / 2 + .4, 2.2, L, 0, 8); cara(EX[16], L.T, { expr: 'neutral' }); bubble(a, 'Adrian!', clamp((L.lt - .3) / .1), 1.5);
-  orb(L.k, V(p.x + .5, 3, p.z), null, [15, .1, .1, 44], [13.5, .02, .08, 44]); sh(p, 16); }, [[0, 'steps', .4], [.4, 'pop', .35]]);
+  walkTo(EX[16], p.x + 1.5, p.z - 1.5, PI - .3, 1.6, L, 0, 8); cara(EX[16], L.T, { expr: 'neutral' }); bubble(a, 'Adrian!', clamp((L.lt - .3) / .1), 1.5);
+  orb(L.k, V(p.x - .5, 3, p.z - 1.5), null, [16, .25, .12, 46], [14.5, .15, .1, 46]); sh(p, 16); }, [[0, 'steps', .4], [.4, 'pop', .35]]);
 // 66 «drehst du dich um,»: ¡zas! se gira al instante
 shot(83.70, 'C', 'punch', L => { town(L); const p = V(-14, 0, 30); const c = put(EX[16], p.x + 5.5, 0, p.z + 1.7, lerp(PI / 2 + .4, -PI / 2 + .3, easeOut(clamp(L.lt / .18)))); actuar(c, 0, [[0, { aLx: .5, aRx: .5, aLz: .5, aRz: .5, lean: -.05 }]], { T: L.T }); cara(c, L.T, { expr: 'happy', eyes: 'wide', mouth: 'o' });
   badge('q', '!', W * .7, H * .22, clamp((L.lt - .1) / .1), 1, .9); onBody(c, 9, -.1, .06, 42, L.k, 8); sh(p, 14); }, [[0, 'whoosh_soft', .45], [.1, 'boing_metal', .3]]);
@@ -61,7 +61,7 @@ shot(87.06, 'Z', null, L => { pool(L); const p = V(FX - 1.6, 0, -13); put(det, p
   cm([p.x + .9, 3.6, p.z + 6], [p.x + .7, 3.4, p.z + 5], L.k); camera.lookAt(p.x + .4, 3.3, p.z); camera.fov = 40; sh(p, 12); }, [[0, 'zoom_in', .4], [.45, 'pencil', .55]]);
 // 70 «Er hat nur so getan,»: el nuevo me guiña un ojo desde la tumbona
 shot(88.16, 'S', null, L => { pool(L); deck(L, { turned: true }); const d = detLounger(L, { eyes: 'wink', mouth: 'smirk' }); det.root.rotation.x = -.7;
-  const h = hp(det); cm([h.x + 1.5, h.y + 2.4, h.z + 6.2], [h.x + 1.2, h.y + 2.1, h.z + 5.4], L.k); camera.lookAt(h.x, h.y, h.z); camera.fov = 40; sh(V(d.x, 0, d.z), 12); }, [[0, 'evil_laugh', .35]]);
+  const h = hp(det); cm([h.x + 2.2, h.y + 1.8, h.z - 4.8], [h.x + 1.8, h.y + 1.6, h.z - 4.2], L.k); camera.lookAt(h.x, h.y + .3, h.z); camera.fov = 42; sh(V(d.x, 0, d.z), 12); }, [[0, 'evil_laugh', .35]]);
 // 71 «damit ihn alle reinlassen.»: recuerdo (sepia): otra puerta se abre y le dejan pasar
 shot(89.20, 'W', null, L => { nightStreet(L); grade.uniforms.sepia.value = .55; const { d, p } = (i => ({ d: DOORS[i], p: V(NX - 20 + i * 20, 0, 0) }))(2); d.userData.setOpen(easeOut(clamp(L.lt / .45)));
   put(EX[18], p.x, 0, -1.4, 0); actuar(EX[18], 0, [[0, GEST.wave]], { T: L.T }); grin(EX[18], L.T);

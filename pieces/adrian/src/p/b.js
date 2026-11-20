@@ -32,8 +32,8 @@ shot(42.71, 'Z', null, L => { town(L); const p = V(10, 0, 24); put(det, p.x, 0, 
 shot(43.75, 'I', null, L => { nightStreet(L); walkTo(det, NX - 34, 3.6, PI / 2, 3.0, L, 0, 7); cara(det, L.T, { expr: 'smug', mouth: 'smirk' }); const dp = det.root.position;
   cm([dp.x + 4, 7.0, 22], [dp.x + 4.5, 6.2, 19], L.k); camera.lookAt(dp.x + .5, 3.6, 2); camera.fov = 48; sh(V(dp.x, 0, 2), 24); }, [[0, 'crickets', .45], [.3, 'steps', .4], [.8, 'owl', .35]]);
 // 37 «von Tür zu Tür und sagte:»: llama a la puerta n.º 12
-shot(44.99, 'S', null, L => { nightStreet(L); const { d, p } = door(0); put(det, p.x + .4, 0, 3.4, PI + .15); const kn = Math.abs(Math.sin(L.T * 12)); actuar(det, 0, [[0, { aRx: 1.6, aRz: -.1, aRe: 1.5 + kn * .4, lean: .06 }]], { T: L.T }); cara(det, L.T, { expr: 'smug' });
-  cm([p.x + 5.2, 5.0, 1.4], [p.x + 4.6, 4.9, 1.2], L.k); camera.lookAt(p.x + .4, 3.8, 3.4); camera.fov = 46; sh(V(p.x, 0, 2), 16); }, [[0, 'knock', .65], [.35, 'knock', .55], [.7, 'knock', .5]]);
+shot(44.99, 'S', null, L => { nightStreet(L); const { d, p } = door(0); put(det, p.x + .6, 0, 3.4, PI - .5); const kn = Math.abs(Math.sin(L.T * 12)); actuar(det, 0, [[0, { aRx: 1.6, aRz: -.1, aRe: 1.5 + kn * .4, lean: .06 }]], { T: L.T }); cara(det, L.T, { expr: 'smug' });
+  cm([p.x + 7.5, 5.2, 1.6], [p.x + 6.8, 5.0, 1.4], L.k); camera.lookAt(p.x + .4, 3.6, 3.0); camera.fov = 48; sh(V(p.x, 0, 2), 16); }, [[0, 'knock', .65], [.35, 'knock', .55], [.7, 'knock', .5]]);
 // 38 «Ich bin's, Adrian!»: su cara a la luz del farol de la puerta, sonrisa dulce y la placa ADRIAN
 shot(46.59, 'C', null, L => { nightStreet(L); const { d, p } = door(0); put(det, p.x + .4, 0, 3.4, PI + .15); actuar(det, 0, [[0, { aLx: .9, aLz: -.6, aLe: 1.9, aRx: .2, headZ: .12 }]], { T: L.T }); cara(det, L.T, { expr: 'happy', eyes: 'happy', mouth: kitLips(L.T, spoken(46.5, 47.9)) || 'smile' });
   const h = hp(det); cm([h.x - 4.4, h.y + .5, .9], [h.x - 3.9, h.y + .4, 1.0], L.k); camera.lookAt(h.x, h.y + .2, h.z); camera.fov = 44; bubble(det, 'Ich bin’s!', clamp(L.lt / .1), 1.4); sh(V(p.x, 0, 3), 12); }, [[0, 'pop', .4]]);
@@ -42,11 +42,11 @@ shot(47.97, 'W', null, L => { nightStreet(L); const { d, p } = door(1); d.userDa
   put(papa, p.x, 0, -1.2, 0); actuar(papa, 0, [[0, { aRx: 1.2, aRz: .5, aRe: .8 + Math.sin(L.T * 8) * .3, aLx: .3 }]], { T: L.T }); grin(papa, L.T);
   walkTo(det, p.x + 3.4, 5.4, PI + .55, 2.0, L, 0, 7); suitIn(det); cara(det, L.T, { expr: 'smug', mouth: 'smirk' });
   cm([p.x - 6.5, 5, 13], [p.x - 5.5, 4.8, 11.5], L.k); camera.lookAt(p.x + .6, 3.6, 1); camera.fov = 46; sh(V(p.x, 0, 2), 16); }, [[0, 'door_open', .6], [.5, 'steps', .35]]);
-// 40 «Am nächsten Morgen waren alle»: el aparcabicis vacío, candados rotos; una vecina se lleva las manos a la cabeza
-shot(49.33, 'F', null, L => { town(L); const r = V(-47, 0, 6); LOCKS.forEach((l, i) => show(l, r.x + 1.6 + (i % 2) * .6, .45, r.z - 3.6 + i * 2.4, i, .8));
-  const v = put(EX[12], r.x + 2.6, 0, r.z + 4.5, PI / 2 + .9); actuar(v, 0, [[0, GEST.hands_head]], { T: L.T }); cara(v, L.T, { expr: 'shock', mouth: 'o' });
-  const v2 = put(EX[13], r.x + 3.4, 0, r.z - 5.5, PI / 2 + .5); actuar(v2, 0, [[0, GEST.shock]], { T: L.T }); cara(v2, L.T + 1, { expr: 'shock', mouth: 'grimace' });
-  orb(L.k, V(r.x + 2, 2.8, r.z - .5), null, [17, PI / 2 + .9, .2, 46], [15, PI / 2 + .75, .16, 46]); sh(r, 16); }, [[0, 'birds', .4], [.25, 'gasp', .5], [.5, 'chain_rattle', .4]]);
+// 40 «Am nächsten Morgen waren alle»: el aparcabicis vacío, candados rotos en el suelo; dos vecinos se llevan las manos a la cabeza
+shot(49.33, 'F', null, L => { town(L); const r = V(-47, 0, 6); LOCKS.forEach((l, i) => show(l, r.x + .8 + (i % 2) * .5, .35, r.z - 3.6 + i * 2.4, i, .8));
+  const v = put(EX[12], r.x + 2.4, 0, r.z + 3.6, PI / 2 + .3); actuar(v, 0, [[0, GEST.hands_head]], { T: L.T }); cara(v, L.T, { expr: 'shock', mouth: 'o' });
+  const v2 = put(EX[13], r.x + 2.8, 0, r.z - 4.0, PI / 2 - .2); actuar(v2, 0, [[0, GEST.shock]], { T: L.T }); cara(v2, L.T + 1, { expr: 'shock', mouth: 'grimace' });
+  cm([r.x + 19, 6.5, r.z + 2], [r.x + 17, 6, r.z + 1.5], L.k); camera.lookAt(r.x + 1.5, 2.4, r.z); camera.fov = 50; sh(r, 16); }, [[0, 'birds', .4], [.25, 'gasp', .5], [.5, 'chain_rattle', .4]]);
 // 41 «Fahrräder und Laptops weg.»: en el café, la mesa vacía donde estaba su portátil; el dueño, en shock. «ALLES WEG!»
 shot(50.95, 'Z', null, L => { town(L); const t = V(36, 0, -40); const v = put(EX[14], t.x, 0, t.z + 2.8, 0); actuar(v, 0, [[0, GEST.hands_head]], { T: L.T }); cara(v, L.T, { expr: 'shock', mouth: 'scream' });
   const v2 = put(EX[15], t.x - 3.4, 0, t.z + 1.6, .5); actuar(v2, 0, [[0, GEST.shock]], { T: L.T }); cara(v2, L.T + 1, { expr: 'shock', mouth: 'o' });
@@ -79,7 +79,7 @@ shot(60.87, 'W', null, L => { town(L); const p = V(24, 0, 24); put(pol, p.x, 0, 
 shot(62.15, 'F', null, L => { town(L); const p = V(-8, 0, -10); put(pol, p.x, 1.2, p.z, 0); actuar(pol, 0, [[0, { aRx: 1.6, aRz: -.4, aRe: 1.7, aLx: .4, aLz: .3 }]], { T: L.T }); talk(pol, L.T, 62, 63.2, 'talk');
   show(CRATE, p.x, 0, p.z); const rh = wpos(pol.aR.hand); show(MEGA, rh.x, rh.y + .25, rh.z + .4, 0, .7);
   crowdGrid(L, p.x, p.z + 6, 6, 3, 3.6, 3.0, { mode: 'idle', expr: 'neutral', face: V(p.x, 4, p.z), seed: 5, jit: .2 });
-  cm([p.x + 2.5, 6.8, p.z + 17], [p.x + 2, 6.6, p.z + 15.5], L.k); camera.lookAt(p.x, 5.0, p.z); camera.fov = 46; sh(V(p.x, 0, p.z + 6), 20); }, [[0, 'murmur', .45], [.3, 'radio', .3]]);
+  cm([p.x + 2.5, 10.5, p.z + 18], [p.x + 2, 10, p.z + 16.5], L.k); camera.lookAt(p.x, 4.6, p.z); camera.fov = 44; sh(V(p.x, 0, p.z + 6), 20); }, [[0, 'murmur', .45], [.3, 'radio', .3]]);
 // 50 «Wer war heute Nacht bei Ihnen?»: primer plano con el megáfono
 shot(63.14, 'C', null, L => { town(L); const p = V(-8, 0, -10); put(pol, p.x, 1.2, p.z, 0); actuar(pol, 0, [[0, { aRx: 1.5, aRz: -.45, aRe: 1.6, aLx: .3 }]], { T: L.T }); talk(pol, L.T, 63.1, 64.6, 'shout'); show(CRATE, p.x, 0, p.z);
   const rh = wpos(pol.aR.hand); show(MEGA, rh.x, rh.y + .25, rh.z + .4, 0, .7);

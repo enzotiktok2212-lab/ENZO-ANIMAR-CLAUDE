@@ -38,10 +38,10 @@ shot(8.09, 'F', null, L => { school(L); classKids(L, { expr: 'smile' }); put(leh
 shot(9.07, 'S', null, L => { school(L); classKids(L, { expr: 'happy' }); meSeat(L, {}, { expr: 'neutral' }); put(lehr, KX - 6, 0, -10.5, .5); actuar(lehr, 0, [[0, GEST.hold]], { T: L.T }); cara(lehr, L.T, { expr: 'neutral' });
   cm([KX + 8, 13, -13.5], [KX + 5, 12.5, -13], L.k); camera.lookAt(KX - 1, 2.6, 5); camera.fov = 50; sh(V(KX, 0, 4), 22); }, [[0, 'classroom', .5], [.3, 'chair_roll', .35]]);
 // 10 «braucht sie nur einen Namen.»: la lista: Adrian, Adrian, Adrian… (se va llenando)
-shot(9.99, 'Z', null, L => { school(L); put(lehr, KX - 8, 0, -12.6, 0); actuar(lehr, 0, [[0, { aLx: 1.35, aLz: -.2, aLe: 1.0, aRx: 1.1, aRz: -.5, aRe: 1.5, headX: .3 }]], { T: L.T }); cara(lehr, L.T, { expr: 'smile', eyes: 'down' });
-  show(ATT, KX - 8, 2.5, -11.3, 0, .3); ATT.rotation.x = -.15; ATT.userData.set(1 + Math.floor(clamp(L.k * 1.3) * 7), false);
+shot(9.99, 'Z', null, L => { school(L); put(lehr, KX - 8, 0, -12.6, 0); actuar(lehr, 0, [[0, { aLx: 2.2, aLz: -.2, aLe: .5, aRx: 2.0, aRz: -.4, aRe: 1.0, headX: -.1 }]], { T: L.T }); cara(lehr, L.T, { expr: 'smile', eyes: 'up' });
+  show(ATT, KX - 8, 5.6, -11.2, 0, .3); ATT.rotation.x = .08; ATT.userData.set(1 + Math.floor(clamp(L.k * 1.3) * 7), false);
   const pw = wpos(lehr.aR.hand); show(PEN, pw.x, pw.y + .2, pw.z + .35, 0, .7); PEN.rotation.z = .6;
-  cm([KX - 8.1, 4.4, -3.8], [KX - 8.05, 4.2, -4.6], L.k); camera.lookAt(KX - 8, 3.0, -11.3); camera.fov = 40; sh(V(KX - 8, 0, -11), 12); }, [[0, 'pencil', .55], [.5, 'pencil', .45]]);
+  cm([KX - 8.1, 6.0, -4.4], [KX - 8.05, 5.9, -5.2], L.k); camera.lookAt(KX - 8, 5.4, -11.2); camera.fov = 40; sh(V(KX - 8, 0, -11), 12); }, [[0, 'pencil', .55], [.5, 'pencil', .45]]);
 // 11 «Adrian? Und»: la profesora llama
 shot(11.31, 'C', null, L => { school(L); put(lehr, KX - 1, 0, -9.5, .15); actuar(lehr, 0, [[0, { aLx: .9, aLz: -.25, aLe: 1.1, aRx: .5, aRz: .4, aRe: .8, headX: -.12, lean: -.05 }]], { T: L.T }); cara(lehr, L.T, { expr: 'happy', mouth: L.T < 11.62 ? 'o' : 'smile', eyes: 'up' });
   show(ATT, KX - .9, 2.2, -8.5, .15, .28); ATT.rotation.x = -.5; bubble(lehr, 'Adrian?', clamp(L.lt / .1), 1.6);
