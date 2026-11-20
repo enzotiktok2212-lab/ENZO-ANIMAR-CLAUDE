@@ -14,3 +14,6 @@ Al reanudar: leer este archivo, `git log`, y seguir el siguiente paso pendiente.
 3. Revisión al 12 % y 60 % (mids.mjs + sheet.py), corregir.
 4. (render en marcha) Audio ya hecho: node cues.mjs → sfx.py → marca.py (campanitas 0 y cada ≤10 s) → render.sh (puerto 8795) → finish.sh → renders/keller.mp4
 5. Mandar solo el vídeo. Commit + push (rama claude/trusting-newton-0hk9y9).
+
+## TERMINADO
+Vídeo renders/keller.mp4 enviado al usuario (129,15 s). No hay nada pendiente.
