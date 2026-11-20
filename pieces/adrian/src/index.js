@@ -480,7 +480,7 @@ function swimmers(L, o = {}) { const r = RNG(o.seed || 4); SWIM.forEach((c, i) =
 function deck(L, o = {}) { [EX[6], EX[7], EX[8], KIDS[4], EX[9], KIDS[5]].forEach((c, i) => { const x = FX - 21 + i * 7.8 + (i === 3 ? 2 : 0), z = -16.5 + (i % 2) * 1.2; const face = 0 + Math.sin(i * 3) * .2, away = PI + Math.sin(i * 2) * .4;
   const tt = o.turnAt != null ? easeOut(clamp((L.T - o.turnAt - (i % 3) * .05) / .22)) : (o.turned ? 1 : 0); put(c, x, 0, z, lerp(away, face, tt)); actuar(c, 0, [[0, { aLx: .2 + Math.sin(L.T + i) * .1, aRx: .3, headY: 0 }]], { T: L.T }); cara(c, L.T + i, { expr: 'happy', mouth: tt > .5 ? 'open_smile' : 'smile' }); }); }
 // Detlef tumbado en la tumbona central, mirando al cielo con una revista
-function detLounger(L, o = {}) { const x = FX - 4 + 2.4, z = -17; put(det, x, 1.25, z + .6, PI); det.root.rotation.x = -1.15; actuar(det, 0, [[0, { aLx: 1.6, aRx: 1.6, aLz: -.3, aRz: -.3, aLe: 1.2, aRe: 1.2, lLx: .15, lRx: .05, headX: -.15 }]], { T: L.T });
+function detLounger(L, o = {}) { const x = FX - 4 + 2.4, z = -17; put(det, x, 1.25, z + .6, 0); det.root.rotation.x = -1.15; actuar(det, 0, [[0, { aLx: 1.6, aRx: 1.6, aLz: -.3, aRz: -.3, aLe: 1.2, aRe: 1.2, lLx: .15, lRx: .05, headX: -.15 }]], { T: L.T });
   cara(det, L.T, { expr: o.expr || 'smug', eyes: o.eyes || 'half', mouth: o.mouth || 'smirk' }); return V(x, 2.2, z); }
 const meIce = (L, o = {}) => { const m = put(me, EDGE.x, sitY(me, .7), EDGE.z, o.ry ?? PI); actuar(me, 0, [[0, { lLx: 1.4, lRx: 1.4, lLk: .9 + Math.sin(L.T * 3) * .2, lRk: .9 + Math.cos(L.T * 3) * .2, aRx: 1.7, aRz: -.3, aRe: 2.0, aLx: .3, aLz: .3, headX: .1, ...(o.pose || {}) }]], { T: L.T });
   const rh = wpos(m.aR.hand); show(ICE, rh.x, rh.y + .5, rh.z, 0, 1.1); return m; };
@@ -531,8 +531,8 @@ shot(87.06, 'Z', null, L => { pool(L); const p = V(FX - 1.6, 0, -13); put(det, p
   det.setTag(null); const ch = wpos(det.spine); show(TAGBIG, ch.x + .5, ch.y + 1.5, ch.z + .7, 0, .34); TAGBIG.userData.set('ADRIAN', L.k > .45);
   cm([p.x + .9, 3.6, p.z + 6], [p.x + .7, 3.4, p.z + 5], L.k); camera.lookAt(p.x + .4, 3.3, p.z); camera.fov = 40; sh(p, 12); }, [[0, 'zoom_in', .4], [.45, 'pencil', .55]]);
 // 70 «Er hat nur so getan,»: el nuevo me guiña un ojo desde la tumbona
-shot(88.16, 'S', null, L => { pool(L); deck(L, { turned: true }); const d = detLounger(L, { eyes: 'wink', mouth: 'smirk' }); det.root.rotation.x = -.7;
-  const h = hp(det); cm([h.x + 2.2, h.y + 1.8, h.z - 4.8], [h.x + 1.8, h.y + 1.6, h.z - 4.2], L.k); camera.lookAt(h.x, h.y + .3, h.z); camera.fov = 42; sh(V(d.x, 0, d.z), 12); }, [[0, 'evil_laugh', .35]]);
+shot(88.16, 'S', null, L => { pool(L); deck(L, { turned: true }); const d = detLounger(L, { eyes: 'wink', mouth: 'smirk' }); det.root.rotation.x = -.7; actuar(det, 0, [[0, { aLx: .4, aRx: .4, aLz: .3, aRz: .3, lLx: .15, headX: .25 }]], { T: L.T });
+  const h = hp(det); cm([h.x + 2.2, h.y + 2.2, h.z + 7.2], [h.x + 1.8, h.y + 2.0, h.z + 6.4], L.k); camera.lookAt(h.x, h.y + .3, h.z); camera.fov = 42; sh(V(d.x, 0, d.z), 12); }, [[0, 'evil_laugh', .35]]);
 // 71 «damit ihn alle reinlassen.»: recuerdo (sepia): otra puerta se abre y le dejan pasar
 shot(89.20, 'W', null, L => { nightStreet(L); grade.uniforms.sepia.value = .55; const { d, p } = (i => ({ d: DOORS[i], p: V(NX - 20 + i * 20, 0, 0) }))(2); d.userData.setOpen(easeOut(clamp(L.lt / .45)));
   put(EX[18], p.x, 0, -1.4, 0); actuar(EX[18], 0, [[0, GEST.wave]], { T: L.T }); grin(EX[18], L.T);
@@ -681,7 +681,7 @@ shot(126.29, 'W', null, L => { town(L); PCAR.position.set(30 - L.lt * 12 * Math.
   const cp = PCAR.position; cm([cp.x - 4, 7, cp.z + 26], [cp.x - 3, 6.5, cp.z + 22], L.k); camera.lookAt(cp.x, 2.2, cp.z); camera.fov = 46; sh(V(26, 0, 20), 22); }, [[0, 'siren', .45], [.2, 'car_pass', .5]]);
 // 105 «Und alle haben Müller gewählt.»: todos se pegan la placa nueva: MÜLLER
 shot(127.33, 'F', null, L => { town(L); const p = V(-8, 0, 14); crowdAt(L, p.x, p.z, 18, 3, 12, 105, { mode: 'cheer', tag: 'MÜLLER', full: true }); put(EX[0], p.x, 0, p.z + 3, 0); EX[0].setTag('MÜLLER'); actuar(EX[0], 0, [[0, { aRx: 1.0, aRz: -.75, aRe: 2.0, aLx: 2.7, aLz: .4 }]], { T: L.T }); grin(EX[0], L.T);
-  confRain(V(p.x, 0, p.z), L.T, 50, 22, 18, 16); orb(L.k, V(p.x, 3.4, p.z + 3), null, [12, .1, .12, 44], [10, 0, .1, 44]); sh(p, 18); }, [[0, 'tape', .5], [.3, 'cheer', .5]]);
+  confRain(V(p.x, 0, p.z), L.T, 50, 22, 18, 16); orb(L.k, V(p.x, 2.4, p.z + 3), null, [15, .1, .12, 44], [13, 0, .1, 44]); sh(p, 18); }, [[0, 'tape', .5], [.3, 'cheer', .5]]);
 // 106 «Deshalb heißt jetzt in dieser Stadt»: el cartel de la entrada, recién pintado: 3000 Müllers
 shot(128.86, 'S', null, L => { town(L); WS.userData.set('Müllers'); const c = V(12, 6.1, 240), r = .25;
   [[KIDS[10], -4.2], [KIDS[11], 4.2]].forEach(([p, dx], i) => { const x = c.x + Math.cos(r) * dx + Math.sin(r) * 3, z = c.z - Math.sin(r) * dx + Math.cos(r) * 3; put(p, x, 0, z, r); p.setTag('MÜLLER'); actuar(p, 0, [[0, GEST.cheer]], { T: L.T + i }); laughF(p, L.T + i); });
@@ -697,8 +697,8 @@ shot(131.19, 'W', null, L => { town(L); const p = V(-10, 0, 24); const m = put(m
   onBody(m, 9.5, .1, .08, 42, L.k, 8.5); sh(p, 14); }, [[0, 'hmm', .45], [.6, 'tick', .35]]);
 // 109 «meinen Namen in Adrian zu ändern.»: me pego la placa ADRIAN y guiño a cámara
 shot(132.50, 'Z', null, L => { town(L); const p = V(-10, 0, 24); const m = put(me, p.x, 0, p.z, .15); const on = L.lt > .45; m.setTag(on ? 'ADRIAN' : null);
-  actuar(m, L.lt, [[0, { aLx: 1.2, aLz: -.6, aLe: 1.6 }], [.45, { aLx: .9, aLz: -.75, aLe: 2.0, aRx: 2.7, aRz: .5, aRe: .3 }, { dur: .2 }]], { T: L.T }); cara(m, L.T, on ? { expr: 'wink', eyes: 'wink', mouth: 'smirk' } : { expr: 'smug' });
-  if (!on) { const lh = wpos(m.aL.hand); show(TAGBIG, lh.x + .2, lh.y + .6, lh.z + .5, .15, .3); TAGBIG.userData.set('ADRIAN'); }
+  actuar(m, L.lt, [[0, { aRx: 1.0, aRz: -.25, aRe: .9 }], [.45, { aLx: .9, aLz: -.75, aLe: 2.0, aRx: 2.7, aRz: .5, aRe: .3 }, { dur: .2 }]], { T: L.T }); cara(m, L.T, on ? { expr: 'wink', eyes: 'wink', mouth: 'smirk' } : { expr: 'smug' });
+  if (!on) { attach(TAGBIG, m.aR.hand, [0, -.6, .5], [-1.5, 0, 0], .3 / .82); TAGBIG.userData.set('ADRIAN'); }
   crowdAt(L, p.x, p.z, 10, 4.5, 10, 108, { mode: 'idle', tag: 'MÜLLER', expr: 'happy' });
   onBody(m, 8.5, .1, .06, 40, L.k, 6.8); sh(p, 14); }, [[.45, 'tape', .55], [.6, 'ding_reveal', .45]]);
 

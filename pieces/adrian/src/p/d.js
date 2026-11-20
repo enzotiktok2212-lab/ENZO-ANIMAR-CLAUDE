@@ -122,7 +122,7 @@ shot(126.29, 'W', null, L => { town(L); PCAR.position.set(30 - L.lt * 12 * Math.
   const cp = PCAR.position; cm([cp.x - 4, 7, cp.z + 26], [cp.x - 3, 6.5, cp.z + 22], L.k); camera.lookAt(cp.x, 2.2, cp.z); camera.fov = 46; sh(V(26, 0, 20), 22); }, [[0, 'siren', .45], [.2, 'car_pass', .5]]);
 // 105 «Und alle haben Müller gewählt.»: todos se pegan la placa nueva: MÜLLER
 shot(127.33, 'F', null, L => { town(L); const p = V(-8, 0, 14); crowdAt(L, p.x, p.z, 18, 3, 12, 105, { mode: 'cheer', tag: 'MÜLLER', full: true }); put(EX[0], p.x, 0, p.z + 3, 0); EX[0].setTag('MÜLLER'); actuar(EX[0], 0, [[0, { aRx: 1.0, aRz: -.75, aRe: 2.0, aLx: 2.7, aLz: .4 }]], { T: L.T }); grin(EX[0], L.T);
-  confRain(V(p.x, 0, p.z), L.T, 50, 22, 18, 16); orb(L.k, V(p.x, 3.4, p.z + 3), null, [12, .1, .12, 44], [10, 0, .1, 44]); sh(p, 18); }, [[0, 'tape', .5], [.3, 'cheer', .5]]);
+  confRain(V(p.x, 0, p.z), L.T, 50, 22, 18, 16); orb(L.k, V(p.x, 2.4, p.z + 3), null, [15, .1, .12, 44], [13, 0, .1, 44]); sh(p, 18); }, [[0, 'tape', .5], [.3, 'cheer', .5]]);
 // 106 «Deshalb heißt jetzt in dieser Stadt»: el cartel de la entrada, recién pintado: 3000 Müllers
 shot(128.86, 'S', null, L => { town(L); WS.userData.set('Müllers'); const c = V(12, 6.1, 240), r = .25;
   [[KIDS[10], -4.2], [KIDS[11], 4.2]].forEach(([p, dx], i) => { const x = c.x + Math.cos(r) * dx + Math.sin(r) * 3, z = c.z - Math.sin(r) * dx + Math.cos(r) * 3; put(p, x, 0, z, r); p.setTag('MÜLLER'); actuar(p, 0, [[0, GEST.cheer]], { T: L.T + i }); laughF(p, L.T + i); });
@@ -138,7 +138,7 @@ shot(131.19, 'W', null, L => { town(L); const p = V(-10, 0, 24); const m = put(m
   onBody(m, 9.5, .1, .08, 42, L.k, 8.5); sh(p, 14); }, [[0, 'hmm', .45], [.6, 'tick', .35]]);
 // 109 «meinen Namen in Adrian zu ändern.»: me pego la placa ADRIAN y guiño a cámara
 shot(132.50, 'Z', null, L => { town(L); const p = V(-10, 0, 24); const m = put(me, p.x, 0, p.z, .15); const on = L.lt > .45; m.setTag(on ? 'ADRIAN' : null);
-  actuar(m, L.lt, [[0, { aLx: 1.2, aLz: -.6, aLe: 1.6 }], [.45, { aLx: .9, aLz: -.75, aLe: 2.0, aRx: 2.7, aRz: .5, aRe: .3 }, { dur: .2 }]], { T: L.T }); cara(m, L.T, on ? { expr: 'wink', eyes: 'wink', mouth: 'smirk' } : { expr: 'smug' });
-  if (!on) { const lh = wpos(m.aL.hand); show(TAGBIG, lh.x + .2, lh.y + .6, lh.z + .5, .15, .3); TAGBIG.userData.set('ADRIAN'); }
+  actuar(m, L.lt, [[0, { aRx: 1.0, aRz: -.25, aRe: .9 }], [.45, { aLx: .9, aLz: -.75, aLe: 2.0, aRx: 2.7, aRz: .5, aRe: .3 }, { dur: .2 }]], { T: L.T }); cara(m, L.T, on ? { expr: 'wink', eyes: 'wink', mouth: 'smirk' } : { expr: 'smug' });
+  if (!on) { attach(TAGBIG, m.aR.hand, [0, -.6, .5], [-1.5, 0, 0], .3 / .82); TAGBIG.userData.set('ADRIAN'); }
   crowdAt(L, p.x, p.z, 10, 4.5, 10, 108, { mode: 'idle', tag: 'MÜLLER', expr: 'happy' });
   onBody(m, 8.5, .1, .06, 40, L.k, 6.8); sh(p, 14); }, [[.45, 'tape', .55], [.6, 'ding_reveal', .45]]);
