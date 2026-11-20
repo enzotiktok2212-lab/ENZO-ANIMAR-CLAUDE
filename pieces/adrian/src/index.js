@@ -723,17 +723,21 @@ function stamp(x, y, rot) { const c = octx; c.save(); c.translate(x, y); c.rotat
 function finishCover() { grade.uniforms.sharp.value = 1.55; grade.uniforms.vig.value = .55; grade.uniforms.sat.value = 1.5; grade.uniforms.blurAmt.value = 0; grade.uniforms.flash.value = 0; camera.updateProjectionMatrix();
   sky.sky.position.copy(camera.position); ao.enabled = true; composer.render(); ao.enabled = false; octx.fillStyle = '#000'; octx.fillRect(0, 0, W, H); octx.imageSmoothingQuality = 'high'; octx.drawImage(renderer.domElement, 0, 0, W, H); }
 window.renderCover = async v => { await document.fonts.load('80px Lucky'); await document.fonts.load('80px Lilita'); const T = 3.3, L = { T, lt: 1, k: 1 }; hideAll(); BAD_.length = 0; BIRDSON = 0;
-  if (v === 0) { town(L, { dusk: true, fest: true }); const p = V(-18, 0, -10);
-    crowdAt(L, p.x, p.z - 3.5, 18, 4.6, 10, 202, { mode: 'point', face: V(p.x, 3, p.z), gap: 1.35 }); while (POST.length) POST.shift()();
+  if (v === 0) { town(L, { dusk: true, fest: true }); const p = V(-18, 0, -8);
     put(me, p.x, 0, p.z, 0); actuar(me, 0, [[0, GEST.shrug]], { T }); cara(me, T, { expr: 'worried', eyes: 'side_l', mouth: 'wavy', noBlink: 1 });
-    cam([p.x + .5, 3.4, p.z + 15], [p.x, 2.9, p.z - 6], 50); sh(V(p.x, 0, p.z - 3), 26); hemi.intensity = 1.25; sun.intensity = 2.6; FILL.intensity = 45;
+    // burlones alrededor: de 3/4 hacia cámara, señalándome y riéndose, con la placa ADRIAN bien visible
+    [[EX[4], -4.1, -.9], [EX[1], 4.1, -.9], [EX[9], -2.6, -4.6], [EX[2], 2.7, -4.8], [KIDS[1], -3.9, 2.4], [KIDS[5], 3.9, 2.2]].forEach(([c, dx, dz], i) => {
+      const x = p.x + dx, z = p.z + dz, toMe = Math.atan2(p.x - x, p.z - z); put(c, x, 0, z, toMe * .4); c.setTag('ADRIAN');
+      actuar(c, 0, [[0, { aRx: 1.6, aRz: dx < 0 ? -.15 : .05, aRe: .05, aLx: .6, aLz: -.4, aLe: 1.6, lean: -.1 + Math.sin(i) * .04, headX: -.08 }]], { T: T + i }); laughF(c, T + i * .7); });
+    cam([p.x, 3.8, p.z + 17.5], [p.x, 2.6, p.z - 4], 50); sh(V(p.x, 0, p.z - 2), 22); hemi.intensity = 1.25; sun.intensity = 2.6; FILL.intensity = 45;
     finishCover();
+    const top = proj(V(p.x, 4.75, p.z)), bot = proj(V(p.x, -.1, p.z)), sl = proj(V(p.x - 2.25, 2.6, p.z)), sr = proj(V(p.x + 2.25, 2.6, p.z));
     strokeTxt('IN DIESER STADT', W / 2, H * .18, 112, 'Lucky', ['#ffffff', '#ffe2b8'], '#14143a', 26);
     strokeTxt('HEISST JEDER', W / 2, H * .24, 96, 'Lucky', ['#ffffff', '#ffe2b8'], '#14143a', 24);
-    tagSticker(W / 2, H * .315, .78, -.05);
-    tagSticker(W * .14, H * .58, .55, -.35); tagSticker(W * .87, H * .55, .55, .3);
-    ringMark(W * .5, H * .567, W * .44, H * .2, '#ff0018');
-    strokeTxt('… AUSSER MIR', W / 2, H * .835, 120, 'Lucky', ['#ff5a5a', '#e0001a'], '#2a0008', 26, -.02); sparkle(W * .2, H * .2, 34); sparkle(W * .82, H * .23, 26); sparkle(W * .72, H * .44, 20);
+    tagSticker(W / 2, H * .315, .74, -.05);
+    ringMark((sl[0] + sr[0]) / 2, (top[1] + bot[1]) / 2, (sr[0] - sl[0]) / 2 + 55, (bot[1] - top[1]) / 2 + 45, '#ff0018');
+    strokeTxt('… AUSSER MIR', W / 2, Math.min(H * .86, bot[1] + 130), 120, 'Lucky', ['#ff5a5a', '#e0001a'], '#2a0008', 26, -.02);
+    sparkle(W * .12, H * .16, 30); sparkle(W * .88, H * .2, 24);
   } else { school(L); classKids(L, { hands: T - 2, shout: true }); const s = V(KX, 0, .6); put(me, s.x, sitY(me), s.z, PI); actuar(me, 0, [[0, seatPose({ aLx: 1.1, aRx: 1.1, aLe: 1.7, aRe: 1.7, aLz: -.35, aRz: -.35, headX: .08 })]], { T }); cara(me, T, { expr: 'sad', eyes: 'worried', mouth: 'frown', noBlink: 1 });
     put(lehr, KX + 7.5, 0, -8.5, -.6); actuar(lehr, 0, [[0, { aLx: 2.6, aLz: .3, aLe: .3 }]], { T }); cara(lehr, T, { expr: 'happy', mouth: 'open_smile', noBlink: 1 });
     cam([KX + 7.5, 11.5, -13], [KX - 1.5, 2.6, 7], 60); sh(V(KX, 0, 4), 22); FILL.intensity = 40; inside(1.05, 40);
