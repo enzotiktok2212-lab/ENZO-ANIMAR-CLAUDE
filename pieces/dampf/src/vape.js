@@ -64,7 +64,7 @@ export function smokePool(scene, n = 900) { const tex = smokeTex(); const L = []
         s.position.copy(o).addScaledVector(d, dist).addScaledVector(side, dist * sx + curl).addScaledVector(upv, dist * sy + up * Math.pow(a, 1.25) + curl2);
         const sc = size * (.28 + 1.5 * (1 - Math.exp(-a * 1.6)) + a * .35) * (.8 + r() * .45); s.scale.set(sc, sc, 1);
         s.material.rotation = r() * 6.283 + a * (r() - .5) * 1.2;
-        s.material.opacity = dens * clamp(a / .07) * Math.pow(1 - k, 1.6) * (.55 + r() * .45);
+        s.material.opacity = dens * clamp(a / .07) * clamp((dist + a * .4) / 1.1) * Math.pow(1 - k, 1.6) * (.55 + r() * .45);   // transparente junto a la boca: no tapa la cara
         s.material.color.copy(this.tint).multiplyScalar(.92 + r() * .08); } },
     // nube quieta (niebla, nubes encima de la gente): bolas que respiran despacio
     haze(c, T, n = 30, rx = 10, ry = 3, rz = 10, size = 5, dens = .5, seed = 5) { for (let i = 0; i < n; i++) { const r = RNG(seed * 97 + i * 5); const s = this.take(); if (!s) return;

@@ -87,7 +87,7 @@ const GradeShader = {
 export function makeComposer(renderer, scene, camera) {
   const composer = new EffectComposer(renderer, new THREE.WebGLRenderTarget(W, H, { type: THREE.HalfFloatType, samples: +(new URLSearchParams(location.search).get('ms') ?? 0) }));
   const rp = new RenderPass(scene, camera); composer.addPass(rp);
-  const ao = new GTAOPass(scene, camera, W, H); ao.output = GTAOPass.OUTPUT.Default; ao.blendIntensity = 1.0; ao.updateGtaoMaterial({ radius: 1.6, distanceExponent: 1.4, thickness: 1.2, scale: 1.2, samples: 12 }); ao.updatePdMaterial({ lumaPhi: 10, depthPhi: 2, normalPhi: 3, radius: 6, rings: 2, samples: 12 }); composer.addPass(ao);
+  const ao = new GTAOPass(scene, camera, W, H); ao.output = GTAOPass.OUTPUT.Default; ao.blendIntensity = 1.0; ao.updateGtaoMaterial({ radius: 2.2, distanceExponent: 1.4, thickness: 1.6, scale: 1.5, samples: 12 }); ao.updatePdMaterial({ lumaPhi: 10, depthPhi: 2, normalPhi: 3, radius: 6, rings: 2, samples: 12 }); composer.addPass(ao);
   const bloom = new UnrealBloomPass(new THREE.Vector2(W / 2, H / 2), 0.45, 0.6, 0.78); composer.addPass(bloom);
   composer.addPass(new OutputPass());
   if (new URLSearchParams(location.search).get('smaa') !== '0' && +(new URLSearchParams(location.search).get('ms') ?? 0) === 0) composer.addPass(new SMAAPass(W, H));

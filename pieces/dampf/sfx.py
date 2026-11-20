@@ -357,6 +357,23 @@ LIB.update({
 })
 
 LIB['locker'] = LIB['metal_hit']
+
+# --- DAMPF: sonidos del vape ---
+def vape_in(s=1, d=1.1):   # calada: aire que entra por la boquilla (soplido agudo y estrecho) + crepitar suave de la resistencia
+    t = T(d); rng = np.random.default_rng(s); e = np.clip(t / .08, 0, 1) * np.clip((d - t) / .12, 0, 1)
+    air = svf_bp(noise(d, s), 1800 + 400 * np.sin(t * 3), 3.0) * .7 + bp(noise(d, s + 1), 600, 1400) * .3
+    cr = np.zeros(len(t)); n = int(d * 140)
+    for i in range(n):
+        p = int(rng.uniform(.05, d - .05) * SR); k = rng.uniform(.2, 1); L = int(.004 * SR)
+        if p + L < len(cr): cr[p:p + L] += k * np.exp(-np.arange(L) / (L * .25)) * rng.choice([-1, 1])
+    cr = hp(cr, 2500)
+    return norm(air * e * .8 + cr * e * .35)
+def vape_out(s=2, d=1.5):  # exhalación: soplido grave y aireado que se abre y se apaga (sin tono, como un «fffhhh»)
+    t = T(d); a = np.clip(t / .06, 0, 1) * np.exp(-np.maximum(0, t - .25) * 2.2)
+    x = lp(noise(d, s), 1400 - 700 * t / d) * .8 + bp(noise(d, s + 3), 200, 700) * .5
+    return norm(x * a)
+LIB['vape_in'] = (lambda s, c: vape_in(s), .55)
+LIB['vape_out'] = (lambda s, c: vape_out(s), .6)
 for _a, _b in [('rain', 'money_rain'), ('freeze', 'glass_crack'), ('rumble', 'boom'), ('roar', 'growl'), ('breath', 'sigh')]:
     LIB.setdefault(_a, LIB[_b])
 LIB['fire_whoosh'] = (lambda s, c: norm(mx(bp(noise(1.0, s), 200, 3000) * adsr(1.0, .03, .5), lp(noise(1.0, s + 1), 120) * adsr(1.0, .01, .4) * 1.5)), .55)
