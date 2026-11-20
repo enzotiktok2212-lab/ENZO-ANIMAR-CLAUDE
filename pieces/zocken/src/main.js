@@ -312,16 +312,16 @@ function renderAt(T) {
 // ---------- portadas (node cover.mjs → renders/portada-1.png, portada-2.png) ----------
 function coverText(lines) { const c = octx; for (const L_ of lines) { const [txt_, y, size, c1, c2, rot] = L_; c.save(); c.translate(W / 2, y); c.rotate(rot || 0); c.font = `700 ${size}px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.lineJoin = 'round';
   const tw = c.measureText(txt_).width; if (tw > W * .9) { const k = W * .9 / tw; c.scale(k, k); }
-  c.shadowColor = 'rgba(0,0,0,.75)'; c.shadowBlur = 30; c.shadowOffsetY = 14; c.lineWidth = size * .26; c.strokeStyle = '#0a0612'; c.strokeText(txt_, 0, 0); c.shadowColor = 'transparent';
+  c.lineWidth = size * .26; c.strokeStyle = '#000000'; c.save(); c.translate(0, size * .09); c.strokeText(txt_, 0, 0); c.fillStyle = '#000000'; c.fillText(txt_, 0, 0); c.restore(); c.strokeText(txt_, 0, 0);
   const g = c.createLinearGradient(0, -size / 2, 0, size / 2); g.addColorStop(0, c1); g.addColorStop(1, c2); c.fillStyle = g; c.fillText(txt_, 0, 0);
-  c.lineWidth = size * .04; c.strokeStyle = 'rgba(255,255,255,.55)'; c.strokeText(txt_, 0, -size * .03); c.restore(); } }
+  c.restore(); } }
 window.renderCover = v => { const T = 5.2; hideAll(); BAD_.length = 0; halle(); VMODE = 'both'; hallCrowd({ T }, 18); hookCrowd({ T });
   if (v === 0) { const me = put(ich, ZX, 0, -3, 0); juggle(me, BALL, T, [5.0, 5.35], { h: 2.2 }); applyPose(me, { aLx: .4, aRx: .4, aLz: 1.1, aRz: 1.1, aLe: .3, aRe: .3, lRx: 1.1, lRk: .9, headX: .25 }); show(BALL, ZX + .5, 2.6, -1.6); cara(me, T, { expr: 'smug', eyes: 'half', mouth: 'smirk' });
     orbit(V(ZX, 4.6, -5), 19, .05, .1, 50); }
   else { hang(ich, ZX, -4, .95, T); cara(ich, T, { expr: 'determined', eyes: 'angry', mouth: 'grimace' }); sweat(ich, T, 2); orbit(V(ZX, 7, -6), 22, -.06, .06, 52); }
   sh(V(ZX, 0, -6), 30); VICE.update(T, VMODE); VICE2.update(T, VMODE2);
-  grade.uniforms.sharp.value = 1.5; grade.uniforms.vig.value = .62; grade.uniforms.sat.value = 1.55; grade.uniforms.lift.value = .01; grade.uniforms.blurAmt.value = 0; grade.uniforms.flash.value = 0;
-  camera.updateProjectionMatrix(); FILL.intensity = 30; const dir = new THREE.Vector3(); camera.getWorldDirection(dir); FILL.position.copy(camera.position).add(V(0, 3, 0)).addScaledVector(dir, 4);
+  grade.uniforms.sharp.value = 1.7; grade.uniforms.vig.value = .5; grade.uniforms.sat.value = 1.4; grade.uniforms.lift.value = 0; grade.uniforms.blurAmt.value = 0; grade.uniforms.flash.value = 0; bloom.strength = .05; renderer.toneMappingExposure = .82; ZH.LP.intensity = 70; ZH.LC.intensity = 70;
+  camera.updateProjectionMatrix(); FILL.intensity = 8; const dir = new THREE.Vector3(); camera.getWorldDirection(dir); FILL.position.copy(camera.position).add(V(0, 3, 0)).addScaledVector(dir, 4);
   sun.castShadow = sun.intensity >= .45; sky.sky.position.copy(camera.position); composer.render();
   octx.fillStyle = '#000'; octx.fillRect(0, 0, W, H); octx.drawImage(renderer.domElement, 0, 0, W, H);
   // franjas superior e inferior más oscuras y limpias (TikTok recorta)
