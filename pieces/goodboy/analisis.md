@@ -21,4 +21,4 @@
 - Mini-ganchos: «Kennt ihr…?», «Mein Rekord…», «Seitdem…», «Also habe ich die Revolution geplant», «Dann ruft eine Frau vom Balkon», «Dann hinter mir ganz leise».
 
 ## Adaptación
-- Malte (no Janis), novia Svenja (no Mila), amigo Benni (no Timo). Currywurstbude (no Döner), 5:30 (no 6), 2 s (no 3), récord 1,6 s de la bañera con espuma (no ducha/champú), Gemüsesuppe (no ensalada), 16 bolsas y abrigo (no 14 y chaqueta), Gartencenter (no Baumarkt), revisor y billete (no policía y carné), 130 kg (no 120), 47 años (no 52), 800 hombres (no 1000), 4 s (no 3).
+- Lukas (no Janis), novia Svenja (no Mila), amigo Benni (no Timo). Currywurstbude (no Döner), 5:30 (no 6), 2 s (no 3), récord 1,6 s de la bañera con espuma (no ducha/champú), Gemüsesuppe (no ensalada), 16 bolsas y abrigo (no 14 y chaqueta), Gartencenter (no Baumarkt), revisor y billete (no policía y carné), 130 kg (no 120), 47 años (no 52), 800 hombres (no 1000), 4 s (no 3).
