@@ -32,7 +32,7 @@ export function paketshop(scene, X) { const g = G(scene, X); const r = RNG(41);
   shelf(-9, -15, 0, 5); shelf(9, -15, 0, 5); shelf(-18.6, -3, Math.PI / 2, 5); shelf(18.6, -3, -Math.PI / 2, 5);
   // mostrador con báscula, escáner, pantalla y una pila de paquetes
   const cnt = G(g, 0, 0, -4); box(16, 4.2, 3, mat(0xffffff, { roughness: .4 }), .2, cnt, 0, 2.1, 0); box(16.4, .35, 3.4, mat(0x3a3a46, { roughness: .3 }), .05, cnt, 0, 4.35, 0); box(16.1, .8, 3.05, acc, .1, cnt, 0, .5, 0);
-  const sc = box(2, .3, 2, mat(0xd8dce4, { metalness: .7, roughness: .2 }), .05, cnt, -5, 4.7, 0); const scr = G(cnt, 4.5, 4.5, -.6); box(.25, 1.6, .25, mat(0x2a2a34), .05, scr, 0, .8, 0); const sn = box(2.2, 1.4, .2, mat(0x1a1a22), .05, scr, 0, 2.0, 0); box(2.0, 1.2, .05, glow(0x3ab8ff, .9), .02, scr, 0, 2.0, .12); sn.rotation.x = -.2;
+  const sc = box(2, .3, 2, mat(0xd8dce4, { metalness: .7, roughness: .2 }), .05, cnt, -5, 4.7, 0); const scr = G(cnt, -7.2, 4.5, -.6); box(.25, 1.6, .25, mat(0x2a2a34), .05, scr, 0, .8, 0); const sn = box(2.2, 1.4, .2, mat(0x1a1a22), .05, scr, 0, 2.0, 0); box(2.0, 1.2, .05, glow(0x3ab8ff, .9), .02, scr, 0, 2.0, .12); sn.rotation.x = -.2;
   const gun = box(.4, .9, .4, mat(0xffd23f), .1, cnt, -2.6, 4.9, .4); gun.rotation.z = .5;
   // carteles y detalles: horario, cola, plantas, lámparas colgantes
   const hrs = textPlane(4, 5, 200, 250, (c, w, h) => { c.fillStyle = '#ffffff'; c.fillRect(0, 0, w, h); c.fillStyle = '#2ab86a'; c.fillRect(0, 0, w, 56); txt(c, 'ÖFFNUNGSZEITEN', w / 2, 30, 22, '#fff'); ['Mo–Fr 8–20', 'Sa 9–16', 'So zu'].forEach((t, i) => txt(c, t, w / 2, 100 + i * 50, 28, '#2a2a34')); }); hrs.position.set(-19.7, 8, 9); hrs.rotation.y = Math.PI / 2; g.add(hrs);

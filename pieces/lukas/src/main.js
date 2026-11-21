@@ -58,7 +58,7 @@ const AUTO = automat(KL.g); AUTO.position.set(-16.5, 0, -4); AUTO.rotation.y = P
   box(6, 11, .3, mat(0x8a5a2a, { roughness: .5 }), .1, KL.g, 13, 5.5, 19.8); sphere(.3, mat(0xd9a531, { metalness: .8 }), KL.g, 10.8, 5.5, 19.5, 8, 6);
   for (let k = 0; k < 6; k++) { const d = textPlane(3.2, 2.6, 160, 130, (c, w, h) => { c.fillStyle = '#ffffff'; c.fillRect(0, 0, w, h); c.fillStyle = ['#ffd23f', '#3ab8ff', '#ff8ad0', '#8ad84a', '#ff8a3a', '#b88aff'][k]; c.beginPath(); c.arc(50 + k * 8, 60, 30, 0, 7); c.fill(); c.fillStyle = '#2a8a3a'; c.fillRect(0, 100, w, 30); txt(c, ['Mama', 'Hund', 'Haus', 'Sonne', 'Papa', 'Ich'][k], w * .7, 30, 26, '#3a3a5a'); }); d.position.set(-15 + k * 4.4, 11, 19.75); d.rotation.y = PI_; d.material.transparent = false; KL.g.add(d); }
   for (let k = 0; k < 8; k++) { box(.3, .3, .8, mat(0xb8bcc4, { metalness: .7 }), .05, KL.g, -16 + k * 3, 6.5, 19.4); box(1.4, 2.4, .6, mat([0xd8323a, 0x2a6ad8, 0xffd23f, 0x2ab86a][k % 4], { roughness: .8 }), .2, KL.g, -16 + k * 3, 5.0, 19.2); } }
-const SETS = { HB: HB.G, KL: KL.g, FB: FB.g, NS: NIGHT, PS: PS.g, STD: STD.g, GAR: GAR.g };
+const SETS = { HB: HB.G, KL: KL.g, FB: FB.g, NS: NIGHT, PS: PS.g, STD: STD.g, GAR: GAR.g, SH: null };
 [HB.RANK, HB.KINO, HB.BOX, HB.PRICE, HB.TS].forEach(o => o && (o.visible = false));
 // relleno del pueblo
 townhouse(HB.G, -64, -21, 13, 3, 61, Math.PI / 2); townhouse(HB.G, -64, -34.5, 13, 2, 62, Math.PI / 2);
@@ -67,11 +67,20 @@ for (let i = 0, z = 70; z > -112; z -= 17, i++) { townhouse(HB.G, -98, z, 16, 3 
 for (let i = 0, x = -60; x <= 60; x += 18, i++) townhouse(HB.G, x, 150, 16, 2 + (i % 2), 100 + i, Math.PI);
 // Paketshop en la plaza (lado este, mirando -x) y cartel del colegio en el patio (norte-oeste)
 townhouse(HB.G, 62, 10, 16, 3, 77, -Math.PI / 2); const SHOPF = shopFront(HB.G); SHOPF.position.set(53.6, 0, 10); SHOPF.rotation.y = -Math.PI / 2;
-const SCHILD = schulSchild(HB.G); SCHILD.position.set(-24, 0, -54); SCHILD.rotation.y = 0;
+const SCHILD = schulSchild(HB.G); SCHILD.position.set(-38, 0, -60); SCHILD.rotation.y = 0;
+// calle comercial con el Paketshop (SHX): fachadas en z = 0 mirando +z; tienda en x = SHX; acera z ∈ [0, 6], calzada z ∈ [6, 20]
+const SHX = 4200, SHG = new THREE.Group(); SHG.position.x = SHX; scene.add(SHG);
+{ const gr = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), mat(0x9a948a, { roughness: .95 })); gr.rotation.x = -Math.PI / 2; gr.receiveShadow = true; SHG.add(gr);
+  box(400, .3, 6, mat(0xc8c2b8, { roughness: .9 }), .05, SHG, 0, .15, 3); box(400, .1, 14, mat(0x4a4a52, { roughness: .9 }), 0, SHG, 0, .05, 13); for (let x = -190; x < 200; x += 10) box(4, .12, .4, mat(0xffffff), 0, SHG, x, .08, 13);
+  box(400, .3, 6, mat(0xc8c2b8, { roughness: .9 }), .05, SHG, 0, .15, 23);
+  for (let i = -5; i <= 5; i++) { townhouse(SHG, i * 16, -10, 16, 2 + (Math.abs(i) % 3), 130 + i + 5, 0); townhouse(SHG, i * 16 + 8, 36, 16, 2 + (Math.abs(i + 1) % 3), 150 + i + 5, Math.PI); }
+  const SF = shopFront(SHG); SF.position.set(0, 0, .25); for (const x of [-30, -12, 12, 30]) { const l = new THREE.Group(); SHG.add(l); l.position.set(x, 0, 5.4); cyl(.18, .22, 9, mat(0x2a2a34, { metalness: .5 }), 8, l, 0, 4.5, 0); sphere(.6, mat(0xfff2d0, { emissive: 0xfff2d0, emissiveIntensity: 1.2 }), l, 0, 9.2, 0, 10, 8); }
+} const PCAR2 = polizei(SHG); PCAR2.position.set(-14, 0, 11); PCAR2.rotation.y = Math.PI / 2;
+SETS.SH = SHG;
 // cartel de bienvenida en la entrada (carretera, mirando al sur +z)
 const WS = welcomeSign(HB.G); WS.position.set(12, 0, 240); WS.rotation.y = .25;
 // casita del perro junto a la casa familiar
-const DH = doghouse(HB.G); DH.position.set(18, 0, 112); DH.rotation.y = -.5;
+const DH = doghouse(HB.G); DH.position.set(18, 0, 112); DH.rotation.y = -.5; DH.visible = false;
 // escenario del Stadtfest (plaza norte, mirando al sur) + puestos y guirnaldas
 const ST = stage(HB.G, -6, -58); scene.add(ST.mic); outline(ST.mic, 1.8);
 const FEST = new THREE.Group(); HB.G.add(FEST);
@@ -237,6 +246,7 @@ function walkTo(c, x0, z0, ry, v, L, i = 0, sp = 9) { const d = v * L.lt; put(c,
 // ---------- escenarios por plano ----------
 function town(L, o = {}) { use('HB'); if (o.dusk) sunset(); else if (o.night) night(45); else day(); if (o.fest) { FEST.visible = true; ST.g.visible = true; BULBS.forEach((b, i) => b.material.emissiveIntensity = (o.dusk ? 2.4 : 1.2) + Math.sin(L.T * 5 + i * .7) * .8); } }
 function school(L) { use('KL'); inside(.95, 26); KL.BB.userData.draw('frau', (c, w, h) => { c.fillStyle = '#1e3a2a'; c.fillRect(0, 0, w, h); txt(c, 'MENSA', w / 2, h * .24, 110, '#ffffff'); txt(c, 'Heute:', w / 2, h * .52, 70, '#ffffff'); txt(c, 'Nudeln 2,50 €', w / 2, h * .8, 74, '#ffd23f'); }); }
+function street(L) { SETS.SH.visible = true; day(); }
 function shop(L) { use('PS'); inside(1.0, 40); ao.enabled = true; }
 function stadium(L) { use('STD'); day(); STD.SB.userData.set?.(2, 1); }
 function garageS(L) { use('GAR'); day(); }

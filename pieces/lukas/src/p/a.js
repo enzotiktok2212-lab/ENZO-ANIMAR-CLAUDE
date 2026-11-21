@@ -1,11 +1,11 @@
 // ---------- a: gancho, el patio, la Mensa, «Fehler», mi hermana (0 – 30,87 s) ----------
 const HOUSE = V(14.5, 0, 91.3);          // delante de la puerta de la casa familiar (mira a +x)
-const YARD = V(-22, 0, -38);             // patio del colegio (cartel en (-24, -54))
+const YARD = V(-38, 0, -44);             // patio del colegio (cartel en (-38, -60))
 const SIGNP = V(12, 6.1, 240);           // cartel de bienvenida
 const MA = V(KX - 12.6, 0, -4);          // delante del Automat de la Mensa (mirando -x)
 const BOYZ = BOYS(CROWD), GIRLX = GIRLZ(CROWD);
 const welcomeKids = (L, tagA, tagB) => [[KIDS[10], -4.2], [KIDS[1], 4.2]].forEach(([p, dx], i) => { const r = .25, x = SIGNP.x + Math.cos(r) * dx + Math.sin(r) * 3, z = SIGNP.z - Math.sin(r) * dx + Math.cos(r) * 3; put(p, x, 0, z, r); if (tagA) p.setTag(i ? tagB : tagA); actuar(p, 0, [[0, { aRx: 2.7, aRz: .4 + Math.sin(L.T * 9 + i) * .35, aRe: .5 }]], { T: L.T }); cara(p, L.T + i, { expr: 'happy', mouth: 'open_smile' }); });
-const yardKids = (L, n = 16, o = {}) => crowdAt(L, YARD.x, YARD.z, n, 4, 15, o.seed || 7, { list: [...KIDS, ...EX.slice(0, 10)], full: true, ...o });
+const yardKids = (L, n = 16, o = {}) => crowdAt(L, YARD.x, YARD.z, n, 4, 13, o.seed || 7, { list: [...KIDS, ...EX.slice(0, 10)], full: true, ...o });
 
 // 1 «In dieser Stadt heißt jeder» (zoom lento): cartel LUKASHAUSEN – Einwohner: 5000 Lukas + Mias; un niño y una niña saludan
 shot(0, 'C', 'slow', L => { town(L); welcomeKids(L);
@@ -30,7 +30,7 @@ shot(5.83, 'C', null, L => { town(L); const p = V(YARD.x + 6, 0, YARD.z + 8); co
   bubble(k, 'LUKAS!', clamp((L.lt - .25) / .1), 1.6); crowdAt(L, p.x, p.z - 3, 5, 6, 12, 61, { mode: 'idle', list: KIDS.slice(5) });
   onBody(k, 8.4, .15, .08, 42, L.k, 7.4); sh(p, 14); }, [[0, 'kids_laugh', .3], [.3, 'shout_m', .5]]);
 // 7 «ruft, und dreihundert Köpfe»: grúa: todos los chicos del patio se giran a la vez; «300»
-shot(7.11, 'F', null, L => { town(L); crowdAt(L, YARD.x, YARD.z, 22, 3, 15, 71, { mode: 'turn', turnAt: L.t0 + .35, full: true, list: [...BOYZ, ...GIRLX], jit: .2, expr: 'happy' });
+shot(7.11, 'F', null, L => { town(L); crowdAt(L, YARD.x, YARD.z, 22, 3, 13, 71, { mode: 'turn', turnAt: L.t0 + .35, full: true, list: [...BOYZ, ...GIRLX], jit: .2, expr: 'happy' });
   cm([YARD.x + 4, 22, YARD.z + 28], [YARD.x + 2, 17, YARD.z + 24], L.k); camera.lookAt(YARD.x, 2, YARD.z); camera.fov = 48; badge('gold', '300', W / 2, H * .15, clamp((L.lt - .45) / .15), 1, .95); sh(YARD, 26); }, [[0, 'whoosh_soft', .4], [.35, 'crowd_run', .45]]);
 // 8 «drehen sich gleichzeitig um.»: plano bajo: la fila de chicos se gira de golpe hacia cámara
 shot(8.59, 'W', null, L => { town(L); const p = V(YARD.x, 0, YARD.z - 2); crowdGrid(L, p.x, p.z, 6, 2, 3.2, 3.4, { mode: 'turn', turnAt: L.t0 + .15, list: BOYZ, face: V(p.x, 3, p.z + 30), seed: 8, expr: 'happy' });
@@ -61,13 +61,13 @@ shot(16.80, 'Z', null, L => { town(L); put(mama, HOUSE.x + 1, 0, HOUSE.z - 1, PI
   badge('red', 'kein Lukas?', W / 2, H * .16, clamp((L.lt - .5) / .15), 1, .8); sh(HOUSE, 14); }, [[0, 'pop', .4], [.5, 'sad_tone', .3]]);
 // 15 «Sogar der Automat in der Mensa»: la Mensa: niños comiendo en las mesas; al fondo el Automat rojo
 shot(18.63, 'F', null, L => { mensa(L); classKids(L, { skip: -1, expr: 'happy', face: V(KX, 0, -20) });
-  cm([KX + 10, 11, 18], [KX + 7, 10, 15], L.k); camera.lookAt(KX - 12, 4.5, -4); camera.fov = 50; sh(V(KX - 4, 0, 2), 24); }, [[0, 'cafeteria', .45], [.3, 'cutlery', .4]]);
+  cm([KX + 8, 12, 16], [KX + 5, 11, 13], L.k); camera.lookAt(KX - 13, 4.5, -4); camera.fov = 48; sh(V(KX - 4, 0, 2), 24); }, [[0, 'cafeteria', .45], [.3, 'cutlery', .4]]);
 // 16 «hat nur zwei Knöpfe:»: el Automat de cerca: solo dos botones; «2»
 shot(20.13, 'S', null, L => { mensa(L); const c = put(me, MA.x + .8, 0, MA.z + 4.4, -PI / 2 - .5); actuar(c, 0, [[0, { aRx: 1.2, aRz: -.2, aRe: .3, headY: .3 }]], { T: L.T }); cara(c, L.T, { expr: 'confused', mouth: 'wavy' });
-  cm([KX - 7, 6.6, -1.5], [KX - 8, 6.4, -2.6], L.k); camera.lookAt(KX - 16, 5.6, -4); camera.fov = 44; badge('gold', '2', W * .74, H * .2, clamp((L.lt - .35) / .12), 1, 1); sh(V(KX - 15, 0, -4), 14); }, [[0, 'machine_hum', .4], [.35, 'pop', .45]]);
+  cm([KX - 1, 7.2, 3], [KX - 2.5, 6.8, 1.5], L.k); camera.lookAt(KX - 15.5, 5.2, -4); camera.fov = 46; badge('gold', '2', W * .74, H * .2, clamp((L.lt - .35) / .12), 1, 1); sh(V(KX - 15, 0, -4), 14); }, [[0, 'machine_hum', .4], [.35, 'pop', .45]]);
 // 17 «Lukas und Mia.»: primer plano de los botones: se ilumina LUKAS… y luego MIA
 shot(21.15, 'C', 'punch', L => { mensa(L); AUTO.userData.press(clamp((L.T - 21.15) / .1) * (L.T < 21.7 ? 1 : 0), clamp((L.T - 21.81) / .1));
-  cm([KX - 12.4, 6.0, -1.4], [KX - 13.0, 5.8, -1.7], L.k); camera.lookAt(KX - 16, 5.8, -2.6); camera.fov = 40; sh(V(KX - 15, 0, -4), 10); }, [[0, 'button', .55], [.66, 'button', .55]]);
+  cm([KX - 9.6, 6.2, -4.6], [KX - 10.4, 6.0, -5.0], L.k); camera.lookAt(KX - 14.9, 5.8, -5.75); camera.fov = 40; sh(V(KX - 15, 0, -4), 10); }, [[0, 'button', .55], [.66, 'button', .55]]);
 // 18 «Deshalb sagen alle nicht Leon zu mir,»: en el patio, los niños me señalan y se ríen
 shot(22.42, 'W', null, L => { town(L); const p = V(YARD.x, 0, YARD.z - 4); put(me, p.x, 0, p.z + 4, 0); actuar(me, 0, [[0, { aLx: .4, aRx: .4, aLz: -.4, aRz: -.4, aLe: 1.6, aRe: 1.6, headX: .2 }]], { T: L.T }); cara(me, L.T, { expr: 'sad' });
   crowdAt(L, p.x, p.z + 4, 8, 4.5, 8, 18, { mode: 'point', list: KIDS, gap: 1.0, face: V(p.x, 3, p.z + 4) });
@@ -77,7 +77,7 @@ shot(24.34, 'C', null, L => { town(L); const p = V(YARD.x, 0, YARD.z - 8); [KIDS
   bubble(KIDS[2], 'FEHLER!', clamp((L.lt - .2) / .1), 1.6); orb(L.k, V(p.x, 2.4, p.z), null, [10.5, .05, .06, 44], [9, 0, .04, 44]); sh(p, 14); }, [[0, 'kids_laugh', .55], [.25, 'laugh_m', .3]]);
 // 20 «Der Fehler»: los niños levantan la pancarta FEHLER detrás de mí; yo hundido
 shot(25.00, 'S', null, L => { town(L); const p = V(YARD.x + 12, 0, YARD.z - 8); show(FSIGN, p.x, 1.6, p.z - 3, 0, .9); [KIDS[8], KIDS[9]].forEach((k, i) => { put(k, p.x + (i ? 3.06 : -3.06), 0, p.z - 3.6, 0); actuar(k, 0, [[0, { aLx: 2.5, aRx: 2.5, aLz: i ? .1 : -.1, aRz: i ? -.1 : .1, aLe: .4, aRe: .4 }]], { T: L.T }); laughF(k, L.T + i); });
-  put(me, p.x, 0, p.z, 0); actuar(me, 0, [[0, GEST.slump]], { T: L.T }); cara(me, L.T, { expr: 'sad', eyes: 'down' });
+  put(me, p.x, 0, p.z, 0); actuar(me, 0, [[0, { lean: .08, headX: .12, aLx: .1, aRx: .1, aLz: -.1, aRz: -.1 }]], { T: L.T }); cara(me, L.T, { expr: 'sad', mouth: 'frown' });
   orb(L.k, V(p.x, 4.8, p.z - 1.5), null, [16, -.1, .06, 44], [14, 0, .05, 44]); sh(p, 16); }, [[0, 'paper', .5], [.3, 'kids_laugh', .35]]);
 // 21 «der Stadt.»: primer plano: lágrima, la pancarta detrás
 shot(25.81, 'Z', 'punch', L => { town(L); const p = V(YARD.x + 12, 0, YARD.z - 8); show(FSIGN, p.x, 1.6, p.z - 3, 0, .9); [KIDS[8], KIDS[9]].forEach((k, i) => { put(k, p.x + (i ? 3.06 : -3.06), 0, p.z - 3.6, 0); actuar(k, 0, [[0, { aLx: 2.5, aRx: 2.5, aLe: .4, aRe: .4 }]], { T: L.T }); laughF(k, L.T + i); });

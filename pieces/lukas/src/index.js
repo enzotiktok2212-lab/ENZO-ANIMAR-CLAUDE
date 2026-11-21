@@ -58,7 +58,7 @@ const AUTO = automat(KL.g); AUTO.position.set(-16.5, 0, -4); AUTO.rotation.y = P
   box(6, 11, .3, mat(0x8a5a2a, { roughness: .5 }), .1, KL.g, 13, 5.5, 19.8); sphere(.3, mat(0xd9a531, { metalness: .8 }), KL.g, 10.8, 5.5, 19.5, 8, 6);
   for (let k = 0; k < 6; k++) { const d = textPlane(3.2, 2.6, 160, 130, (c, w, h) => { c.fillStyle = '#ffffff'; c.fillRect(0, 0, w, h); c.fillStyle = ['#ffd23f', '#3ab8ff', '#ff8ad0', '#8ad84a', '#ff8a3a', '#b88aff'][k]; c.beginPath(); c.arc(50 + k * 8, 60, 30, 0, 7); c.fill(); c.fillStyle = '#2a8a3a'; c.fillRect(0, 100, w, 30); txt(c, ['Mama', 'Hund', 'Haus', 'Sonne', 'Papa', 'Ich'][k], w * .7, 30, 26, '#3a3a5a'); }); d.position.set(-15 + k * 4.4, 11, 19.75); d.rotation.y = PI_; d.material.transparent = false; KL.g.add(d); }
   for (let k = 0; k < 8; k++) { box(.3, .3, .8, mat(0xb8bcc4, { metalness: .7 }), .05, KL.g, -16 + k * 3, 6.5, 19.4); box(1.4, 2.4, .6, mat([0xd8323a, 0x2a6ad8, 0xffd23f, 0x2ab86a][k % 4], { roughness: .8 }), .2, KL.g, -16 + k * 3, 5.0, 19.2); } }
-const SETS = { HB: HB.G, KL: KL.g, FB: FB.g, NS: NIGHT, PS: PS.g, STD: STD.g, GAR: GAR.g };
+const SETS = { HB: HB.G, KL: KL.g, FB: FB.g, NS: NIGHT, PS: PS.g, STD: STD.g, GAR: GAR.g, SH: null };
 [HB.RANK, HB.KINO, HB.BOX, HB.PRICE, HB.TS].forEach(o => o && (o.visible = false));
 // relleno del pueblo
 townhouse(HB.G, -64, -21, 13, 3, 61, Math.PI / 2); townhouse(HB.G, -64, -34.5, 13, 2, 62, Math.PI / 2);
@@ -67,11 +67,20 @@ for (let i = 0, z = 70; z > -112; z -= 17, i++) { townhouse(HB.G, -98, z, 16, 3 
 for (let i = 0, x = -60; x <= 60; x += 18, i++) townhouse(HB.G, x, 150, 16, 2 + (i % 2), 100 + i, Math.PI);
 // Paketshop en la plaza (lado este, mirando -x) y cartel del colegio en el patio (norte-oeste)
 townhouse(HB.G, 62, 10, 16, 3, 77, -Math.PI / 2); const SHOPF = shopFront(HB.G); SHOPF.position.set(53.6, 0, 10); SHOPF.rotation.y = -Math.PI / 2;
-const SCHILD = schulSchild(HB.G); SCHILD.position.set(-24, 0, -54); SCHILD.rotation.y = 0;
+const SCHILD = schulSchild(HB.G); SCHILD.position.set(-38, 0, -60); SCHILD.rotation.y = 0;
+// calle comercial con el Paketshop (SHX): fachadas en z = 0 mirando +z; tienda en x = SHX; acera z ∈ [0, 6], calzada z ∈ [6, 20]
+const SHX = 4200, SHG = new THREE.Group(); SHG.position.x = SHX; scene.add(SHG);
+{ const gr = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), mat(0x9a948a, { roughness: .95 })); gr.rotation.x = -Math.PI / 2; gr.receiveShadow = true; SHG.add(gr);
+  box(400, .3, 6, mat(0xc8c2b8, { roughness: .9 }), .05, SHG, 0, .15, 3); box(400, .1, 14, mat(0x4a4a52, { roughness: .9 }), 0, SHG, 0, .05, 13); for (let x = -190; x < 200; x += 10) box(4, .12, .4, mat(0xffffff), 0, SHG, x, .08, 13);
+  box(400, .3, 6, mat(0xc8c2b8, { roughness: .9 }), .05, SHG, 0, .15, 23);
+  for (let i = -5; i <= 5; i++) { townhouse(SHG, i * 16, -10, 16, 2 + (Math.abs(i) % 3), 130 + i + 5, 0); townhouse(SHG, i * 16 + 8, 36, 16, 2 + (Math.abs(i + 1) % 3), 150 + i + 5, Math.PI); }
+  const SF = shopFront(SHG); SF.position.set(0, 0, .25); for (const x of [-30, -12, 12, 30]) { const l = new THREE.Group(); SHG.add(l); l.position.set(x, 0, 5.4); cyl(.18, .22, 9, mat(0x2a2a34, { metalness: .5 }), 8, l, 0, 4.5, 0); sphere(.6, mat(0xfff2d0, { emissive: 0xfff2d0, emissiveIntensity: 1.2 }), l, 0, 9.2, 0, 10, 8); }
+} const PCAR2 = polizei(SHG); PCAR2.position.set(-14, 0, 11); PCAR2.rotation.y = Math.PI / 2;
+SETS.SH = SHG;
 // cartel de bienvenida en la entrada (carretera, mirando al sur +z)
 const WS = welcomeSign(HB.G); WS.position.set(12, 0, 240); WS.rotation.y = .25;
 // casita del perro junto a la casa familiar
-const DH = doghouse(HB.G); DH.position.set(18, 0, 112); DH.rotation.y = -.5;
+const DH = doghouse(HB.G); DH.position.set(18, 0, 112); DH.rotation.y = -.5; DH.visible = false;
 // escenario del Stadtfest (plaza norte, mirando al sur) + puestos y guirnaldas
 const ST = stage(HB.G, -6, -58); scene.add(ST.mic); outline(ST.mic, 1.8);
 const FEST = new THREE.Group(); HB.G.add(FEST);
@@ -237,6 +246,7 @@ function walkTo(c, x0, z0, ry, v, L, i = 0, sp = 9) { const d = v * L.lt; put(c,
 // ---------- escenarios por plano ----------
 function town(L, o = {}) { use('HB'); if (o.dusk) sunset(); else if (o.night) night(45); else day(); if (o.fest) { FEST.visible = true; ST.g.visible = true; BULBS.forEach((b, i) => b.material.emissiveIntensity = (o.dusk ? 2.4 : 1.2) + Math.sin(L.T * 5 + i * .7) * .8); } }
 function school(L) { use('KL'); inside(.95, 26); KL.BB.userData.draw('frau', (c, w, h) => { c.fillStyle = '#1e3a2a'; c.fillRect(0, 0, w, h); txt(c, 'MENSA', w / 2, h * .24, 110, '#ffffff'); txt(c, 'Heute:', w / 2, h * .52, 70, '#ffffff'); txt(c, 'Nudeln 2,50 €', w / 2, h * .8, 74, '#ffd23f'); }); }
+function street(L) { SETS.SH.visible = true; day(); }
 function shop(L) { use('PS'); inside(1.0, 40); ao.enabled = true; }
 function stadium(L) { use('STD'); day(); STD.SB.userData.set?.(2, 1); }
 function garageS(L) { use('GAR'); day(); }
@@ -287,12 +297,12 @@ const PI = Math.PI;
 let DARK = 0, TINT = null, SHAKE = 0;
 // ---------- a: gancho, el patio, la Mensa, «Fehler», mi hermana (0 – 30,87 s) ----------
 const HOUSE = V(14.5, 0, 91.3);          // delante de la puerta de la casa familiar (mira a +x)
-const YARD = V(-22, 0, -38);             // patio del colegio (cartel en (-24, -54))
+const YARD = V(-38, 0, -44);             // patio del colegio (cartel en (-38, -60))
 const SIGNP = V(12, 6.1, 240);           // cartel de bienvenida
 const MA = V(KX - 12.6, 0, -4);          // delante del Automat de la Mensa (mirando -x)
 const BOYZ = BOYS(CROWD), GIRLX = GIRLZ(CROWD);
 const welcomeKids = (L, tagA, tagB) => [[KIDS[10], -4.2], [KIDS[1], 4.2]].forEach(([p, dx], i) => { const r = .25, x = SIGNP.x + Math.cos(r) * dx + Math.sin(r) * 3, z = SIGNP.z - Math.sin(r) * dx + Math.cos(r) * 3; put(p, x, 0, z, r); if (tagA) p.setTag(i ? tagB : tagA); actuar(p, 0, [[0, { aRx: 2.7, aRz: .4 + Math.sin(L.T * 9 + i) * .35, aRe: .5 }]], { T: L.T }); cara(p, L.T + i, { expr: 'happy', mouth: 'open_smile' }); });
-const yardKids = (L, n = 16, o = {}) => crowdAt(L, YARD.x, YARD.z, n, 4, 15, o.seed || 7, { list: [...KIDS, ...EX.slice(0, 10)], full: true, ...o });
+const yardKids = (L, n = 16, o = {}) => crowdAt(L, YARD.x, YARD.z, n, 4, 13, o.seed || 7, { list: [...KIDS, ...EX.slice(0, 10)], full: true, ...o });
 
 // 1 «In dieser Stadt heißt jeder» (zoom lento): cartel LUKASHAUSEN – Einwohner: 5000 Lukas + Mias; un niño y una niña saludan
 shot(0, 'C', 'slow', L => { town(L); welcomeKids(L);
@@ -317,7 +327,7 @@ shot(5.83, 'C', null, L => { town(L); const p = V(YARD.x + 6, 0, YARD.z + 8); co
   bubble(k, 'LUKAS!', clamp((L.lt - .25) / .1), 1.6); crowdAt(L, p.x, p.z - 3, 5, 6, 12, 61, { mode: 'idle', list: KIDS.slice(5) });
   onBody(k, 8.4, .15, .08, 42, L.k, 7.4); sh(p, 14); }, [[0, 'kids_laugh', .3], [.3, 'shout_m', .5]]);
 // 7 «ruft, und dreihundert Köpfe»: grúa: todos los chicos del patio se giran a la vez; «300»
-shot(7.11, 'F', null, L => { town(L); crowdAt(L, YARD.x, YARD.z, 22, 3, 15, 71, { mode: 'turn', turnAt: L.t0 + .35, full: true, list: [...BOYZ, ...GIRLX], jit: .2, expr: 'happy' });
+shot(7.11, 'F', null, L => { town(L); crowdAt(L, YARD.x, YARD.z, 22, 3, 13, 71, { mode: 'turn', turnAt: L.t0 + .35, full: true, list: [...BOYZ, ...GIRLX], jit: .2, expr: 'happy' });
   cm([YARD.x + 4, 22, YARD.z + 28], [YARD.x + 2, 17, YARD.z + 24], L.k); camera.lookAt(YARD.x, 2, YARD.z); camera.fov = 48; badge('gold', '300', W / 2, H * .15, clamp((L.lt - .45) / .15), 1, .95); sh(YARD, 26); }, [[0, 'whoosh_soft', .4], [.35, 'crowd_run', .45]]);
 // 8 «drehen sich gleichzeitig um.»: plano bajo: la fila de chicos se gira de golpe hacia cámara
 shot(8.59, 'W', null, L => { town(L); const p = V(YARD.x, 0, YARD.z - 2); crowdGrid(L, p.x, p.z, 6, 2, 3.2, 3.4, { mode: 'turn', turnAt: L.t0 + .15, list: BOYZ, face: V(p.x, 3, p.z + 30), seed: 8, expr: 'happy' });
@@ -348,13 +358,13 @@ shot(16.80, 'Z', null, L => { town(L); put(mama, HOUSE.x + 1, 0, HOUSE.z - 1, PI
   badge('red', 'kein Lukas?', W / 2, H * .16, clamp((L.lt - .5) / .15), 1, .8); sh(HOUSE, 14); }, [[0, 'pop', .4], [.5, 'sad_tone', .3]]);
 // 15 «Sogar der Automat in der Mensa»: la Mensa: niños comiendo en las mesas; al fondo el Automat rojo
 shot(18.63, 'F', null, L => { mensa(L); classKids(L, { skip: -1, expr: 'happy', face: V(KX, 0, -20) });
-  cm([KX + 10, 11, 18], [KX + 7, 10, 15], L.k); camera.lookAt(KX - 12, 4.5, -4); camera.fov = 50; sh(V(KX - 4, 0, 2), 24); }, [[0, 'cafeteria', .45], [.3, 'cutlery', .4]]);
+  cm([KX + 8, 12, 16], [KX + 5, 11, 13], L.k); camera.lookAt(KX - 13, 4.5, -4); camera.fov = 48; sh(V(KX - 4, 0, 2), 24); }, [[0, 'cafeteria', .45], [.3, 'cutlery', .4]]);
 // 16 «hat nur zwei Knöpfe:»: el Automat de cerca: solo dos botones; «2»
 shot(20.13, 'S', null, L => { mensa(L); const c = put(me, MA.x + .8, 0, MA.z + 4.4, -PI / 2 - .5); actuar(c, 0, [[0, { aRx: 1.2, aRz: -.2, aRe: .3, headY: .3 }]], { T: L.T }); cara(c, L.T, { expr: 'confused', mouth: 'wavy' });
-  cm([KX - 7, 6.6, -1.5], [KX - 8, 6.4, -2.6], L.k); camera.lookAt(KX - 16, 5.6, -4); camera.fov = 44; badge('gold', '2', W * .74, H * .2, clamp((L.lt - .35) / .12), 1, 1); sh(V(KX - 15, 0, -4), 14); }, [[0, 'machine_hum', .4], [.35, 'pop', .45]]);
+  cm([KX - 1, 7.2, 3], [KX - 2.5, 6.8, 1.5], L.k); camera.lookAt(KX - 15.5, 5.2, -4); camera.fov = 46; badge('gold', '2', W * .74, H * .2, clamp((L.lt - .35) / .12), 1, 1); sh(V(KX - 15, 0, -4), 14); }, [[0, 'machine_hum', .4], [.35, 'pop', .45]]);
 // 17 «Lukas und Mia.»: primer plano de los botones: se ilumina LUKAS… y luego MIA
 shot(21.15, 'C', 'punch', L => { mensa(L); AUTO.userData.press(clamp((L.T - 21.15) / .1) * (L.T < 21.7 ? 1 : 0), clamp((L.T - 21.81) / .1));
-  cm([KX - 12.4, 6.0, -1.4], [KX - 13.0, 5.8, -1.7], L.k); camera.lookAt(KX - 16, 5.8, -2.6); camera.fov = 40; sh(V(KX - 15, 0, -4), 10); }, [[0, 'button', .55], [.66, 'button', .55]]);
+  cm([KX - 9.6, 6.2, -4.6], [KX - 10.4, 6.0, -5.0], L.k); camera.lookAt(KX - 14.9, 5.8, -5.75); camera.fov = 40; sh(V(KX - 15, 0, -4), 10); }, [[0, 'button', .55], [.66, 'button', .55]]);
 // 18 «Deshalb sagen alle nicht Leon zu mir,»: en el patio, los niños me señalan y se ríen
 shot(22.42, 'W', null, L => { town(L); const p = V(YARD.x, 0, YARD.z - 4); put(me, p.x, 0, p.z + 4, 0); actuar(me, 0, [[0, { aLx: .4, aRx: .4, aLz: -.4, aRz: -.4, aLe: 1.6, aRe: 1.6, headX: .2 }]], { T: L.T }); cara(me, L.T, { expr: 'sad' });
   crowdAt(L, p.x, p.z + 4, 8, 4.5, 8, 18, { mode: 'point', list: KIDS, gap: 1.0, face: V(p.x, 3, p.z + 4) });
@@ -364,7 +374,7 @@ shot(24.34, 'C', null, L => { town(L); const p = V(YARD.x, 0, YARD.z - 8); [KIDS
   bubble(KIDS[2], 'FEHLER!', clamp((L.lt - .2) / .1), 1.6); orb(L.k, V(p.x, 2.4, p.z), null, [10.5, .05, .06, 44], [9, 0, .04, 44]); sh(p, 14); }, [[0, 'kids_laugh', .55], [.25, 'laugh_m', .3]]);
 // 20 «Der Fehler»: los niños levantan la pancarta FEHLER detrás de mí; yo hundido
 shot(25.00, 'S', null, L => { town(L); const p = V(YARD.x + 12, 0, YARD.z - 8); show(FSIGN, p.x, 1.6, p.z - 3, 0, .9); [KIDS[8], KIDS[9]].forEach((k, i) => { put(k, p.x + (i ? 3.06 : -3.06), 0, p.z - 3.6, 0); actuar(k, 0, [[0, { aLx: 2.5, aRx: 2.5, aLz: i ? .1 : -.1, aRz: i ? -.1 : .1, aLe: .4, aRe: .4 }]], { T: L.T }); laughF(k, L.T + i); });
-  put(me, p.x, 0, p.z, 0); actuar(me, 0, [[0, GEST.slump]], { T: L.T }); cara(me, L.T, { expr: 'sad', eyes: 'down' });
+  put(me, p.x, 0, p.z, 0); actuar(me, 0, [[0, { lean: .08, headX: .12, aLx: .1, aRx: .1, aLz: -.1, aRz: -.1 }]], { T: L.T }); cara(me, L.T, { expr: 'sad', mouth: 'frown' });
   orb(L.k, V(p.x, 4.8, p.z - 1.5), null, [16, -.1, .06, 44], [14, 0, .05, 44]); sh(p, 16); }, [[0, 'paper', .5], [.3, 'kids_laugh', .35]]);
 // 21 «der Stadt.»: primer plano: lágrima, la pancarta detrás
 shot(25.81, 'Z', 'punch', L => { town(L); const p = V(YARD.x + 12, 0, YARD.z - 8); show(FSIGN, p.x, 1.6, p.z - 3, 0, .9); [KIDS[8], KIDS[9]].forEach((k, i) => { put(k, p.x + (i ? 3.06 : -3.06), 0, p.z - 3.6, 0); actuar(k, 0, [[0, { aLx: 2.5, aRx: 2.5, aLe: .4, aRe: .4 }]], { T: L.T }); laughF(k, L.T + i); });
@@ -384,7 +394,7 @@ shot(29.53, 'C', 'punch', L => { town(L); const p = V(22, 0, 84); put(bru, p.x +
 // ---------- b: el Neuer, el Paketshop, los paquetes, mi hermana, el policía (30,87 – 66,25 s) ----------
 const PLZ = V(-8, 0, 14);                 // centro de la plaza
 const STREET = V(22, 0, 84);              // calle delante de casa (mi hermana)
-const SHOPD = V(46, 0, 10);               // delante de la puerta del Paketshop (fachada en x = 53.6, mirando -x)
+const SHOPD = V(SHX, 0, 4);              // delante de la puerta del Paketshop (calle comercial, fachada en z = 0 mirando +z)
 const CLERK = V(PX, 0, -6.8);             // dependiente detrás del mostrador (mira +z)
 const CUST = V(PX + .4, 0, -1.3);         // cliente delante del mostrador (mira -z)
 // pila de paquetes sobre la carretilla (n = cuántos), en p mirando ry
@@ -416,42 +426,42 @@ shot(37.57, 'Z', null, L => { town(L); const p = V(10, 0, 24); put(det, p.x + 1.
   put(mama, p.x - 1.4, 0, p.z, PI / 2 - .5); actuar(mama, 0, [[0, { aLx: 1.3, aRx: 1.3, aLz: -.3, aRz: -.3, aLe: .6, aRe: .6 }]], { T: L.T }); cara(mama, L.T, { expr: 'love', eyes: 'happy', mouth: 'smile' });
   show(CAKE, p.x, 2.55, p.z + .6, 0, .9); hearts(V(p.x, 6.4, p.z), L.T); orb(L.k, V(p.x, 3.2, p.z), null, [11, .05, .1, 42], [9.5, 0, .08, 42]); sh(p, 14); }, [[0, 'aah', .4], [.3, 'ding_soft', .35]]);
 // 31 «Noch am selben Nachmittag ging er in den Paketshop»: camina hacia la tienda verde PAKETSHOP
-shot(38.52, 'S', null, L => { town(L); const d = walkTo(det, SHOPD.x - 12, SHOPD.z + 3, PI / 2 + .1, 3.0, L, 0, 8); cara(d, L.T, { expr: 'smug', mouth: 'smirk' });
-  crowdAt(L, SHOPD.x - 8, SHOPD.z, 4, 6, 10, 31, { mode: 'walk', list: EX, from: 12, gap: 1.6 });
-  cm([SHOPD.x - 18, 6, SHOPD.z + 18], [SHOPD.x - 14, 5.4, SHOPD.z + 15], L.k); camera.lookAt(SHOPD.x + 4, 5, SHOPD.z); camera.fov = 48; sh(SHOPD, 22); }, [[0, 'steps', .45], [.5, 'city_amb', .35]]);
+shot(38.52, 'S', null, L => { street(L); const d = walkTo(det, SHOPD.x - 8, SHOPD.z + 1, PI / 2 + .25, 3.4, L, 0, 8); cara(d, L.T, { expr: 'smug', mouth: 'smirk' });
+  [EX[12], EX[13], EX[14]].forEach((c, i) => walkTo(c, SHOPD.x + 10 + i * 6, 3 + (i % 2) * 1.5, -PI / 2, 1.6, L, i, 7)); [EX[12], EX[13], EX[14]].forEach((c, i) => cara(c, L.T + i, { expr: 'happy' }));
+  cm([SHOPD.x - 10, 6.5, 26], [SHOPD.x - 6, 6, 22], L.k); camera.lookAt(SHOPD.x - 1, 6, 0); camera.fov = 50; sh(V(SHOPD.x, 0, 6), 26); }, [[0, 'steps', .45], [.5, 'city_amb', .35]]);
 // 32 «und sagte:»: dentro: entra hasta el mostrador; el dependiente le saluda
 shot(40.10, 'C', null, L => { shop(L); const c = clerkAt(L, { aRx: 2.6, aRz: .4 + Math.sin(L.T * 9) * .3, aRe: .4 }, { expr: 'happy', mouth: 'open_smile' });
   walkTo(det, CUST.x, CUST.z + 4.5 - Math.min(L.lt, 1) * 0, PI, 2.4, L, 0, 7); cara(det, L.T, { expr: 'happy', mouth: 'smile' });
   cm([PX + 6, 7, 14], [PX + 5, 6.5, 12], L.k); camera.lookAt(PX, 4, -3); camera.fov = 48; sh(V(PX, 0, -2), 20); }, [[0, 'door_bell', .5], [.3, 'steps', .35]]);
 // 33 «Ich hol die Pakete für Lukas ab.»: apoyado en el mostrador, con voz dulce; señala su placa
-shot(41.30, 'Z', null, L => { shop(L); clerkAt(L, { aLx: .4, aRx: .4 }, { expr: 'happy', mouth: 'smile' }); const d = put(det, CUST.x, 0, CUST.z, PI); actuar(d, 0, [[0, { aLx: .9, aLz: -.6, aLe: 1.9, aRx: 1.3, aRz: -.1, aRe: .4, lean: .08 }]], { T: L.T }); talk(d, L.T, 41.3, 42.76, 'happy', { eyes: 'happy' });
-  bubble(d, 'Pakete für Lukas!', clamp(L.lt / .1), 1.4); const h = hp(d); cm([h.x + 3.6, h.y + .4, h.z - 5.6], [h.x + 3.0, h.y + .3, h.z - 4.8], L.k); camera.lookAt(h.x, h.y - .6, h.z); camera.fov = 42; sh(CUST, 12); }, [[0, 'pop', .4]]);
+shot(41.30, 'Z', null, L => { shop(L); clerkAt(L, { aLx: .4, aRx: .4 }, { expr: 'happy', mouth: 'smile' }); const d = put(det, CUST.x, 0, CUST.z, PI - 1.1); actuar(d, 0, [[0, { aLx: .9, aLz: -.6, aLe: 1.9, aRx: .5, aRz: -.1, aRe: .3, lean: .08 }]], { T: L.T }); talk(d, L.T, 41.3, 42.76, 'happy', { eyes: 'happy' });
+  bubble(d, 'Pakete für Lukas!', clamp(L.lt / .1), 1.4); const h = hp(d); cm([h.x + 6.6, h.y + .6, h.z + 1.8], [h.x + 5.8, h.y + .5, h.z + 1.6], L.k); camera.lookAt(h.x, h.y - 1.0, h.z); camera.fov = 42; sh(CUST, 12); }, [[0, 'pop', .4]]);
 // 34 «Und der Verkäufer gab ihm alles.»: el dependiente, encantado, empuja una montaña de paquetes por el mostrador
 shot(42.92, 'W', null, L => { shop(L); const c = clerkAt(L, { aLx: 1.5, aRx: 1.5, aLz: -.2, aRz: -.2, aLe: .3, aRe: .3, lean: .15 + Math.sin(L.T * 6) * .04 }, { expr: 'happy', eyes: 'happy', mouth: 'grin' });
-  const k = easeOut(clamp(L.lt / 1.2)); for (let i = 0; i < 6; i++) show(PKGS[i], PX - 3.6 + (i % 3) * 2.4, 4.5 + Math.floor(i / 3) * 1.6, -4.6 + k * 1.2, Math.sin(i) * .2, .7);
-  put(det, CUST.x, 0, CUST.z + .6, PI); actuar(det, 0, [[0, GEST.cheer]], { T: L.T }); grin(det, L.T);
-  cm([PX - 8, 7, 5], [PX - 7, 6.6, 4], L.k); camera.lookAt(PX, 4.6, -4.5); camera.fov = 46; sh(V(PX, 0, -3), 14); }, [[0, 'box_slide', .5], [.5, 'box_slide', .45]]);
+  const k = easeOut(clamp(L.lt / 1.2)); for (let i = 0; i < 6; i++) show(PKGS[i], PX + 1.6 + (i % 3) * 2.2, 4.5 + Math.floor(i / 3) * 1.6, -4.6 + k * 1.2, Math.sin(i) * .2, .7);
+  put(det, PX + 6, 0, .6, PI - .5); actuar(det, 0, [[0, GEST.cheer]], { T: L.T }); grin(det, L.T);
+  cm([PX - 5, 8.8, 7], [PX - 4.2, 8.4, 6], L.k); camera.lookAt(PX + 2.2, 5.2, -5); camera.fov = 46; sh(V(PX, 0, -3), 14); }, [[0, 'box_slide', .5], [.5, 'box_slide', .45]]);
 // 35 «Jedes Paket für jeden Lukas»: las estanterías se vacían: la pila sobre su carretilla crece y crece
 shot(44.85, 'F', null, L => { shop(L); const n = 3 + Math.floor(easeOut(clamp(L.lt / 1.1)) * 9); const p = V(PX + 2.6, 0, 4); tower(n, p, PI + .3);
   const d = put(det, p.x - 2.4, 0, p.z + .8, PI - .6); actuar(d, 0, [[0, { aLx: 2.6, aRx: 2.6, aLz: .2, aRz: .2, aLe: .5, aRe: .5 }]], { T: L.T }); grin(d, L.T);
   clerkAt(L, GEST.wave, { expr: 'happy', mouth: 'open_smile' });
   cm([PX + 9, 6, 15], [PX + 8, 7, 13], L.k); camera.lookAt(p.x - .5, 5, p.z); camera.fov = 48; sh(p, 16); }, [[0, 'box_drop', .5], [.35, 'box_drop', .45], [.7, 'box_drop', .45]]);
 // 36 «in der ganzen Stadt.»: sale a la calle empujando una torre de paquetes «LUKAS»
-shot(46.03, 'S', null, L => { town(L); const x = SHOPD.x - 1 - L.lt * 2.2, p = V(x, 0, SHOPD.z + 1); tower(14, p, -PI / 2); const d = put(det, x + 2.4, Math.abs(Math.sin(L.T * 9)) * .1, p.z, -PI / 2); actuar(d, 0, [[0, { ...walkP(L.T, 0, 9), aLx: 1.4, aRx: 1.4, aLe: .4, aRe: .4 }]], { T: L.T }); cara(d, L.T, { expr: 'smug', mouth: 'smirk' });
-  orb(L.k, V(x, 5, p.z), null, [17, -1.1, .12, 46], [15, -.9, .1, 46]); badge('red', 'ALLE LUKAS-PAKETE', W / 2, H * .15, clamp((L.lt - .3) / .15), 1, .7); sh(p, 18); }, [[0, 'wheels', .5], [.4, 'steps', .3]]);
+shot(46.03, 'S', null, L => { street(L); const x = SHOPD.x - 1 - L.lt * 2.2, p = V(x, 0, SHOPD.z + 1); tower(14, p, -PI / 2); const d = put(det, x + 2.4, Math.abs(Math.sin(L.T * 9)) * .1, p.z, -PI / 2); actuar(d, 0, [[0, { ...walkP(L.T, 0, 9), aLx: 1.4, aRx: 1.4, aLe: .4, aRe: .4 }]], { T: L.T }); cara(d, L.T, { expr: 'smug', mouth: 'smirk' });
+  orb(L.k, V(x, 5, p.z), null, [18, -.5, .12, 46], [16, -.35, .1, 46]); badge('red', 'ALLE LUKAS-PAKETE', W / 2, H * .15, clamp((L.lt - .3) / .15), 1, .7); sh(p, 18); }, [[0, 'wheels', .5], [.4, 'steps', .3]]);
 // 37 «Sneaker,»: unas zapatillas nuevas saltan de su caja
 shot(47.68, 'C', 'punch', L => { shop(L); const p = V(PX + 3, 4.6, -4); show(PKGS[20], p.x, 4.5, p.z, .3, .8); const k = easeOut(clamp(L.lt / .3)); show(SNEAK[0], p.x - .6, 5.6 + k * 1.2, p.z + .2, .6 + L.lt, .9); show(SNEAK[1], p.x + .8, 5.6 + k * .9, p.z + .3, -.4 - L.lt, .9);
-  cm([p.x + 1.6, 7.4, p.z + 6], [p.x + 1.2, 7.2, p.z + 5], L.k); camera.lookAt(p.x, 6.2, p.z); camera.fov = 40; sh(p, 10); }, [[0, 'box_open', .5], [.1, 'sparkle', .4]]);
+  cm([p.x + 1.4, 8.4, p.z + 9.5], [p.x + 1.1, 8.0, p.z + 8.2], L.k); camera.lookAt(p.x, 6.0, p.z); camera.fov = 40; sh(p, 10); }, [[0, 'box_open', .5], [.1, 'sparkle', .4]]);
 // 38 «Handys,»: tres móviles
 shot(48.40, 'C', 'punch', L => { shop(L); const p = V(PX - 2, 4.6, -4); PHONES.forEach((ph, i) => { show(ph, p.x - 1.4 + i * 1.4, 5.8 + Math.sin(L.T * 4 + i) * .1, p.z, 0, 1); ph.rotation.z = (i - 1) * .2; });
-  cm([p.x + .4, 6.4, p.z + 5], [p.x + .2, 6.2, p.z + 4.2], L.k); camera.lookAt(p.x, 5.8, p.z); camera.fov = 40; sh(p, 10); }, [[0, 'phone_buzz', .5]]);
+  cm([p.x + .4, 6.6, p.z + 8.5], [p.x + .2, 6.4, p.z + 7.4], L.k); camera.lookAt(p.x, 5.8, p.z); camera.fov = 40; sh(p, 10); }, [[0, 'phone_buzz', .5]]);
 // 39 «Konsolen…»: dos consolas
 shot(48.96, 'C', 'punch', L => { shop(L); const p = V(PX + 1, 4.6, -4); KONS.forEach((k, i) => show(k, p.x - 1.9 + i * 3.8, 4.55, p.z + (i ? .4 : 0), (i ? -.4 : .4), .85));
-  cm([p.x, 7.6, p.z + 6], [p.x, 7.2, p.z + 5], L.k); camera.lookAt(p.x, 5, p.z); camera.fov = 42; sh(p, 10); }, [[0, 'game_beep', .5]]);
+  cm([p.x, 9.6, p.z + 10], [p.x, 9, p.z + 8.6], L.k); camera.lookAt(p.x, 5, p.z); camera.fov = 42; sh(p, 10); }, [[0, 'game_beep', .5]]);
 // 40 «und das Geburtstagsgeschenk von meiner Schwester.» (zoom lento): la caja rosa «Für Mia 6» acaba en lo alto de la torre
-shot(49.40, 'Z', 'slow', L => { shop(L); const p = V(PX + 2.6, 0, 4); const top = tower(12, p, PI + .3); const k = easeOut(clamp(L.lt / .5)); show(GIFT, p.x, lerp(top + 2.4, top, k), p.z + .2, PI + .1, .75);
+shot(49.40, 'Z', 'slow', L => { shop(L); const p = V(PX + 2.6, 0, 4); const top = tower(8, p, PI + .3); const k = easeOut(clamp(L.lt / .5)); show(GIFT, p.x, lerp(top + 2.4, top, k), p.z + .2, PI + .1, .75);
   const d = put(det, p.x - 2.4, 0, p.z + .8, PI - .6); actuar(d, 0, [[0, { aLx: 2.8, aRx: .3, aLz: .1, aLe: .3 }]], { T: L.T }); cara(d, L.T, { expr: 'smug', mouth: 'smirk' });
-  cm([p.x + 1, top + 1.6, p.z - 8], [p.x + .6, top + .6, p.z - 5.2], easeIn(L.k)); camera.lookAt(p.x, top + .4, p.z); camera.fov = 42; sh(p, 12); }, [[0, 'box_drop', .4]]);
+  cm([p.x + 1, top + 1.2, p.z + 9], [p.x + .6, top + .4, p.z + 5.6], easeIn(L.k)); camera.lookAt(p.x, top + .2, p.z); camera.fov = 42; sh(p, 12); }, [[0, 'box_drop', .4]]);
 // 41 (pausa) mi hermana espera en la ventana, triste, mirando la calle
 shot(51.61, 'W', null, L => { town(L); const p = V(STREET.x, 0, STREET.z); const b = put(bru, p.x, 0, p.z, .3); actuar(b, 0, [[0, { aLx: .4, aRx: .4, aLz: -.3, aRz: -.3, aLe: 1.4, aRe: 1.4, headX: .3, headY: Math.sin(L.T * 1.5) * .4 }]], { T: L.T }); cara(b, L.T, { expr: 'sad', mouth: 'frown' });
   orb(L.k, V(p.x, 2.0, p.z), null, [10, .3, .14, 42], [8.5, .15, .1, 42]); sh(p, 12); }, [[0, 'clock_tick', .4]]);
@@ -474,12 +484,12 @@ shot(55.51, 'W', null, L => { town(L); const b = put(bru, STREET.x + 1.2, 0, STR
 shot(56.65, 'Z', 'slow', L => { town(L); const m = put(me, STREET.x - 1.2, 0, STREET.z, .15); actuar(m, 0, [[0, { aRx: 1.9, aRz: -.3, aRe: 2.2, headX: -.08 }]], { T: L.T }); cara(m, L.T, { expr: 'determined', mouth: 'flat' });
   const h = hp(m); cm([h.x + .8, h.y - 1.8, h.z + 7.5], [h.x + .6, h.y - 1.5, h.z + 5.6], easeIn(L.k)); camera.lookAt(h.x, h.y - .4, h.z); camera.fov = 42; sh(STREET, 12); }, [[0, 'heartbeat', .4]]);
 // 47 «Polizist Lukas ging in den Paketshop.»: el coche patrulla delante de la tienda; el policía entra
-shot(57.78, 'I', null, L => { town(L); PCAR.position.set(SHOPD.x - 6, 0, SHOPD.z - 8); PCAR.rotation.y = PI / 2; const c = walkTo(pol, SHOPD.x - 4, SHOPD.z + 1, PI / 2, 2.2, L, 0, 7); cara(c, L.T, { expr: 'determined' });
-  cm([SHOPD.x - 18, 5.4, SHOPD.z + 10], [SHOPD.x - 15, 5, SHOPD.z + 8], L.k); camera.lookAt(SHOPD.x + 2, 4, SHOPD.z); camera.fov = 46; sh(SHOPD, 20); }, [[0, 'siren', .35], [.3, 'car_door', .5]]);
+shot(57.78, 'I', null, L => { street(L); const c = walkTo(pol, SHOPD.x - 7, SHOPD.z + 2, PI / 2 + .4, 2.6, L, 0, 7); cara(c, L.T, { expr: 'determined' });
+  cm([SHOPD.x - 4, 6, 28], [SHOPD.x - 3, 5.6, 25], L.k); camera.lookAt(SHOPD.x - 4, 5, 2); camera.fov = 50; sh(V(SHOPD.x - 6, 0, 6), 24); }, [[0, 'siren', .35], [.3, 'car_door', .5]]);
 // 48 «Wem haben Sie die Pakete gegeben?»: en el mostrador, libreta en mano
-shot(59.88, 'C', null, L => { shop(L); clerkAt(L, { aLx: .3, aRx: .3 }, { expr: 'happy', mouth: 'smile' }); const c = put(pol, CUST.x, 0, CUST.z, PI - .15); actuar(c, 0, [[0, { aLx: 1.3, aLz: -.3, aLe: 1.3, aRx: 1.1, aRz: -.5, aRe: 1.6, headX: .1 }]], { T: L.T }); talk(c, L.T, 59.8, 61.2, 'talk');
-  const lh = wpos(c.aL.hand); show(NOTEPAD, lh.x, lh.y + .4, lh.z - .3, PI, 1);
-  const h = hp(c); cm([h.x - 3.4, h.y + .5, h.z - 6], [h.x - 2.9, h.y + .4, h.z - 5.2], L.k); camera.lookAt(h.x, h.y - .5, h.z); camera.fov = 42; sh(CUST, 12); }, [[0, 'pencil', .45]]);
+shot(59.88, 'C', null, L => { shop(L); clerkAt(L, { aLx: .3, aRx: .3 }, { expr: 'happy', mouth: 'smile' }); const c = put(pol, CUST.x, 0, CUST.z, PI - 1.0); actuar(c, 0, [[0, { aLx: .8, aLz: -.3, aLe: 1.2, aRx: .7, aRz: -.4, aRe: 1.5, headX: .05 }]], { T: L.T }); talk(c, L.T, 59.8, 61.2, 'talk');
+  const lh = wpos(c.aL.hand); show(NOTEPAD, lh.x, lh.y + .2, lh.z - .3, PI, 1);
+  const h = hp(c); cm([h.x + 6.6, h.y + .6, h.z + 1.8], [h.x + 5.8, h.y + .5, h.z + 1.6], L.k); camera.lookAt(h.x, h.y - .5, h.z); camera.fov = 42; sh(CUST, 12); }, [[0, 'pencil', .45]]);
 // 49 «Lukas!»: el dependiente, feliz: LUKAS!
 shot(61.45, 'C', 'punch', L => { shop(L); const c = clerkAt(L, { aRx: 2.7, aRz: .3, aRe: .3, aLx: .4 }, { expr: 'happy', eyes: 'happy', mouth: 'open_smile' }); bubble(c, 'LUKAS!', clamp(L.lt / .08), 1.4);
   onFace(c, 4.4, .2, .3, 40, L.k, 3.9); sh(CLERK, 10); }, [[0, 'pop', .5]]);
@@ -487,15 +497,15 @@ shot(61.45, 'C', 'punch', L => { shop(L); const c = clerkAt(L, { aRx: 2.7, aRz: 
 shot(61.91, 'Z', null, L => { shop(L); const c = put(pol, CUST.x, 0, CUST.z, PI - .15); actuar(c, 0, [[0, { ...GEST.shrug, headZ: .25 }]], { T: L.T }); talk(c, L.T, 61.9, 62.8, 'confused');
   badge('q', '?', W * .72, H * .2, clamp(L.lt / .12), 1, 1); onFace(c, 4.4, .1, -.3, 40, L.k, 3.9); sh(CUST, 12); }, [[0, 'boing_metal', .45]]);
 // 51 «Der Verkäufer zuckte nur mit den Schultern.»: el dependiente se encoge de hombros
-shot(62.94, 'S', null, L => { shop(L); const c = clerkAt(L, { ...GEST.shrug }, { expr: 'confused', mouth: 'wavy' }); put(pol, CUST.x - 1.6, 0, CUST.z + .6, PI + .5); actuar(pol, 0, [[0, GEST.cross]], { T: L.T }); cara(pol, L.T, { expr: 'sus' });
-  cm([PX + 7, 6.6, 6], [PX + 6, 6.3, 5], L.k); camera.lookAt(PX, 4.6, -5); camera.fov = 44; sh(V(PX, 0, -4), 14); }, [[0, 'cloth', .45], [.3, 'hmm', .4]]);
+shot(62.94, 'S', null, L => { shop(L); const c = clerkAt(L, { ...GEST.shrug }, { expr: 'confused', mouth: 'wavy' }); put(pol, CUST.x + 3.5, 0, CUST.z + 1.6, PI + .6); actuar(pol, 0, [[0, GEST.cross]], { T: L.T }); cara(pol, L.T, { expr: 'sus' });
+  cm([PX - 3, 10.5, 4], [PX - 2.6, 10, 3.2], L.k); camera.lookAt(PX, 5.4, -6.8); camera.fov = 44; sh(V(PX, 0, -4), 14); }, [[0, 'cloth', .45], [.3, 'hmm', .4]]);
 // 52 «Hier heißt doch jeder Lukas.»: travelling por la cola de clientes: LUKAS, LUKAS, LUKAS…
-shot(64.79, 'W', null, L => { shop(L); const q = BOYZ.slice(0, 7); q.forEach((c, i) => { put(c, PX - 9 + i * 3, 0, 8, 0); actuar(c, 0, [[0, { aLx: .2, aRx: .2, headY: Math.sin(L.T + i) * .2 }]], { T: L.T }); cara(c, L.T + i, { expr: 'happy' }); });
-  const x = lerp(PX - 8, PX + 6, L.k); cam([x, 3.2, 14], [x + 1.2, 3.0, 8], 42); sh(V(PX, 0, 8), 16); }, [[0, 'whoosh_soft', .35], [.5, 'murmur', .35]]);
+shot(64.79, 'W', null, L => { shop(L); const q = BOYZ.slice(0, 7); q.forEach((c, i) => { put(c, PX - 9 + i * 3, 0, 6, 0); actuar(c, 0, [[0, { aLx: .2, aRx: .2, headY: Math.sin(L.T + i) * .2 }]], { T: L.T }); cara(c, L.T + i, { expr: 'happy' }); });
+  const x = lerp(PX - 6, PX + 5, L.k); cam([x, 4.6, 15.2], [x + 1.2, 3.6, 6], 46); sh(V(PX, 0, 8), 16); }, [[0, 'whoosh_soft', .35], [.5, 'murmur', .35]]);
 // ---------- c: el Hausmeister, la pista, el policía se ríe, el estadio, el micrófono (66,25 – 97,44 s) ----------
 const BENCH = V(YARD.x + 9, 0, YARD.z + 12);   // yo sentado en una caja del patio con un helado (mirando -z… hacia la cámara en +z)
 const NEWP = V(YARD.x - 2, 0, YARD.z - 10);    // el Neuer al fondo del patio, de espaldas, con el móvil
-const BOOTHW = V(SX - 35.8, 12.8, 26.6);       // yo dentro de la cabina (mirando +x)
+const BOOTHW = V(SX - 35.8, 12.8, 27.8);       // yo dentro de la cabina (mirando +x)
 const meBench = (L, o = {}) => { show(CRATE, BENCH.x, 0, BENCH.z, 0, .8); const m = put(me, BENCH.x, sitY(me, 1.0), BENCH.z, o.ry ?? 0); actuar(m, 0, [[0, { lLx: 1.4, lRx: 1.4, lLk: 1.2, lRk: 1.2, aRx: 1.7, aRz: -.3, aRe: 2.0, aLx: .3, aLz: .3, headX: .1, ...(o.pose || {}) }]], { T: L.T });
   const rh = wpos(m.aR.hand); show(ICE, rh.x, rh.y + .5, rh.z, 0, 1.1); return m; };
 const newcomer = (L, o = {}) => { const d = put(det, NEWP.x, 0, NEWP.z, o.ry ?? PI); actuar(d, 0, [[0, GEST.phone_look || { aRx: 1.4, aRz: -.2, aRe: 1.8, headX: .3 }]], { T: L.T }); cara(d, L.T, { expr: 'smug', eyes: 'down', mouth: 'smirk' }); const rh = wpos(d.aR.hand); show(PHONES[0], rh.x, rh.y + .4, rh.z, d.root.rotation.y, .8); return d; };
@@ -507,8 +517,7 @@ shot(66.25, 'I', null, L => { town(L); yardKids(L, 20, { mode: 'cheer', seed: 53
   cm([YARD.x - 10, 20, YARD.z + 30], [YARD.x - 6, 15, YARD.z + 26], L.k); camera.lookAt(YARD.x, 3, YARD.z - 6); camera.fov = 48; sh(YARD, 30); }, [[0, 'school_bell', .5], [.3, 'kids_laugh', .45]]);
 // 54 «rief der Hausmeister:»: el Hausmeister, escoba en mano, se lleva la mano a la boca
 shot(67.49, 'S', null, L => { town(L); const c = put(mut, HMP.x, 0, HMP.z, .6); actuar(c, 0, [[0, { aLx: 2.2, aLz: .2, aLe: 2.2, aRx: .9, aRz: -.3, aRe: .4, lean: -.06 }]], { T: L.T }); cara(c, L.T, { expr: 'happy', mouth: 'o' });
-  const rh = wpos(c.aR.hand); show(PEN, rh.x, rh.y - .6, rh.z + .2, 0, 4); PEN.rotation.z = .2;
-  orb(L.k, V(HMP.x, 3.4, HMP.z), null, [11, .9, .1, 42], [9.5, .7, .08, 42]); sh(HMP, 14); }, [[0, 'broom', .45], [.4, 'breath', .35]]);
+    orb(L.k, V(HMP.x, 3.4, HMP.z), null, [11, .9, .1, 42], [9.5, .7, .08, 42]); sh(HMP, 14); }, [[0, 'broom', .45], [.4, 'breath', .35]]);
 // 55 «Lukas, da hat jemand nach dir gefragt!»: primer plano gritando
 shot(68.64, 'C', null, L => { town(L); const c = put(mut, HMP.x, 0, HMP.z, .6); actuar(c, 0, [[0, { aLx: 2.2, aRx: 2.2, aLz: .2, aRz: .2, aLe: 2.2, aRe: 2.2, lean: -.1, headX: -.15 }]], { T: L.T }); talk(c, L.T, 68.6, 70.4, 'shout');
   bubble(c, 'LUKAS!', clamp(L.lt / .1), 1.4); onFace(c, 4.4, .2, .3, 40, L.k, 3.9); sh(HMP, 12); }, [[0, 'shout_m', .5]]);
@@ -528,7 +537,7 @@ shot(73.42, 'S', null, L => { town(L); const m = meBench(L, { pose: { headY: -.2
 shot(74.54, 'Z', null, L => { town(L); const m = meBench(L, { pose: { headY: -.25 } }); cara(m, L.T, { expr: 'sus', eyes: 'squint', mouth: 'flat' });
   const h = hp(m); cm([h.x - .8, h.y + .7, h.z + 3.4], [h.x - .5, h.y + .7, h.z + 2.6], L.k); camera.lookAt(h.x, h.y + .1, h.z); camera.fov = 38; sh(BENCH, 10); }, [[0, 'tension_str', .35]]);
 // 61 «Der Neue hat sich auch nicht umgedreht.» (zoom lento): todos mirando al Hausmeister… menos el Neuer, de espaldas con el móvil
-shot(75.53, 'C', 'slow', L => { town(L); crowdAt(L, NEWP.x, NEWP.z + 6, 12, 3, 9, 61, { mode: 'turn', turnAt: L.t0 - 3, list: BOYZ, face: V(NEWP.x, 3, NEWP.z + 40), gap: .8 }); const d = newcomer(L);
+shot(75.53, 'C', 'slow', L => { town(L); crowdAt(L, NEWP.x, NEWP.z, 12, 3.5, 10, 61, { mode: 'turn', turnAt: L.t0 - 3, list: BOYZ, face: V(NEWP.x, 3, NEWP.z + 40), gap: 1.0 }); const d = newcomer(L);
   cm([NEWP.x + .5, 7, NEWP.z + 22], [NEWP.x + .3, 4.6, NEWP.z + 10.5], easeIn(L.k)); camera.lookAt(NEWP.x, 3, NEWP.z); camera.fov = 44; sh(NEWP, 16); }, [[0, 'heartbeat', .45]]);
 // 62 «Denn wenn jemand deinen Namen ruft,»: en la calle, una mujer llama a un chico que se aleja
 shot(77.39, 'W', null, L => { town(L); const p = V(-14, 0, 30); const a = put(GIRLX[3], p.x - 3, 0, p.z, PI / 2 - .3); actuar(a, 0, [[0, { aRx: 2.2, aRz: .2, aRe: 2.0, aLx: .3 }]], { T: L.T }); talk(a, L.T, 77.3, 78.6, 'happy');
@@ -554,7 +563,7 @@ shot(82.37, 'S', null, L => { town(L); const d = put(det, NEWP.x, 0, NEWP.z, .25
 // 68 «um die Pakete abzuholen.»: recuerdo (sepia): él en el mostrador, cogiendo los paquetes
 shot(83.37, 'W', null, L => { shop(L); grade.uniforms.sepia.value = .55; clerkAt(L, { aLx: 1.5, aRx: 1.5, aLz: -.2, aRz: -.2, aLe: .3, aRe: .3, lean: .15 }, { expr: 'happy', eyes: 'happy', mouth: 'grin' });
   for (let i = 0; i < 4; i++) show(PKGS[i], PX - 2.4 + (i % 2) * 2.4, 4.5 + Math.floor(i / 2) * 1.6, -4, 0, .7); put(det, CUST.x, 0, CUST.z, PI); actuar(det, 0, [[0, { aLx: 1.6, aRx: 1.6, aLz: -.3, aRz: -.3, aLe: .5, aRe: .5 }]], { T: L.T }); grin(det, L.T);
-  cm([PX + 6, 7, 6], [PX + 5, 6.6, 5], L.k); camera.lookAt(PX, 4.5, -4); camera.fov = 46; sh(V(PX, 0, -3), 14); }, [[0, 'box_slide', .45]]);
+  cm([PX - 8, 8, 1], [PX - 7, 7.6, 0], L.k); camera.lookAt(PX, 5, -4); camera.fov = 46; sh(V(PX, 0, -3), 14); }, [[0, 'box_slide', .45]]);
 // 69 «Ich hab's Polizist Lukas»: corro hasta el policía junto al coche patrulla
 shot(84.70, 'C', null, L => { town(L); const p = V(24, 0, 24); put(pol, p.x, 0, p.z, .3); actuar(pol, 0, [[0, GEST.cross]], { T: L.T }); cara(pol, L.T, { expr: 'neutral' });
   const m = put(me, p.x - 6 + L.lt * 4.4, Math.abs(Math.sin(L.T * 14)) * .2, p.z + 2.2, PI / 2 + .2); actuar(m, 0, [[0, walkP(L.T, 0, 14)]], { T: L.T }); cara(m, L.T, { expr: 'determined', mouth: 'talk_wide' });
@@ -583,17 +592,17 @@ shot(91.94, 'S', null, L => { stadium(L); stands(L, { mode: 'watch', list: CROWD
 // 76 «mir das Mikrofon geschnappt»: agarro el micrófono del soporte
 shot(93.76, 'C', null, L => { stadium(L); const m = put(me, BOOTHW.x, BOOTHW.y, BOOTHW.z, PI / 2); const g = L.lt > .35; actuar(m, 0, [[0, { aRx: g ? 1.8 : lerp(.6, 1.5, L.lt / .35), aRz: -.2, aRe: 1.5, aLx: .4, aLz: .3 }]], { T: L.T }); cara(m, L.T, { expr: 'determined', mouth: 'smirk' });
   if (g) attach(BOOTH.mic, m.aR.hand, [0, -.6, .4], [0, 0, 0], 1);
-  const h = hp(m); cm([h.x + 7.5, h.y + .5, h.z + 2.5], [h.x + 6.4, h.y + .4, h.z + 2], L.k); camera.lookAt(h.x, h.y - .6, h.z); camera.fov = 42; sh(BOOTHW, 12); }, [[0, 'click_metal', .55], [.4, 'radio', .3]]);
+  const h = hp(m); cm([h.x + 7.5, h.y + .5, h.z + 2.2], [h.x + 6.4, h.y + .4, h.z + 1.8], L.k); camera.lookAt(h.x, h.y - .6, h.z); camera.fov = 42; sh(BOOTHW, 12); }, [[0, 'click_metal', .55], [.4, 'radio', .3]]);
 // 77 «und gesagt:» (zoom lento): cojo aire
 shot(94.92, 'Z', 'slow', L => { stadium(L); const m = put(me, BOOTHW.x, BOOTHW.y, BOOTHW.z, PI / 2); actuar(m, 0, [[0, { aRx: 1.9, aRz: -.25, aRe: 1.7, aLx: .4, aLz: .3, lean: -.06, headX: -.08 }]], { T: L.T }); cara(m, L.T, { expr: 'smug', mouth: 'o' }); attach(BOOTH.mic, m.aR.hand, [0, -.6, .4], [0, 0, 0], 1);
-  const h = hp(m); cm([h.x + 7, h.y + .2, h.z + .6], [h.x + 4.8, h.y + .1, h.z + .4], easeIn(L.k)); camera.lookAt(h.x, h.y - .7, h.z); camera.fov = 40; sh(BOOTHW, 12); }, [[0, 'breath', .5]]);
+  const h = hp(m); cm([h.x + 7, h.y + .2, h.z + 1.4], [h.x + 4.8, h.y + .1, h.z + 1], easeIn(L.k)); camera.lookAt(h.x, h.y - .7, h.z); camera.fov = 40; sh(BOOTHW, 12); }, [[0, 'breath', .5]]);
 // 78 «Lukas…»: con voz dulce al micrófono
 shot(95.68, 'C', null, L => { stadium(L); const m = put(me, BOOTHW.x, BOOTHW.y, BOOTHW.z, PI / 2); actuar(m, 0, [[0, { aRx: 1.9, aRz: -.25, aRe: 1.7, aLx: .9, aLz: -.4, aLe: 1.2, headZ: .15 }]], { T: L.T }); cara(m, L.T, { expr: 'happy', eyes: 'happy', mouth: 'smile' }); attach(BOOTH.mic, m.aR.hand, [0, -.6, .4], [0, 0, 0], 1);
-  bubble(m, 'Lukas…', clamp(L.lt / .1), 1.3); onFace(m, 4.6, .1, .4, 40, L.k, 4.0); sh(BOOTHW, 10); }, [[0, 'radio', .35]]);
+  bubble(m, 'Lukas…', clamp(L.lt / .1), 1.3); { const h = hp(m); cm([h.x + 5.6, h.y + .5, h.z + 2.2], [h.x + 4.8, h.y + .4, h.z + 1.9], L.k); camera.lookAt(h.x, h.y - .2, h.z); camera.fov = 40; } sh(BOOTHW, 10); }, [[0, 'radio', .35]]);
 // 79 «dein Paket ist da!»: grito al micrófono; onda expansiva; el marcador lo repite
 shot(96.52, 'C', 'punch', L => { stadium(L); const m = put(me, BOOTHW.x, BOOTHW.y, BOOTHW.z, PI / 2); actuar(m, 0, [[0, { aRx: 2.0, aRz: -.25, aRe: 1.6, aLx: .9, aLz: .9, aLe: .4, lean: -.12, headX: -.2 }]], { T: L.T }); cara(m, L.T, { expr: 'shout', eyes: 'happy', mouth: 'scream' }); attach(BOOTH.mic, m.aR.hand, [0, -.6, .4], [0, 0, 0], 1);
   ring(V(BOOTHW.x + 2, BOOTHW.y + 4.5, BOOTHW.z), L.t0, L.T, 14); bubble(m, 'DEIN PAKET IST DA!', clamp(L.lt / .08), 1.3);
-  const h = hp(m); cm([h.x + 8.5, h.y - .4, h.z - 1.5], [h.x + 7.8, h.y - .3, h.z - 1.3], L.k); camera.lookAt(h.x, h.y - .4, h.z); camera.fov = 44; sh(BOOTHW, 14); }, [[0, 'shout_crowd', .2], [0, 'boom', .45]]);
+  const h = hp(m); cm([h.x + 8.5, h.y - .4, h.z + 2.2], [h.x + 7.8, h.y - .3, h.z + 2], L.k); camera.lookAt(h.x, h.y - .4, h.z); camera.fov = 44; sh(BOOTHW, 14); }, [[0, 'shout_crowd', .2], [0, 'boom', .45]]);
 // ---------- d: 5000 Lukasse, Gerhard, el garaje, «Fehler!», todos se llaman Leon, el final (97,44 – 129,9 s) ----------
 const BFACE = V(SX - 34, 16, 26);          // la cabina, hacia donde se gira la grada
 const DETS = { row: 1, col: 2 };            // el Neuer en la grada: fila 1, columna 2
@@ -602,8 +611,8 @@ const standsT = (L, o = {}) => stands(L, { list: CROWD.filter(c => c !== det), c
 const GP = V(GX, 0, -8);                    // montaña de paquetes en el garaje
 function garagePile(L, gone = 0) { PKGS.forEach((q, i) => { if (i < gone) return; const r = RNG(i * 5 + 1); const x = GP.x - 5 + (i % 6) * 2.1 + (r() - .5) * .5, z = GP.z - 3 + Math.floor(i / 6) % 2 * 2.6 + (r() - .5) * .6, y = Math.floor(i / 12) * 1.5; show(q, x, y, z, (r() - .5) * .5, .8); });
   KONS.forEach((k, i) => show(k, GP.x - 3 + i * 5, 3.2, GP.z + 1.2, .3 - i * .5, .8)); SNEAK.forEach((s, i) => show(s, GP.x + 2 + i * 1.4, 3.1, GP.z + 2, 1 + i, .9)); }
-const shouldersS = (L, p) => { const a = put(EX[22], p.x - 1.2, 0, p.z, -PI / 2), b = put(EX[23], p.x + 1.2, 0, p.z, -PI / 2); [a, b].forEach((c, i) => { c.root.position.set(p.x, 0, p.z + (i ? 1.2 : -1.2)); actuar(c, 0, [[0, { aLx: 2.8, aRx: 2.8, aLz: i ? .2 : -.1, aRz: i ? -.1 : .2, aLe: .3, aRe: .3 }]], { T: L.T }); laughF(c, L.T + i); });
-  return put(me, p.x + .3, 5.6 + Math.abs(Math.sin(L.T * 5)) * .3, p.z, -PI / 2); };
+const shouldersS = (L, p) => { const a = put(EX[22], p.x - 1.2, 0, p.z, PI / 2), b = put(EX[23], p.x + 1.2, 0, p.z, PI / 2); [a, b].forEach((c, i) => { c.root.position.set(p.x, 0, p.z + (i ? 1.2 : -1.2)); actuar(c, 0, [[0, { aLx: 2.8, aRx: 2.8, aLz: i ? .2 : -.1, aRz: i ? -.1 : .2, aLe: .3, aRe: .3 }]], { T: L.T }); laughF(c, L.T + i); });
+  return put(me, p.x - .3, 5.6 + Math.abs(Math.sin(L.T * 5)) * .3, p.z, PI / 2); };
 const LEONS = c => c.setTag(GIRLS.has(c) ? 'LEONIE' : 'LEON');
 
 // 80 «Fünftausend Lukasse»: toda la grada se gira a la vez hacia la cabina; «5000»
@@ -611,14 +620,14 @@ shot(97.44, 'F', null, L => { stadium(L); standsT(L, { turnAt: L.t0 + .1, face: 
   cm([SX - 4, 14, -24], [SX - 6, 13, -21], L.k); camera.lookAt(SX - 30, 6, 4); camera.fov = 50; badge('gold', '5000', W / 2, H * .15, clamp((L.lt - .2) / .15), 1, .95); sh(V(SX - 30, 0, -6), 34); }, [[0, 'whoosh_soft', .45], [.15, 'crowd_run', .45]]);
 // 81 «drehten sich gleichzeitig um.»: desde la cabina: miles de caras mirándome
 shot(99.02, 'W', null, L => { stadium(L); standsT(L, { turned: true, face: BFACE, expr: 'shock' }); const d = put(det, ...detSeat().toArray(), PI / 2); cara(d, L.T, { expr: 'neutral' }); actuar(d, 0, [[0, {}]], { T: L.T });
-  cm([SX - 30, 19, 30], [SX - 28, 18, 27], L.k); camera.lookAt(SX - 30, 4, -6); camera.fov = 52; sh(V(SX - 30, 0, -6), 34); }, [[0, 'murmur', .45]]);
+  cm([SX - 27, 21, 21], [SX - 26, 20, 19], L.k); camera.lookAt(SX - 30, 4, -6); camera.fov = 52; sh(V(SX - 30, 0, -6), 34); }, [[0, 'murmur', .45]]);
 // 82 «Alle, außer einem.» (zoom lento): todos mirando a la cabina… menos uno, que sigue mirando el partido
 shot(100.64, 'S', 'slow', L => { stadium(L); standsT(L, { turned: true, face: BFACE, expr: 'shock' }); const dp = detSeat(); const d = put(det, dp.x, dp.y, dp.z, PI / 2); actuar(d, 0, [[0, { aLx: .3, aRx: .3, headY: .1 }]], { T: L.T }); cara(d, L.T, { expr: 'happy', mouth: 'smile' });
   cm([SX - 26, 16, 28], [dp.x + 3, dp.y + 5, dp.z + 9], L.k, easeIn); camera.lookAt(dp.x, dp.y + 3, dp.z); camera.fov = lerp(46, 30, easeIn(L.k)); sh(dp, 20); }, [[0, 'heartbeat', .5]]);
 // 83 «Polizist Lukas packte ihn.»: el policía le agarra del brazo en la grada
 shot(101.99, 'C', 'punch', L => { stadium(L); standsT(L, { turned: true, face: V(SX - 26, 4, -9), expr: 'shock', mode: 'point' }); const dp = detSeat(); const d = put(det, dp.x, dp.y, dp.z, -.5 + PI / 2); actuar(d, 0, [[0, { ...GEST.cower, headY: -.3 }]], { T: L.T }); cara(d, L.T, { expr: 'scared' }); sweat(d, L.T);
-  put(pol, dp.x + 1.6, dp.y, dp.z - 1.8, -PI / 2 + PI + .6 - PI); pol.root.rotation.y = faceTo(pol.root.position, d.root.position); actuar(pol, 0, [[0, { aRx: 1.5, aRz: -.6, aRe: .5, aLx: 1.3, aLz: -.3, aLe: .6, lean: .1 }]], { T: L.T }); cara(pol, L.T, { expr: 'angry', mouth: 'grimace' });
-  orbit(V(dp.x + .8, dp.y + 3.2, dp.z - .8), 11, PI / 2 - .3, .1, 44); sh(dp, 16); }, [[0, 'cloth', .55], [.2, 'slap', .4], [.5, 'murmur', .35]]);
+  put(pol, dp.x - .4, dp.y, dp.z - 2.4, 0); pol.root.rotation.y = faceTo(pol.root.position, d.root.position); actuar(pol, 0, [[0, { aRx: 1.5, aRz: -.6, aRe: .5, aLx: 1.3, aLz: -.3, aLe: .6, lean: .1 }]], { T: L.T }); cara(pol, L.T, { expr: 'angry', mouth: 'grimace' });
+  orbit(V(dp.x - .2, dp.y + 3.4, dp.z - 1.2), 9, .55, .2, 44); sh(dp, 16); }, [[0, 'cloth', .55], [.2, 'slap', .4], [.5, 'murmur', .35]]);
 // 84 «Wie heißt du wirklich?»: el policía, muy serio
 shot(103.69, 'Z', null, L => { stadium(L); const dp = detSeat(); const c = put(pol, dp.x + 1.6, dp.y, dp.z - 1.8, PI / 2 + .5); actuar(c, 0, [[0, { aRx: 1.5, aRz: -.6, aRe: .5, lean: .1, headY: -.2 }]], { T: L.T }); talk(c, L.T, 103.6, 104.4, 'angry');
   onFace(c, 4.4, .2, -.4, 40, L.k, 3.9); sh(dp, 12); }, [[0, 'hmm', .35]]);
@@ -627,7 +636,7 @@ shot(104.43, 'C', null, L => { stadium(L); const dp = detSeat(); const c = put(d
   onFace(c, 4.2, .1, .3, 40, L.k, 3.6); sh(dp, 12); }, [[0, 'hmm', .45]]);
 // 86 «Gerhard.»: su placa ya dice la verdad: GERHARD
 shot(105.24, 'C', 'punch', L => { stadium(L); const dp = detSeat(); const c = put(det, dp.x, dp.y, dp.z, PI / 2 - .4); c.setTag('GERHARD'); actuar(c, 0, [[0, { aLx: .2, aRx: .2, headX: .3 }]], { T: L.T }); cara(c, L.T, { expr: 'sad', eyes: 'down', mouth: 'frown' });
-  bubble(c, 'Gerhard…', clamp(L.lt / .1), 1.4); onBody(c, 6.8, .1, .06, 40, L.k, 6.2); sh(dp, 12); }, [[0, 'sad_tone', .45]]);
+  bubble(c, 'Gerhard…', clamp(L.lt / .1), 1.4); c.root.rotation.y = .47; orbit(V(dp.x, dp.y + 3, dp.z), lerp(6.6, 5.8, L.k), .47, .15, 40); sh(dp, 12); }, [[0, 'sad_tone', .45]]);
 // 87 «In seiner Garage lag alles.»: el portón del garaje: una montaña de paquetes; el policía y yo, boquiabiertos
 shot(105.87, 'F', null, L => { garageS(L); garagePile(L); show(GIFT, GP.x + 1, 4.6, GP.z - .5, .2, .7);
   put(pol, GX - 4, 0, 6, PI + .3); actuar(pol, 0, [[0, GEST.point]], { T: L.T }); cara(pol, L.T, { expr: 'shock', mouth: 'o' }); put(me, GX + 3.6, 0, 6.4, PI - .3); actuar(me, 0, [[0, GEST.shock]], { T: L.T }); cara(me, L.T, { expr: 'shock', mouth: 'open_smile' });
@@ -644,30 +653,30 @@ shot(109.12, 'W', null, L => { garageS(L); garagePile(L, 10); const p = V(GX + .
   orb(L.k, V(p.x, 2.8, p.z + 1), null, [10.5, .3, .1, 42], [9, .15, .08, 42]); sh(p, 14); }, [[0, 'box_slide', .4], [.3, 'sparkle', .45]]);
 // 90 «Meine Kopfhörer!»: mi hermana, con sus cascos rosas puestos, feliz; corazones
 shot(111.06, 'C', null, L => { town(L); const b = put(bru, STREET.x, Math.abs(Math.sin(L.T * 8)) * .3, STREET.z, .1); actuar(b, 0, [[0, { aLx: 2.7, aRx: 2.7, aLz: .4, aRz: .4, aLe: .3, aRe: .3 }]], { T: L.T }); laughF(b, L.T);
-  attach(KOPF, b.head, [0, .55, 0], [0, 0, 0], .82); hearts(V(STREET.x, 4.4, STREET.z), L.T); bubble(b, 'Meine Kopfhörer!', clamp(L.lt / .1), 1.8);
-  onBody(b, 9, .1, .12, 42, L.k, 8); sh(STREET, 12); }, [[0, 'kids_laugh', .45], [.2, 'sparkle', .4]]);
+  attach(KOPF, b.head, [0, .95, 0], [0, 0, 0], 1.05); hearts(V(STREET.x, 4.4, STREET.z), L.T); bubble(b, 'Meine Kopfhörer!', clamp(L.lt / .1), 1.8);
+  onFace(b, 6, .3, .3, 42, L.k, 5.2); sh(STREET, 12); }, [[0, 'kids_laugh', .45], [.2, 'sparkle', .4]]);
 // 91 «Und das ganze Stadion fing an zu rufen:»: en el campo, me suben a hombros; la grada aplaude
 shot(112.11, 'Z', null, L => { stadium(L); standsT(L, { mode: 'cheer', face: V(SX, 4, 0) }); const p = V(SX - 12, 0, 2); const m = shouldersS(L, p); actuar(m, 0, [[0, { lLx: 1.4, lRx: 1.4, lLk: 1.3, lRk: 1.3, aLx: 2.6, aRx: 2.6, aLz: .5, aRz: .5 }]], { T: L.T }); laughF(m, L.T);
-  orb(L.k, V(p.x, 5.4, p.z), null, [18, -PI / 2 + .3, .08, 46], [15, -PI / 2 + .1, .06, 46]); sh(p, 22); }, [[0, 'cheer', .55], [.4, 'stadium', .4]]);
+  orb(L.k, V(p.x, 6.8, p.z), null, [19, PI / 2 + .3, .08, 46], [16, PI / 2 + .1, .06, 46]); sh(p, 22); }, [[0, 'cheer', .55], [.4, 'stadium', .4]]);
 // 92 «rufen:»: los niños levantan la pancarta FEHLER… ahora con orgullo
-shot(113.27, 'S', null, L => { stadium(L); const p = V(SX - 10, 0, -10); show(FSIGN, p.x, 1.6, p.z, -PI / 2, .9); [KIDS[8], KIDS[9]].forEach((k, i) => { put(k, p.x + .6, Math.abs(Math.sin(L.T * 7 + i)) * .3, p.z + (i ? -3.06 : 3.06), -PI / 2); actuar(k, 0, [[0, { aLx: 2.5, aRx: 2.5, aLe: .4, aRe: .4 }]], { T: L.T }); laughF(k, L.T + i); });
-  hearts(V(p.x, 8, p.z), L.T); orb(L.k, V(p.x, 5, p.z), null, [17, -PI / 2 - .1, .06, 46], [15, -PI / 2, .05, 46]); sh(p, 18); }, [[0, 'cheer', .5], [.4, 'kids_laugh', .35]]);
+shot(113.27, 'S', null, L => { stadium(L); const p = V(SX - 10, 0, -10); show(FSIGN, p.x, 1.6, p.z, PI / 2, .9); [KIDS[8], KIDS[9]].forEach((k, i) => { put(k, p.x - .6, Math.abs(Math.sin(L.T * 7 + i)) * .3, p.z + (i ? -3.06 : 3.06), PI / 2); actuar(k, 0, [[0, { aLx: 2.5, aRx: 2.5, aLe: .4, aRe: .4 }]], { T: L.T }); laughF(k, L.T + i); });
+  hearts(V(p.x, 8, p.z), L.T); orb(L.k, V(p.x, 5, p.z), null, [17, PI / 2 - .1, .06, 46], [15, PI / 2, .05, 46]); sh(p, 18); }, [[0, 'cheer', .5], [.4, 'kids_laugh', .35]]);
 // 93 «Fehler!»: yo a hombros, brazos arriba, confeti
 shot(114.55, 'C', 'punch', L => { stadium(L); const p = V(SX - 12, 0, 2); const m = shouldersS(L, p); actuar(m, 0, [[0, { lLx: 1.4, lRx: 1.4, lLk: 1.3, lRk: 1.3, ...GEST.cheer }]], { T: L.T }); laughF(m, L.T); confetti(V(p.x, 4, p.z), L.t0, L.T, 60, 1);
-  const h = hp(m); cm([h.x - 8.5, h.y - 2.4, h.z + 1], [h.x - 7.6, h.y - 2.2, h.z + .8], L.k); camera.lookAt(h.x, h.y - .8, h.z); camera.fov = 44; sh(p, 14); }, [[0, 'shout_crowd', .5], [.1, 'confetti', .45]]);
+  const h = hp(m); cm([h.x + 8.5, h.y - 2.4, h.z + 1], [h.x + 7.6, h.y - 2.2, h.z + .8], L.k); camera.lookAt(h.x, h.y - .8, h.z); camera.fov = 44; sh(p, 14); }, [[0, 'shout_crowd', .5], [.1, 'confetti', .45]]);
 // 94 «Fehler!»: la grada grita, plano bajo
 shot(115.29, 'C', 'punch', L => { stadium(L); standsT(L, { mode: 'shout', face: V(SX, 4, 0) });
-  cm([SX - 14, 4, -2], [SX - 14.6, 4, -1.6], L.k); camera.lookAt(SX - 30, 8, -4); camera.fov = 52; fireworks(V(SX - 40, 14, -10), L.T, 3, 14); sh(V(SX - 28, 0, -4), 26); }, [[0, 'shout_crowd', .5], [.3, 'firework', .4]]);
+  cm([SX - 14, 2.6, -2], [SX - 14.6, 2.6, -1.6], L.k); camera.lookAt(SX - 30, 7, -4); camera.fov = 52; fireworks(V(SX - 40, 14, -10), L.T, 3, 14); sh(V(SX - 28, 0, -4), 26); }, [[0, 'shout_crowd', .5], [.3, 'firework', .4]]);
 // 95 «Fehler!»: vista aérea del estadio con fuegos artificiales
 shot(116.09, 'C', 'punch', L => { stadium(L); standsT(L, { mode: 'cheer', face: V(SX, 4, 0) }); fireworks(V(SX, 10, -40), L.T, 3, 16);
   cm([SX + 30, 30, 34], [SX + 26, 27, 30], L.k); camera.lookAt(SX - 18, 6, -4); camera.fov = 52; sh(V(SX - 18, 0, 0), 40); }, [[0, 'firework', .5], [.2, 'cheer', .45]]);
 // 96 «Seitdem will niemand mehr Lukas heißen.»: en la plaza, todos se arrancan su placa LUKAS
-shot(116.83, 'F', null, L => { town(L); const p = V(-8, 0, 14); const off = L.lt > .6; crowdAt(L, p.x, p.z, 16, 3, 12, 96, { mode: off ? 'shrug' : 'idle', list: BOYZ, full: true, tag: off ? null : 'LUKAS', expr: 'neutral' });
+shot(116.83, 'F', null, L => { town(L); const p = V(-8, 0, 14); const off = L.lt > .6; crowdAt(L, p.x, p.z, 16, 3, 12, 96, { mode: off ? 'shrug' : 'idle', list: BOYZ, gap: 1.0, tag: off ? null : 'LUKAS', expr: 'neutral' });
   const c = put(EX[0], p.x, 0, p.z + 3, 0); c.setTag(null); actuar(c, 0, [[0, { aRx: lerp(1.0, 2.6, easeOut(clamp(L.lt / .4))), aRz: lerp(-.75, .4, easeOut(clamp(L.lt / .4))), aRe: .3 }]], { T: L.T }); cara(c, L.T, { expr: 'determined' });
   const rh = wpos(c.aR.hand); show(TAGBIG, rh.x, rh.y + .4, rh.z + .3, 0, .3); TAGBIG.userData.set('LUKAS', L.lt > .5);
   orb(L.k, V(p.x, 2.8, p.z + 3), null, [14, .1, .12, 44], [12, 0, .1, 44]); sh(p, 18); }, [[0, 'tape_rip', .55], [.5, 'paper', .4]]);
 // 97 «Alle Jungs wollen jetzt Leon heißen.»: los chicos, con placas nuevas: LEON
-shot(118.84, 'W', null, L => { town(L); const p = V(-8, 0, 14); crowdAt(L, p.x, p.z, 16, 3, 12, 97, { mode: 'cheer', list: BOYZ, full: true, tag: 'LEON' }); const c = put(BOYZ[5], p.x, 0, p.z + 3, 0); c.setTag('LEON'); actuar(c, 0, [[0, { aLx: .9, aLz: -.75, aLe: 2.0, aRx: 2.7, aRz: .4, aRe: .3 }]], { T: L.T }); grin(c, L.T);
+shot(118.84, 'W', null, L => { town(L); const p = V(-8, 0, 14); crowdAt(L, p.x, p.z, 16, 3, 12, 97, { mode: 'cheer', list: BOYZ, gap: 1.0, tag: 'LEON' }); const c = put(BOYZ[5], p.x, 0, p.z + 3, 0); c.setTag('LEON'); actuar(c, 0, [[0, { aLx: .9, aLz: -.75, aLe: 2.0, aRx: 2.7, aRz: .4, aRe: .3 }]], { T: L.T }); grin(c, L.T);
   confRain(V(p.x, 0, p.z), L.T, 50, 22, 18, 16); orb(L.k, V(p.x, 2.6, p.z + 3), null, [14, .1, .12, 44], [12, 0, .1, 44]); sh(p, 18); }, [[0, 'tape', .5], [.3, 'cheer', .5]]);
 // 98 «Die Mädchen Leonie.»: las chicas, delante de la fuente: LEONIE
 shot(120.62, 'S', null, L => { town(L); const c = V(-18, 0, -14); const g = GIRLX[0]; put(g, c.x, 0, c.z, .3); g.setTag('LEONIE'); actuar(g, 0, [[0, { aRx: 2.7, aRz: .4 + Math.sin(L.T * 9) * .35, aRe: .5, aLx: .9, aLz: -.75, aLe: 2.0 }]], { T: L.T }); grin(g, L.T);
