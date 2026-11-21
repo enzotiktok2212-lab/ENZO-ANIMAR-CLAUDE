@@ -329,11 +329,11 @@ const COVERS = [
       cara(c, L.T, { expr: 'shock', eyes: 'wide', mouth: 'flat' }); const m = mouthW(c); for (const sg of [-1, 1]) SMK.puff(m.clone().add(V(sg * 1.5, .2, 0)), V(sg, .5, -.2), L.T, L.T - 2, 2, { n: 60, pow: 6, size: 1.8, dens: .8, seed: 90 + sg, life: 2.5 });
       billRain(V(-30, 2, -58.6), L.T, 150, 18, 14, 18, 5); WM.get(c).visible = true; WM.get(c).userData.set('20,0 s', '1 Mrd. €', '#ffd23f');
       cam([-30, 7.2, -45.5], [-30, 4.2, -58.6], 40); sh(V(-30, 0, -58), 16); DOF = 1; },
-    text: [['1 ZUG', 150, '#ffffff'], ['= 1 MILLIARDE €?', 96, '#ffd23f']], ty: 1230, hud: { s: 20, e: 1e9, col: '#ffd23f' } },
+    text: [['IN DIESER STADT', 104, '#ffffff'], ['1 ZUG = 10 €', 130, '#ffd23f']], ty: 1190, hud: { s: 20, e: 1e9, col: '#ffd23f' } },
   // 2: la plaza vapeando, el vecino millonario bajo la lluvia de billetes; texto en el centro
   { T: 12.2, fn: L => { use('HB'); vapeCrowd(L, 6, 12, 18, 6, 15, 23); const c = put(nach, 6, .3, 16, 0); actuar(c, 0, [[0, { aLx: 2.7, aRx: 2.7, aLz: .4, aRz: .4, aLe: .4, aRe: .4 }]], { T: L.T }); laughF(c, L.T); FACES.push(c); VP.get(c).visible = true; VP.get(c).userData.grip.visible = true;
       billRain(V(6, 2, 16), L.T, 180, 20, 16, 18, 5); orbit(V(6, 5.4, 16), 15, .15, .1, 46); sh(V(6, 0, 16), 22); DOF = 0; },
-    text: [['JEDER ZUG', 130, '#ffffff'], ['= GELD', 150, '#7aff9a']], ty: 380, hud: null },
+    text: [['IN DIESER STADT', 104, '#ffffff'], ['MACHT DAMPFEN', 104, '#7aff9a'], ['REICH', 150, '#ffd23f']], ty: 330, hud: null },
 ];
 window.renderCover = v => { const C = COVERS[v], L = { lt: 1, k: .6, T: C.T, d: 2, t0: C.T - 1, t1: C.T + 1 };
   hideAll(); BAD_.length = 0; FACES.length = 0; C.fn(L); while (POST.length) POST.shift()(); clearFaces(); camera.updateProjectionMatrix();
