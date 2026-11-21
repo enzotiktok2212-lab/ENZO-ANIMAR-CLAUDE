@@ -1,0 +1,4 @@
+# Análisis de la referencia (inglés, «Hussing is forbidden», 128,7 s, 115 cortes ≈ 1,1 s/plano)
+Estructura: regla prohibida → monstruo que se lleva a quien la rompe → 3 víctimas (culturista, comedor, gamer), cada una con su grito y desaparición → pueblo en silencio, carteles → «los elegía» (giro) → padre inventor desaparecido en el sótano → radio muda que se enciende («está coleccionando») → hermano pequeño repite el acto → el villano aparece detrás → final abierto familiar.
+Por qué funcionó: regla + estribillo pegadizo (Huss ×4) repetido 6 veces, misterio que escala, mini-ganchos cada ~10 s (cada víctima), giro «los elige», cliffhanger con la familia.
+Adaptación: tema vapeo (éxito del canal, `dampf`), villano mágico no terrorífico (Dampfsammler con chistera) para mejor RPM; víctimas coherentes con vapear (DJ, campeón de aros de vapor, gamer); padre hace 4 años; pregunta para comentarios integrada antes del padre.
