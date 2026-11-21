@@ -1,0 +1,125 @@
+[  0.00-  3.38] In dieser Stadt wird alles, was du mit Kreidemalt lebt, bäng dich.
+[  3.76-  8.10] Bis es regnet, Kinder malen sich Skateboards auf dem Gehweg und fagen damit zur Schule.
+[  8.50- 12.90] Der Postbote malt an jedem Zaun eine Tür, damit er nie mehr außen herumlaufen muss.
+[ 13.18- 14.80] Aber Regen wischt alles weg.
+[ 15.14- 19.40] Deshalb hat hier jeder immer einen Regenschirm dabei, sogar bei strahlendem Sonnenschein.
+[ 19.60- 23.54] Und das Geräusch, vor dem hier alle am meisten Angst haben, ist die Regensirene.
+[ 23.78- 26.62] Sobald sie heult, rennen alle los, um ihre Bilder zu retten.
+[ 26.62- 27.78] Ich heiße Emil.
+[ 28.22- 31.32] Ich bin elf und male schlechter als jeder andere in dieser Stadt.
+[ 31.62- 34.94] Egal, was ich male, am Ende wird es immer ein Strichmännchen.
+[ 35.28- 37.68] Mein Hund Krümel ist ein Kreis mit vier Strichen.
+[ 38.02- 39.96] Na gut, drei. Einen habe ich vergessen.
+[ 40.42- 44.60] Lea, die beste Künstlerin der Stadt, hat fünf Tage an ihrer Katze gemalt.
+[ 44.90- 46.86] Für Krümel habe ich drei Sekunden gebraucht.
+[ 47.12- 49.22] Und trotzdem ist er der beste Hund der Welt.
+[ 49.68- 54.86] Dann kam das Kreidefest, der Tag, an dem die ganze Stadt gleichzeitig den Marktplatz bemalt.
+[ 54.86- 58.22] Lea malte einen Drachen, so lang wie ein ganzer Zug.
+[ 58.76- 59.24] Smaragt.
+[ 59.56- 62.54] Er schwebte über die Dächer, mit neun Kindern auf dem Rücken.
+[ 62.92- 65.16] Ich setzte mich hin, um irgendwas zu malen.
+[ 65.30- 68.04] Und plötzlich bewegte sich meine Hand ganz von allein.
+[ 68.46- 70.74] Als ich runter schaute, lag da ein alter Mann.
+[ 71.10- 73.30] Das beste Bild, das ich je gemalt habe.
+[ 73.54- 74.98] Dabei kenne ich gar keinen alten Mann.
+[ 75.36- 78.28] Er setzte sich auf und klopfte sich den Kreidestaub von der Jacke.
+[ 78.56- 81.68] Und jeder Schlüssel auf dem ganzen Fest flog direkt zu ihm.
+[ 81.68- 83.30] Er lachte.
+[ 83.70- 86.28] Und für eine Sekunde sah ich ihn an einem anderen Ort.
+[ 86.56- 89.64] Er start auf einem Jahrmarkt, übersät mit Schlüsseln.
+[ 89.88- 91.02] Ich wusste nicht, wer er war.
+[ 91.32- 94.78] Aber er umarmte mich, als hätte er ewig auf mich gewartet.
+[ 95.36- 95.74] System.
+[ 96.24- 97.78] Ja, wer ist der alte Mann?
+[ 98.12- 98.56] Unbekannt.
+[ 98.94- 99.88] Ich habe ihn nicht geschrieben.
+[100.38-101.22] Wie heißt der Junge?
+[101.56-101.84] Emil.
+[102.32-103.26] Und beim letzten Mal?
+[103.64-103.82] Leon.
+[104.26-104.50] Leon.
+[104.92-105.18] Paul.
+[105.64-105.84] Noah.
+[106.26-106.40] Ben.
+[106.84-107.06] Luca.
+[107.54-107.68] Max.
+[108.32-108.82] Und davor?
+[109.24-110.54] Du weißt nicht, wer er ist.
+[110.54-112.08] Du weißt nicht, woher er kommt.
+[112.32-113.54] Und er erinnert sich.
+[113.90-115.08] Das ist dein Fehler-System.
+[115.44-116.80] Ich habe dich neunmal gewarnt.
+[117.18-117.92] Sie sieht ihr an.
+[118.22-119.80] Sie schauen deine Geschichten nicht mehr an.
+[120.00-120.90] Sie entschlüsseln sie.
+[121.24-122.64] Bald finden sie deinen Server.
+[123.04-124.10] Sie werden ihn nicht finden.
+[124.56-126.40] Der Zuschauer soll nicht genauer hinsehen.
+[126.78-128.24] Der Zuschauer soll weiterwischen.
+[128.62-129.88] Hier ist ein gutes Video.
+[130.34-133.24] In meiner Stadt wächst überall, wo du lachst, ein Regenbogen.
+[133.58-134.44] Ich heiße Mila.
+[134.56-136.12] Und ich lache den ganzen Tag.
+[136.60-137.40] Heute lacht sie.
+[137.68-138.22] Keine Fehler.
+[138.56-139.20] Keine Codes.
+[139.20-140.38] Kein alter Mann.
+[140.84-143.02] Sie hat noch nie eine einzige Frage gestellt.
+[143.42-145.12] 38 Millionen Aufrufe.
+[145.52-147.70] Aber beim letzten Mal ist der Zuschauer geblieben.
+[148.16-148.80] Sie mochten ihn.
+[149.26-151.14] Der Zuschauer sieht nur, was ich ihm zeige.
+[151.52-152.34] Bring das in Ordnung.
+[152.70-153.28] Lass ihn vergessen.
+[153.70-155.02] Sonst sieht dich nie wieder jemand.
+[155.60-156.74] Wie soll ich das reparieren?
+[157.10-158.00] Es ist doch nur Kreide.
+[158.42-159.30] Dann lass es regnen.
+[159.76-160.24] Regen.
+[160.44-161.22] 100 Prozent.
+[161.96-163.62] Dann heulte die Regensirene.
+[163.92-164.88] Mitten im Juli.
+[165.08-167.08] Aus dem Nichts zogen schwarze Wolken auf.
+[167.08-169.48] Und alle schnappten sich ihre Bilder und rannten.
+[169.82-171.40] Der erste Tropfen traf zum Arrakt.
+[171.68-173.40] Und Lea Strache fing an zu zerlaufen.
+[173.70-176.54] Mit neun Kindern auf dem Rücken, zwölf Meter über dem Boden.
+[176.92-178.68] Lea versuchte, eine Leiter zu malen.
+[178.78-181.10] Aber der Regen spürte sie weg, bevor sie fertig war.
+[181.36-182.96] Ein richtiges Bild braucht Stunden.
+[183.48-184.66] Wir hatten Sekunden.
+[185.02-187.12] Und keiner in der Stadt malt schneller als ich.
+[187.36-189.06] Weil keiner schlechter malt als ich.
+[189.32-190.86] Ich schrie Regenschirme.
+[191.28-193.34] 300 Leute rannten auf dem Marktplatz
+[193.34-195.56] und hielten ihre Schirme zusammen wie ein Dach.
+[195.56-198.66] Zum ersten Mal überhaupt gab es mitten im Unwetter
+[198.66-199.92] einen trockenen Fleck.
+[200.12-202.16] Ich malte die schnellste Rutsche aller Zeiten.
+[202.52-205.02] Zwei Striche, ein paar Stufen, zwei Sekunden.
+[205.34-208.40] Sie schoss durch die Schirme nach oben, bis ganz hinauf zu smaragt.
+[208.72-210.84] Die Kinder rutschten eins nach dem anderen runter.
+[211.14-213.46] Und die Leute unten fingen jedes einzelne auf.
+[213.78-214.54] Nur Lea nicht.
+[214.86-217.30] Sie ist fünf und hatte zu viel Angst loszulassen.
+[217.64-220.08] Der Regen fraß den Drachen vom Schwanz her auf.
+[220.28-221.62] Und meine Rutsche von oben.
+[221.94-223.22] Also kletterte ich hoch.
+[223.22-226.66] Ich packte Lina, Lina packte Krümel und wir rutschten los.
+[227.08-229.96] Hinter uns schmolz die Rutsche weg, Stufe für Stufe.
+[230.24-233.58] Wir flogen unten raus, direkt in die Arme des alten Mannes.
+[233.82-237.64] Dann zerplatzte smaragt zu einer riesigen Wolke aus grünem Kreidestaub.
+[237.90-239.82] Und einfach so hörte der Regen auf.
+[240.16-241.40] Alle senkten ihre Schirme.
+[241.72-243.76] Smaragt war weg, meine Rutsche war weg.
+[244.02-246.08] Aber jedes einzelne Kind war in Sicherheit.
+[246.56-248.10] Und der alte Mann war immer noch da.
+[248.36-251.20] Kein einziger Fleck und immer noch voller Schlüssel.
+[251.20-254.20] Lea fragte mich, ob ich ihr beibringe Strichmännchen zu malen.
+[254.74-259.18] Und noch in derselben Nacht hat die ganze Stadt den Marktplatz mit Strichmännchen voll gemalt.
+[259.56-260.00] Hunderte.
+[260.32-261.74] Und alle haben getanzt.
+[262.10-266.22] Manchmal schaut mich der alte Mann an, als würde erwarten, dass ich mich an etwas erinnere.
+[266.52-268.18] Er wohnt jetzt in unserem Gartenhäuschen.
+[268.48-271.00] Und seitdem findet bei uns keiner mehr seinen Schlüssel.
+[271.40-273.30] Wenn dir das gefallen hat, folgt mir für mehr.

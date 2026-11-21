@@ -1,0 +1,57 @@
+// 5 «Vor drei Jahren tauchte dieses Ding» — recuerdo, de noche: el monstruo surge del suelo agrietado en medio de la plaza (sin torres)
+shot(7.50, 'Z', null, L => { use('LP'); LP.GUARD.visible = false; flash3(L); const k = easeOut(clamp(L.lt / 1.4)); mon(mixM(MPOSE.rise, MPOSE.stand, k), 2.5); SPOTS.forEach(s => s.intensity = 0);
+  MON.root.position.y = lerp(-14, 0, k); cm([20, 4, 84, 0, 22, 0, 56], [18, 5, 78, 0, 26, 0, 54], L.k, easeOut); badge('tag', 'VOR 3 JAHREN', W / 2, H * .17, L.lt * 3); sh(V(0, 0, 0), 50); }, [[0, 'rubble', .8], [.2, 'growl', .7], [.6, 'metal_creak', .6]]);
+// 6 «mitten in unserer Stadt auf.» — dron: el monstruo de pie en el centro y la gente huyendo en todas direcciones
+shot(9.04, 'W', null, L => { use('LP'); LP.GUARD.visible = false; flash3(L); SPOTS.forEach(s => s.intensity = 0); mon({ ...MPOSE.stand, aLx: .6, aLz: .8, aRx: .4, aRz: .9, headY: Math.sin(L.T * 2) * .3 }, 2.5);
+  K.forEach((c, i) => { const a = i / 8 * PI * 2 + .3; const p = caminar(c, L.lt, { x: Math.sin(a) * 26, z: Math.cos(a) * 26, ry: a, run: true, T: L.T + i }); cara(c, L.T, { expr: 'scared', mouth: 'o' }); });
+  cm([46, 64, 96, 0, 8, 0, 50], [40, 58, 88, 0, 10, 0, 48], L.k); sh(V(0, 0, 10), 70); }, [[0, 'crowd_run', .7], [.3, 'scream_girl', .5], [.8, 'growl', .5]]);
+// 7 «Noch in derselben Nacht waren neun Leute» — callejón vacío: una bici tirada, la farola parpadea, un vecino con una vela mira asustado
+shot(10.57, 'C', null, L => { use('GA'); flash3(L); inside(.9); GA.L.intensity = Math.sin(L.T * 31) > -.6 ? 120 : 30; const c = put(nach, GX - 5, 0, 16, PI * .85); actuar(c, L.lt, [[0, { aRx: 1.3, aRe: 1.2, aRz: -.2, headX: .25, headY: .3 }]], { T: L.T }); cara(c, L.T, { expr: 'scared' });
+  cm([GX + 1, 5, 32, GX - 5, 4, 14, 50], [GX + 1, 4.8, 30, GX - 5, 4, 14, 48], L.k); sh(V(GX, 0, 10), 30); }, [[0, 'wind', .6], [.4, 'metal_creak', .4], [.9, 'drip', .5]]);
+// 8 «Leute spurlos verschwunden.» — la pared con 9 carteles VERMISST; Oma pega el último y se seca las lágrimas
+shot(12.13, 'R', null, L => { use('GA'); flash3(L); inside(.6); GA.L.intensity = 120; const c = put(oma, GX - 2, 0, -4.4, PI); actuar(c, L.lt, [[0, { aRx: 2.3, aRe: .4, aLx: 2.0, aLe: .6, headX: -.2 }], [.8, { aRx: 2.2, aRe: 2.2, aRz: -.3, headX: .3 }, { dur: .4 }]], { T: L.T }); cara(c, L.T, { expr: 'sad', tears: L.lt > .8 });
+  cm([GX + 3, 6.5, 16, GX - 2, 8.2, -7, 50], [GX + 2.4, 6.8, 13.5, GX - 2, 8.5, -7, 48], L.k); badge('num', '9 VERMISST', W / 2, H * .15, L.lt * 3); sh(V(GX, 0, -4), 25); }, [[0, 'paper', .6], [.5, 'sob', .5], [.9, 'rip', .4]]);
+// 9 «Aber beim ersten Sonnenstrahl» — amanecer: el sol asoma entre los rascacielos y su luz dorada barre la plaza hasta la cabeza del monstruo
+shot(13.65, 'F', null, L => { use('LP'); LP.GUARD.visible = false; flash3(L, .15); dawn(); sun.position.set(0, 60, 300); sun.target.position.set(0, 10, 0); mon({ ...MPOSE.lunge, headY: .3 }, lerp(2.5, 0, L.k));
+  [K[1], K[4]].forEach((c, i) => { put(c, 22 + i * 5, 0, 54 - i * 3, PI + .5); actuar(c, L.lt, [[0, 'cower']], { T: L.T + i }); cara(c, L.T, { expr: 'scared' }); });
+  cm([30, 3, 78, 4, 28, 0, 56], [28, 4, 74, 4, 30, 0, 54], L.k); }, [[0, 'birds', .6], [.3, 'sparkle', .6], [.6, 'whoosh_up', .4]]);
+// 10 «blieb es stocksteif stehen, wie eine Statue.» — de día: el monstruo congelado como una estatua; un chico se acerca y le da toquecitos con un palo
+shot(15.03, 'W', null, L => { use('LP'); LP.GUARD.visible = false; flash3(L, .15); day(); mon(MPOSE.lunge); const c = put(K[0], 3, 0, 12, PI + .2); actuar(c, L.lt, [[0, { aRx: 1.5, aRe: .1, lean: .2, crouch: .1 }], [.6, { aRx: 1.2, aRe: .3, lean: .25, crouch: .1 }, { dur: .15 }], [.8, { aRx: 1.5, aRe: .1, lean: .2, crouch: .1 }, { dur: .15 }]], { T: L.T }); cara(c, L.T, { expr: 'worried' });
+  [K[2], K[5], K[6]].forEach((k, i) => { put(k, -8 + i * 5, 0, 20 + i * 2, PI); actuar(k, L.lt, [[0, ['hands_face', 'point', 'shock'][i]]], { T: L.T + i }); cara(k, L.T, { expr: ['scared', 'shock', 'worried'][i] }); });
+  badge3('tag', 'STATUE?', V(0, 34, 0), (L.lt - .8) * 3); cm([16, 5, 44, 0, 16, 0, 56], [14, 5, 41, 0, 18, 0, 54], L.k); sh(V(0, 0, 10), 40); }, [[0, 'freeze', .6], [.6, 'knock', .6], [.8, 'metal_creak', .3], [1.4, 'gasp', .4]]);
+// 11 «Seitdem wissen wir:» — sala de control: papá señala la pantalla grande «SCHWÄCHE: ?»; dos vigilantes atienden
+shot(17.49, 'I', null, L => { use('LS'); inside(.8); LS.wallS.userData.draw('w1', (c, w, h) => { c.fillStyle = '#0a1a2a'; c.fillRect(0, 0, w, h); txt(c, 'SCHWÄCHE?', w / 2, h / 2, 96, '#7affd8'); });
+  const p = put(papa, LX + 5, 0, -3, -.5); actuar(p, L.lt, [[0, { aLx: 2.2, aLz: -.2, aLe: .1, headY: -.5, headX: -.15 }]], { T: L.T }); talk(p, L.T, 17.4, 18.6, 'determined');
+  [WA[1], WA[4]].forEach((c, i) => { put(c, LX - 6 + i * 3, 0, 1, PI - .4 + i * .2); actuar(c, L.lt, [[0, i ? 'cross' : 'think']], { T: L.T + i }); cara(c, L.T, { expr: 'neutral' }); });
+  cm([LX + 6, 7, 14, LX, 7.4, -6, 58], [LX + 5.5, 7, 12.5, LX, 7.4, -6, 56], L.k); }, [[0, 'chalk', .4], [.4, 'beep', .4]]);
+// 12 «Licht ist das Einzige, was es aufhält.» — demostración: la garra baja hacia una vigilante, ella la ilumina con la linterna… y la garra se para a un palmo
+shot(18.55, 'Z', null, L => { plaza(L); const k = clamp(L.lt / .9); mon(mixM({ ...MPOSE.frozen, lean: .5, aRx: .7, aRe: .2 }, { ...MPOSE.frozen, lean: .62, aRx: 1.05, aRe: .25, clawR: .4 }, easeOut(k)), 0);
+  const g = put(WA[1], 0, 0, 19, PI); actuar(g, L.lt, [[0, { aRx: 2.4, aRe: .05, lean: -.15, headX: -.6, crouch: .1 }]], { T: L.T }); torch(1, g); cara(g, L.T, { expr: L.lt < .9 ? 'scared' : 'determined' });
+  const pm = palm(MON), h = hp(g); const c = look2(pm, h, .62); cam([c.x + 12, c.y - 2, c.z + 14], [c.x, c.y, c.z], 54); badge('big', 'LICHT = STOPP', W / 2, H * .17, (L.lt - .9) * 3); sh(c, 30); }, [[0, 'metal_creak', .6], [.7, 'click_metal', .7], [.9, 'freeze', .7]]);
+// 13 «Deshalb stehen heute acht gigantische» — dron que baja: el anillo de 8 torres de focos alrededor del monstruo, de noche
+shot(20.76, 'Z', null, L => { plaza(L); mon(MPOSE.frozen); RING(L, GUARDS(), -2.4, 2.4, 33);
+  cm([0, 140, 120, 0, 0, -6, 46], [0, 116, 104, 0, 0, -6, 46], L.k, easeOut); badge('num', '8', W / 2, H * .17, (L.T - 21.68) * 3, 1, 1.6); sh(V(0, 0, 0), 80); }, [[0, 'hum', .6], [.9, 'power_on', .6], [1.3, 'wind', .4]]);
+// 14 «Flutlichter um den Platz,» — contrapicado de una torre: el panel de focos a tope; un técnico sube por la escalera
+shot(22.76, 'W', null, L => { plaza(L); mon(MPOSE.frozen); const T5 = LP.towers[5], p = wpos(T5.g); const t = put(tech, p.x, 0, p.z, 0); T5.g.updateMatrixWorld(true); const lad = T5.g.localToWorld(V(0, 8 + L.lt * 2, -2.6 - .5)); t.root.position.copy(lad); t.root.rotation.y = T5.g.rotation.y + PI;
+  actuar(t, L.lt, [[0, { aLx: 2.8, aLe: .4, aRx: 2.4 + Math.sin(L.T * 6) * .3, aRe: .4, lLx: .8 + Math.sin(L.T * 6) * .3, lLk: 1.2, lRx: .3, lRk: .6 }]], { T: L.T }); cara(t, L.T, { expr: 'determined' });
+  const c = T5.g.localToWorld(V(4, 9 + L.lt * 2, -17)), tt = wpos(tech.head); cm([c.x, c.y, c.z, tt.x, tt.y + 1, tt.z, 52], [c.x, c.y, c.z, tt.x, tt.y + 1.5, tt.z, 50], L.k); sh(p, 40); }, [[0, 'hum_low', .7], [.3, 'steps', .4], [.8, 'click_metal', .4]]);
+// 15 «und jedes hat seinen eigenen Reservegenerator.» — el generador verde NOTSTROM: el técnico revisa el manómetro con su tablilla; sale humo del escape
+shot(24.14, 'S', null, L => { plaza(L); mon(MPOSE.frozen); const T1 = LP.towers[1]; const gp = wpos(T1.gen); const ry = T1.g.rotation.y; const fx = Math.sin(ry), fz = Math.cos(ry);
+  const t = put(tech, gp.x + fx * 3.6, 0, gp.z + fz * 3.6, ry + PI); actuar(t, L.lt, [[0, { aRx: 1.3, aRe: 1.2, aLx: 1.1, aLe: 1.3, headX: .25 }], [1.2, { aRx: 1.5, aRe: .4, aRz: -.2, headX: .1 }, { dur: .3 }]], { T: L.T }); cara(t, L.T, { expr: 'neutral' });
+  const pp = V(gp.x + fx * 1.5, 2.4, gp.z + fz * 1.5); cm([pp.x + fz * 9 + fx * 14, 5.4, pp.z - fx * 9 + fz * 14, pp.x + fx * 1.5, 3.4, pp.z + fz * 1.5, 50], [pp.x + fz * 8 + fx * 13, 5.2, pp.z - fx * 8 + fz * 13, pp.x + fx * 1.5, 3.4, pp.z + fz * 1.5, 48], L.k); sh(pp, 20); }, [[0, 'machine_hum', .7], [.6, 'click_metal', .5], [1.2, 'steam', .5]]);
+// 16 «Dazu leuchten es jede Nacht» — por detrás de los vigilantes: sus haces convergen en el monstruo; luna llena
+shot(26.45, 'C', null, L => { plaza(L); mon(MPOSE.frozen); RING(L, GUARDS(), -.9, .9, 34); cm([10, 6, 56, 0, 20, 0, 54], [8, 7, 52, 0, 22, 0, 52], L.k); sh(V(0, 0, 25), 40); }, [[0, 'wind', .5], [.5, 'steps', .4], [1.0, 'cloth', .4]]);
+// 17 «vierzehn Wachleute ununterbrochen» — fila de vigilantes que pasa revista (travelling lateral) — «14»
+shot(28.14, 'R', null, L => { plaza(L); mon(MPOSE.frozen); GUARDS().forEach((c, i) => { const p = caminar(c, L.lt, { x: -16 + i * 4.2, z: 40, ry: PI / 2, speed: 2.2, T: L.T + i * .3 }); torch(1 + (i % 7), c); cara(c, L.T, { expr: 'determined' }); });
+  cm([-2, 4, 58, 2, 4, 40, 50], [2, 4, 58, 5, 4, 40, 50], L.k); badge('num', '14', W / 2, H * .17, L.lt * 3, 1, 1.6); sh(V(0, 0, 40), 30); }, [[0, 'steps', .7], [.4, 'steps', .6], [.8, 'keys', .4]]);
+// 18 «mit Taschenlampen an.» — primer plano: un vigilante bosteza pero no baja la linterna
+shot(29.27, 'W', null, L => { plaza(L); mon(MPOSE.frozen); const c = put(WA[3], 6, 0, 37, PI - .15); actuar(c, L.lt, [[0, { aRx: 2.1, aRe: .1, headX: -.2 }], [.6, { aRx: 2.05, aRe: .1, aLx: 2.3, aLe: 2.2, aLz: -.3, headX: -.35 }, { dur: .3 }], [1.4, { aRx: 2.1, aRe: .1, headX: -.2 }, { dur: .3 }]], { T: L.T }); torch(1, c);
+  cara(c, L.T, { expr: L.lt > .6 && L.lt < 1.4 ? 'bored' : 'neutral', mouth: L.lt > .6 && L.lt < 1.4 ? 'o' : undefined, eyes: L.lt > .6 && L.lt < 1.4 ? 'closed' : undefined }); onFace(c, 11, 0, 0, 44, L.k, 9.5); sh(V(6, 0, 37), 20); }, [[.6, 'yawn_big', .5], [1.5, 'cloth', .4]]);
+// 19 «Seit drei Jahren hat sich» — sala de control: el técnico tacha otro día en el calendario «TAG 1095»
+shot(31.22, 'C', null, L => { use('LS'); inside(.8); const c = put(tech, LX - 11.6, 0, .6, -PI / 2 - .5); actuar(c, L.lt, [[0, { aRx: 2.0, aRe: .5, headY: -.2 }], [.4, { aRx: 2.1, aRe: .3, aRz: Math.sin(L.T * 14) * .1 }, { dur: .2 }]], { T: L.T }); cara(c, L.T, { expr: 'bored' });
+  cm([LX - 3, 7.4, 6, LX - 13.5, 6.4, -1.5, 50], [LX - 3.6, 7.4, 5, LX - 13.5, 6.4, -1.5, 48], L.k); badge('num', '3 JAHRE', W / 2, H * .17, L.lt * 3); }, [[0, 'pencil', .6], [.5, 'paper', .4]]);
+// 20 «das Monster keinen Zentimeter gerührt.» — el pie del monstruo dentro de la silueta de tiza; Benno lo mide con una cinta: «0 cm»
+shot(32.52, 'Z', null, L => { plaza(L); mon(MPOSE.frozen); const f = wpos(MON.lR.ft); const b = put(benno, f.x + 1.5, 0, f.z + 6, PI + .3); actuar(b, L.lt, [[0, { crouch: .9, lean: .55, lLx: 1.0, lLk: 1.6, lRx: .3, lRk: 1.2, aRx: 1.2, aRe: .3, aLx: 1.1, aLe: .4, headX: .2 }]], { T: L.T }); cara(b, L.T, { expr: 'determined' });
+  cm([f.x + 12, 5, f.z + 18, f.x + .8, 2.6, f.z + 3, 50], [f.x + 11, 4.8, f.z + 16.5, f.x + .8, 2.6, f.z + 3, 48], L.k); badge('num', '0 cm', W / 2, H * .17, (L.lt - .3) * 3, 1, 1.4); sh(f, 20); }, [[0, 'ratchet', .5], [.7, 'click_metal', .5], [1.2, 'tick', .4]]);
+// 21 «Zumindest bis gestern.» — zoom lento a la cara del monstruo; los ojos se quedan en sombra
+shot(34.52, 'S', 'slow', L => { plaza(L); mon({ ...MPOSE.frozen, headY: .1 }, L.k > .85 ? 1.5 : 0); const h = wpos(MON.head); cm([h.x + 5, h.y + 1, h.z + 26, h.x, h.y + 2.4, h.z, 44], [h.x + 3, h.y + 1.6, h.z + 16, h.x, h.y + 2.6, h.z, 40], L.k, easeIn); sh(h, 30); }, [[0, 'wind', .5], [1.2, 'creepy_ting', .6]]);

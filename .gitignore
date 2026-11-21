@@ -7,3 +7,19 @@ __pycache__/
 # built files (tools/build.mjs makes them from src/ + kit/ + the style)
 plugins/**/index.html
 plugins/**/review/
+**/node_modules
+pieces/huss/review/
+pieces/huss/review60/
+pieces/goon/review/
+pieces/goon/review60/
+pieces/teddy/review/
+pieces/teddy/review60/
+pieces/fast/review/
+pieces/fast/review60/
+**/__pycache__/
+pieces/besuch/review/
+pieces/besuch/review60/
+pieces/einpacken/review/
+pieces/einpacken/review60/
+pieces/keller/review/
+pieces/keller/review60/

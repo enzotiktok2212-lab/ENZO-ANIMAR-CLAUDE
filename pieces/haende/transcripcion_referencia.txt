@@ -1,0 +1,144 @@
+# Transcripción del vídeo de referencia (Whisper small, inglés, tiempos por frase).
+# El vídeo son DOS historias seguidas: A (0–98 s, 'skin color / Pine Hollow') y B (98–222,6 s, 'every seven years everyone forgets everything').
+[  0.00-  2.84] In this town, everyone hates me because of my skin color.
+[  3.08-  4.96] We're the only black family in Pine Hollow.
+[  5.32-  7.12] Before we moved here, nobody in town
+[  7.12-  8.70] had ever seen skin like mine.
+[  8.88- 11.14] And Grandpa says people are scared of what they've never seen.
+[ 11.34- 13.78] So when I sit down at lunch, the whole table moves.
+[ 14.04- 15.34] Nobody ever picks me for a team.
+[ 15.58- 18.40] And every morning, the school bus drives right past my stop.
+[ 18.62- 20.92] So I walk every day through the pine woods,
+[ 21.12- 24.00] past the fallen tree, over the creek on the big flat rocks,
+[ 24.22- 25.90] and along the fence with the broken post.
+[ 26.18- 27.42] Winter gets dark early here,
+[ 27.56- 29.14] so most days I walk home in the dark.
+[ 29.14- 30.68] I could do it with my eyes closed.
+[ 31.02- 32.30] Dad says to keep my head up.
+[ 32.46- 35.16] One day, he tells me, they'll see who you really are.
+[ 35.36- 37.86] In December, our class went on a trip to the pine woods
+[ 37.86- 38.98] to see the frozen waterfall.
+[ 39.28- 40.92] On the way back, it started to snow.
+[ 41.20- 43.34] Then it came down so hard that the trail disappeared.
+[ 43.80- 44.68] Then the sun went down.
+[ 44.96- 45.84] Our teacher's phone died.
+[ 46.12- 47.04] So did everyone else's.
+[ 47.18- 49.14] It got so dark you couldn't see your own hand.
+[ 49.40- 50.28] Kids started crying.
+[ 50.58- 52.98] The wind got louder and our boots filled with snow.
+[ 53.28- 54.74] Our teacher kept leading us in circles,
+[ 55.02- 57.02] past the same stump again and again.
+[ 57.24- 58.46] I know the way, I said.
+[ 58.46- 60.40] We're not following him, said Tyler.
+[ 60.72- 62.68] Tyler has never said one nice word to me.
+[ 62.80- 64.14] But nobody else knew where we were.
+[ 64.30- 66.30] And in the dark, nobody could see me at all.
+[ 66.44- 67.60] All they had was my voice.
+[ 67.94- 69.44] Everybody hold hands, I said.
+[ 69.68- 70.12] Follow me.
+[ 70.34- 70.84] So they did.
+[ 71.04- 72.80] I walked in front and counted out loud.
+[ 73.04- 74.14] The fallen tree, the creek,
+[ 74.40- 76.16] stepping from one flat rock to the next.
+[ 76.40- 77.90] Halfway across, a girl slipped
+[ 77.90- 79.74] and the whole line pulled her back up.
+[ 79.90- 81.10] The fence with the broken post.
+[ 81.44- 83.96] Behind me, 22 kids and one teacher held on
+[ 83.96- 84.88] and never let go.
+[ 85.10- 87.08] After an hour, we saw the lights of town.
+[ 87.08- 88.94] We stepped out under the first street light
+[ 88.94- 90.86] and suddenly everyone could see again.
+[ 91.02- 92.90] Everyone turned to see whose hand they were holding.
+[ 93.16- 94.34] Tyler was right behind me.
+[ 94.46- 95.38] His hand was in mine.
+[ 95.60- 96.64] He stared at our hands.
+[ 96.80- 97.96] Then he held on tighter.
+[ 98.24- 99.78] In this town, every seven years,
+[100.00-101.18] everyone forgets everything.
+[101.46-103.14] You see, at midnight on reset night,
+[103.26-104.90] every memory in town just disappears.
+[105.26-106.06] You wake up the next morning
+[106.06-107.06] and you don't know your friends,
+[107.26-108.52] your house, or even your own name.
+[108.66-110.06] So the whole town prepares for it.
+[110.16-111.16] Everybody wears a name tag.
+[111.34-112.54] Every house has a big sign.
+[112.80-113.48] You live here.
+[113.64-115.40] Married couples carry wedding photos in their pockets
+[115.40-116.98] with a note that says, this is your husband.
+[117.18-117.92] He's nice, mostly.
+[118.20-118.98] And the night before reset,
+[119.18-120.46] everybody writes a letter to themselves.
+[120.76-121.58] My best friend is Kai.
+[121.76-123.52] He moved here six years ago when we were five.
+[123.68-125.36] The day he moved in, he climbed over my fence
+[125.36-126.72] and asked if I wanted to build a fort.
+[126.88-128.66] We built the best tree house in the whole town.
+[128.84-130.34] It's got a rope ladder, a secret hatch,
+[130.46-131.66] and a bucket on a pulley for snacks.
+[131.98-132.90] We've done everything together
+[132.90-134.46] and reset night was in one week.
+[134.60-135.52] What if we forget each other?
+[135.72-136.10] Kai asked.
+[136.24-138.02] We won't, I said, but we both knew we would.
+[138.14-138.72] Everybody does.
+[138.90-140.36] The letters work for names and houses,
+[140.54-141.52] but they don't work for friends.
+[141.74-144.12] You can read Kai is your best friend all you want,
+[144.18-145.04] but you won't feel it.
+[145.04-147.26] Every seven years, best friends become strangers
+[147.26-149.06] and most of them never find each other again.
+[149.26-150.14] So we came up with a plan.
+[150.30-151.88] For the whole week, we didn't just write letters.
+[152.08-152.68] We hid clues.
+[152.94-155.14] I wrote, look in the old oak tree on the bottom of my shoe.
+[155.26-157.28] He wrote, follow the rope on the inside of his jacket.
+[157.44-159.52] We tied a long red rope from my bedroom window
+[159.52-160.70] all the way across the yard
+[160.70-162.04] to the bottom of the tree house ladder.
+[162.18-163.56] And at the top, we left one thing,
+[163.74-165.48] a shoe box with one photo inside.
+[165.78-167.88] Me and Kai on the day we finished the tree house,
+[167.96-168.78] covered in sawdust,
+[168.90-170.28] laughing so hard we fell over.
+[170.40-171.02] On the last night,
+[171.06-172.98] we sat up in the tree house until 11.59.
+[173.32-174.30] See you tomorrow, Kai said.
+[174.30-175.74] See you tomorrow, I said, midnight.
+[176.06-177.38] The next morning, I woke up in a bedroom
+[177.38-178.14] I didn't recognize.
+[178.38-179.48] I had a name tag on my shirt.
+[179.66-180.68] Max, I read my letter.
+[180.82-181.54] It said I lived here.
+[181.64-182.50] It said my mom's name.
+[182.62-183.46] It said not to panic.
+[183.66-184.50] Then I put on my shoes.
+[184.72-186.02] And on the bottom of one, in marker,
+[186.22-187.66] it said, look in the old oak tree.
+[187.76-188.48] I didn't know what it meant,
+[188.54-190.08] but there was a red rope tied to my window.
+[190.24-192.18] So I followed it across the yard over the fence
+[192.18-193.92] to a big oak tree with a rope ladder.
+[194.10-195.02] I climbed up and there,
+[195.14-196.38] sitting in the corner of the tree house
+[196.38-197.80] was a boy I'd never seen before.
+[198.00-198.64] He had a name tag.
+[198.82-200.04] Kai, he was holding a shoe box.
+[200.26-201.42] Hi, he said, kind of nervous.
+[201.42-203.02] My jacket told me to follow a rope.
+[203.18-203.62] It led here.
+[203.80-205.10] He looked down at the other end of the rope,
+[205.20-205.96] tied to my window.
+[206.14-207.02] I think this is ours?
+[207.26-207.98] He held out the photo.
+[208.16-209.86] Two kids, covered in sawdust, laughing.
+[210.08-210.76] I didn't remember it.
+[210.82-211.54] But I looked at the photo,
+[211.72-212.18] and then at him.
+[212.34-213.74] And something in my chest felt warm,
+[213.88-214.50] like coming home.
+[214.68-215.18] Wanna build something?
+[215.40-216.48] He asked, yeah, I said.
+[216.62-218.02] We don't remember the first seven years,
+[218.18-219.58] but we've got seven new ones now.
+[219.72-221.50] And this time, we're writing everything down.

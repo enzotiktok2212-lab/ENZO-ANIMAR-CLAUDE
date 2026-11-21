@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Wörter</title>
+<style>
+  @font-face { font-family: 'Cap'; src: url('./node_modules/@fontsource/fredoka/files/fredoka-latin-700-normal.woff2') format('woff2'); font-weight: 700; }
+  html, body { margin: 0; background: #000; }
+  #stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+  #stage canvas { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "./node_modules/three/build/three.module.js",
+  "three/addons/": "./node_modules/three/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div id="stage"></div>
+<script type="module" src="./src/design.js"></script>
+</body>
+</html>

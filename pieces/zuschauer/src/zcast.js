@@ -1,0 +1,19 @@
+// ZUSCHAUER — reparto propio: Frieda (vecina curiosa, coletas pelirrojas, chubasquero amarillo), Metzger Kalle (delantal a rayas, gorro de papel,
+// bigote), Frau Krause (sombrero de flores, abrigo turquesa). El resto (DU, Papa, Opa Heinz, el narrador) viene de acast.js.
+import { THREE, mat, box, cyl, sphere, textPlane, outline } from './engine.js';
+import { mk, hairS, glasses, mustache } from './props.js';
+const hex = c => '#' + c.toString(16).padStart(6, '0');
+const S = (o) => ({ noBelt: true, ...o, skinCss: hex(o.skin) });
+const G = (p, x = 0, y = 0, z = 0) => { const g = new THREE.Group(); g.position.set(x, y, z); p.add(g); return g; };
+const braids = col => h => { const m = mat(col, { roughness: .6 }); const c = new THREE.Mesh(new THREE.SphereGeometry(.76, 24, 12, 0, 6.283, 0, 1.45), m); c.position.y = .96; c.scale.set(1.04, .72, 1.04); h.add(c); box(1.4, .3, .3, m, .1, h, 0, 1.06, .6);
+  for (const s of [-1, 1]) { const b = G(h, s * .78, .7, -.1); for (let k = 0; k < 3; k++) sphere(.24 - k * .03, m, b, s * .06 * k, -k * .42, 0, 10, 8); sphere(.13, mat(0x3ab8ff), b, s * .12, -1.2, 0, 8, 6); } };
+const hat = (col, band) => h => { const m = mat(col, { roughness: .7 }); cyl(1.35, 1.35, .12, m, 26, h, 0, 1.32, 0); cyl(.8, .86, .8, m, 22, h, 0, 1.7, 0); cyl(.87, .87, .22, mat(band), 22, h, 0, 1.42, 0); for (let k = 0; k < 4; k++) sphere(.18, mat([0xff5a85, 0xffd23f, 0xffffff, 0xff5a85][k]), h, .55 + k * .12, 1.5, .55 - k * .2, 8, 6); };
+export function makeFrieda(scene) { return mk(scene, S({ seed: 9301, scale: .84, skin: 0xf6d0b6, shirt: 0xffd23f, shirt2: 0xffd23f, cuffs: 0xe8b81a, pants: 0x2a5ab8, shoes: 0xd8323a, hair: 0xd8641a, hairBuild: braids(0xd8641a),
+  torsoDetail: sp => { box(2.12, 2.06, 1.14, mat(0xffd23f, { roughness: .35 }), .14, sp, 0, 1.02, 0); box(.12, 1.8, .06, mat(0x8a6a10), .02, sp, 0, 1.0, .59); for (const s of [-1, 1]) box(.5, .4, .06, mat(0xe8b81a), .04, sp, s * .55, .55, .59); },
+  face: { iris: '#3a7a3a', browColor: '#a8441a', blush: .6, freckles: .6 } })); }
+export function makeKalle(scene) { return mk(scene, S({ seed: 9302, scale: 1.08, skin: 0xf0b898, shirt: 0xffffff, shirt2: 0xffffff, cuffs: 0xffffff, pants: 0x2a2a34, shoes: 0x1a1a1a, hair: 0x2a1a10, hairBuild: hairS(0x2a1a10, 'spiky'),
+  torsoDetail: sp => { box(2.14, 2.08, 1.16, mat(0xffffff, { roughness: .6 }), .14, sp, 0, 1.02, 0); const ap = textPlane(1.9, 1.9, 96, 96, (c, w, h) => { for (let i = 0; i < 8; i++) { c.fillStyle = i % 2 ? '#ffffff' : '#c8203a'; c.fillRect(i * 12, 0, 12, h); } }); ap.position.set(0, .7, .6); sp.add(ap); for (const s of [-1, 1]) { const st = box(.12, 1.0, .05, mat(0xc8203a), .02, sp, s * .5, 1.8, .6); st.rotation.z = s * .3; } },
+  face: { iris: '#3a2a1a', browColor: '#2a1a10', blush: .55 } }), [o => mustache(o.head, 0x2a1a10), o => { const m = mat(0xffffff, { roughness: .8 }); box(1.5, .7, 1.4, m, .1, o.head, 0, 1.5, 0); box(1.5, .2, 1.45, mat(0xc8203a), .04, o.head, 0, 1.25, 0); }]); }
+export function makeKrause(scene) { return mk(scene, S({ seed: 9303, scale: .88, skin: 0xf2c8ac, shirt: 0x1ab8b0, shirt2: 0x1ab8b0, cuffs: 0x0a8a84, pants: 0x3a3a4a, shoes: 0x8a2a3a, hair: 0xe8e0d8, hairBuild: h => { const m = mat(0xe8e0d8, { roughness: .8 }); const c = new THREE.Mesh(new THREE.SphereGeometry(.76, 24, 12, 0, 6.283, 0, 1.5), m); c.position.y = .96; c.scale.set(1.06, .74, 1.06); h.add(c); for (const s of [-1, 1]) sphere(.36, m, h, s * .7, .7, -.1, 10, 8); hat(0x8a3ac8, 0xff5a85)(h); },
+  torsoDetail: sp => { box(2.14, 2.08, 1.16, mat(0x1ab8b0, { roughness: .8 }), .14, sp, 0, 1.02, 0); for (let k = 0; k < 3; k++) sphere(.1, mat(0xffd23f, { metalness: .7 }), sp, 0, .5 + k * .5, .6, 8, 6); box(.6, .5, .1, mat(0xff5a85), .1, sp, -.55, 1.6, .6); },
+  face: { iris: '#5a3a7a', browColor: '#c8c0b8', blush: .6 } }), [o => glasses(o.head)]); }
