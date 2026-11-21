@@ -320,3 +320,24 @@ function renderAt(T) {
 }
 window.renderAt = renderAt; window.DUR = DUR; window.FPS = FPS; window.CUES = CUES; window.SHOTS = S.map(s => [s.t0, s.t1, s.tr, s.zoom]); window.__ready = true;
 window.DBG = { applyPose, mouthW, XT, hp, ich, renderer, composer, bloom, sun, grade, scene, camera, SMK };
+// ---------- portadas (1080×1920; lo importante entre y = 240 y 1680) ----------
+function coverText(lines, y) { const c = octx; c.save(); c.textAlign = 'center'; c.textBaseline = 'middle'; c.lineJoin = 'round';
+  lines.forEach(([t, size, col], i) => { const yy = y + i * size * 1.05; c.font = `700 ${size}px ${FONT}`; const tw = c.measureText(t).width, k = Math.min(1, W * .92 / tw); c.save(); c.translate(W / 2, yy); c.scale(k, k); c.shadowColor = 'rgba(0,0,0,.6)'; c.shadowBlur = 24; c.lineWidth = size * .22; c.strokeStyle = '#0a0a14'; c.strokeText(t, 0, 0); c.shadowColor = 'transparent'; c.fillStyle = col; c.fillText(t, 0, 0); c.restore(); }); c.restore(); }
+const COVERS = [
+  // 1: Timo con la vape dorada, el vapor saliendo a los lados, lluvia de billetes; texto entre la cabeza y el medidor
+  { T: 80.2, fn: L => { use('HB'); const c = put(ich, -30, 0, -58.6, 0); const av = armVape(1); actuar(c, 0, [[0, { ...av, headX: -.15 }]], { T: L.T }); c.aR.sh.rotation.y = av.aRy; GOLD.visible = true; GOLD.userData.grip.visible = true; GOLD.userData.setGlow(1.4); CHEST.material.opacity = .5; FACES.push(c);
+      cara(c, L.T, { expr: 'shock', eyes: 'wide', mouth: 'flat' }); const m = mouthW(c); for (const sg of [-1, 1]) SMK.puff(m.clone().add(V(sg * 1.5, .2, 0)), V(sg, .5, -.2), L.T, L.T - 2, 2, { n: 60, pow: 6, size: 1.8, dens: .8, seed: 90 + sg, life: 2.5 });
+      billRain(V(-30, 2, -58.6), L.T, 150, 18, 14, 18, 5); WM.get(c).visible = true; WM.get(c).userData.set('20,0 s', '1 Mrd. €', '#ffd23f');
+      cam([-30, 7.2, -45.5], [-30, 4.2, -58.6], 40); sh(V(-30, 0, -58), 16); DOF = 1; },
+    text: [['1 ZUG', 150, '#ffffff'], ['= 1 MILLIARDE €?', 96, '#ffd23f']], ty: 1230, hud: { s: 20, e: 1e9, col: '#ffd23f' } },
+  // 2: la plaza vapeando, el vecino millonario bajo la lluvia de billetes; texto en el centro
+  { T: 12.2, fn: L => { use('HB'); vapeCrowd(L, 6, 12, 18, 6, 15, 23); const c = put(nach, 6, .3, 16, 0); actuar(c, 0, [[0, { aLx: 2.7, aRx: 2.7, aLz: .4, aRz: .4, aLe: .4, aRe: .4 }]], { T: L.T }); laughF(c, L.T); FACES.push(c); VP.get(c).visible = true; VP.get(c).userData.grip.visible = true;
+      billRain(V(6, 2, 16), L.T, 180, 20, 16, 18, 5); orbit(V(6, 5.4, 16), 15, .15, .1, 46); sh(V(6, 0, 16), 22); DOF = 0; },
+    text: [['JEDER ZUG', 130, '#ffffff'], ['= GELD', 150, '#7aff9a']], ty: 380, hud: null },
+];
+window.renderCover = v => { const C = COVERS[v], L = { lt: 1, k: .6, T: C.T, d: 2, t0: C.T - 1, t1: C.T + 1 };
+  hideAll(); BAD_.length = 0; FACES.length = 0; C.fn(L); while (POST.length) POST.shift()(); clearFaces(); camera.updateProjectionMatrix();
+  grade.uniforms.sharp.value = 1.5; grade.uniforms.vig.value = .6; grade.uniforms.sat.value = 1.55; grade.uniforms.lift.value = .01; grade.uniforms.blurAmt.value = 0;
+  { const fd = camera.position.distanceTo(CAMT); bokeh.uniforms.focus.value = fd; bokeh.uniforms.aperture.value = DOF * .0022 * clamp((26 - fd) / 14); bokeh.enabled = bokeh.uniforms.aperture.value > .00005; }
+  sun.castShadow = sun.intensity >= .45; sky.sky.position.copy(camera.position); composer.render();
+  octx.drawImage(renderer.domElement, 0, 0, W, H); if (C.hud) drawMeterHUD(octx, W / 2, 330, 1.05, secs(C.hud.s), euro(C.hud.e), C.hud.col); coverText(C.text, C.ty); };
