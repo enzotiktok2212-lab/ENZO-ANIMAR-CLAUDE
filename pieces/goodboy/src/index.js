@@ -286,16 +286,17 @@ function pair(L, w, m, x, z, ry, v, i, o = {}) { strollW(w, x, z, ry, v, L, i); 
   cara(w, L.T + i, { expr: o.wexpr || 'happy' }); cara(m, L.T + i * 2, { expr: 'happy', mouth: i % 2 ? 'open_smile' : 'grin' }); if (o.cup !== false) inHand(CUPS[i % CUPS.length], w, 'L', [0, -.75, .25]); }
 const SV0 = V(0, 0, 14);   // punto del paseo de Svenja y Lukas en la plaza
 
-// 1 «In dieser Stadt» (golpe de zoom inicial): la plaza desde arriba, llena de parejas paseando (ellas con café, ellos a cuatro patas con correa)
-shot(0, null, null, L => { town(L); WURST.visible = false; const P = [[-6, 30, PI], [6, 18, PI], [-14, 6, PI * .9], [14, 34, PI * 1.08], [-2, -6, PI], [10, 2, PI * .95], [-12, 44, PI * 1.05], [2, 52, PI]];
-  P.forEach(([x, z, ry], i) => pair(L, FR[i], MA[i], x, z, ry, 3.2, i));
-  orb(L.k, V(0, 2, 24), V(0, 2, 20), [50, .22, .56, 46], [40, .16, .5, 46], easeOut); sh(V(0, 0, 22), 46); }, [[0, 'city_amb', .5], [.3, 'birds', .4], [.5, 'steps', .35]]);
-// 2 «hat jede Frau einen Good Boy.»: Svenja sonríe con la correa en la mano; la correa baja fuera de cuadro; detrás, más mujeres con correa
-shot(1.14, 'W', null, L => { town(L); put(sv, SV0.x, 0, SV0.z, 0); actuar(sv, 0, [[0, { aRx: .9, aRe: .5, aRz: .05, aLx: .5, aLe: 1.6, aLz: -.25, headX: .05, headZ: Math.sin(L.T * 2) * .05 }]], { T: L.T }); inHand(CUPS[0], sv, 'L', [0, -.75, .25]);
-  cara(sv, L.T, { expr: 'happy', mouth: L.T > 2.0 ? 'open_smile' : 'smile', eyes: L.T > 2.0 ? 'happy' : undefined }); lead(sv, null, { to: V(SV0.x + .4, .2, SV0.z + 7), sag: .3 });
-  [[FR[1], MA[1], -7, -6], [FR[2], MA[2], 8, -10], [FR[3], MA[3], -3, -18]].forEach(([w, m, dx, dz], i) => pair(L, w, m, SV0.x + dx, SV0.z + dz, .25 * (i - 1), 2.4, i + 1));
+// 1 «In dieser Stadt» (golpe de zoom inicial): de lado: filas de parejas cruzan la plaza (ellas con café, ellos a cuatro patas con correa)
+shot(0, null, null, L => { town(L); WURST.visible = false; const rows = [[4, 1], [-6, -1], [-16, 1]];
+  for (let i = 0; i < 6; i++) { const r = rows[i % 3], k = Math.floor(i / 3); const ry = r[1] > 0 ? PI / 2 : -PI / 2; const x0 = (r[1] > 0 ? -12 : 12) + k * 14 * r[1] * -1 + (i % 3) * 3 * r[1]; pair(L, FR[i], MA[i], x0, r[0], ry, 3.2, i); }
+  orb(L.k, V(0, 3.4, -6), V(1, 3.4, -6), [36, 0, .1, 46], [32, 0, .08, 46], easeOut); sh(V(0, 0, -6), 34); }, [[0, 'city_amb', .5], [.3, 'birds', .4], [.5, 'steps', .35]]);
+// 2 «hat jede Frau einen Good Boy.»: de lado y enteros: Svenja pasea con su café y la correa; Lukas gatea delante con su collar, feliz
+shot(1.14, 'W', null, L => { town(L); const x = SV0.x - 3 + L.lt * 1.6; strollW(sv, x, SV0.z, PI / 2, 0, L, 0); inHand(CUPS[0], sv, 'L', [0, -.75, .25]);
+  cara(sv, L.T, { expr: 'happy', mouth: L.T > 2.0 ? 'open_smile' : 'smile', eyes: L.T > 2.0 ? 'happy' : undefined });
+  crawl(me, x + 5.4, SV0.z, PI / 2, 0, L, 0, { wv: 1 }); cara(me, L.T, { expr: 'happy', mouth: 'open_smile', eyes: 'happy' }); lead(sv, me, { sag: .7 });
+  [[FR[1], MA[1], -10], [FR[2], MA[2], 8]].forEach(([w, m, dx], i) => pair(L, w, m, SV0.x + dx, SV0.z - 16, PI / 2, 1.6, i + 1));
   bubble(sv, 'Good Boy!', clamp((L.T - 2.0) / .12), 1.4);
-  onBody(sv, 11.5, 0, .1, 40, L.k, 9.6); sh(SV0, 24); }, [[.05, 'chain_rattle', .45], [.85, 'pop', .4]]);
+  orb(L.k, V(x + 3.6, 3.0, SV0.z), V(x + 3.8, 3.0, SV0.z), [23, .06, .06, 46], [21.5, .02, .05, 46]); sh(SV0, 24); }, [[.05, 'chain_rattle', .45], [.85, 'pop', .4]]);
 // 3 «Und das ist nicht ihr Hund.»: un perro salchicha de verdad mira, confundido; Svenja pasa de largo
 shot(2.8, 'S', null, L => { town(L); show(DOG, SV0.x - 3, 0, SV0.z + 3, .5, 1.15); DOG.rotation.y = .5 + Math.sin(L.T * 3) * .15; DOG.position.y = 0;
   strollW(sv, SV0.x + 2.5, SV0.z - 2, -.3, 1.4, L, 0); cara(sv, L.T, { expr: 'happy' }); inHand(CUPS[0], sv, 'L', [0, -.75, .25]); lead(sv, null, { to: V(SV0.x + 1.0, .2, SV0.z + 6), sag: .3 });
