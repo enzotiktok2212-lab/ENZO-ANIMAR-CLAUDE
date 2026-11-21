@@ -37,6 +37,8 @@ Orden cronológico. Dur = duración de la voz recortada (s). RPM según lo que c
 
 | 30 | `einpacken` | «In dieser Stadt sind alle feiern, außer mir» — secuela del HUSS: envuelvo hamburguesas para la entrevista en la Brötchenburg, no sé freír, aprendo, 500 en 50 s | 111 | (esperado bajo: comedia/meme) | HUSS **sacados del audio original** (Demucs en npm `demucs`, 2 pasadas + puerta entre golpes, `huss_insert.py`); solo el gancho a 1,1×; corte en el punto más silencioso tras la palabra; **nada de multitud instanciada**: solo extras Roblox reales (`makeExtra`); 115 planos (~0,96 s); revisión al 12/50/60 %; primeros planos con `onFace` ×1,45 |
 
+| 31 | `adrian` | «In dieser Stadt heißt jeder Adrian» — el único que no se llama Adrian (Müller, apodo «Niemand») desenmascara al ladrón Detlef | 134 | — (comedia/misterio) | guion fiel al original sin añadir nada que no estuviera; etiquetas de tono de ElevenLabs v3 por frase; supermuestreo ×1,5 + bordes gruesos (personajes 3, escenarios 2,2) + adoquín fino; extras con placa «HALLO, ich heiße …»; 109 planos (~1,2 s); portadas con otro escenario, otras tipografías (Luckiest Guy / Lilita One), pegatinas 2D, círculo rojo ajustado solo al protagonista y personajes alrededor bien visibles |
+
 \* `traumsammler` tiene `words.json` parcial; el vídeo final era más largo.
 
 ## Patrones que funcionan (de los análisis «por qué se hizo viral»)

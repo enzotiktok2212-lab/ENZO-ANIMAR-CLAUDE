@@ -54,7 +54,7 @@ Documentos del repo que siguen siendo la referencia detallada (léelos al empeza
 - Todo el texto en pantalla en **alemán**; todo número dicho aparece en el mundo.
 
 ## 3. Plantilla y motor
-- Copia **la última pieza terminada** (mira `git log` en `pieces/`; hoy `pieces/einpacken/`, antes `hals`, `teddy`, `kreide`): `index.html, render.sh, render2.mjs, mids.mjs, sheet.py, cues.mjs, sfx.py, mezclar.sh, marca.py, finish.sh, cover.mjs, prep_audio.py, armar.py, package.json`, `src/*.js`, `src/caras/`, `audio/{campanita-recortada.wav,musica.mp3,musica-fondo.wav}`, y `node_modules` (o `npm install`).
+- Copia **la última pieza terminada** (mira `git log` en `pieces/`; hoy `pieces/adrian/`, antes `einpacken`, `hals`, `teddy`): `index.html, render.sh, render2.mjs, mids.mjs, sheet.py, cues.mjs, sfx.py, mezclar.sh, marca.py, finish.sh, cover.mjs, prep_audio.py, armar.py, package.json`, `src/*.js`, `src/caras/`, `audio/{campanita-recortada.wav,musica.mp3,musica-fondo.wav}`, y `node_modules` (o `npm install`).
 - Cambia: `DUR` en `src/main.js`, la duración en `render.sh`/`mezclar.sh`/`sfx.py` (`DUR =`), el **puerto** (`render.sh`, `cues.mjs`, `cover.mjs`, servidor `python3 -m http.server <puerto>`), el nombre en `finish.sh`, las horas de campanita en `marca.py` (0 s y cada ≤10 s al empezar frase).
 - Escenarios y reparto nuevos van en archivos propios (`gsets.js`, `gcast.js`…). Detalles del API: [references/motor.md](references/motor.md).
 
@@ -80,3 +80,9 @@ Mira cada hoja de 10 planos (al 12 % y al 60 %) y corrige: **nadie de espaldas s
 - Acelerar **solo** lo que pida el usuario (p. ej. el gancho a 1,1×).
 - Encuadre vertical estrecho: dos personajes a ambos lados de un mostrador no caben en horizontal; desplázalos en x y pon la cámara de lado o alta. Nunca la cámara dentro de un personaje o de la campana de la cocina.
 - Objetos de primer plano (cronómetros, relojes) por encima del subtítulo (súbelos sobre un paquete y apunta la cámara más abajo).
+
+## 9. Lecciones de `adrian` (fijas)
+- **Guion**: el gancho igual; el resto parafraseado pero **sin añadir hechos que no estén en el original** y sin cortar nada (más duración = mejor RPM, pero solo con lo que hay). Versión ElevenLabs v3 con **etiquetas de tono por frase** (`[mischievously]`, `[sad]`, `[whispers]`, `[shouting]`…).
+- **Calidad**: supermuestreo `?ss=1.5` (por defecto en `main.js`), bordes gruesos (personajes 3, escenarios 2,2, atrezo 1,8), nitidez 1,6, bloom mínimo, adoquín fino; ~100 fotogramas/min con 4 procesos.
+- **Encuadre**: nunca la cámara dentro de casas (las fachadas de `townhouse` tienen 20 de fondo), ni detrás de la cabeza, ni objetos (megáfono, foto, carteles) delante de la cara; personajes sentados con `sitY`; las clases necesitan pared del fondo.
+- **Portadas**: escenario distinto al vídeo, otras tipografías y colores (`@fontsource/luckiest-guy`, `lilita-one`), pegatinas 2D, AO activado, círculo rojo intenso **ajustado solo al protagonista** (calculado con `proj`) y sin cruzarlo, personajes alrededor bien visibles señalando, nada tapando al protagonista; texto entre y = 240 y 1680.
