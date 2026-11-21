@@ -110,7 +110,7 @@ export function freibad(scene, X) { const g = G(scene, X, 0, 0);
   // silla del socorrista
   const LG = G(g, 0, 0, PD / 2 + 3); for (const [x, z] of [[-1.2, -1], [1.2, -1], [-1.2, 1], [1.2, 1]]) cyl(.15, .15, 6, mat(0xffffff), 8, LG, x, 3, z); box(3, .3, 2.6, mat(0xd8323a), .05, LG, 0, 6, 0); box(3, 2, .3, mat(0xd8323a), .05, LG, 0, 7, -1.2);
   // cartel FREIBAD y valla
-  const fb = textPlane(14, 3, 700, 150, (c, w, h) => { c.fillStyle = '#2a6ad8'; c.fillRect(0, 0, w, h); c.strokeStyle = '#ffffff'; c.lineWidth = 10; c.strokeRect(8, 8, w - 16, h - 16); txt(c, 'FREIBAD ADRIANSFELDE', w / 2, h / 2 + 4, 76, '#ffffff'); }); fb.position.set(0, 13, -PD / 2 - 20); g.add(fb); for (const s of [-1, 1]) cyl(.3, .3, 14, mat(0xe8e8e8), 8, g, s * 6.5, 6.5, -PD / 2 - 20.3);
+  const fb = textPlane(14, 3, 700, 150, (c, w, h) => { c.fillStyle = '#2a6ad8'; c.fillRect(0, 0, w, h); c.strokeStyle = '#ffffff'; c.lineWidth = 10; c.strokeRect(8, 8, w - 16, h - 16); txt(c, 'FREIBAD LUKASHAUSEN', w / 2, h / 2 + 4, 76, '#ffffff'); }); fb.position.set(0, 13, -PD / 2 - 20); g.add(fb); for (const s of [-1, 1]) cyl(.3, .3, 14, mat(0xe8e8e8), 8, g, s * 6.5, 6.5, -PD / 2 - 20.3);
   for (let x = -60; x <= 60; x += 2) box(.12, 3, .12, mat(0x2a8a4a), 0, g, x, 1.5, -PD / 2 - 24); box(122, .15, .12, mat(0x2a8a4a), 0, g, 0, 2.8, -PD / 2 - 24);
   for (const [x, z] of [[-40, -30], [-30, -34], [36, -30], [46, -20], [-46, 10], [48, 30], [-40, 34]]) tree(g, x, z, 1.1);
   for (let i = 0; i < 9; i++) townhouse(g, -72 + i * 18, -62, 16, 2 + (i % 2), 50 + i, 0);
@@ -123,7 +123,7 @@ export function stage(parent, x, z) { const g = G(parent, x, 0, z); const wd = m
   // fondo con telón rojo y pancarta
   box(26, 16, .6, mat(0x2a2a30), .1, g, 0, 11, -6); const cur = mat(0xc81e2a, { roughness: .9, map: rep(stripes('#c81e2a', '#a8141e', 8), 4, 1) }); box(23, 12, .3, cur, .05, g, 0, 9.2, -5.6);
   for (const s of [-1, 1]) { cyl(.35, .35, 20, mat(0x2a2a30, { metalness: .6 }), 8, g, s * 13, 10, -6); box(2.6, 4.6, 2.2, mat(0x16161a, { roughness: .4 }), .2, g, s * 10.2, 5.4, 4); for (const y of [4.4, 6.4]) { const sp = cyl(.7, .7, .1, mat(0x3a3a40, { metalness: .5 }), 18, g, s * 10.2, y, 5.12); sp.rotation.x = Math.PI / 2; } }
-  const ban = textPlane(22, 3.4, 880, 136, (c, w, h) => { c.fillStyle = '#ffd23f'; c.fillRect(0, 0, w, h); c.strokeStyle = '#d8202f'; c.lineWidth = 10; c.strokeRect(6, 6, w - 12, h - 12); txt(c, 'STADTFEST ADRIANSFELDE', w / 2, h / 2 + 4, 84, '#d8202f'); }); ban.position.set(0, 17, -5.6); g.add(ban);
+  const ban = textPlane(22, 3.4, 880, 136, (c, w, h) => { c.fillStyle = '#ffd23f'; c.fillRect(0, 0, w, h); c.strokeStyle = '#d8202f'; c.lineWidth = 10; c.strokeRect(6, 6, w - 12, h - 12); txt(c, 'STADTFEST LUKASHAUSEN', w / 2, h / 2 + 4, 84, '#d8202f'); }); ban.position.set(0, 17, -5.6); g.add(ban);
   box(26, .4, .4, mat(0x2a2a30, { metalness: .6 }), .05, g, 0, 19.4, -6); const SL = []; for (let k = 0; k < 6; k++) { const l = G(g, -10 + k * 4, 18.9, -5.4); cyl(.5, .35, 1, mat(0x1a1a1e, { metalness: .6 }), 10, l, 0, 0, 0).rotation.x = .6; SL.push(sphere(.32, glowM([0xff4a8a, 0xffd23f, 0x3ab8ff][k % 3], 2.5), l, 0, -.4, .35, 8, 6)); }
   // micrófono en pie
   const MIC = G(g, 0, 3.2, 2.5); cyl(.5, .6, .12, mat(0x1a1a1e, { metalness: .7 }), 14, MIC, 0, .06, 0); cyl(.06, .06, 4.2, mat(0x1a1a1e, { metalness: .7 }), 8, MIC, 0, 2.1, 0); const head = G(MIC, 0, 4.3, .2); head.rotation.x = .5; cyl(.14, .12, .7, mat(0x2a2a30, { metalness: .6 }), 10, head, 0, 0, 0); sphere(.22, mat(0x8a8e96, { metalness: .8, roughness: .3 }), head, 0, .45, 0, 12, 8);
