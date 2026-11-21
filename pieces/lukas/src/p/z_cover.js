@@ -24,8 +24,8 @@ window.renderCover = async v => { await document.fonts.load('80px Lucky'); await
     put(me, p.x, 0, p.z, 0); actuar(me, 0, [[0, { aLx: .5, aLz: -.5, aLe: 1.9, aRx: .3, aRz: .25, headX: .12, headZ: -.06 }]], { T }); cara(me, T, { expr: 'sad', eyes: 'worried', mouth: 'frown', noBlink: 1 });
     const B = BOYS(CROWD).filter(c => c !== det), G = GIRLZ(CROWD);
     // otros burlones: unos graban con el móvil, otros se tapan la boca o se doblan de risa
-    const R = [[B[14], -3.6, -1.6, 'phone'], [G[7], 3.6, -1.6, 'phone'], [B[18], -6.4, -1.0, 'belly'], [G[10], 6.4, -1.2, 'mouth'], [B[11], -4.6, 3.6, 'point'], [G[12], 4.6, 3.4, 'belly'], [B[20], -8.6, 1.6, 'point'], [G[3], 8.6, 1.4, 'point']];
-    R.forEach(([c, dx, dz, m], i) => { if (!c) return; const x = p.x + dx, z = p.z + dz, toMe = Math.atan2(p.x - x, p.z - z); put(c, x, 0, z, toMe * .45);
+    const R = [[B[14], -3.2, -1.0, 'phone'], [G[7], 3.2, -1.0, 'phone'], [B[18], -4.3, -3.6, 'belly'], [G[10], 4.3, -3.6, 'mouth'], [B[11], -3.3, 3.4, 'point'], [G[5], 3.3, 3.4, 'belly'], [B[20], -1.9, -3.6, 'point'], [G[3], 1.9, -3.6, 'mouth']];
+    R.forEach(([c, dx, dz, m], i) => { if (!c) return; const x = p.x + dx, z = p.z + dz, toMe = Math.atan2(p.x - x, p.z - z); put(c, x, 0, z, dz > 0 ? (dx < 0 ? 1.15 : -1.15) : toMe * .45);
       const P = m === 'phone' ? { aRx: 1.9, aRz: -.1, aRe: 1.2, aLx: .4, lean: -.05 } : m === 'belly' ? { aLx: .9, aRx: .9, aLe: 1.7, aRe: 1.7, aLz: -.2, aRz: -.2, lean: .18, headX: -.15 } : m === 'mouth' ? { aRx: 2.4, aRe: 2.5, aRz: -.3, aLx: .9, aLe: 1.6, headX: -.05 } : { aRx: 1.6, aRz: dx < 0 ? -.15 : .05, aRe: .05, aLx: .6, aLz: -.4, aLe: 1.6, lean: -.1 };
       actuar(c, 0, [[0, P]], { T: T + i }); laughF(c, T + i * .7);
       if (m === 'phone') { const ph = PHONES[i % 3], h = wpos(c.aR.hand); show(ph, h.x, h.y + .55, h.z, c.root.rotation.y + PI, .7); } });
@@ -36,7 +36,7 @@ window.renderCover = async v => { await document.fonts.load('80px Lucky'); await
     strokeTxt('HEISSEN ALLE', W / 2, H * .236, 102, 'Titan', ['#ffffff', '#fff2c8'], '#000000', 24);
     tagSticker(W * .29, H * .318, .8, -.08, 'LUKAS', '#1f6fe0'); tagSticker(W * .71, H * .318, .8, .08, 'MIA', '#e0307a');
     ringMark((sl[0] + sr[0]) / 2, (top[1] + bot[1]) / 2, (sr[0] - sl[0]) / 2 + 55, (bot[1] - top[1]) / 2 + 45, '#ffe21a');
-    strokeTxt('… AUSSER MIR', W / 2, Math.min(H * .85, bot[1] + 125), 128, 'Titan', ['#2e9bff', '#0038ff'], '#000000', 26, -.03);
+    strokeTxt('… AUSSER MIR', W / 2, Math.min(H * .85, bot[1] + 125), 128, 'Titan', ['#d4ff3a', '#3ee000'], '#000000', 26, -.03);
     sparkle(W * .1, H * .15, 30, '#fff3a0'); sparkle(W * .9, H * .21, 24, '#fff3a0');
   } else { stadium(L); standsT(L, { turned: true, face: BFACE, expr: 'shock' }); const dp = detSeat(); const d = put(det, dp.x, dp.y, dp.z, PI * .85); actuar(d, 0, [[0, { aLx: .3, aRx: .3, headY: .1 }]], { T });
     cam([SX - 25.4, 14.5, 9.5], [dp.x - 1.5, dp.y + 2.2, dp.z - 2], 50); sh(dp, 28); hemi.intensity = 1.25; sun.intensity = 2.6;
