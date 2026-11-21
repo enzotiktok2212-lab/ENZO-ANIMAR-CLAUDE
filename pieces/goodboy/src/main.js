@@ -41,7 +41,7 @@ for (let i = 0, x = -100; x <= 90; x += 17, i++) townhouse(HB.G, x, -126, 16, 2 
 for (let i = 0, z = 70; z > -112; z -= 17, i++) { townhouse(HB.G, -98, z, 16, 3 + (i % 2), 80 + i, Math.PI / 2); townhouse(HB.G, 88, z, 16, 2 + (i % 3), 90 + i, -Math.PI / 2); }
 for (let i = 0, x = -60; x <= 60; x += 18, i++) townhouse(HB.G, x, 150, 16, 2 + (i % 2), 100 + i, Math.PI);
 // Currywurstbude en la plaza (6, 36), ventanilla mirando +x
-const WURST = wurstWagen(HB.G); WURST.position.set(6, 0, 36); WURST.rotation.y = 0;
+const WURST = wurstWagen(HB.G); WURST.position.set(6, 0, 36); WURST.rotation.y = -Math.PI / 2; WURST.traverse(o => { if (o.isMesh && o.geometry.type === 'PlaneGeometry' && Math.abs(o.geometry.parameters.width - 4.4) < .01) o.visible = false; });
 // balcón en la fachada de la fila de casas del este (frente en x ≈ 43, mirando -x), a 8 de altura; tiendas con toldo en esa acera (x ≈ 36)
 const BAL = new THREE.Group(); HB.G.add(BAL); BAL.position.set(43.4, 0, -52);
 { box(3.6, .5, 8, mat(0xf4f0e8), .05, BAL, -1.6, 7.6, 0); for (let z = -3.8; z <= 3.8; z += .7) box(.15, 2.4, .15, mat(0x2a2a30, { metalness: .6 }), .02, BAL, -3.3, 9, z); box(.2, .2, 8, mat(0x2a2a30, { metalness: .6 }), .02, BAL, -3.3, 10.2, 0); for (const s of [-1, 1]) for (let z = -1.6; z <= 1.6; z += .7) box(3.4, 2.4, .15, mat(0x2a2a30), 0, BAL, -1.6, 9, s * 3.95).visible = false;
@@ -129,6 +129,7 @@ const HEARTS = Array.from({ length: 5 }, () => { const p = textPlane(1.2, 1.2, 6
 const SPLASH = Array.from({ length: 20 }, () => sphere(.25, new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0x8fd8ff, emissiveIntensity: .6, transparent: true, opacity: .85 }), scene, 0, 0, 0, 8, 6));
 const RING = (() => { const r = new THREE.Mesh(new THREE.TorusGeometry(3, .18, 8, 48), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: .6, depthWrite: false })); r.rotation.x = Math.PI / 2; scene.add(r); return r; })();
 const ZZ = textPlane(2, 2, 96, 96, (c, w, h) => txt(c, 'Z', w / 2, h / 2, 80, '#ffffff', '#1a1a3a', 10)); scene.add(ZZ); ZZ.material.depthWrite = false;
+PROPS.push(...CONF, ...DUST, ...SWEAT, ...TEAR, ...HEARTS, ...SPLASH, RING, ZZ);
 // correas: 10 correas de 18 segmentos; se tienden entre la mano de ella y la anilla del collar de él (con caída)
 const LEASH = Array.from({ length: 10 }, (_, i) => { const m = mat([0xd8202a, 0x1a1a24, 0x2a6ad8, 0xff5a85, 0x2ab86a][i % 5], { roughness: .5 }); return Array.from({ length: 18 }, () => { const s = new THREE.Mesh(new THREE.CylinderGeometry(.07, .07, 1, 6), m); s.castShadow = true; scene.add(s); return s; }); });
 let LI = 0;
@@ -158,7 +159,7 @@ function hideAll() {
   for (const c of POOL) { c.root.visible = false; c.root.rotation.set(0, 0, 0); c.root.scale.setScalar(c.spec.scale || 1); applyPose(c, {}); c.setFace({}); if (c.root.parent !== scene) { c.root.parent.remove(c.root); scene.add(c.root); } if (c.collar) c.collar.visible = !!c.dog; }
   for (const p of PROPS) { p.visible = false; p.rotation.set(0, 0, 0); p.scale.setScalar(1); if (p.parent !== scene) { p.parent.remove(p); scene.add(p); } }
   for (const L of LEASH) for (const s of L) s.visible = false; LI = 0; FEET.set(false); WOLF.visible = false; FOAMH.visible = false;
-  for (const k in SETS) SETS[k].visible = false; BU.SCR.userData.set('chart');
+  for (const k in SETS) SETS[k].visible = false; BU.SCR.userData.set('chart'); WURST.visible = false; POD.visible = false;
   FILL.color.setRGB(1, .96, .91); grade.uniforms.vig.value = .42; grade.uniforms.flash.value = 0; grade.uniforms.lift.value = 0; grade.uniforms.sat.value = 1.42; grade.uniforms.sharp.value = 1.6; grade.uniforms.sepia.value = 0; DARK = 0; TINT = null; BIRDSON = 1; SHAKE = 0; day(); }
 // los hombres llevan collar por defecto (es la regla de la ciudad)
 [me, ben, opa, bb, chef, ...MA].forEach(c => c.dog = true);
@@ -256,7 +257,7 @@ const BAD_ = []; const badge = (kind, text, x, y, k, a = 1, sc = 1) => BAD_.push
 const badge3 = (kind, text, w3, k, sc = 1) => BAD_.push({ kind, text, w3, s: spring(clamp(k) * 1.6) * sc, a: 1, on: k > 0 });
 const bubble = (ch, text, k, dy = 2.4) => BAD_.push({ kind: 'bubble', text, w3: hp(ch).add(V(0, dy * (ch.spec.scale || 1) + .6, 0)), s: spring(clamp(k) * 1.6), a: 1, on: k > 0 });
 function drawBadge(b) {
-  if (!b.on) return; if (b.w3) { const [x, y, z] = proj(b.w3); if (z >= 1) return; if (x < -60 || x > W + 60) return; b.x = clamp(x, 220, W - 220); b.y = clamp(y, 160, H * .6); } if (b.s <= .01 || b.a <= 0) return;
+  if (!b.on) return; if (b.w3) { const [x, y, z] = proj(b.w3); if (z >= 1) return; if (x < -60 || x > W + 60) return; let m = 220; if (b.kind === 'bubble') { octx.font = `700 46px ${FONT}`; m = Math.max(220, (octx.measureText(b.text).width + 64) / 2 * U * Math.max(1, b.s) + 24); } b.x = clamp(x, m, W - m); b.y = clamp(y, 160, H * .6); } if (b.s <= .01 || b.a <= 0) return;
   const c = octx; c.save(); c.globalAlpha = b.a; c.translate(b.x, b.y); c.scale(b.s * U, b.s * U); c.textAlign = 'center'; c.textBaseline = 'middle'; c.lineJoin = 'round';
   if (b.kind === 'big' || b.kind === 'red' || b.kind === 'num' || b.kind === 'green' || b.kind === 'gold') { c.font = `700 ${b.kind === 'num' ? 74 : 92}px ${FONT}`; const tw = c.measureText(b.text).width; if (tw > 600) { const k = 600 / tw; c.scale(k, k); }
     c.lineWidth = 22; c.strokeStyle = b.kind === 'red' ? '#4a0008' : b.kind === 'green' ? '#04300e' : b.kind === 'gold' ? '#3a2400' : '#0e1226'; c.strokeText(b.text, 0, 0); const g = c.createLinearGradient(0, -50, 0, 50); if (b.kind === 'red') { g.addColorStop(0, '#ff6a6a'); g.addColorStop(1, '#d6202f'); } else if (b.kind === 'green') { g.addColorStop(0, '#8aff9a'); g.addColorStop(1, '#1ab84a'); } else if (b.kind === 'gold') { g.addColorStop(0, '#fff2a0'); g.addColorStop(1, '#f0a820'); } else { g.addColorStop(0, '#ffffff'); g.addColorStop(1, '#ffe07a'); } c.fillStyle = g; c.fillText(b.text, 0, 0); }
@@ -265,7 +266,7 @@ function drawBadge(b) {
   else if (b.kind === 'q') { c.font = `700 130px ${FONT}`; c.lineWidth = 18; c.strokeStyle = '#0e1226'; c.strokeText(b.text || '?', 0, 0); c.fillStyle = '#ffd23f'; c.fillText(b.text || '?', 0, 0); }
   c.restore(); }
 const KEY = /^(Stadt|Frau|Good|Boy|Boys|Hund|Mann|entscheidet|gehorcht|Lukas|bravste|Sonntag|Gassi|Frauen|Kaffee|Männer|Leine|Currywurstbude|Svenja|hinfällt|Aus|Wurst|Boden|Tauben|Park|Benni|beschnuppert|beschnuppere|begrüßen|Freundinnen|begeistert|mögen|Donnerstag|Spieldate|Jungs|Abend|Nein|Fenster|Nase|Scheibe|markiert|halb|sechs|To-do-Liste|Kopfkissen|Abwasch|Müll|Wäsche|unterstrichen|lächeln|Schatz|zwei|Sekunden|Rekord|1,6|Badewanne|Schaum|Socke|Leckerli|Ohr|Bein|zappelt|falsch|Körbchen|Bett|bequemer|Restaurant|Gemüsesuppe|16|Tüten|Handtasche|Mantel|Mund|Gartencenter|Zettel|Schaffner|Fahrkarte|Bodybuilder|Fitnessstudio|130|Kilo|Muskeln|pfeift|Hantel|rennt|Chef|Meeting|Anruf|Fünf|Minuten|Firma|verkauft|Opa|47|Jahren|Stimme|Oma|Hundehütte|Garten|Namensschild|genug|Revolution|Samstag|Marktplatz|Megafon|entscheiden|800|jubeln|Wolf|Balkon|Essen|fertig|vier|leer|brülle|keine|leise|Pfötchen)$/;
-const CAPS = WORDS.map(w => { const t = w[2].replace(/[„“"”.,:…–!?]/g, '').replace(/^-|-$/g, '').trim(); return { t: w[0], txt: t, key: KEY.test(t) }; }).filter(w => w.txt);
+const CAPS = WORDS.map(w => { const t = w[2].replace(/[„“"”:…–!?]/g, '').replace(/\.$/, '').replace(/,$/, '').replace(/^-|-$/g, '').trim(); return { t: w[0], txt: t, key: KEY.test(t) }; }).filter(w => w.txt);
 function caption(T) { let cur = null; for (const w of CAPS) { if (w.t <= T) cur = w; else break; } if (!cur) return;
   const f = (T - cur.t) * FPS, s = f < 1 ? .2 : f < 2 ? 1.12 : 1, size = H * .046 * (cur.key ? 1.35 : 1), c = octx;
   c.save(); c.translate(W / 2, H * .74); c.scale(s, s); c.font = `700 ${size}px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.lineJoin = 'round';
