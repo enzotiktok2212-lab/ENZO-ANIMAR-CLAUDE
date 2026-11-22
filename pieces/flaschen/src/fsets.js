@@ -152,7 +152,7 @@ export function hoehle(scene, X) { const g = G(scene, X); const rock = mat(0xfff
   // ojos: pares de ojos grandes (esclerótica lila brillante, pupila de rendija) que se abren y parpadean
   const EYES = []; const eyeM = basicGlow(0xd890ff, 2.6), pupM = new THREE.MeshBasicMaterial({ color: 0x0a0010 });
   for (const [x, y, z, s] of [[0, 10, -40, 4.2], [-24, 6, -30, 2.4], [22, 7, -32, 2.6], [-36, 12, -12, 1.8], [34, 11, -14, 1.9], [-12, 3, -22, 1.5], [12, 4, -24, 1.4]]) {
-    const e = G(g, x, y, z); e.lookAt(0, 6, 30); e.position.set(x, y, z); for (const sd of [-1, 1]) { const w = sphere(1, eyeM, e, sd * 1.5, 0, 0, 20, 14); w.scale.set(1.1, .8, .5); const p = box(.28, 1.3, .2, pupM, .1, e, sd * 1.5, 0, .5); }
+    const e = G(g, x, y, z); e.lookAt(0, 6, 30); e.position.set(x, y, z); for (const sd of [-1, 1]) { const w = sphere(1, eyeM, e, sd * 1.5, 0, 0, 20, 14); w.scale.set(1.1, .8, .5); const p = box(.42, 1.4, .2, pupM, .1, e, sd * 1.5, 0, .58); }
     e.scale.setScalar(s); e.userData.s = s; EYES.push(e); }
   const L = new THREE.PointLight(LILA, 900, 160, 1.2); L.position.set(0, 20, 0); g.add(L); const L2 = new THREE.PointLight(0x7a3aff, 500, 120, 1.2); L2.position.set(0, 6, -30); g.add(L2);
   return { g, BOT, EYES, open(T, k = 1) { EYES.forEach((e, i) => { const bl = Math.sin(T * 1.3 + i * 2.1) > .96 ? .1 : 1; e.scale.set(e.userData.s, e.userData.s * Math.max(.05, k * bl), e.userData.s); }); } }; }
