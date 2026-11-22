@@ -463,9 +463,13 @@ def fill_gaps(cues, dur, maxgap=1.1):
         prev = t
     return cues + extra
 
+# --- FLASCHEN: alias ---
+for _a, _b in [('angel_choir', 'choir'), ('bottle_roll', 'wheels'), ('brake', 'metal_creak'), ('bubbles', 'steam'), ('cafe', 'murmur'), ('catch', 'land'), ('cave_drip', 'tick_hollow'), ('click', 'click_set'), ('cork_pop', 'pop'), ('cup', 'cup_marble'), ('cushion', 'blanket'), ('doorbell', 'door_bell'), ('drill', 'neon_buzz'), ('dust_puff', 'feathers'), ('glass_clink', 'porcelain'), ('glass_creak', 'stretch_creak'), ('glass_thud', 'thump'), ('grunt', 'strain'), ('happy_hum', 'ding_soft'), ('knit', 'tick'), ('ouch', 'sigh'), ('pat', 'slap'), ('run_steps', 'run_cobble'), ('school_bell', 'bell_far'), ('shimmer', 'sparkle'), ('slowmo', 'whoosh'), ('squeak', 'spring'), ('tape_rip', 'rip'), ('tension_hit', 'braam'), ('tram_bell', 'bell_far'), ('city_amb', 'murmur'), ('creepy_ting', 'piano_note'), ('shout_f', 'shout_m'), ('hum_low', 'tension_str'), ('magic_hit', 'sparks'), ('party_horn', 'cheer'), ('cricket', 'crickets'), ('record_scratch', 'film_roll'), ('gasp', 'baby_gasp'), ('clock_tick', 'tick'), ('typing', 'ticks'), ('creak', 'wood_creak'), ('knock', 'table_bang'), ('box_drop', 'thump'), ('tsk', 'click_metal')]:
+    if _a not in LIB and _b in LIB: LIB[_a] = LIB[_b]
+
 if __name__ == '__main__':
     cues_f, voice_f, music_f, out_f = sys.argv[1:5]
-    cues = json.load(open(cues_f)); DUR = 117.9
+    cues = json.load(open(cues_f)); DUR = 96.9
     cues = fill_gaps(cues, DUR); print(len(cues), 'efectos; hueco máximo', max(np.diff(sorted([0] + [c['t'] for c in cues] + [DUR]))).round(2))
     TEN = {'riser', 'braam', 'riser_short', 'braam_short'}
     ten = render([c for c in cues if c['s'] in TEN], DUR); ten = norm(ten, 0.9)

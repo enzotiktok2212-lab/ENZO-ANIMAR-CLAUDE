@@ -4,16 +4,16 @@ const atDesk = (L, pose = {}, wob = .04) => seat(ich, DESKP.x, DESKP.z, Math.PI,
 const DOORW = V(11.1, 0, 91.3);  // puerta de casa (mira a +x)
 // 19 «Deshalb habe ich mir heimlich»: en mi cuarto, de noche, en mi botella delante del ordenador: miro a los lados
 shot(21.04, 'Z', null, L => { zimmerS(L); hemi.intensity = .6; SCR.draw(0); const c = atDesk(L, { headY: Math.sin(L.lt * 4) * .7 }); cara(c, L.T, { expr: 'sus', mouth: 'flat' });
-  cm([ZIX + 5, 8.4, 5], [ZIX + 3.6, 8, 3.6], L.k); camera.lookAt(ZIX, 6.4, -6); camera.fov = 46; sh(V(ZIX, 0, -4), 16); }, [[0, 'typing', .4], [.6, 'creak', .3]]);
+  cm([ZIX + 8, 8.6, 1], [ZIX + 7, 8.4, 0], L.k); camera.lookAt(ZIX, 7, -5); camera.fov = 46; sh(V(ZIX, 0, -4), 16); }, [[0, 'typing', .4], [.6, 'creak', .3]]);
 // 20 «online einen Stuhl bestellt.»: el monitor: «Stuhl mit Lehne – 89,99 €» → clic en KAUFEN → «BESTELLT ✓»
 shot(22.40, 'F', null, L => { zimmerS(L); const ph = L.T < 22.8 ? 0 : L.T < 22.98 ? 1 : 2; SCR.draw(ph, clamp((L.T - 22.98) / .4)); atDesk(L);
-  cm([ZIX + .4, 8.9, -3.8], [ZIX + .2, 8.7, -4.8], L.k); camera.lookAt(ZIX, 8.2, -10); camera.fov = 44; sh(V(ZIX, 0, -8), 12); }, [[.4, 'click', .7], [.58, 'ding_reveal', .6]]);
+  cm([ZIX + 3.4, 8.6, -1.2], [ZIX + 3, 8.5, -2.2], L.k); camera.lookAt(ZIX, 8.2, -10); camera.fov = 44; sh(V(ZIX, 0, -8), 12); }, [[.4, 'click', .7], [.58, 'ding_reveal', .6]]);
 // 21 «Einen richtigen Stuhl!»: salto de alegría en mi botella, brazos arriba
 shot(23.58, 'C', 'punch', L => { zimmerS(L); SCR.draw(2, 1); const c = atDesk(L, { ...GEST.cheer, aLz: .5 + Math.sin(L.T * 12) * .15, aRz: .5 + Math.sin(L.T * 12) * .15 }, .08); c.root.rotation.y = Math.PI - .5; laughF(c, L.T); confetti(V(ZIX, 4, -3), 23.6, L.T, 40, .5);
   onBody(c, 14, 0, .14, 44, L.k, 12); sh(V(ZIX, 0, -3), 14); }, [[0, 'cheer', .45], [.1, 'party_horn', .4]]);
 // 22 «Mit Lehne!»: la foto de la silla en el monitor; un círculo marca el respaldo
 shot(24.74, 'W', null, L => { zimmerS(L); SCR.draw(2, 1); atDesk(L);
-  cm([ZIX - 2, 8.6, -5.6], [ZIX - 2.3, 8.4, -6.2], L.k); camera.lookAt(ZIX - 2.2, 8.3, -10); camera.fov = 40; badge('gold', 'MIT LEHNE!', W / 2, H * .16, clamp((L.T - 25.0) / .12), 1, .95); sh(V(ZIX, 0, -8), 12); }, [[.2, 'sparkle', .5]]);
+  cm([ZIX - 1.2, 8.6, -3.4], [ZIX - 1.6, 8.4, -4.4], L.k); camera.lookAt(ZIX - 2.2, 8.3, -10); camera.fov = 42; badge('gold', 'MIT LEHNE!', W / 2, H * .16, clamp((L.T - 25.0) / .12), 1, .95); sh(V(ZIX, 0, -8), 12); }, [[.2, 'sparkle', .5]]);
 // 23 «Heute Morgen kam endlich»: por la mañana el cartero me trae un paquete enorme a la puerta de casa
 shot(25.60, 'S', null, L => { town(L); const k = clamp(L.lt / .6); const po = put(EX[12], DOORW.x + 7 - k * 2.4, 0, DOORW.z + .2, -Math.PI / 2); actuar(po, 0, [[0, k < 1 ? { ...walkP(L.T, 1), ...GEST.hold } : GEST.hold]], { T: L.T }); cara(po, L.T, { expr: 'happy', mouth: 'smile' });
   attach(PARCEL, po.root, [0, 2.2, 2.0], [0, 0, 0], .78);

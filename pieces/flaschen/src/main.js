@@ -1,6 +1,7 @@
 // FLASCHEN — «In dieser Stadt sitzt jeder auf einer Flasche»: no hay sillas; las botellas son tapones de algo encerrado hace 300 años. 1080×1920, 30 fps.
 // Réplica de la estructura del viral con otra ciudad (Hufenbach con el Dom), otro reparto (Noah, Oma, la alcaldesa Dorn) y otros datos.
 // Planos en src/p/*.js; armar.py los une en src/index.js.
+import { BokehPass } from 'three/addons/postprocessing/BokehPass.js';
 import { THREE, W, H, FPS, makeRenderer, makeComposer, applyPose, V, lerp, clamp, easeOut, easeIn, easeInOut, spring, RNG, mat, box, sphere, cyl, textPlane, canvasTex, outline } from './engine.js';
 import { nightSky } from './sets.js';
 import { rimLight } from './roblox.js';
@@ -23,13 +24,14 @@ const stage = document.getElementById('stage'); const renderer = makeRenderer(st
 const out = document.createElement('canvas'); out.width = W; out.height = H; stage.appendChild(out); const octx = out.getContext('2d');
 const scene = new THREE.Scene(); scene.fog = new THREE.FogExp2(0xcfe6ff, .0008);
 const QS = new URLSearchParams(location.search);
-const camera = new THREE.PerspectiveCamera(50, W / H, .3, 4000); const { composer, bloom, grade, ao } = makeComposer(renderer, scene, camera); ao.enabled = QS.get('ao') === '1';
-let CAMT = new THREE.Vector3();
+const camera = new THREE.PerspectiveCamera(50, W / H, .3, 4000); const { composer, bloom, grade, ao } = makeComposer(renderer, scene, camera); ao.enabled = QS.get('ao') !== '0';
+const bokeh = new BokehPass(scene, camera, { focus: 10, aperture: .0008, maxblur: .01 }); composer.insertPass(bokeh, 2); let DOF = 1;
+let CAMT = new THREE.Vector3(); { const la = camera.lookAt.bind(camera); camera.lookAt = (...a) => { if (a.length === 3) CAMT.set(...a); else CAMT.copy(a[0]); la(...a); }; }
 // supermuestreo (?ss=2 por defecto): se renderiza al doble y se reduce al dibujar → bordes nítidos sin dientes
-const SS = +(QS.get('ss') ?? 1.3); if (SS > 1) { renderer.setPixelRatio(SS); renderer.setSize(W, H); composer.setPixelRatio(SS); composer.setSize(W, H); grade.uniforms.px.value.set(1 / W, 1 / H); octx.imageSmoothingEnabled = true; octx.imageSmoothingQuality = 'high'; }
+const SS = +(QS.get('ss') ?? 2); if (SS > 1) { renderer.setPixelRatio(SS); renderer.setSize(W, H); composer.setPixelRatio(SS); composer.setSize(W, H); grade.uniforms.px.value.set(1 / W, 1 / H); octx.imageSmoothingEnabled = true; octx.imageSmoothingQuality = 'high'; }
 const sky = nightSky(scene); sky.sky.material.depthWrite = true; sky.clouds.forEach(c => c.visible = false); sky.moon.visible = false;
 const hemi = new THREE.HemisphereLight(0xdfeeff, 0x8aa070, 1.2); scene.add(hemi);
-const sun = new THREE.DirectionalLight(0xfff2e0, 2.4); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048); sun.shadow.bias = -.0003; sun.shadow.normalBias = .12; sun.shadow.radius = 2.5; scene.add(sun, sun.target);
+const sun = new THREE.DirectionalLight(0xfff2e0, 2.4); sun.castShadow = true; sun.shadow.mapSize.set(4096, 4096); sun.shadow.bias = -.0003; sun.shadow.normalBias = .12; sun.shadow.radius = 2.5; scene.add(sun, sun.target);
 const rim = rimLight(scene);
 const FILL = new THREE.PointLight(0xfff4e8, 0, 0, 1.3); scene.add(FILL);
 function sh(p0, s = 30) { const q = 2 * s / 4096 * 4, p = V(Math.round(p0.x / q) * q, Math.round(p0.y / q) * q, Math.round(p0.z / q) * q); const c = sun.shadow.camera; Object.assign(c, { left: -s, right: s, top: s, bottom: -s, near: 1, far: 900 }); c.updateProjectionMatrix(); sun.target.position.copy(p); sun.position.copy(p).add(V(-95, 105, 85)); rim.target.position.copy(p); rim.position.copy(p).add(V(70, 45, -100)); }
@@ -49,7 +51,7 @@ const KX = 900, OX = 1300, ZAX = 1700, TX = 2100, ZIX = 2500, HX = 3000, SX = 35
 const KL = klasse(scene, KX), OSt = omaStube(scene, OX), ZA = zahnarzt(scene, ZAX), TR = tramIn(scene, TX), SCR = shopScreen(), ZI = zimmerF(scene, ZIX, SCR), HO = hoehle(scene, HX), SO = sotano(scene, SX);
 // en esta ciudad no hay sillas: fuera las sillas de los pupitres y el sillón de la Oma
 KL.desks.forEach(d => d.children.forEach(ch => { if (ch.isGroup && Math.abs(ch.position.z - 2.8) < .01) ch.visible = false; }));
-OSt.AC.visible = false; if (OSt.SOFA) OSt.SOFA.visible = false;
+OSt.AC.visible = false; [OSt.SOFA, OSt.TB, OSt.cat].forEach(o => o && (o.visible = false));
 const SETS = { HB: HB.G, KL: KL.g, OS: OSt.g, ZA: ZA.g, TR: TR.g, ZI: ZI.g, HO: HO.g, SO: SO.g };
 for (const k in SETS) outline(SETS[k], OS);
 // ---------- reparto ----------
@@ -93,7 +95,7 @@ function hideAll() {
   for (const p of PROPS) { p.visible = false; p.rotation.order = 'XYZ'; p.rotation.set(0, 0, 0); p.scale.setScalar(1); if (p.parent !== scene) { p.parent.remove(p); scene.add(p); } }
   HOLES.forEach(h => h.userData.set(0)); BOTS.forEach(b => { b.userData.collar.visible = true; }); BI = 0; ZA.LL.visible = false;
   for (const k in SETS) SETS[k].visible = false;
-  FILL.color.setRGB(1, .96, .91); sun.color.setRGB(1, .95, .86); grade.uniforms.vig.value = .38; grade.uniforms.flash.value = 0; grade.uniforms.lift.value = 0; grade.uniforms.sat.value = 1.42; grade.uniforms.sharp.value = 1.4; grade.uniforms.sepia.value = 0; DARK = 0; TINT = null; BIRDSON = 1; SHAKE = 0; day(); }
+  FILL.color.setRGB(1, .96, .91); sun.color.setRGB(1, .95, .86); grade.uniforms.vig.value = .38; grade.uniforms.flash.value = 0; grade.uniforms.lift.value = 0; grade.uniforms.sat.value = 1.42; grade.uniforms.sharp.value = 1.4; grade.uniforms.sepia.value = 0; DARK = 0; TINT = null; BIRDSON = 1; SHAKE = 0; DOF = 1; day(); }
 const use = (...n) => { for (const k of n) SETS[k].visible = true; };
 function put(ch, x, y, z, ry = 0) { ch.root.visible = true; ch.root.position.set(x, y, z); ch.root.rotation.set(0, ry, 0); return ch; }
 const show = (o, x, y, z, ry = 0, s = 1) => { o.visible = true; o.position.set(x, y, z); o.rotation.set(0, ry, 0); o.scale.setScalar(s); return o; };
@@ -251,7 +253,9 @@ function renderShot(i, T, tr, a) {
   FILL.position.copy(camera.position).add(V(0, 3, 0)).addScaledVector(dir, 2);
   AIR.update(T, ctr, MODE === 'night' ? 'noche' : 'polvo', MODE === 'in' ? .3 : .4);
   if (BIRDS.update) BIRDS.update(T, camera.position.clone().addScaledVector(dir, 60).add(V(0, 25, 0)), (MODE === 'day') && BIRDSON ? 1 : 0);
-  sun.castShadow = sun.intensity >= .45; sky.sky.position.copy(camera.position); composer.render(); BLUR = 0;
+  sun.castShadow = sun.intensity >= .45; sky.sky.position.copy(camera.position);
+  { const fd = camera.position.distanceTo(CAMT); bokeh.uniforms.focus.value = fd; bokeh.uniforms.aperture.value = DOF * .0022 * clamp((26 - fd) / 14); bokeh.enabled = bokeh.uniforms.aperture.value > .00005 && QS.get('dof') !== '0'; }
+  composer.render(); BLUR = 0;
 }
 let BLUR = 0;
 function renderAt(T) {

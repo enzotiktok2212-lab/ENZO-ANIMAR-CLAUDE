@@ -15,7 +15,7 @@ shot(0, 'C', 'slow', L => { town(L); const c = seat(ich, CP.x, CP.z, 0, L, { pos
 // 2 «auf einer Flasche.»: plano bajo: mi botella, mis piernas colgando, me balanceo
 shot(1.30, 'Z', 'punch', L => { town(L); const c = seat(ich, CP.x, CP.z, 0, L, { wob: .07, pose: { aLx: .6, aRx: .6, aLz: .4, aRz: .4, lLk: 1.2 + Math.sin(L.T * 5) * .3, lRk: 1.2 } }); cara(c, L.T, { expr: 'neutral' });
   plaza(L, { n: 10, r0: 6, r1: 16, seed: 3 });
-  cm([CP.x + 2.6, 1.6, CP.z + 9], [CP.x + 1.8, 1.9, CP.z + 7.6], L.k); camera.lookAt(CP.x, 3.6, CP.z); camera.fov = 46; sh(CP, 18); }, [[.1, 'glass_clink', .6], [.5, 'creak', .3]]);
+  cm([CP.x + 3.4, 2.2, CP.z + 13], [CP.x + 2.6, 2.4, CP.z + 11.5], L.k); camera.lookAt(CP.x, 5.2, CP.z); camera.fov = 48; sh(CP, 18); }, [[.1, 'glass_clink', .6], [.5, 'creak', .3]]);
 // 3 «Und niemand hat mir je»: me encojo de hombros; a mi lado charlan sin explicarme nada
 shot(2.28, 'W', null, L => { town(L); const c = seat(ich, CP.x, CP.z, .15, L, { pose: GEST.shrug }); cara(c, L.T, { expr: 'confused', mouth: 'flat' });
   const a = seat(EX[4], CP.x - 4.2, CP.z - 1.5, .9, L); seatMode(a, L, 1, 'talk'); const b = seat(EX[9], CP.x + 4.4, CP.z - 1.2, -.9, L); seatMode(b, L, 2, 'talk');
@@ -28,15 +28,15 @@ shot(3.55, 'I', null, L => { town(L); const c = seat(ich, CP.x, CP.z, 0, L, { po
 // 5 «Stühle gibt es hier nämlich keine.»: la terraza del café: mesas con botellas en vez de sillas; «KEINE STÜHLE»
 shot(4.55, 'S', null, L => { town(L); const tx = 36, tz = -40; const sp = [[tx + 2.6, tz + 1.8], [tx - 2.8, tz - 1.4], [tx + 2.4, tz + 13.6], [tx - 2.6, tz + 10.6], [tx - 1.6, tz + 26], [tx - 6.8, tz + 22.4]];
   sp.forEach(([x, z], i) => { const c = seat(EX[10 + i], x, z, Math.atan2(tx - x + (i > 3 ? -4 : 0), tz + Math.floor(i / 2) * 12 - z), L); seatMode(c, L, i, i % 2 ? 'talk' : 'read'); });
-  cm([tx + 14, 9, tz + 30], [tx + 9, 8, tz + 24], L.k); camera.lookAt(tx - 1, 3, tz + 6); camera.fov = 48; badge('red', 'KEINE STÜHLE', W / 2, H * .15, clamp((L.lt - .2) / .15), 1, .85); sh(V(tx, 0, tz + 10), 30); }, [[.05, 'cafe', .4], [.3, 'cup', .4]]);
+  cm([tx - 16, 9, tz + 28], [tx - 12, 8, tz + 23], L.k); camera.lookAt(tx, 4, tz + 6); camera.fov = 48; badge('red', 'KEINE STÜHLE', W / 2, H * .15, clamp((L.lt - .2) / .15), 1, .85); sh(V(tx, 0, tz + 10), 30); }, [[.05, 'cafe', .4], [.3, 'cup', .4]]);
 // 6 «In der Straßenbahn sitzen»: travelling por el pasillo del tranvía: dos filas de pasajeros en botellas
 shot(6.03, 'C', null, L => { tramS(L); bottleGrid(L, TX, -16, 2, 7, 5.6, 4.4, { ry: 0, mode: i => ['read', 'idle', 'talk'][i % 3], stagger: 0, face: V(TX, 4, 20) });
   EX.forEach((c, i) => { if (c.root.visible && i < 14) c.root.rotation.y = c.root.position.x < TX ? Math.PI / 2 : -Math.PI / 2; });
-  cm([TX + .4, 7.2, 20], [TX + .2, 6.8, 13], L.k); camera.lookAt(TX, 4.6, -10); camera.fov = 52; sh(V(TX, 0, 0), 30); }, [[0, 'tram_bell', .55], [.2, 'rumble', .4]]);
+  cm([TX + .4, 10.2, 20], [TX + .2, 9.8, 14], L.k); camera.lookAt(TX, 4.4, -10); camera.fov = 52; sh(V(TX, 0, 0), 30); }, [[0, 'tram_bell', .55], [.2, 'rumble', .4]]);
 // 7 «alle auf Flaschen.»: el tranvía frena: todos se balancean sobre sus botellas, uno se agarra a la barra
 shot(6.95, 'R', null, L => { tramS(L); const j = Math.sin(L.lt * 9) * Math.exp(-L.lt * 2) * .25;
   for (let i = 0; i < 4; i++) { const c = seat(EX[16 + i], TX + (i % 2 ? 2.8 : -2.8), -2 + Math.floor(i / 2) * 4.4, i % 2 ? -Math.PI / 2 : Math.PI / 2, L, { wob: .02 }); c.root.rotation.z = j * (i % 2 ? 1 : -1); seatMode(c, L, i, i === 1 ? 'shock' : 'ouch'); }
-  cm([TX + .2, 6.8, 8.5], [TX - .2, 6.4, 7.6], L.k); camera.lookAt(TX, 4.2, -1); camera.fov = 48; sh(V(TX, 0, 0), 20); }, [[0, 'brake', .45], [.3, 'glass_clink', .5]]);
+  cm([TX + 2.2, 7.4, 8], [TX + 2, 7.2, 6.8], L.k); camera.lookAt(TX - 2.8, 6, -.5); camera.fov = 48; sh(V(TX, 0, 0), 20); }, [[0, 'brake', .45], [.3, 'glass_clink', .5]]);
 // 8 «Im Klassenzimmer sitzen»: la clase: la profesora en la pizarra, los alumnos en botellas detrás de los pupitres
 shot(8.10, 'F', null, L => { klasseS(L); const lt = put(lehr, KX - 4, 0, -11, .3); actuar(lt, 0, [[0, { aRx: 2.2, aRz: .3, aRe: .6 + Math.sin(L.T * 3) * .2, headY: .5 }]], { T: L.T }); talk(lt, L.T, 8.1, 9.6, 'happy');
   bottleGrid(L, KX, .8, 3, 3, 11, 8, { ry: Math.PI, mode: i => ['read', 'idle', 'ouch'][i % 3], scale: .78, stagger: 0 });
@@ -46,7 +46,7 @@ shot(8.10, 'F', null, L => { klasseS(L); const lt = put(lehr, KX - 4, 0, -11, .3
 shot(9.00, 'W', null, L => { klasseS(L); const c = seat(EX[20], KX, 8.8, Math.PI, L, { wob: .09 }); c.root.scale.setScalar(.78 * c.spec.scale); c.root.position.y = SEAT + .1 - 2.05 * .78 * c.spec.scale;
   actuar(c, 0, [[0, seatPose({ aRx: 1.3, aRz: -.1, aRe: 1.1 + Math.sin(L.T * 14) * .1, aLx: 1.0, aLe: 1.2, headX: .35 })]], { T: L.T, weight: false }); cara(c, L.T, { expr: 'worried', mouth: 'grimace' }); sweat(c, L.T);
   bottleGrid(L, KX, .8, 3, 2, 11, 8, { ry: Math.PI, mode: 'read', scale: .78, stagger: 0, list: EX.slice(22), skip: (x, z) => Math.abs(x - KX) < 3 && Math.abs(z - 8.8) < 3 });
-  cm([KX + 3, 6, 1.5], [KX + 2.2, 5.6, 2.6], L.k); camera.lookAt(KX, 3.6, 8.8); camera.fov = 46; sh(V(KX, 0, 8), 16); }, [[0, 'pencil', .5], [.4, 'creak', .4]]);
+  cm([KX + 6, 6.4, 3], [KX + 5, 6.2, 4], L.k); camera.lookAt(KX, 4.6, 8.8); camera.fov = 48; sh(V(KX, 0, 8), 16); }, [[0, 'pencil', .5], [.4, 'creak', .4]]);
 // 10 «Sogar beim Zahnarzt»: la consulta: el paciente en una botella, la dentista con el espejito
 shot(10.12, 'C', 'punch', L => { zahnS(L); const p = seat(EX[5], ZAX, 0, .5, L, { wob: .05, pose: { headX: -.45, aLx: .6, aRx: .6, aLz: .5, aRz: .5, aLe: 1.2, aRe: 1.2 } }); cara(p, L.T, { expr: 'worried', eyes: 'wide', mouth: 'o' });
   const z = put(zahn, ZAX + 3.2, 0, 1.4, -1.6); actuar(z, 0, [[0, { aRx: 1.5, aRz: -.3, aRe: .9 + Math.sin(L.T * 8) * .1, aLx: 1.2, aLe: .9, lean: .2, headX: .25, headY: -.2 }]], { T: L.T }); cara(z, L.T, { expr: 'happy' });
@@ -54,7 +54,7 @@ shot(10.12, 'C', 'punch', L => { zahnS(L); const p = seat(EX[5], ZAX, 0, .5, L, 
 // 11 «sitzt du auf einer Flasche.»: plano bajo: la botella bajo el paciente; tiembla con el taladro
 shot(11.24, 'S', null, L => { zahnS(L); const p = seat(EX[5], ZAX, 0, .5, L, { wob: .02, pose: { headX: -.45, aLx: .6, aRx: .6, aLz: .5, aRz: .5, aLe: 1.2, aRe: 1.2, lLk: 1.5 + Math.sin(L.T * 20) * .15, lRk: 1.5 + Math.sin(L.T * 21) * .15 } }); p.root.position.x += Math.sin(L.T * 40) * .04; cara(p, L.T, { expr: 'shock', mouth: 'scream' });
   const z = put(zahn, ZAX + 3.2, 0, 1.4, -1.6); actuar(z, 0, [[0, { aRx: 1.5, aRz: -.3, aRe: .9, aLx: 1.2, aLe: .9, lean: .2, headX: .25 }]], { T: L.T }); cara(z, L.T, { expr: 'happy' });
-  cm([ZAX + 1.8, 1.4, 8.6], [ZAX + 1.2, 1.8, 7.4], L.k); camera.lookAt(ZAX, 4.0, 0); camera.fov = 48; sh(V(ZAX, 0, 0), 14); }, [[0, 'drill', .55], [.4, 'glass_clink', .4]]);
+  cm([ZAX + 3.6, 3.4, 10], [ZAX + 3, 3.8, 9], L.k); camera.lookAt(ZAX, 5, 0); camera.fov = 52; sh(V(ZAX, 0, 0), 14); }, [[0, 'drill', .55], [.4, 'glass_clink', .4]]);
 // 12 «Meine Oma sitzt seit 52 Jahren» (zoom lento): la Oma teje sentada en su botella; «52 JAHRE»
 shot(12.40, 'I', 'slow', L => { omaS(L); const o = seat(oma, OX, 1, .1, L, { wob: .02, pose: { aLx: 1.0, aRx: 1.0, aLz: -.25, aRz: -.25, aLe: 1.3 + Math.sin(L.T * 9) * .12, aRe: 1.3 - Math.sin(L.T * 9) * .12, headX: .25 } }); cara(o, L.T, { expr: 'happy', mouth: 'smile' });
   onBody(o, 17, .1, .1, 44, L.k, 12, 0, 2.8); badge('gold', '52 JAHRE', W / 2, H * .15, clamp((L.T - 13.34) / .15), 1, 1); sh(V(OX, 0, 1), 18); }, [[0, 'clock_tick', .5], [.4, 'knit', .4]]);

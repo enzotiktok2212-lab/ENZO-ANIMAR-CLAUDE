@@ -7,7 +7,7 @@
 #            incluso en su momento más fuerte quedan ≥14 dB por debajo de la voz
 # uso: ./mezclar.sh voz.wav musica.mp3 efectos.wav salida.wav [dB_musica] [dB_efectos]
 set -e
-V=$1; M=$2; S=$3; O=$4; D=117.9
+V=$1; M=$2; S=$3; O=$4; D=96.9
 gain() { ffmpeg -hide_banner -i "$1" -af ebur128 -f null - 2>&1 | grep -E '^\s+I:' | awk -v t=$2 '{printf "%.2f", t - $2}'; }
 GV=$(gain "$V" -16); GM=$(gain "$M" ${5:--24}); GS=$(gain "$S" ${6:--30})
 TEN=${TENSION:-}; [ -n "$TEN" ] && [ -f "$TEN" ] || TEN=""
