@@ -1,7 +1,5 @@
 # Encargo para un chat nuevo — storytimes «In dieser Stadt» (alemán, 3D tipo Roblox)
 
-> ⏳ **VÍDEO PENDIENTE: `pieces/flaschen/`** — guion listo y aprobado; el usuario manda la voz de ElevenLabs para seguir. Lee primero `pieces/flaschen/PENDIENTE.md`.
-
 Repo: enzotiktok2212-lab/enzo-animar-claude. Trabaja, haz commit y push siempre en la rama `claude/trusting-newton-0hk9y9` (antes de cada push: `git fetch` + `git rebase`, porque otras sesiones también suben ahí).
 Háblame siempre en español y dame traducción de todo lo que esté en alemán.
 
