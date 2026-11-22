@@ -41,7 +41,7 @@ Orden cronológico. Dur = duración de la voz recortada (s). RPM según lo que c
 
 | 32 | `flaschen` | «In dieser Stadt sitzt jeder auf einer Flasche. Und niemand hat mir je gesagt, warum.» — sin sillas, botellas = tapones de algo encerrado hace 300 años | — | — | terminado (portadas y descripción en `tiktok.md`) |
 
-| 33 | `knopf` | «In dieser Stadt wird jeder mit einem Knopf mitten auf dem Bauch geboren» — un botón para repetir un día; el Opa lo gastó por el nieto | — | (esperado alto: regla mágica + final familiar) | ⏳ guion listo, falta voz |
+| 33 | `knopf` | «In dieser Stadt wird jeder mit einem Knopf mitten auf dem Bauch geboren» — un botón para repetir un día; el Opa lo gastó por el nieto | — | (esperado alto: regla mágica + final familiar) | ✅ terminado (Lindenthal alpino, hospital; SS=1 sin AO ni bokeh) |
 
 \* `traumsammler` tiene `words.json` parcial; el vídeo final era más largo.
 
