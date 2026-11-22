@@ -20,7 +20,7 @@ shot(1.90, 'Z', 'punch', L => { town(L); const c = put(EX[9], -2, 0, -2, 0); act
 // 4 «geboren»: el hospital: un bebé en la cuna con su botón diminuto brillando; la madre se inclina sonriendo
 shot(2.98, 'F', null, L => { zimmerK(L, { mode: 'day' }); show(CRIB, KZX + 7, 0, 4, -.4); const b = put(baby, KZX + 7, 3.12, 4.4, -.4); b.root.rotation.order = 'YXZ'; b.root.rotation.x = -PI / 2; actuar(b, 0, [[0, { aLx: 2.4 + Math.sin(L.T * 5) * .3, aRx: 2.2, aLe: .6, aRe: .8, lLx: .6 + Math.sin(L.T * 6) * .3, lRx: .4, lLk: .5, lRk: .6 }]], { T: L.T, weight: false }); cara(b, L.T, { eyes: 'happy', mouth: 'open_smile' }); b.blob.visible = false; b.knopfOn(true, 2.6 + Math.sin(L.T * 6));
   const m = put(EX[4], KZX + 10.4, 0, 5.4, -1.7); actuar(m, 0, [[0, { lean: .35, headX: .3, aLx: .9, aRx: .9, aLe: .9, aRe: .9 }]], { T: L.T }); cara(m, L.T, { expr: 'happy', eyes: 'happy', mouth: 'smile' });
-  cm([KZX + 5.2, 7.6, 9.6], [KZX + 5.8, 6.8, 8.2], L.k); camera.lookAt(KZX + 7, 3.0, 4.4); camera.fov = 40; }, [[0, 'baby_coo', .6], [.2, 'sparkle', .4]]);
+  cm([KZX + 6.2, 10.4, 8.4], [KZX + 6.6, 9.2, 7.2], L.k); camera.lookAt(KZX + 7, 3.1, 4.3); camera.fov = 38; }, [[0, 'baby_coo', .6], [.2, 'sparkle', .4]]);
 // 5 «Und dieser Knopf»: un dedo se acerca despacio al botón
 shot(3.74, 'S', null, L => { town(L); const c = put(EX[11], 4, 0, -4, -.2); actuar(c, L.lt, [[0, { aRx: .5, aRz: -.1, aRe: 1.0, headX: .4 }], [.1, { aRx: .95, aRz: -.42, aRe: 1.7, headX: .45, lean: .06 }, { dur: .7 }]], { T: L.T }); cara(c, L.T, { expr: 'sus', mouth: 'smirk' });
   onKnopf(c, 4.2, 3.2, L.k, -1.2, 1.6, 42); sh(V(4, 0, -4), 14); }, [[.1, 'tension_tick', .4]]);
@@ -60,7 +60,7 @@ shot(14.88, 'R', null, L => { town(L); const c = put(EX[6], 27, 0, -26, -PI / 2 
   grade.uniforms.sepia.value = .25 * (1 - k); cm([23, 6.4, -8], [24, 6.6, -10], L.k); camera.lookAt(25, 3.4, -26); camera.fov = 44; sh(V(26, 0, -26), 20); badge('cyan', 'RÜCKGÄNGIG', W / 2, H * .17, clamp((L.lt - .5) / .2), 1, .9); }, [[.15, 'button_click', .7], [.2, 'rewind', .6]]);
 // 15 «Andere sparen ihn für den Tag,»: una pareja mayor en un banco al atardecer, de la mano
 shot(16.10, 'W', null, L => { town(L, { dusk: true }); const a = sit(EX[25], -40, 2.55, -9.4, PI / 2, L, { aRx: .6, aRz: .3, aRe: .4, headY: .3 }), b = sit(EX[20], -40, 2.55, -6.4, PI / 2, L, { aLx: .6, aLz: .3, aLe: .4, headY: -.3 }); grin(a, L.T, { mouth: 'smile' }); cara(b, L.T, { expr: 'warm', mouth: 'smile' });
-  cm([-26, 5.4, -4], [-27.5, 5, -6.4], L.k); camera.lookAt(-40, 4.2, -8); camera.fov = 42; sh(V(-40, 0, -8), 14); }, [[0, 'birds_evening', .4]]);
+  cm([-29, 5.2, -9.6], [-30.5, 5, -8.6], L.k); camera.lookAt(-40, 4.2, -7.9); camera.fov = 42; sh(V(-40, 0, -8), 14); }, [[0, 'birds_evening', .4]]);
 // 16 «an dem sie jemanden verlieren, den sie lieben.»: ella sola en el banco con la foto; una lágrima; la mano junto al botón
 shot(17.56, 'B', 'slow', L => { town(L, { dusk: true }); const a = sit(EX[25], -40, 2.55, -8, PI / 2, L, { aLx: .7, aRx: .55, aLz: -.15, aRz: -.45, aLe: .9, aRe: 1.2, headX: .3 }); cara(a, L.T, { expr: 'cry', mouth: 'frown' }); tears(a, L.T); attach(PHOTO, a.aL.hand, [.3, -.7, .4], [-.9, .2, 0], .7);
   grade.uniforms.sat.value = 1.0; onFace(a, 6.6, .2, -.6, 40, L.k, 5.2); sh(V(-40, 0, -8), 12); }, [[0, 'sad_piano_hit', .4]]);
@@ -84,7 +84,7 @@ shot(24.02, 'C', 'slow', L => { town(L, { dusk: true }); const c = put(kl, KP.x,
   orb(L.k, V(KP.x, 2.4, KP.z), null, [16, .3, .18, 44], [10, .2, .1, 42]); badge('red', 'SCHLIMMSTER TAG', W / 2, H * .17, clamp((L.lt - .2) / .2), 1, .85); sh(KP, 14); }, [[0, 'thunder_far', .5]]);
 // 22 «Weil mein Wecker nicht klingelte,»: mi cuarto: duermo; el despertador, apagado
 shot(25.72, 'S', null, L => { meinZimmer(L, { dark: true }); const c = put(kl, ZIX + 13, 3.6, -5.6, 0); c.root.rotation.order = 'YXZ'; c.root.rotation.x = -PI / 2; applyPose(c, { aLz: .2, aRz: .2 }); cara(c, L.T, { eyes: 'closed', mouth: Math.sin(L.T * 3) > 0 ? 'o' : 'flat' }); c.blob.visible = false;
-  show(ALARM, ZIX + 6, 4.4, -10.4, 0, .55); ALARM.userData.show('--:--', '#ff3a3a'); cm([ZIX + 6, 9.4, 1], [ZIX + 7, 8.4, -1], L.k); camera.lookAt(ZIX + 11, 3.6, -8.4); camera.fov = 46; badge('big', 'Zzz', W * .62, H * .3, clamp(L.lt / .2), 1, .8); }, [[0, 'snore', .5], [.6, 'clock_tick', .4]]);
+  show(ALARM, ZIX + 6, 4.4, -10.4, 0, .55); ALARM.userData.show('--:--', '#ff3a3a'); cm([ZIX + 4.6, 11, 3], [ZIX + 5.6, 10, 1.4], L.k); camera.lookAt(ZIX + 12.4, 3.4, -6.8); camera.fov = 46; badge('big', 'Zzz', W * .62, H * .3, clamp(L.lt / .2), 1, .8); }, [[0, 'snore', .5], [.6, 'clock_tick', .4]]);
 // 23 «wachte ich erst um 7 Uhr»: me despierto de golpe, ojos como platos
 shot(27.35, 'Z', 'punch', L => { meinZimmer(L); const c = put(kl, ZIX + 13, 3.6, -5.6, 0); c.root.rotation.order = 'YXZ'; c.root.rotation.x = -PI / 2 + easeOut(clamp(L.lt / .35)) * 1.2; applyPose(c, GEST.shock); cara(c, L.T, { expr: 'shock', mouth: 'scream' }); c.blob.visible = false;
   const h = hp(c); cam([h.x - .6, h.y + 1.6, h.z + 6.4], [h.x, h.y + .2, h.z], 42); }, [[0, 'gasp', .6], [0, 'sheet_rustle', .5]]);
@@ -93,7 +93,7 @@ shot(28.59, 'C', 'punch', L => { meinZimmer(L); show(ALARM, ZIX + 6, 4.4, -10.4,
   badge('red', '7:52', W / 2, H * .2, clamp((L.lt - .05) / .15), 1, 1.2); }, [[0, 'alarm_beep', .6]]);
 // 25 «Beim Frühstück kippte ich mir in der Eile»: la cocina: como a toda prisa, de pie, la taza al borde
 shot(30.00, 'W', null, L => { kuecheS(L); const c = put(kl, KUX - 1, 0, 6.6, PI); actuar(c, 0, [[0, { aRx: 2.2, aRz: -.4, aRe: 2.0, aLx: 1.1, aLe: .6, lean: .12, headX: Math.sin(L.T * 9) * .08 }]], { T: L.T }); cara(c, L.T, { expr: 'worried', mouth: Math.sin(L.T * 12) > 0 ? 'o' : 'flat' }); c.root.position.y = Math.abs(Math.sin(L.T * 11)) * .08;
-  show(MUG, KUX - 1.4, 3.85, 4.2); cm([KUX - 6, 6.4, 1], [KUX - 5.4, 6, 2], L.k); camera.lookAt(KUX - 1, 3.8, 5.4); camera.fov = 44; }, [[0, 'kitchen_clatter', .5], [.4, 'munch', .5]]);
+  show(MUG, KUX - 1.4, 3.85, 4.2); cm([KUX - 9, 7, 10], [KUX - 8, 6.6, 9.4], L.k); camera.lookAt(KUX - 1, 3.6, 5.6); camera.fov = 44; }, [[0, 'kitchen_clatter', .5], [.4, 'munch', .5]]);
 // 26 «Kakao über die Klamotten,»: el codo da a la taza: cacao volando, mancha marrón en la camiseta
 shot(31.54, 'C', 'punch', L => { kuecheS(L); const c = put(kl, KUX - 1, 0, 6.6, PI); const k = clamp(L.lt / .35); actuar(c, 0, [[0, GEST.shock]], { T: L.T }); cara(c, L.T, { expr: 'shock', mouth: 'scream' });
   show(MUG, KUX - 1.4, 3.85, 4.2 + k * .4); MUG.rotation.x = k * 1.6; if (L.lt > .25) { const s = clamp((L.lt - .25) / .3); STAIN.visible = true; c.spine.add(STAIN); STAIN.position.set(.15, 1.45, .6); STAIN.scale.set(s, s * 1.1, 1); show(SPILL, KUX - 1.4, 3.88, 5); SPILL.rotation.x = -PI / 2; SPILL.scale.setScalar(s * 1.2); }

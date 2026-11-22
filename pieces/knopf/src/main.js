@@ -24,15 +24,15 @@ const QS = new URLSearchParams(location.search);
 const camera = new THREE.PerspectiveCamera(50, W / H, .3, 5000); const { composer, bloom, grade, ao } = makeComposer(renderer, scene, camera); ao.enabled = QS.get('ao') !== '0';
 const bokeh = new BokehPass(scene, camera, { focus: 10, aperture: .0008, maxblur: .01 }); composer.insertPass(bokeh, 2); let DOF = 1;
 let CAMT = new THREE.Vector3(); { const la = camera.lookAt.bind(camera); camera.lookAt = (...a) => { if (a.length === 3) CAMT.set(...a); else CAMT.copy(a[0]); la(...a); }; }
-// supermuestreo (?ss=1.5 por defecto)
-const SS = +(QS.get('ss') ?? 1.5); if (SS > 1) { renderer.setPixelRatio(SS); renderer.setSize(W, H); composer.setPixelRatio(SS); composer.setSize(W, H); grade.uniforms.px.value.set(1 / W, 1 / H); octx.imageSmoothingEnabled = true; octx.imageSmoothingQuality = 'high'; }
+// supermuestreo (?ss=1 por defecto: esta máquina va lenta; SMAA activo, sin desenfoque de profundidad)
+const SS = +(QS.get('ss') ?? 1); if (SS > 1) { renderer.setPixelRatio(SS); renderer.setSize(W, H); composer.setPixelRatio(SS); composer.setSize(W, H); grade.uniforms.px.value.set(1 / W, 1 / H); octx.imageSmoothingEnabled = true; octx.imageSmoothingQuality = 'high'; }
 const sky = nightSky(scene); sky.sky.material.depthWrite = true; sky.clouds.forEach(c => c.visible = false); sky.moon.visible = false;
 const hemi = new THREE.HemisphereLight(0xdfeeff, 0x8aa070, 1.2); scene.add(hemi);
 const sun = new THREE.DirectionalLight(0xfff2e0, 2.4); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048); sun.shadow.bias = -.0003; sun.shadow.normalBias = .12; sun.shadow.radius = 2.5; scene.add(sun, sun.target);
 const rim = rimLight(scene);
 const FILL = new THREE.PointLight(0xfff4e8, 0, 0, 1.3); scene.add(FILL);
 function sh(p0, s = 30) { const q = 2 * s / 2048 * 4, p = V(Math.round(p0.x / q) * q, Math.round(p0.y / q) * q, Math.round(p0.z / q) * q); const c = sun.shadow.camera; Object.assign(c, { left: -s, right: s, top: s, bottom: -s, near: 1, far: 900 }); c.updateProjectionMatrix(); sun.target.position.copy(p); sun.position.copy(p).add(V(-95, 105, 85)); rim.target.position.copy(p); rim.position.copy(p).add(V(70, 45, -100)); }
-const OC = 2 * SS, OS = 1.5 * SS, OP = 1.25 * SS;
+const OC = 3 * SS, OS = 2.2 * SS, OP = 1.8 * SS;
 // ---------- escenarios ----------
 // Lindenthal (x = 0); lejos: casa del Opa (OPX), colegio (SCX), campo (SPX), hospital fuera (KAX) y dentro (KZX), mi cuarto (ZIX), cocina (KUX), clase (KLX)
 const LT = lindenthal(scene);
@@ -76,6 +76,7 @@ const PLATES = Array.from({ length: 7 }, () => { const p = cyl(.9, .7, .18, mat(
 const PHOTO = new THREE.Group(); scene.add(PHOTO); box(1.8, 2.2, .14, mat(0x8a5a2a), .05, PHOTO, 0, 0, 0); { const p = textPlane(1.5, 1.9, 96, 120, (c, w, h) => { const g = c.createLinearGradient(0, 0, 0, h); g.addColorStop(0, '#e8d0a0'); g.addColorStop(1, '#b8966a'); c.fillStyle = g; c.fillRect(0, 0, w, h); c.fillStyle = '#f1c8a8'; c.fillRect(34, 30, 28, 28); c.fillStyle = '#6a6a72'; c.fillRect(26, 58, 44, 50); c.fillStyle = '#f2f2f2'; c.fillRect(34, 26, 28, 7); c.fillStyle = '#2a2a2a'; c.fillRect(40, 40, 4, 4); c.fillRect(52, 40, 4, 4); }); p.position.z = .08; PHOTO.add(p); }
 const CLOCK = new THREE.Group(); scene.add(CLOCK); { const f = textPlane(8.6, 8.6, 200, 200, (c, w, h) => { c.fillStyle = '#1a2a4a'; c.beginPath(); c.arc(100, 100, 98, 0, 7); c.fill(); c.strokeStyle = '#ffd23f'; c.lineWidth = 8; c.stroke(); c.fillStyle = '#ffd23f'; for (let i = 0; i < 12; i++) { const a = i / 12 * 6.283; c.beginPath(); c.arc(100 + Math.cos(a) * 80, 100 + Math.sin(a) * 80, 6, 0, 7); c.fill(); } }); f.material.transparent = true; CLOCK.add(f);
   const hm = mat(0xffd23f, { metalness: .7, roughness: .3, emissive: 0x6a4a00, emissiveIntensity: .4 }); const H1 = new THREE.Group(); CLOCK.add(H1); box(.4, 2.4, .1, hm, .05, H1, 0, 1.1, .1); const H2 = new THREE.Group(); CLOCK.add(H2); box(.28, 3.4, .1, hm, .05, H2, 0, 1.6, .16); CLOCK.userData = { H1, H2 }; }
+const CANE = new THREE.Group(); scene.add(CANE); cyl(.12, .12, 3.6, mat(0x5a3418, { roughness: .6 }), 8, CANE, 0, -1.8, 0); { const h = new THREE.Mesh(new THREE.TorusGeometry(.4, .12, 6, 12, Math.PI), mat(0x5a3418)); h.position.set(.4, 0, 0); CANE.add(h); } outline(CANE, OP);
 const CONF = Array.from({ length: 70 }, (_, i) => { const p = new THREE.Mesh(new THREE.PlaneGeometry(.3, .45), new THREE.MeshBasicMaterial({ color: [0x2a9a4a, 0xffffff, 0xffd23f, 0x3ab8ff, 0x8ad84a][i % 5], side: THREE.DoubleSide })); scene.add(p); return p; });
 const DUST = Array.from({ length: 16 }, () => sphere(1, mat(0xd8c8a8, { roughness: 1, transparent: true, opacity: .6, depthWrite: false }), scene, 0, 0, 0, 10, 8));
 const SWEAT = Array.from({ length: 3 }, () => sphere(.16, mat(0x9fd8ff, { roughness: .05, transparent: true, opacity: .85 }), scene, 0, 0, 0, 10, 8));
@@ -85,7 +86,7 @@ function sparks(c, T0, T, n = 30, sp = 1, col = null) { SPARK.forEach((s, i) => 
 // aro de luz que se expande desde el botón (al pulsarlo)
 const RINGW = new THREE.Mesh(new THREE.RingGeometry(.8, 1, 48), new THREE.MeshBasicMaterial({ color: KCOL, transparent: true, side: THREE.DoubleSide, toneMapped: false, depthWrite: false })); scene.add(RINGW);
 function ringwave(p, k, face = null, max = 14) { RINGW.visible = k > 0 && k < 1; RINGW.position.copy(p); RINGW.scale.setScalar(.3 + easeOut(k) * max); RINGW.material.opacity = (1 - k) * .9; if (face) RINGW.lookAt(face); }
-const PROPS = [CRIB, CAKE, PHOTO, CLOCK, ...PLATES, BALL, MUG, SPILL, STAIN, KNIFE, WOODB, TEST, ALBUM, TABLET, ALARM, RINGW, ...CONF, ...DUST, ...SWEAT, ...TEAR, ...SPARK];
+const PROPS = [CANE, CRIB, CAKE, PHOTO, CLOCK, ...PLATES, BALL, MUG, SPILL, STAIN, KNIFE, WOODB, TEST, ALBUM, TABLET, ALARM, RINGW, ...CONF, ...DUST, ...SWEAT, ...TEAR, ...SPARK];
 // ---------- ambiente ----------
 const AIR = aire(scene, 300); const BIRDS = bandada(scene, 9);
 function setSky(top, mid, hor) { const u = sky.sky.material.uniforms; u.top.value.setRGB(...top); u.mid.value.setRGB(...mid); u.hor.value.setRGB(...hor); }
@@ -250,7 +251,7 @@ function renderShot(i, T, tr, a) {
   AIR.update(T, ctr, MODE === 'night' ? 'noche' : 'polvo', MODE === 'in' ? .3 : .4);
   if (BIRDS.update) BIRDS.update(T, camera.position.clone().addScaledVector(dir, 60).add(V(0, 25, 0)), (MODE === 'day') && BIRDSON ? 1 : 0);
   sun.castShadow = sun.intensity >= .45; sky.sky.position.copy(camera.position);
-  { const fd = camera.position.distanceTo(CAMT); bokeh.uniforms.focus.value = fd; bokeh.uniforms.aperture.value = DOF * .0022 * clamp((26 - fd) / 14); bokeh.enabled = bokeh.uniforms.aperture.value > .00005 && QS.get('dof') !== '0'; }
+  { const fd = camera.position.distanceTo(CAMT); bokeh.uniforms.focus.value = fd; bokeh.uniforms.aperture.value = DOF * .0022 * clamp((26 - fd) / 14); bokeh.enabled = false; }
   composer.render(); BLUR = 0;
 }
 let BLUR = 0;

@@ -450,7 +450,7 @@ def render(cues, dur):
         seed = int(hashlib.md5(f"{name}{i}".encode()).hexdigest()[:8], 16) % 100000
         gen, lvl = LIB[name]
         x = gen(seed, c)
-        if name not in ('riser', 'lullaby', 'lullaby2', 'bells7', 'braam'): x = shift(x, R(seed, 0.9, 1.1))   # variación
+        if name not in ('riser', 'lullaby', 'lullaby2', 'bells7', 'braam', 'monitor_beep', 'flatline'): x = shift(x, R(seed, 0.9, 1.1))   # variación
         at(out, x * lvl * c.get('g', 1), max(0, c['t']))
         if name in REC: at(out, rec(REC[name]) * lvl * .8 * c.get('g', 1), max(0, c['t']))
     return out[:int(dur * SR)]
@@ -467,9 +467,27 @@ def fill_gaps(cues, dur, maxgap=1.1):
 for _a, _b in [('angel_choir', 'choir'), ('bottle_roll', 'wheels'), ('brake', 'metal_creak'), ('bubbles', 'steam'), ('cafe', 'murmur'), ('catch', 'land'), ('cave_drip', 'tick_hollow'), ('click', 'click_set'), ('cork_pop', 'pop'), ('cup', 'cup_marble'), ('cushion', 'blanket'), ('doorbell', 'door_bell'), ('drill', 'neon_buzz'), ('dust_puff', 'feathers'), ('glass_clink', 'porcelain'), ('glass_creak', 'stretch_creak'), ('glass_thud', 'thump'), ('grunt', 'strain'), ('happy_hum', 'ding_soft'), ('knit', 'tick'), ('ouch', 'sigh'), ('pat', 'slap'), ('run_steps', 'run_cobble'), ('school_bell', 'bell_far'), ('shimmer', 'sparkle'), ('slowmo', 'whoosh'), ('squeak', 'spring'), ('tape_rip', 'rip'), ('tension_hit', 'braam'), ('tram_bell', 'bell_far'), ('city_amb', 'murmur'), ('creepy_ting', 'piano_note'), ('shout_f', 'shout_m'), ('hum_low', 'tension_str'), ('magic_hit', 'sparks'), ('party_horn', 'cheer'), ('cricket', 'crickets'), ('record_scratch', 'film_roll'), ('gasp', 'baby_gasp'), ('clock_tick', 'tick'), ('typing', 'ticks'), ('creak', 'wood_creak'), ('knock', 'table_bang'), ('box_drop', 'thump'), ('tsk', 'click_metal')]:
     if _a not in LIB and _b in LIB: LIB[_a] = LIB[_b]
 
+# --- KNOPF: efectos propios (monitor cardíaco, botón) y alias ---
+LIB['monitor_beep'] = (lambda s, c: norm(sine(1000, .16) * adsr(.16, .004, .04)) * .7, .55)
+LIB['flatline'] = (lambda s, c: norm(sine(1000, 2.6) * adsr(2.6, .004, .6)) * .7, .55)
+LIB['button_click'] = (lambda s, c: norm(cat(lp(noise(.02, s), 6000) * np.exp(-T(.02) * 300), np.zeros(int(.03 * SR)), sine(glide(1800, 900, .12), .12) * np.exp(-T(.12) * 30) * .6 + lp(noise(.12, s + 1), 4000) * np.exp(-T(.12) * 60) * .5)), .7)
+LIB['hum_glow'] = (lambda s, c: norm((sine(220, 1.2) + .5 * sine(330, 1.2) + .3 * sine(440 * (1 + .003 * np.sin(T(1.2) * 30)), 1.2)) * adsr(1.2, .2, .5)) * .6, .35)
+LIB['whoosh_magic'] = (lambda s, c: norm(whoosh(.8, True, 400, 5000, s) * .7 + sine(glide(600, 2400, .8), .8) * adsr(.8, .05, .5) * .4), .6)
+for _a, _b in [('alarm_beep', 'alarm'), ('alarm_ring', 'alarm'), ('argue', 'shout_m'), ('baby_coo', 'baby_gasp'), ('bench_creak', 'wood_creak'), ('birds_evening', 'birds'), ('birds_morning', 'birds'),
+    ('breath_run', 'breath'), ('breath_shaky', 'breath'), ('breath_slow', 'breath'), ('can_kick', 'metal_hit'), ('can_roll', 'wheels'), ('cane_tap', 'knock'), ('chime_soft', 'ding_soft'), ('chuckle', 'laugh_old'),
+    ('church_bells', 'bells'), ('clock_fast', 'ticks'), ('clock_rewind', 'clock_spin'), ('confetti_pop', 'confetti'), ('crowd_cheer_small', 'cheer'), ('crowd_ohh', 'shout_crowd'), ('crowd_tense', 'murmur'), ('crowd_tv', 'cheer'),
+    ('ding_good', 'ding_soft'), ('door_whoosh', 'door_open'), ('gasp_crowd', 'gasp'), ('gasp_small', 'gasp'), ('goal_crowd', 'cheer'), ('groan', 'strain'), ('grumble', 'murmur'), ('hair_ruffle', 'cloth'), ('hand_squeeze', 'cloth'),
+    ('heartbeat_soft', 'heartbeat'), ('hit_deep', 'impact'), ('hit_soft', 'impact_soft'), ('kitchen_clatter', 'spoon'), ('knife_down', 'click_metal'), ('laugh_kid', 'kids_laugh'), ('laugh_teen', 'laugh_m'), ('memory_whoosh', 'whoosh_soft'),
+    ('mug_tip', 'porcelain'), ('munch', 'chew'), ('murmur_soft', 'murmur'), ('music_swell', 'strings'), ('net_swish', 'whoosh_soft'), ('night_amb', 'crickets'), ('nod', 'cloth'), ('page_turn', 'pages'), ('paper_slap', 'paper'),
+    ('pillow', 'blanket'), ('pop_big', 'pop'), ('push', 'thud'), ('rewind', 'clock_spin'), ('room_tone', 'hum_low'), ('sad_hit', 'sad_tone'), ('sad_piano_hit', 'piano_note'), ('sheet_rustle', 'blanket'), ('shout_angry', 'shout_m'),
+    ('shout_far', 'shout_m'), ('siren_far', 'siren'), ('sob_old', 'cry_girl'), ('soft_air', 'whoosh_soft'), ('sparkle_down', 'sparkle'), ('splat', 'slap'), ('stadium_crowd', 'shout_crowd'), ('steps_slow', 'steps'), ('steps_soft', 'steps'),
+    ('story_hum', 'murmur'), ('tension_low', 'tension_str'), ('tension_tick', 'tick'), ('thunder_far', 'boom'), ('tick_fast', 'ticks'), ('trip', 'thud'), ('whittle', 'brush'), ('whoosh_ball', 'whoosh'), ('whoosh_time', 'whoosh_up'),
+    ('wind_soft', 'wind'), ('wink', 'pling'), ('yawn', 'yawn_m'), ('sob', 'cry_girl'), ('steps_run', 'steps_run')]:
+    if _a not in LIB and _b in LIB: LIB[_a] = LIB[_b]
+
 if __name__ == '__main__':
     cues_f, voice_f, music_f, out_f = sys.argv[1:5]
-    cues = json.load(open(cues_f)); DUR = 96.9
+    cues = json.load(open(cues_f)); DUR = 187.6
     cues = fill_gaps(cues, DUR); print(len(cues), 'efectos; hueco máximo', max(np.diff(sorted([0] + [c['t'] for c in cues] + [DUR]))).round(2))
     TEN = {'riser', 'braam', 'riser_short', 'braam_short'}
     ten = render([c for c in cues if c['s'] in TEN], DUR); ten = norm(ten, 0.9)

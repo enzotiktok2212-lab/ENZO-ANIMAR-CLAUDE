@@ -2,7 +2,7 @@
 # python3 marca.py renders/mezcla.wav audio/campanita-recortada.wav renders/mezcla-final.wav
 import sys, subprocess
 mix, snd, out = sys.argv[1:4]
-T = [0.0, 8.10, 18.50, 27.34, 37.63, 44.52, 54.68, 61.74, 69.22, 78.47, 88.89]
+T = [0.0, 8.00, 16.10, 25.72, 34.66, 42.67, 50.47, 58.27, 67.16, 75.72, 83.67, 92.73, 101.84, 110.19, 119.56, 130.22, 140.15, 147.62, 155.73, 163.50, 172.91, 180.83]
 gaps = [b - a for a, b in zip(T, T[1:])]; assert max(gaps) <= 11, gaps
 f = ';'.join(f'[1:a]adelay={int(t*1000)}|{int(t*1000)},volume=-4.5dB[m{i}]' for i, t in enumerate(T))
 f += ';' + ''.join(f'[m{i}]' for i in range(len(T))) + f'amix=inputs={len(T)}:normalize=0[mk];[0:a][mk]amix=inputs=2:normalize=0:duration=first,alimiter=limit=0.8,volume=-1.4dB[o]'
