@@ -605,8 +605,8 @@ shot(95.36, 'C', 'punch', L => { town(L, { night: 1 }); const kn = t => Math.max
 function strokeTxt(t, x, y, size, font, fill, stroke, lw, rot = 0, maxW = W * .88) { const c = octx; c.save(); c.translate(x, y); c.rotate(rot); c.font = `${size}px ${font}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.lineJoin = 'round';
   const tw = c.measureText(t).width, k = Math.min(1, maxW / tw); c.scale(k, k); c.shadowColor = 'rgba(0,0,0,.55)'; c.shadowBlur = 26; c.shadowOffsetY = 10; c.lineWidth = lw; c.strokeStyle = stroke; c.strokeText(t, 0, 0); c.shadowColor = 'transparent';
   if (Array.isArray(fill)) { const g = c.createLinearGradient(0, -size / 2, 0, size / 2); g.addColorStop(0, fill[0]); g.addColorStop(1, fill[1]); c.fillStyle = g; } else c.fillStyle = fill; c.fillText(t, 0, 0); c.restore(); }
-function finishCover() { grade.uniforms.sharp.value = 1.55; grade.uniforms.vig.value = .55; grade.uniforms.sat.value = 1.5; grade.uniforms.blurAmt.value = 0; grade.uniforms.flash.value = 0; camera.updateProjectionMatrix();
-  sky.sky.position.copy(camera.position); ao.enabled = true; composer.render(); ao.enabled = false; octx.fillStyle = '#000'; octx.fillRect(0, 0, W, H); octx.imageSmoothingQuality = 'high'; octx.drawImage(renderer.domElement, 0, 0, W, H); }
+function finishCover() { grade.uniforms.sharp.value = 1.9; grade.uniforms.vig.value = .55; grade.uniforms.sat.value = 1.5; grade.uniforms.blurAmt.value = 0; grade.uniforms.flash.value = 0; camera.updateProjectionMatrix();
+  sky.sky.position.copy(camera.position); ao.enabled = true; bokeh.enabled = false; composer.render(); ao.enabled = false; octx.fillStyle = '#000'; octx.fillRect(0, 0, W, H); octx.imageSmoothingQuality = 'high'; octx.drawImage(renderer.domElement, 0, 0, W, H); }
 function ringMark(x, y, rx, ry, col = '#ff2a4a') { const c = octx; c.save(); c.lineWidth = 20; c.strokeStyle = col; c.shadowColor = 'rgba(0,0,0,.4)'; c.shadowBlur = 12; c.beginPath(); c.ellipse(x, y, rx, ry, -.08, .2, 6.1); c.stroke(); c.restore(); }
 function arrowTo(x0, y0, x1, y1, col = '#ff2a4a') { const c = octx, a = Math.atan2(y1 - y0, x1 - x0); c.save(); c.lineWidth = 18; c.lineCap = 'round'; c.strokeStyle = col; c.fillStyle = col; c.shadowColor = 'rgba(0,0,0,.4)'; c.shadowBlur = 12;
   c.beginPath(); c.moveTo(x0, y0); c.quadraticCurveTo((x0 + x1) / 2 + 60, (y0 + y1) / 2 - 40, x1, y1); c.stroke(); c.translate(x1, y1); c.rotate(a + .3); c.beginPath(); c.moveTo(14, 0); c.lineTo(-40, -30); c.lineTo(-40, 30); c.closePath(); c.fill(); c.restore(); }
@@ -630,14 +630,14 @@ window.renderCover = async v => { await document.fonts.load('80px Lucky'); await
     strokeTxt('… AUSSER MIR', W / 2, Math.min(H * .86, bot[1] + 110), 120, 'Lucky', ['#ff5a5a', '#e0001a'], '#2a0008', 26, -.02);
     sparkle(W * .12, H * .14, 30); sparkle(W * .88, H * .2, 24);
   } else { town(L); const p = V(CP.x, 0, CP.z);
-    seat(ich, p.x, p.z, 0, L, { col: 0, wob: 0, pose: { aLx: -.45, aLz: .35, aLe: .9, aRx: -.35, aRz: .35, aRe: .9, lean: .12, headX: -.05 } }); ich.root.rotation.set(0, 0, 0); cara(ich, T, { expr: 'worried', eyes: 'closed', mouth: 'grimace', noBlink: 1 }); stars(ich, T, 5);
+    seat(ich, p.x, p.z, 0, L, { col: 0, wob: 0, pose: { aLx: -.45, aLz: .35, aLe: .9, aRx: -.35, aRz: .35, aRe: .9, lean: .12, headX: -.05 } }); ich.root.rotation.set(0, 0, 0); cara(ich, T, { expr: 'shock', eyes: 'scared', mouth: 'scream', noBlink: 1 }); stars(ich, T, 3); sweat(ich, T, 2);
     plaza(L, { n: 22, r0: 7, r1: 28, seed: 9, mode: 'ouch', gap: 1.1 }); while (POST.length) POST.shift()();
-    cam([p.x, 5.8, p.z + 18], [p.x, 5.0, p.z], 48); sh(V(p.x, 0, p.z - 4), 26); FILL.intensity = 40;
+    cam([p.x, 5.8, p.z + 19.5], [p.x, 5.0, p.z], 48); sh(V(p.x, 0, p.z - 4), 26); FILL.intensity = 40;
     finishCover();
-    strokeTxt('HIER SITZEN ALLE', W / 2, H * .145, 104, 'Lilita', ['#ffffff', '#ffe2b8'], '#14143a', 24);
-    strokeTxt('AUF FLASCHEN', W / 2, H * .215, 124, 'Lilita', ['#8aff9a', '#1ab84a'], '#04300e', 26, -.02);
-    strokeTxt('… UND ES TUT WEH!', W / 2, H * .84, 104, 'Lucky', ['#ff5a5a', '#e0001a'], '#2a0008', 24, -.02);
-    sparkle(W * .88, H * .3, 30, '#fff6c0'); sparkle(W * .12, H * .3, 22, '#ffd0ea'); } };
+    strokeTxt('HIER SITZEN ALLE', W / 2, H * .19, 104, 'Lilita', ['#ffffff', '#ffe2b8'], '#14143a', 24);
+    strokeTxt('AUF FLASCHEN', W / 2, H * .255, 124, 'Lilita', ['#8aff9a', '#1ab84a'], '#04300e', 26, -.02);
+    strokeTxt('… UND ES TUT WEH!', W / 2, H * .78, 104, 'Lucky', ['#ff5a5a', '#e0001a'], '#2a0008', 24, -.02);
+    sparkle(W * .88, H * .32, 30, '#fff6c0'); sparkle(W * .12, H * .32, 22, '#ffd0ea'); } };
 
 
 // ---------- transiciones, sonidos, render ----------

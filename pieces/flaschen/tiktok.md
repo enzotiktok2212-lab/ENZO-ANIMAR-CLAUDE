@@ -1,11 +1,11 @@
 # flaschen — TikTok
 
 ## Descripción (alemán)
-In dieser Stadt sitzt jeder auf einer Flasche… und keiner sagt mir, warum. 🍾 Also hab ich mir heimlich einen echten Stuhl bestellt. Großer Fehler? 👀
+In dieser Stadt sitzt jeder auf einer Flasche… und ja, es tut weh. 🍾😣 Keiner sagt mir, warum es hier keine Stühle gibt. Also hab ich mir heimlich einen bestellt. Großer Fehler? 👀
 Würdest du dich trauen, aufzustehen? 👇
 #indieserstadt #storytime #roblox #animation
 
-**Traducción:** En esta ciudad todos se sientan en una botella… y nadie me dice por qué. 🍾 Así que pedí en secreto una silla de verdad. ¿Gran error? 👀 ¿Te atreverías a levantarte? 👇
+**Traducción:** En esta ciudad todos se sientan en una botella… y sí, duele. 🍾😣 Nadie me dice por qué aquí no hay sillas. Así que pedí una en secreto. ¿Gran error? 👀 ¿Te atreverías a levantarte? 👇
 
 ## Comentario fijado
 Wer hat schon gemerkt, dass hier wirklich NIEMAND einen Stuhl hat? 🤔🪑
