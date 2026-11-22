@@ -1,0 +1,2 @@
+shot(0, 'C', null, L => { kellerS(L, { off: .7 }); samAt(L, KX + 2, -1, -.35, { reach: .3 }); put(bru, KX - 3.5, 0, 5, .5); actuar(bru, 0, [[0, GEST.shock]], { T: L.T }); cara(bru, L.T, { expr: 'shock', mouth: 'o' }); orbit(V(KX, 6.5, 1.5), 30, -.4, .06, 44); sh(V(KX, 0, 0), 20); });
+shot(1, 'C', null, L => { town(L); samAt(L, -6, 4, .6, { reach: .1 }); orbit(V(-6, 6.5, 4), 28, .85, .04, 44); sh(V(-6, 0, 4), 20); });
