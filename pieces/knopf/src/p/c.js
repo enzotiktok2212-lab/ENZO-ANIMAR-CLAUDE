@@ -1,10 +1,12 @@
 // ---------- c: pasan los años, el hospital, la muerte del Opa y mi decisión (75,72 – 130,22 s) ----------
-// Habitación del hospital (KZX): la cama en x = 0; el Opa recostado con la cabeza hacia -z; mi silla en (5,6, 1,4), asiento a 2,85, mirando -x.
-const CHX = KZX + 5.6, CHZ = 1.4, CHS = 2.85;
+// Habitación del hospital (KZX): la cama en x = 0; el Opa recostado (cabeza hacia -z, mira +z); mi silla a los pies, en (4,4, 5,4), asiento a 2,85, mirando hacia su cabeza.
+const CHX = KZX + 4.4, CHZ = 5.4, CHS = 2.85, CHRY = -2.77;
 function opaBed(L, pose = {}) { const c = inBed(opaH, L, pose); opaBtn(c, L.T); return c; }
-function teenChair(L, pose = {}) { const c = sit(gr, CHX, CHS, CHZ, -PI / 2 - .25, L, { aLx: .5, aRx: .5, aLe: .7, aRe: .7, ...pose }); myBtn(c, L.T); return c; }
+function teenChair(L, pose = {}) { const c = sit(gr, CHX, CHS, CHZ, CHRY, L, { aLx: .5, aRx: .5, aLe: .7, aRe: .7, ...pose }); myBtn(c, L.T); return c; }
 // mano en la mano: la mía (izquierda) sobre la cama y la suya
-const handPose = { aLx: 1.3, aLz: -.1, aLe: .4, lean: .25 };
+const handPose = { aLx: 1.35, aLz: .15, aLe: .3, lean: .3 };
+// plano de las manos: cámara delante de mí, mirando mi mano izquierda
+function handCam(t, L, d0 = 3.6, d1 = 3) { const p = wpos(t.aL.hand), a = t.root.rotation.y, fx = Math.sin(a), fz = Math.cos(a), d = lerp(d0, d1, easeInOut(L.k)); cam([p.x + fx * d + fz * 1.2, p.y + 2.4, p.z + fz * d - fx * 1.2], [p.x, p.y + .2, p.z], 42); }
 // cara del Opa en la cama (para encuadres)
 const opaHead = () => hp(opaH);
 
@@ -89,7 +91,7 @@ shot(106.19, 'C', null, L => { zimmerK(L, { mode: 'night' }); opaBed(L); const t
 shot(107.25, 'I', null, L => { zimmerK(L, { mode: 'night' }); const c = opaBed(L, { headY: -.6 }); cara(c, L.T, { expr: 'worried', eyes: 'normal', mouth: 'flat' }); const h = opaHead(); cm([h.x + 3.2, h.y + 1.2, h.z + 4], [h.x + 2.6, h.y + 1, h.z + 3.4], L.k); camera.lookAt(h.x, h.y - .2, h.z); camera.fov = 40; }, [[0, 'sheet_rustle', .4]]);
 // 92 «Dann drückte er sanft meine Hand.»: primer plano de las manos sobre la manta
 shot(107.94, 'W', null, L => { zimmerK(L, { mode: 'night' }); const c = opaBed(L, { aRx: 1.1, aRz: -.5, aRe: .3 }); const t = teenChair(L, handPose); cara(t, L.T, { expr: 'sad', mouth: 'flat' });
-  const p = wpos(t.aL.hand); cm([p.x + 2.4, p.y + 2.6, p.z + 3], [p.x + 2, p.y + 2.2, p.z + 2.4], L.k); camera.lookAt(p.x - .6, p.y, p.z - .3); camera.fov = 42; }, [[.2, 'hand_squeeze', .5]]);
+  handCam(t, L); }, [[.2, 'hand_squeeze', .5]]);
 // 93 «Keine Sorge.»: susurra
 shot(109.35, 'Z', null, L => { zimmerK(L, { mode: 'night' }); const c = opaBed(L, { headY: -.6 }); talk(c, L.T, 109.3, 110.19, 'warm'); const h = opaHead(); cm([h.x + 2.6, h.y + 1, h.z + 3.6], [h.x + 2.2, h.y + .9, h.z + 3], L.k); camera.lookAt(h.x, h.y - .2, h.z); camera.fov = 40; }, [[0, 'breath_slow', .4]]);
 // 94 «Du wirst noch bessere Tage haben.»: los dos, desde la ventana, con la noche detrás

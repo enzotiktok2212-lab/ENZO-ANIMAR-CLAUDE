@@ -13,7 +13,7 @@ shot(44.33, 'Z', null, L => { const c = opaBench(L); cara(c, L.T, { expr: 'happy
 shot(44.96, 'W', null, L => { const c = opaBench(L, { knife: L.lt < .7 }); if (L.lt >= .7) { show(KNIFE, OB.x + 1.6, OSEAT + .3, OB.z + .4); KNIFE.rotation.z = PI / 2; }
   actuar(c, L.lt, [[0, sitPose({ aLx: 1.1, aRx: 1.2, aLz: -.25, aRz: -.3, aLe: 1.5, aRe: 1.6, headX: .35 })], [.4, sitPose({ aRx: .9, aRz: .5, aRe: .5, aLx: 1.1, aLe: 1.4, headX: -.05, headY: .3 })]], { T: L.T, weight: false }); cara(c, L.T, { expr: 'worried', mouth: 'flat' });
   const k = put(kl, OB.x + 4, 0, OB.z + 8 - L.lt * 1.5, PI + .3); actuar(k, 0, [[0, { ...walkP(L.T * .6, 0), headX: .35 }]], { T: L.T }); cara(k, L.T, { expr: 'cry', mouth: 'frown' }); k.spine.add(STAIN); STAIN.visible = true; STAIN.position.set(.15, 1.45, .6); STAIN.scale.set(1, 1.1, 1);
-  cm([OB.x - 7, 6.4, OB.z + 13], [OB.x - 6, 6, OB.z + 11.4], L.k); camera.lookAt(OB.x + 2, 3.4, OB.z + 4); camera.fov = 46; sh(OB, 16); }, [[.7, 'knife_down', .6], [.2, 'sniff', .4]]);
+  cm([OB.x - 8, 7, OB.z + 17], [OB.x - 7, 6.6, OB.z + 15.4], L.k); camera.lookAt(OB.x + 2.4, 3.4, OB.z + 4.4); camera.fov = 46; sh(OB, 16); }, [[.7, 'knife_down', .6], [.2, 'sniff', .4]]);
 // 40 «und fragte, wie mein Tag war.»: el Opa, cariñoso: «¿qué tal tu día?»
 shot(46.68, 'C', null, L => { const c = opaBench(L, { knife: false }); actuar(c, 0, [[0, sitPose({ aRx: .6, aRz: .4, aRe: .8, aLx: 1.0, aLe: 1.4, headY: .35, headX: .05 })]], { T: L.T, weight: false }); talk(c, L.T, 46.6, 48.05, 'warm');
   kidBench(L, { headX: .35 }, { stain: true }); cara(kl, L.T, { expr: 'cry', mouth: 'frown' }); onFace(c, 5.4, .2, -1.4, 40, L.k, 4.6); sh(OB, 12); }, [[0, 'birds_morning', .3]]);

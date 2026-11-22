@@ -156,7 +156,7 @@ const sitY = (c, seat) => seat + .1 - 2.05 * (c.spec.scale || 1);
 // sentado en un asiento a la altura seat
 function sit(c, x, seat, z, ry, L, pose = {}) { put(c, x, sitY(c, seat), z, ry); actuar(c, 0, [[0, sitPose(pose)]], { T: L.T, weight: false }); c.blob.visible = false; return c; }
 // tumbado en la cama del hospital (cabecero alzado): el Opa recostado mirando a +z
-function inBed(c, L, pose = {}, ry = 0) { const b = KZ.BED.position, X = KZX; put(c, X + b.x, 3.0, b.z - 2.6, ry); c.root.rotation.x = -.95; actuar(c, 0, [[0, { lLx: 1.45, lRx: 1.45, lLk: .12, lRk: .12, aLz: .12, aRz: .12, aLe: .3, aRe: .3, headX: .55, ...pose }]], { T: L.T, weight: false, breathe: true }); c.blob.visible = false; return c; }
+function inBed(c, L, pose = {}, ry = 0) { const b = KZ.BED.position, X = KZX; put(c, X + b.x, 2.57, b.z - .46, ry); c.root.rotation.x = -.5; actuar(c, 0, [[0, { lLx: 1.07, lRx: 1.07, lLk: .08, lRk: .08, aLz: .12, aRz: .12, aLe: .3, aRe: .3, headX: .18, ...pose }]], { T: L.T, weight: false, breathe: true }); c.blob.visible = false; return c; }
 // botones según la historia: el del Opa se gasta a las 55,4 s (salvo en flashbacks); el mío a las 128,1 s
 const opaBtn = (c, T, on = T < 55.4) => { c.knopfOn(on); return c; };
 const myBtn = (c, T, on = T < 128.1) => { c.knopfOn(on); return c; };

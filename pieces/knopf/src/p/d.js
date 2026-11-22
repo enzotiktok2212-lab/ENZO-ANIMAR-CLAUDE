@@ -14,7 +14,7 @@ shot(133.29, 'W', null, L => { town(L); const c = put(gr, 20 - L.lt * 9, 0, 6, -
 shot(134.65, 'S', null, L => { klinikS(L); const c = put(gr, KAX + 1, 0, 10 - L.lt * 12, PI); myBtn(c, L.T); actuar(c, 0, [[0, runP(L.T, 0)]], { T: L.T }); c.root.position.y = Math.abs(Math.sin(L.T * 13)) * .3; cara(c, L.T, { expr: 'determined', mouth: 'o' });
   cm([KAX + 8, 4, 22], [KAX + 7, 4, 18], L.k); camera.lookAt(KAX + 1, 4, 4 - L.lt * 12); camera.fov = 44; sh(V(KAX, 0, 0), 24); }, [[0, 'run_steps', .6], [.5, 'door_whoosh', .5]]);
 // 114 «und umarmte ihn.»: me echo sobre la cama y lo abrazo
-shot(135.39, 'I', null, L => { zimmerK(L, { mode: 'day' }); const c = opaBed(L, { aRx: 1.6, aLx: 1.6, aRe: 1.2, aLe: 1.2, aRz: -.3, aLz: -.3 }); cara(c, L.T, { expr: 'shock', mouth: 'o' }); const t = put(gr, KZX + 2.8, 0, -4.6, -PI / 2); myBtn(t, L.T); actuar(t, 0, [[0, { lean: .75, aLx: 1.7, aRx: 1.7, aLz: -.35, aRz: -.35, aLe: 1.1, aRe: 1.1, headX: .3, headY: .3 }]], { T: L.T }); cara(t, L.T, { expr: 'cry', eyes: 'closed', mouth: 'smile' });
+shot(135.39, 'I', null, L => { zimmerK(L, { mode: 'day' }); const c = opaBed(L, { aRx: 1.6, aLx: 1.6, aRe: 1.2, aLe: 1.2, aRz: -.3, aLz: -.3 }); cara(c, L.T, { expr: 'shock', mouth: 'o' }); const t = put(gr, KZX + 4.9, 0, -4.2, -PI / 2); myBtn(t, L.T); actuar(t, 0, [[0, { lean: .75, aLx: 1.7, aRx: 1.7, aLz: -.35, aRz: -.35, aLe: 1.1, aRe: 1.1, headX: .3, headY: .3 }]], { T: L.T }); cara(t, L.T, { expr: 'cry', eyes: 'closed', mouth: 'smile' });
   cm([KZX + 4, 8, 6], [KZX + 3.4, 7.6, 4.6], L.k); camera.lookAt(KZX + .6, 5.4, -4.6); camera.fov = 44; }, [[0, 'hug', .6], [.3, 'sheet_rustle', .4]]);
 // 115 «Er lachte.»: el Opa se ríe con todo el cuerpo
 shot(136.59, 'C', null, L => { zimmerK(L, { mode: 'day' }); const c = opaBed(L, { aRx: 1.2, aRe: 1, headX: .3 + Math.sin(L.T * 18) * .06 }); laughF(c, L.T); const h = opaHead(); cm([h.x + 2, h.y + 1.2, h.z + 4.6], [h.x + 1.6, h.y + 1, h.z + 3.8], L.k); camera.lookAt(h.x, h.y - .3, h.z); camera.fov = 40; }, [[0, 'laugh_old', .7]]);
@@ -53,7 +53,7 @@ shot(154.91, 'S', null, L => { zimmerK(L, { mode: 'night' }); const c = opaBed(L
 // 127 «Wie war dein Tag, Großer?»
 shot(155.73, 'Z', null, L => { zimmerK(L, { mode: 'night' }); const c = opaBed(L, { headY: -.6 }); talk(c, L.T, 155.7, 156.84, 'warm'); const h = opaHead(); cm([h.x + 1.8, h.y + 1, h.z + 3.6], [h.x + 1.5, h.y + .9, h.z + 3], L.k); camera.lookAt(h.x, h.y - .2, h.z); camera.fov = 40; }, [[0, 'monitor_beep', .3]]);
 // 128 «Ich hielt seine Hand.»
-shot(156.84, 'W', null, L => { zimmerK(L, { mode: 'night' }); opaBed(L, { aRx: 1.1, aRz: -.5, aRe: .3 }); const t = teenChair(L, handPose); const p = wpos(t.aL.hand); cm([p.x + 2.2, p.y + 2.4, p.z + 2.6], [p.x + 1.8, p.y + 2, p.z + 2.2], L.k); camera.lookAt(p.x - .6, p.y, p.z - .3); camera.fov = 42; }, [[0, 'hand_squeeze', .4]]);
+shot(156.84, 'W', null, L => { zimmerK(L, { mode: 'night' }); opaBed(L, { aRx: 1.1, aRz: -.5, aRe: .3 }); const t = teenChair(L, handPose); handCam(t, L); }, [[0, 'hand_squeeze', .4]]);
 // 129 «Er war wunderschön, Opa.»: sonrío entre lágrimas
 shot(157.84, 'C', null, L => { zimmerK(L, { mode: 'night' }); opaBed(L); const t = teenChair(L, handPose); talk(t, L.T, 157.8, 159.19, 'happy', { eyes: 'happy' }); tears(t, L.T); onFace(t, 4.2, .1, .6, 40, L.k, 3.6); }, [[0, 'sniff', .3]]);
 // 130 «Der beste Tag, den ich je hatte.»: «BESTER TAG»
@@ -88,7 +88,7 @@ shot(173.68, 'R', null, L => { opaS(L); night(30); grade.uniforms.sepia.value = 
 // 143 «Und ich wollte dir auch einen guten Tag schenken.»
 shot(175.49, 'W', null, L => { zimmerK(L, { mode: 'night' }); opaBed(L, { headY: -.6 }); cara(opaH, L.T, { expr: 'cry', mouth: 'frown' }); const t = teenChair(L, handPose); talk(t, L.T, 175.4, 177.43, 'happy'); tears(t, L.T); onFace(t, 5, .2, -.8, 40, L.k, 4.2); }, [[0, 'music_swell', .3]]);
 // 144 «Opa drückte meine Hand und flüsterte:»
-shot(177.43, 'S', null, L => { zimmerK(L, { mode: 'night' }); opaBed(L, { aRx: 1.1, aRz: -.5, aRe: .3 + Math.max(0, Math.sin(L.lt * 6)) * .2 }); const t = teenChair(L, handPose); const p = wpos(t.aL.hand); cm([p.x + 2.8, p.y + 2.2, p.z + 2.6], [p.x + 2.2, p.y + 1.8, p.z + 2.1], L.k); camera.lookAt(p.x - .6, p.y, p.z - .3); camera.fov = 42; }, [[.3, 'hand_squeeze', .5]]);
+shot(177.43, 'S', null, L => { zimmerK(L, { mode: 'night' }); opaBed(L, { aRx: 1.1, aRz: -.5, aRe: .3 + Math.max(0, Math.sin(L.lt * 6)) * .2 }); const t = teenChair(L, handPose); handCam(t, L); }, [[.3, 'hand_squeeze', .5]]);
 // 145 «Das hättest du nicht tun müssen.»
 shot(179.09, 'Z', null, L => { zimmerK(L, { mode: 'night' }); const c = opaBed(L, { headY: -.6, headX: .2 }); talk(c, L.T, 179, 180.83, 'cry'); tears(c, L.T); const h = opaHead(); cm([h.x + 2, h.y + .9, h.z + 3.2], [h.x + 1.7, h.y + .8, h.z + 2.7], L.k); camera.lookAt(h.x, h.y - .2, h.z); camera.fov = 38; }, [[0, 'breath_slow', .3]]);
 // 146 «Ich weiß.»
