@@ -39,6 +39,8 @@ Orden cronológico. Dur = duración de la voz recortada (s). RPM según lo que c
 
 | 31 | `adrian` | «In dieser Stadt heißt jeder Adrian» — el único que no se llama Adrian (Müller, apodo «Niemand») desenmascara al ladrón Detlef | 134 | — (comedia/misterio) | guion fiel al original sin añadir nada que no estuviera; etiquetas de tono de ElevenLabs v3 por frase; supermuestreo ×1,5 + bordes gruesos (personajes 3, escenarios 2,2) + adoquín fino; extras con placa «HALLO, ich heiße …»; 109 planos (~1,2 s); portadas con otro escenario, otras tipografías (Luckiest Guy / Lilita One), pegatinas 2D, círculo rojo ajustado solo al protagonista y personajes alrededor bien visibles |
 
+| 32 | `flaschen` | «In dieser Stadt sitzt jeder auf einer Flasche. Und niemand hat mir je gesagt, warum.» — sin sillas, botellas = tapones de algo encerrado hace 300 años | — | — | ⏳ **PENDIENTE**: guion listo, falta voz y producción (`pieces/flaschen/PENDIENTE.md`) |
+
 \* `traumsammler` tiene `words.json` parcial; el vídeo final era más largo.
 
 ## Patrones que funcionan (de los análisis «por qué se hizo viral»)
