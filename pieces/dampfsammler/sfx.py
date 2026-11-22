@@ -439,7 +439,7 @@ LIB['guitar'] = (lambda s, c: norm(np.tanh(6 * sum(saw(f * (1 + .003 * i), 1.0) 
 LIB['net'] = (lambda s, c: norm(hp(noise(.5, s), 1800) * adsr(.5, .02, .35) + lp(noise(.5, s + 1), 200) * env(.5, .002, .12) * 1.5), .5)
 LIB['record_scratch'] = (lambda s, c: norm(svf_bp(noise(.5, s), glide(2400, 300, .5, .6), 3) * adsr(.5, .01, .15)), .55)
 
-for _a, _b in [('ambience_low','wind'),('boing','spring'),('box_drop','thud'),('camera_beep','pling'),('creak','wood_creak'),('cuffs','click_metal'),('dough','slap'),('engine','wheels'),('fake_sneeze','cough'),('inhale','sigh'),('scan','zap'),('shout_f','shout_m'),('siren_short','alarm_soft'),('train_bell','bell_far'),('typing','ticks'),('water','splash')]:
+for _a, _b in [('bass_hit','boom'),('drum_roll','ticks'),('power_down','hum_low'),('tsk','click_metal'),('ambience_low','wind'),('boing','spring'),('box_drop','thud'),('camera_beep','pling'),('creak','wood_creak'),('cuffs','click_metal'),('dough','slap'),('engine','wheels'),('fake_sneeze','cough'),('inhale','sigh'),('scan','zap'),('shout_f','shout_m'),('siren_short','alarm_soft'),('train_bell','bell_far'),('typing','ticks'),('water','splash')]:
     if _a not in LIB and _b in LIB: LIB[_a] = LIB[_b]
 
 def render(cues, dur):

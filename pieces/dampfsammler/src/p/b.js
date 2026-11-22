@@ -29,7 +29,7 @@ shot(39.00, 'R', null, L => { arena(L); show(DESK, AX, 0, 4, 0); show(CHAIR, KDP
   SMK.haze(V(AX, 5, 7), L.T, 8, 4, 2, 2, 4, .22, 53);
   cm([AX + 7, 8, 14], [AX + 6, 7.6, 12.5], L.k); camera.lookAt(AX, 3.4, KDP.z); camera.fov = 44; sh(KDP, 22); }, [[0, 'chair_roll', .6], [.5, 'murmur', .45]]);
 // 31 «Deshalb ist Dampfen seitdem»: un operario atornilla un cartel nuevo «DAMPFEN VERBOTEN» en la plaza
-shot(40.17, 'S', null, L => { town(L); const w = put(EX[11], 12.6, 0, -6.4, -PI / 2 - .2); actuar(w, 0, [[0, { aRx: 2.0 + Math.sin(L.T * 14) * .15, aRz: -.2, aRe: .6, aLx: 1.8, aLz: -.3, aLe: .7, headX: -.25 }]], { T: L.T }); cara(w, L.T, { expr: 'determined', mouth: 'flat' });
+shot(40.17, 'S', null, L => { town(L); const w = put(EX[11], 12.4, 0, -5.6, .25); actuar(w, 0, [[0, { aRx: 2.0 + Math.sin(L.T * 14) * .15, aRz: -.2, aRe: .6, aLx: 1.8, aLz: -.3, aLe: .7, headX: -.25 }]], { T: L.T }); cara(w, L.T, { expr: 'determined', mouth: 'flat' });
   crowdAt(L, 10, -6, 5, 7, 13, 17, { mode: 'look', expr: 'worried', face: V(10, 6, -6) });
   cm([17, 6, 6], [16, 6.2, 5], L.k); camera.lookAt(11.5, 5.4, -6); camera.fov = 44; sh(V(10, 0, -4), 18); }, [[0, 'ratchet', .55], [.6, 'hammer', .45]]);
 // 32 «verboten. Überall hängen»: travelling por la calle: cartel tras cartel en farolas y fachadas
@@ -48,8 +48,8 @@ shot(45.20, 'S', null, L => { clubS(L, { clean: true }); const a = put(EX[12], C
   clubCrowd(L, { mode: 'dance', from: 14 });
   cm([CX + 8, 6.4, 18], [CX + 7.4, 6.2, 16.5], L.k); camera.lookAt(CX + 5.4, 4.2, 5.6); camera.fov = 42; sh(V(CX + 5, 0, 6), 16); }, [[.35, 'slap', .45], [.7, 'tsk', .4]]);
 // 36 «war seltsam. Der DJ»: yo delante de la columna, mirando los tres carteles VERMISST, pensativo
-shot(46.48, 'I', null, L => { town(L, { dusk: true }); show(LITF, LIT.x, 0, LIT.z, -.3); const m = put(ich, LIT.x - 1, 0, LIT.z + 7, PI - .1); actuar(m, 0, [[0, { aRx: 1.6, aRz: -.1, aRe: 2.1, aLx: .9, aLz: .1, aLe: 1.5, headX: -.15, headY: .2 }]], { T: L.T }); cara(m, L.T, { expr: 'think', eyes: 'up', mouth: 'wavy' });
-  cm([LIT.x + 8, 7, LIT.z + 15], [LIT.x + 7.4, 6.8, LIT.z + 13.6], L.k); camera.lookAt(LIT.x - .6, 5.6, LIT.z + 5); camera.fov = 46; sh(LIT, 18); }, [[0, 'hmm', .45], [.4, 'creepy_ting', .35]]);
+shot(46.48, 'I', null, L => { town(L, { dusk: true }); show(LITF, LIT.x, 0, LIT.z, -.3); const m = put(ich, LIT.x - 4, 0, LIT.z + 9, -PI + .7); actuar(m, 0, [[0, { aRx: 1.6, aRz: -.1, aRe: 2.1, aLx: .9, aLz: .1, aLe: 1.5, headX: -.15, headY: .2 }]], { T: L.T }); cara(m, L.T, { expr: 'think', eyes: 'up', mouth: 'wavy' });
+  cm([LIT.x - 12, 7, LIT.z + 21], [LIT.x - 11, 6.8, LIT.z + 20], L.k); camera.lookAt(LIT.x - 3.6, 5.2, LIT.z + 8); camera.fov = 46; sh(LIT, 18); }, [[0, 'hmm', .45], [.4, 'creepy_ting', .35]]);
 // 37 «war der beste der Stadt.»: recuerdo: DJ Blitz con su trofeo, lluvia de confeti en el club
 shot(47.85, 'C', null, L => { clubS(L); const d = put(dj, DJP.x, DJP.y, DJP.z + 2.6, 0); attach(TROPHY, d.aR.hand, [0, -.5, .4], [0, 0, 0], .8); actuar(d, 0, [[0, { aRx: 2.9, aRz: .2, aRe: .1, aLx: 1.6, aLz: .5, aLe: .8 }]], { T: L.T }); grin(d, L.T); confRain(V(DJP.x, DJP.y, DJP.z + 2), L.T, 60, 14, 8, 14);
   orbit(V(DJP.x, DJP.y + 4.6, DJP.z + 2.6), 13, -.2, -.02, 42); badge('gold', 'BESTER DJ', W / 2, H * .15, clamp(L.lt / .15), 1, .9); grade.uniforms.sepia.value = .18; sh(DJP, 16); }, [[0, 'confetti', .5], [.2, 'cheer', .4]]);
@@ -59,7 +59,7 @@ shot(49.22, 'W', null, L => { town(L); const r = put(rocco, RKP.x, RKP.y, RKP.z,
   orbit(V(RKP.x, RKP.y + 4.4, RKP.z), 12.5, .25, .0, 42); grade.uniforms.sepia.value = .18; sh(RSP, 16); }, [[0, 'pling', .5], [.4, 'clap', .45]]);
 // 39 «jeden Rekord gebrochen.»: el marcador: REKORD tras REKORD, y explota de confeti
 shot(50.36, 'Z', null, L => { town(L); RS.drawScore(String(Math.floor(lerp(60, 99, clamp(L.lt / 1)))), 'REKORD!'); confetti(V(RSP.x + 6, 6, RSP.z - 1), L.t0 + .4, L.T, 50, .8); const r = put(rocco, RKP.x, RKP.y, RKP.z, .5); actuar(r, 0, [[0, { aLx: 2.8, aRx: 2.8, aLz: .4, aRz: .4 }]], { T: L.T }); laughF(r, L.T);
-  cm([RSP.x + 6, 9.5, RSP.z + 16], [RSP.x + 6.5, 9.4, RSP.z + 14], L.k); camera.lookAt(RSP.x + 7, 7.4, RSP.z - 1.6); camera.fov = 46; grade.uniforms.sepia.value = .18; sh(RSP, 20); }, [[0, 'beep', .45], [.4, 'party_horn', .45]]);
+  cm([RSP.x + 7, 9, RSP.z + 12], [RSP.x + 7.5, 9, RSP.z + 10.5], L.k); camera.lookAt(RSP.x + 11.8, 8.2, RSP.z - 2); camera.fov = 46; grade.uniforms.sepia.value = .18; sh(RSP, 20); }, [[0, 'beep', .45], [.4, 'party_horn', .45]]);
 // 40 «Und der Gamer war unschlagbar.»: recuerdo: Kai levanta el trofeo; en la pantalla gigante «UNSCHLAGBAR»
 shot(51.72, 'F', null, L => { arena(L); const k = put(kai, AX, 0, 4, 0); attach(TROPHY, k.aR.hand, [0, -.5, .4], [0, 0, 0], .8); actuar(k, 0, [[0, { aRx: 2.9, aRz: .2, aRe: .1, aLx: 2.6, aLz: .4, aLe: .4 }]], { T: L.T }); laughF(k, L.T); confRain(V(AX, 0, 4), L.T, 60, 14, 10, 14);
   orbit(V(AX, 4.2, 4), lerp(13, 11.5, L.k), .2, .02, 44); badge('gold', 'UNSCHLAGBAR', W / 2, H * .15, clamp(L.lt / .15), 1, .9); grade.uniforms.sepia.value = .18; sh(V(AX, 0, 4), 18); }, [[0, 'cheer', .5], [.3, 'confetti', .4]]);

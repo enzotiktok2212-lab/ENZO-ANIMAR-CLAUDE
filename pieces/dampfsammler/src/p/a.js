@@ -57,8 +57,8 @@ shot(15.44, 'F', null, L => { clubS(L); djPlay(L, { pose: { aRx: 1.0, aRz: -.1, 
 shot(16.75, 'S', null, L => { clubS(L); const d = put(dj, DJP.x, DJP.y, DJP.z, 0); vaper(d, L, 17.32, 1.0, { expr: 'smug', exh: 1.6, pow: 8, size: 2.2, n: 90 });
   onFace(d, 5.2, .2, .6, 40, L.k, 4.4); sh(DJP, 14); }, [[.4, 'cloth', .35], [.6, 'vape_in', .7]]);
 // 15 «aus: Pfffffff!»: desde la pista: una nube gigante sale del escenario y tapa las luces
-shot(18.38, 'C', 'punch', L => { clubS(L); const d = put(dj, DJP.x, DJP.y, DJP.z, 0); vaper(d, L, 17.32, 1.0, { expr: 'smug', exh: 1.6, pow: 9, size: 2.6, n: 100, dens: .95, life: 3.6 }); clubCrowd(L, { mode: 'shock' });
-  cm([CX + 4, 15, 12], [CX + 3, 15.5, 9], L.k); camera.lookAt(CX, 7, -18); camera.fov = 48; sh(DJP, 30); }, [[.05, 'vape_out', .8], [.3, 'murmur', .4]]);
+shot(18.38, 'C', 'punch', L => { clubS(L); const d = put(dj, DJP.x, DJP.y, DJP.z, 0); vaper(d, L, 17.32, 1.0, { expr: 'smug', exh: 1.6, pow: 11, size: 3.2, n: 120, dens: 1, life: 3.6, dirUp: .3 }); clubCrowd(L, { mode: 'shock' });
+  cm([CX + 4, 13, 2], [CX + 3, 13, 0], L.k); camera.lookAt(CX, 8, -18); camera.fov = 48; sh(DJP, 30); }, [[.05, 'vape_out', .8], [.3, 'murmur', .4]]);
 // 16 «Das Licht ging aus. Und als»: apagón: solo la nube iluminada por dos ojos cian y el aura detrás del DJ
 shot(19.48, 'I', 'slow', L => { const off = clamp((L.T - 19.62) / .15); clubS(L, { off }); const d = put(dj, DJP.x, DJP.y, DJP.z, 0); actuar(d, 0, [[0, { ...GEST.shock, headY: .5 }]], { T: L.T }); cara(d, L.T, { expr: 'shock', eyes: 'side_l', mouth: 'o' });
   SMK.haze(V(DJP.x, DJP.y + 6, DJP.z - 2), L.T, 22, 6, 3, 2, 5, .5, 41); if (L.T > 19.9) { samAt(L, DJP.x - .4, DJP.z - 3.0, 0, { reach: 1, grab: L.T > 20.3, aura: 1 }); sam.root.position.y = DJP.y; }

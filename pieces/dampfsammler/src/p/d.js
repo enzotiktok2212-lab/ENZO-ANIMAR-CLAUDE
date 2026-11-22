@@ -7,7 +7,7 @@ const holdOld = b => { b.aR.hand.add(OLDV); OLDV.visible = true; OLDV.position.s
 
 // 70 «Plötzlich hörte ich etwas unten im»: me giro hacia la puerta; por debajo sale una luz cian
 shot(94.35, 'F', null, L => { cuartoS(L); const m = put(ich, ZX + 10, 0, 2, 1.2); actuar(m, 0, [[0, { headY: .6, aLx: .3, aRx: .3, lean: -.05 }]], { T: L.T }); cara(m, L.T, { expr: 'worried', eyes: 'side_r' });
-  FILL.color.setRGB(.6, .9, 1); cm([ZX + 3, 7.4, 13], [ZX + 4, 7.2, 12], L.k); camera.lookAt(ZX + 14, 5, 3); camera.fov = 46; sh(V(ZX + 12, 0, 3), 16); }, [[0, 'thud', .45], [.6, 'creepy_ting', .4]]);
+  FILL.color.setRGB(.6, .9, 1); cm([ZX + 4, 7, 15], [ZX + 4.6, 6.8, 14], L.k); camera.lookAt(ZX + 11.5, 4.6, 2.5); camera.fov = 46; sh(V(ZX + 12, 0, 3), 16); }, [[0, 'thud', .45], [.6, 'creepy_ting', .4]]);
 // 71 «Keller. Ich stürmte hinunter.»: bajo la escalera del sótano a toda velocidad
 shot(95.67, 'W', null, L => { kellerS(L); const k = clamp(L.lt / 1.3), step = lerp(11, 2, k); const z = 6 - step * 1.3, y = .95 + step * .75;
   const m = put(ich, KX + 17.5, y + Math.abs(Math.sin(L.T * 16)) * .2, z, 0); actuar(m, 0, [[0, { ...walkP(L.T * 1.7, 0), aLx: 1.0, aRx: -.7, lean: .15 }]], { T: L.T }); cara(m, L.T, { expr: 'determined', mouth: 'grimace' });
@@ -23,7 +23,7 @@ shot(99.67, 'C', 'punch', L => { kellerS(L, { off: .35 }); const b = bruAt(L, .7
   const v = wpos(OLDV); cm([v.x + Math.sin(.7) * 3.4, v.y + 1, v.z + Math.cos(.7) * 3.4], [v.x + Math.sin(.7) * 3.0, v.y + .9, v.z + Math.cos(.7) * 3.0], L.k); camera.lookAt(v.x, v.y + .6, v.z); camera.fov = 40; sh(BRP, 12); }, [[0, 'pling', .45]]);
 // 75 «neben der riesigen Maschine.»: plano bajo: mi hermano diminuto al lado de la máquina gigante
 shot(101.02, 'R', null, L => { kellerS(L, { off: .35 }); MACH.userData.setPower(.8); const b = bruAt(L, .7, { aRx: 1.3, aRe: .9, headX: -.3, headY: .5 }, { expr: 'happy', eyes: 'up' }); holdOld(b);
-  cm([KX + 3, 1.4, 10], [KX + 2, 1.8, 9], L.k); camera.lookAt(KX - 3, 7, -3); camera.fov = 52; sh(MP, 22); }, [[0, 'machine_hum', .5], [.6, 'metal_creak', .35]]);
+  cm([KX + 1, 2.2, 11], [KX + .5, 2.4, 10], L.k); camera.lookAt(KX - 6, 5, -1); camera.fov = 52; sh(MP, 22); }, [[0, 'machine_hum', .5], [.6, 'metal_creak', .35]]);
 // 76 «Bevor ich ihn aufhalten konnte,»: corro hacia él con el brazo extendido: «NEIN!»
 shot(102.53, 'W', null, L => { kellerS(L, { off: .35 }); const k = clamp(L.lt / 1.4); const m = put(ich, lerp(MEP.x, MEP.x - 3, k), Math.abs(Math.sin(L.T * 14)) * .18, lerp(MEP.z, MEP.z - 3, k), -2.4);
   actuar(m, 0, [[0, { ...walkP(L.T * 1.5, 0), aRx: 1.7, aRz: .1, aRe: .1, lean: .2 }]], { T: L.T }); cara(m, L.T, { expr: 'shout', mouth: 'scream' }); bubble(m, 'NEIN!', clamp((L.lt - .2) / .1), 1.4);

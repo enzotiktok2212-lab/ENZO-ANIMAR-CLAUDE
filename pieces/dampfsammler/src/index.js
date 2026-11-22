@@ -191,7 +191,7 @@ function vaper(ch, L, t0, inh, o = {}) { if (!o.bg) FACES.push(ch); const lt = L
   actuar(ch, 0, [[0, pose]], { T: L.T, extra: o.extra }); ch.aR.sh.rotation.y = av.aRy;
   const v = o.vape || VP.get(ch); if (!o.noVape) { v.visible = true; if (v.userData.grip) v.userData.grip.visible = true; v.userData.setGlow(ph.ph === 'inh' ? .7 + Math.sin(L.T * 30) * .1 : .08); }
   const ex = o.expr || 'neutral'; cara(ch, L.T, { expr: ex, mouth: ph.ph === 'done' ? (o.after || 'smile') : ph.mouth, ...(ph.eyes && !o.eyes ? { eyes: ph.eyes } : {}), ...(o.eyes ? { eyes: o.eyes } : {}) });
-  if (lt > ph.t3) { const m = mouthW(ch), d = smokeDir(ch, .3 + (o.dirUp || 0)); SMK.puff(m, d, L.T, t0 + ph.t3, ph.t4 - ph.t3, { pow: o.pow ?? 4.2 + inh * .5, size: o.size ?? (.7 + Math.min(inh, 10) * .12), n: o.n ?? Math.round(30 + Math.min(inh, 10) * 6), dens: o.dens ?? .85, seed: ch.seed + Math.round(t0 * 10), life: o.life ?? 3 }); }
+  if (lt > ph.t3) { const m = mouthW(ch), d = smokeDir(ch, .3 + (o.dirUp || 0)); SMK.puff(m, d, L.T, t0 + ph.t3, ph.t4 - ph.t3, { pow: o.pow ?? 4.2 + inh * .5, size: o.size ?? (.7 + Math.min(inh, 10) * .12), n: o.n ?? Math.round(30 + Math.min(inh, 10) * 6), dens: o.dens ?? .85, seed: ch.seed + Math.round(t0 * 10), life: o.life ?? 3 }); } if (lt > ph.t3 && !o.bg) { const m2 = mouthW(ch), d2 = smokeDir(ch, .45 + (o.dirUp || 0)); SMK.puff(m2.clone().addScaledVector(d2, 1.6), d2, L.T, t0 + ph.t3 + .08, ph.t4 - ph.t3, { pow: 3.2, size: (o.size ?? 1.2) * 1.7, n: 46, dens: .62, up: .7, spread: .55, seed: ch.seed + 7, life: 3.2 }); }
   return ph; }
 // vapea en bucle (gente de fondo): calada corta y nube cada pocos segundos, desfasado por personaje
 function vapeLoop(ch, L, i = 0, o = {}) { const per = o.per ?? 4.2, inh = o.inh ?? (1 + (i % 3) * .5), off = (i * 1.37) % per; const t0 = Math.floor((L.T + off) / per) * per - off;
@@ -354,8 +354,8 @@ shot(15.44, 'F', null, L => { clubS(L); djPlay(L, { pose: { aRx: 1.0, aRz: -.1, 
 shot(16.75, 'S', null, L => { clubS(L); const d = put(dj, DJP.x, DJP.y, DJP.z, 0); vaper(d, L, 17.32, 1.0, { expr: 'smug', exh: 1.6, pow: 8, size: 2.2, n: 90 });
   onFace(d, 5.2, .2, .6, 40, L.k, 4.4); sh(DJP, 14); }, [[.4, 'cloth', .35], [.6, 'vape_in', .7]]);
 // 15 «aus: Pfffffff!»: desde la pista: una nube gigante sale del escenario y tapa las luces
-shot(18.38, 'C', 'punch', L => { clubS(L); const d = put(dj, DJP.x, DJP.y, DJP.z, 0); vaper(d, L, 17.32, 1.0, { expr: 'smug', exh: 1.6, pow: 9, size: 2.6, n: 100, dens: .95, life: 3.6 }); clubCrowd(L, { mode: 'shock' });
-  cm([CX + 4, 15, 12], [CX + 3, 15.5, 9], L.k); camera.lookAt(CX, 7, -18); camera.fov = 48; sh(DJP, 30); }, [[.05, 'vape_out', .8], [.3, 'murmur', .4]]);
+shot(18.38, 'C', 'punch', L => { clubS(L); const d = put(dj, DJP.x, DJP.y, DJP.z, 0); vaper(d, L, 17.32, 1.0, { expr: 'smug', exh: 1.6, pow: 11, size: 3.2, n: 120, dens: 1, life: 3.6, dirUp: .3 }); clubCrowd(L, { mode: 'shock' });
+  cm([CX + 4, 13, 2], [CX + 3, 13, 0], L.k); camera.lookAt(CX, 8, -18); camera.fov = 48; sh(DJP, 30); }, [[.05, 'vape_out', .8], [.3, 'murmur', .4]]);
 // 16 «Das Licht ging aus. Und als»: apagón: solo la nube iluminada por dos ojos cian y el aura detrás del DJ
 shot(19.48, 'I', 'slow', L => { const off = clamp((L.T - 19.62) / .15); clubS(L, { off }); const d = put(dj, DJP.x, DJP.y, DJP.z, 0); actuar(d, 0, [[0, { ...GEST.shock, headY: .5 }]], { T: L.T }); cara(d, L.T, { expr: 'shock', eyes: 'side_l', mouth: 'o' });
   SMK.haze(V(DJP.x, DJP.y + 6, DJP.z - 2), L.T, 22, 6, 3, 2, 5, .5, 41); if (L.T > 19.9) { samAt(L, DJP.x - .4, DJP.z - 3.0, 0, { reach: 1, grab: L.T > 20.3, aura: 1 }); sam.root.position.y = DJP.y; }
@@ -416,7 +416,7 @@ shot(39.00, 'R', null, L => { arena(L); show(DESK, AX, 0, 4, 0); show(CHAIR, KDP
   SMK.haze(V(AX, 5, 7), L.T, 8, 4, 2, 2, 4, .22, 53);
   cm([AX + 7, 8, 14], [AX + 6, 7.6, 12.5], L.k); camera.lookAt(AX, 3.4, KDP.z); camera.fov = 44; sh(KDP, 22); }, [[0, 'chair_roll', .6], [.5, 'murmur', .45]]);
 // 31 «Deshalb ist Dampfen seitdem»: un operario atornilla un cartel nuevo «DAMPFEN VERBOTEN» en la plaza
-shot(40.17, 'S', null, L => { town(L); const w = put(EX[11], 12.6, 0, -6.4, -PI / 2 - .2); actuar(w, 0, [[0, { aRx: 2.0 + Math.sin(L.T * 14) * .15, aRz: -.2, aRe: .6, aLx: 1.8, aLz: -.3, aLe: .7, headX: -.25 }]], { T: L.T }); cara(w, L.T, { expr: 'determined', mouth: 'flat' });
+shot(40.17, 'S', null, L => { town(L); const w = put(EX[11], 12.4, 0, -5.6, .25); actuar(w, 0, [[0, { aRx: 2.0 + Math.sin(L.T * 14) * .15, aRz: -.2, aRe: .6, aLx: 1.8, aLz: -.3, aLe: .7, headX: -.25 }]], { T: L.T }); cara(w, L.T, { expr: 'determined', mouth: 'flat' });
   crowdAt(L, 10, -6, 5, 7, 13, 17, { mode: 'look', expr: 'worried', face: V(10, 6, -6) });
   cm([17, 6, 6], [16, 6.2, 5], L.k); camera.lookAt(11.5, 5.4, -6); camera.fov = 44; sh(V(10, 0, -4), 18); }, [[0, 'ratchet', .55], [.6, 'hammer', .45]]);
 // 32 «verboten. Überall hängen»: travelling por la calle: cartel tras cartel en farolas y fachadas
@@ -435,8 +435,8 @@ shot(45.20, 'S', null, L => { clubS(L, { clean: true }); const a = put(EX[12], C
   clubCrowd(L, { mode: 'dance', from: 14 });
   cm([CX + 8, 6.4, 18], [CX + 7.4, 6.2, 16.5], L.k); camera.lookAt(CX + 5.4, 4.2, 5.6); camera.fov = 42; sh(V(CX + 5, 0, 6), 16); }, [[.35, 'slap', .45], [.7, 'tsk', .4]]);
 // 36 «war seltsam. Der DJ»: yo delante de la columna, mirando los tres carteles VERMISST, pensativo
-shot(46.48, 'I', null, L => { town(L, { dusk: true }); show(LITF, LIT.x, 0, LIT.z, -.3); const m = put(ich, LIT.x - 1, 0, LIT.z + 7, PI - .1); actuar(m, 0, [[0, { aRx: 1.6, aRz: -.1, aRe: 2.1, aLx: .9, aLz: .1, aLe: 1.5, headX: -.15, headY: .2 }]], { T: L.T }); cara(m, L.T, { expr: 'think', eyes: 'up', mouth: 'wavy' });
-  cm([LIT.x + 8, 7, LIT.z + 15], [LIT.x + 7.4, 6.8, LIT.z + 13.6], L.k); camera.lookAt(LIT.x - .6, 5.6, LIT.z + 5); camera.fov = 46; sh(LIT, 18); }, [[0, 'hmm', .45], [.4, 'creepy_ting', .35]]);
+shot(46.48, 'I', null, L => { town(L, { dusk: true }); show(LITF, LIT.x, 0, LIT.z, -.3); const m = put(ich, LIT.x - 4, 0, LIT.z + 9, -PI + .7); actuar(m, 0, [[0, { aRx: 1.6, aRz: -.1, aRe: 2.1, aLx: .9, aLz: .1, aLe: 1.5, headX: -.15, headY: .2 }]], { T: L.T }); cara(m, L.T, { expr: 'think', eyes: 'up', mouth: 'wavy' });
+  cm([LIT.x - 12, 7, LIT.z + 21], [LIT.x - 11, 6.8, LIT.z + 20], L.k); camera.lookAt(LIT.x - 3.6, 5.2, LIT.z + 8); camera.fov = 46; sh(LIT, 18); }, [[0, 'hmm', .45], [.4, 'creepy_ting', .35]]);
 // 37 «war der beste der Stadt.»: recuerdo: DJ Blitz con su trofeo, lluvia de confeti en el club
 shot(47.85, 'C', null, L => { clubS(L); const d = put(dj, DJP.x, DJP.y, DJP.z + 2.6, 0); attach(TROPHY, d.aR.hand, [0, -.5, .4], [0, 0, 0], .8); actuar(d, 0, [[0, { aRx: 2.9, aRz: .2, aRe: .1, aLx: 1.6, aLz: .5, aLe: .8 }]], { T: L.T }); grin(d, L.T); confRain(V(DJP.x, DJP.y, DJP.z + 2), L.T, 60, 14, 8, 14);
   orbit(V(DJP.x, DJP.y + 4.6, DJP.z + 2.6), 13, -.2, -.02, 42); badge('gold', 'BESTER DJ', W / 2, H * .15, clamp(L.lt / .15), 1, .9); grade.uniforms.sepia.value = .18; sh(DJP, 16); }, [[0, 'confetti', .5], [.2, 'cheer', .4]]);
@@ -446,7 +446,7 @@ shot(49.22, 'W', null, L => { town(L); const r = put(rocco, RKP.x, RKP.y, RKP.z,
   orbit(V(RKP.x, RKP.y + 4.4, RKP.z), 12.5, .25, .0, 42); grade.uniforms.sepia.value = .18; sh(RSP, 16); }, [[0, 'pling', .5], [.4, 'clap', .45]]);
 // 39 «jeden Rekord gebrochen.»: el marcador: REKORD tras REKORD, y explota de confeti
 shot(50.36, 'Z', null, L => { town(L); RS.drawScore(String(Math.floor(lerp(60, 99, clamp(L.lt / 1)))), 'REKORD!'); confetti(V(RSP.x + 6, 6, RSP.z - 1), L.t0 + .4, L.T, 50, .8); const r = put(rocco, RKP.x, RKP.y, RKP.z, .5); actuar(r, 0, [[0, { aLx: 2.8, aRx: 2.8, aLz: .4, aRz: .4 }]], { T: L.T }); laughF(r, L.T);
-  cm([RSP.x + 6, 9.5, RSP.z + 16], [RSP.x + 6.5, 9.4, RSP.z + 14], L.k); camera.lookAt(RSP.x + 7, 7.4, RSP.z - 1.6); camera.fov = 46; grade.uniforms.sepia.value = .18; sh(RSP, 20); }, [[0, 'beep', .45], [.4, 'party_horn', .45]]);
+  cm([RSP.x + 7, 9, RSP.z + 12], [RSP.x + 7.5, 9, RSP.z + 10.5], L.k); camera.lookAt(RSP.x + 11.8, 8.2, RSP.z - 2); camera.fov = 46; grade.uniforms.sepia.value = .18; sh(RSP, 20); }, [[0, 'beep', .45], [.4, 'party_horn', .45]]);
 // 40 «Und der Gamer war unschlagbar.»: recuerdo: Kai levanta el trofeo; en la pantalla gigante «UNSCHLAGBAR»
 shot(51.72, 'F', null, L => { arena(L); const k = put(kai, AX, 0, 4, 0); attach(TROPHY, k.aR.hand, [0, -.5, .4], [0, 0, 0], .8); actuar(k, 0, [[0, { aRx: 2.9, aRz: .2, aRe: .1, aLx: 2.6, aLz: .4, aLe: .4 }]], { T: L.T }); laughF(k, L.T); confRain(V(AX, 0, 4), L.T, 60, 14, 10, 14);
   orbit(V(AX, 4.2, 4), lerp(13, 11.5, L.k), .2, .02, 44); badge('gold', 'UNSCHLAGBAR', W / 2, H * .15, clamp(L.lt / .15), 1, .9); grade.uniforms.sepia.value = .18; sh(V(AX, 0, 4), 18); }, [[0, 'cheer', .5], [.3, 'confetti', .4]]);
@@ -481,7 +481,7 @@ shot(59.11, 'F', null, L => { town(L); const g = put(EX[18], BUS.x, 0, BUS.z, -.
 shot(60.84, 'S', null, L => { cuartoS(L); const m = inBed(L, { aLx: 1.2, aRx: 1.2, aLe: 1.4, aRe: 1.4, aLz: -.35, aRz: -.35, headX: .25 + Math.sin(L.T * 3) * .05 }, { expr: 'sad', eyes: 'down' });
   onFace(m, 5.5, .3, -.6, 40, L.k, 4.6); sh(V(BEDX, 0, BEDZ), 14); }, [[0, 'sigh_kid', .45]]);
 // 47 «Vater. Denn vor vier»: recuerdo: papá en su taller, sonriendo, dando una calada a su vape negra
-shot(62.00, 'C', null, L => { kellerS(L); const p = put(papa, MP.x - 7, 0, MP.z + 9, .3); vaper(p, L, 61.9, .6, { expr: 'happy', vape: OLDV, exh: 1.2 }); OLDV.visible = true; if (OLDV.parent !== p.aR.hand) { p.aR.hand.add(OLDV); } OLDV.position.set(0, -.25, .47); OLDV.rotation.set(1.54, 0, 0); OLDV.scale.setScalar(.95);
+shot(62.00, 'C', null, L => { kellerS(L); const p = put(papa, MP.x - 7, 0, MP.z + 9, .3); vaper(p, L, 61.4, .6, { expr: 'happy', vape: OLDV, exh: 1.3, pow: 5, size: 1.6, n: 60 }); OLDV.visible = true; if (OLDV.parent !== p.aR.hand) { p.aR.hand.add(OLDV); } OLDV.position.set(0, -.25, .47); OLDV.rotation.set(1.54, 0, 0); OLDV.scale.setScalar(.95);
   onFace(p, 5.2, .2, .4, 40, L.k, 4.4); grade.uniforms.sepia.value = .25; sh(V(MP.x - 7, 0, MP.z + 9), 14); }, [[0, 'vape_in', .5], [.8, 'vape_out', .5]]);
 // 48 «Jahren hat der Dampfsammler ihn» (zoom lento): la puerta del sótano entreabierta; en la oscuridad, dos ojos cian
 shot(63.18, 'I', 'slow', L => { kellerS(L, { off: .8 }); samAt(L, KX + 17.5, -12.5, -PI / 2 - .4, { reach: .1 }); sam.root.position.y = 9.2;
@@ -503,7 +503,7 @@ shot(69.01, 'S', 'slow', L => { kellerS(L); MACH.userData.setPower(.7 + Math.sin
 shot(70.81, 'R', null, L => { cuartoS(L); const up = clamp((L.T - 71.4) / .4); const m = inBed(L, { lean: lerp(-.6, 0, up), headY: up * .5, aLx: .3, aRx: .3 }, { expr: up > .3 ? 'shock' : 'neutral', eyes: up > .3 ? 'wide' : 'closed' });
   cm([BEDX + 8, 6.5, BEDZ + 7], [BEDX + 7, 6.2, BEDZ + 6], L.k); camera.lookAt(BEDX, 4.4, BEDZ); camera.fov = 44; sh(V(BEDX, 0, BEDZ), 14); }, [[0, 'snore', .3], [.6, 'gasp', .5]]);
 // 54 «Pfffffff! Ich rannte»: en el sótano estalla una nube con luz cian; papá y la criatura giran en el remolino
-shot(72.43, 'C', 'punch', L => { kellerS(L); const p = papaWork(L, { expr: 'shock' }); SMK.haze(V(MP.x - 4, 4, MP.z + 4), L.T, 26, 5, 3, 4, 5, .55, 61); MACH.userData.setPower(1.6);
+shot(72.43, 'C', 'punch', L => { kellerS(L); const p = papaWork(L, { expr: 'shock' }); p.aR.hand.add(OLDV); OLDV.visible = true; OLDV.position.set(0, -.25, .47); OLDV.rotation.set(1.54, 0, 0); SMK.puff(mouthW(p), V(1, .4, .3), L.T, 72.4, .6, { n: 60, pow: 5, size: 1.8, dens: .9, seed: 64 }); SMK.haze(V(MP.x - 4, 4, MP.z + 4), L.T, 26, 5, 3, 4, 5, .55, 61); MACH.userData.setPower(1.6);
   samAt(L, MP.x - 7.4, MP.z + 1.9, .9, { reach: 1, grab: true }); takeAway(L, [p, sam], 72.45, V(MP.x - 6, 0, MP.z + 3.6), .55);
   cm([MP.x - 14, 7, MP.z + 16], [MP.x - 13, 7, MP.z + 15], L.k); camera.lookAt(MP.x - 5, 5, MP.z + 3); camera.fov = 46; sh(MP, 18); }, [[0, 'vape_out', .6], [.1, 'magic_hit', .5], [.35, 'whirl', .5]]);
 // 55 «nach unten, aber Papa»: bajo corriendo la escalera del sótano
@@ -512,11 +512,11 @@ shot(73.40, 'W', null, L => { kellerS(L); const k = clamp(L.lt / 1.2), step = le
   cm([KX + 6, 11, z + 10], [KX + 6.5, 9, z + 9], L.k); camera.lookAt(KX + 17.5, y + 3.5, z); camera.fov = 44; sh(V(KX + 16, 0, z), 18); }, [[0, 'steps_run', .55], [.6, 'wood_creak', .35]]);
 // 56 «war weg. Nur seine unfertige»: el sótano vacío: vapor flotando, la vape de papá en el suelo
 shot(74.60, 'Z', null, L => { kellerS(L); MACH.userData.setPower(.3); SMK.haze(V(MP.x - 5, 3, MP.z + 4), L.T, 14, 6, 2, 4, 5, .25, 63); show(OLDV, MP.x - 6, .25, MP.z + 4, 0, 1.2); OLDV.rotation.set(Math.PI / 2, 0, .4);
-  const m = put(ich, KX + 6, 0, 8, -1.0); actuar(m, 0, [[0, { ...GEST.shock, headY: -.3 }]], { T: L.T }); cara(m, L.T, { expr: 'sad', mouth: 'frown' });
-  cm([KX + 10, 9, 20], [KX + 9, 8.6, 19], L.k); camera.lookAt(KX + 1, 3.6, 3); camera.fov = 48; sh(V(KX, 0, 0), 22); }, [[0, 'gasp', .45], [.5, 'wind', .35]]);
+  const m = put(ich, KX + 2, 0, 4, -2.94); actuar(m, 0, [[0, { ...GEST.shock, headY: -.3 }]], { T: L.T }); cara(m, L.T, { expr: 'sad', mouth: 'frown' });
+  cm([KX + 9, 8, 17], [KX + 8, 7.8, 16], L.k); camera.lookAt(KX - 1, 3.5, 0); camera.fov = 48; sh(V(KX, 0, 0), 22); }, [[0, 'gasp', .45], [.5, 'wind', .35]]);
 // 57 «Maschine und ein altes Radio waren»: la máquina sin terminar (cables colgando) y la radio vieja en el banco
-shot(76.09, 'S', null, L => { kellerS(L); MACH.userData.setPower(.25); const m = put(ich, KX - 2.4, 0, -4, -2.0); actuar(m, 0, [[0, { aLx: 1.1, aLz: -.1, aLe: .6, headX: .2 }]], { T: L.T }); cara(m, L.T, { expr: 'sad' });
-  cm([KX - 1, 7.5, 8], [KX - 2.5, 7.4, 6.6], L.k); camera.lookAt(KX - 7, 4.6, -10); camera.fov = 46; sh(V(KX - 6, 0, -8), 18); }, [[0, 'metal_creak', .4], [.6, 'radio', .2]]);
+shot(76.09, 'S', null, L => { kellerS(L); MACH.userData.setPower(.25); const m = put(ich, KX - 13.5, 0, -5, 2.64); actuar(m, 0, [[0, { aLx: 1.1, aLz: -.1, aLe: .6, headX: .2 }]], { T: L.T }); cara(m, L.T, { expr: 'sad' });
+  cm([KX - 1, 7.5, 6], [KX - 2, 7.4, 5], L.k); camera.lookAt(KX - 11.5, 4.4, -7); camera.fov = 46; sh(V(KX - 6, 0, -8), 18); }, [[0, 'metal_creak', .4], [.6, 'radio', .2]]);
 // 58 «übrig. Vier Jahre lang»: la radio en mi mesilla, cubierta de polvo; pasan los días por la ventana; «4 JAHRE»
 shot(77.81, 'F', null, L => { cuartoS(L); dust(V(RAD.x, RAD.y + 2, RAD.z), L.t0, L.T, 8, .4);
   cm([RAD.x + 1.6, 7.0, RAD.z + 8.4], [RAD.x + 1.4, 6.8, RAD.z + 7.4], L.k); camera.lookAt(RAD.x, 6, RAD.z); camera.fov = 42; badge('gold', '4 JAHRE', W / 2, H * .15, clamp(L.lt / .15), 1, .95); sh(RAD, 12); }, [[0, 'clock_tick', .5], [.5, 'wind', .3]]);
@@ -535,21 +535,21 @@ shot(83.29, 'R', null, L => { cuartoS(L); radioOn(L, 1); const m = inBed(L, { he
 shot(84.60, 'Z', null, L => { cuartoS(L); radioOn(L, 1 + Math.sin(L.T * 20) * .15); for (let i = 0; i < 3; i++) { const rg = RINGS[i], t = (L.T * 1.2 + i / 3) % 1; rg.visible = true; rg.position.set(RAD.x + .1, RAD.y + 1.7, RAD.z + 1.0 + t * 2.0); rg.lookAt(camera.position); rg.scale.setScalar(.35 + t * .8); rg.material.opacity = .45 * (1 - t); }
   cm([RAD.x + 1.2, 6.4, RAD.z + 8], [RAD.x + 1.0, 6.2, RAD.z + 7], L.k); camera.lookAt(RAD.x, 6.2, RAD.z); camera.fov = 42; sh(RAD, 12); }, [[0, 'radio', .45]]);
 // 64 «hörst du mich? Papa?»: me abalanzo sobre la radio y la agarro: «PAPA?»
-shot(85.90, 'W', null, L => { cuartoS(L); radioOn(L, 1); const m = put(ich, RAD.x + 1.4, 0, RAD.z + 6.6, PI + .25); actuar(m, 0, [[0, { aLx: 1.4, aRx: 1.4, aLz: -.2, aRz: -.2, aLe: .9, aRe: .9, lean: .3, headX: .1 }]], { T: L.T }); cara(m, L.T, { expr: 'shock', mouth: L.T > 86.85 ? 'talk_wide' : 'o' });
-  bubble(m, 'PAPA?', clamp((L.T - 86.9) / .1), 1.6); orbit(V(RAD.x + 2, 5.6, RAD.z + 1.4), 13, .9, .1, 44); sh(RAD, 14); }, [[0, 'steps', .35], [.9, 'gasp', .35]]);
+shot(85.90, 'W', null, L => { cuartoS(L); radioOn(L, 1); const m = put(ich, ZX - 16.5, 0, -5, 1.75); actuar(m, 0, [[0, { aLx: 1.4, aRx: 1.4, aLz: -.2, aRz: -.2, aLe: .9, aRe: .9, lean: .3, headX: .1 }]], { T: L.T }); cara(m, L.T, { expr: 'shock', mouth: L.T > 86.85 ? 'talk_wide' : 'o' });
+  bubble(m, 'PAPA?', clamp((L.T - 86.9) / .1), 1.6); cm([ZX - 6, 7, 6], [ZX - 7, 6.8, 5], L.k); camera.lookAt(ZX - 15, 4.8, -6.5); camera.fov = 44; sh(RAD, 14); }, [[0, 'steps', .35], [.9, 'gasp', .35]]);
 // 65 «Hör gut zu. Der Dampfsammler»: la radio de cerca, la aguja tiembla, el dial parpadea
 shot(87.42, 'S', null, L => { cuartoS(L); radioOn(L, .8 + Math.sin(L.T * 30) * .2); cm([RAD.x - 2.0, 6.8, RAD.z + 5.4], [RAD.x - 1.6, 6.6, RAD.z + 4.6], L.k); camera.lookAt(RAD.x + .3, 6.0, RAD.z); camera.fov = 40; sh(RAD, 12); }, [[0, 'radio', .4], [.6, 'tv_static', .3]]);
 // 66 «nimmt die Leute nicht zufällig mit.»: yo escuchando con los ojos muy abiertos, la cara iluminada en naranja
-shot(88.99, 'F', null, L => { cuartoS(L); radioOn(L, 1); const m = put(ich, RAD.x + 1.4, 0, RAD.z + 6.6, PI + .25); actuar(m, 0, [[0, { aLx: 1.2, aRx: 1.2, aLz: -.2, aRz: -.2, aLe: 1.0, aRe: 1.0, lean: .25, headX: .15, headZ: .15 }]], { T: L.T }); cara(m, L.T, { expr: 'shock', eyes: 'wide', mouth: 'flat' });
-  onFace(m, 4.4, 0, -.6, 40, L.k, 3.8); FILL.color.setRGB(1, .75, .45); sh(RAD, 12); }, [[0, 'heartbeat', .45]]);
+shot(88.99, 'F', null, L => { cuartoS(L); radioOn(L, 1); const m = put(ich, ZX - 16.5, 0, -5, 1.05); actuar(m, 0, [[0, { aLx: 1.2, aRx: 1.2, aLz: -.2, aRz: -.2, aLe: 1.0, aRe: 1.0, lean: .25, headX: .15, headZ: .15, headY: .55 }]], { T: L.T }); cara(m, L.T, { expr: 'shock', eyes: 'wide', mouth: 'flat' });
+  cm([ZX - 8, 6.4, 3], [ZX - 8.6, 6.3, 2.4], L.k); camera.lookAt(ZX - 16.5, 5.2, -5); camera.fov = 40; FILL.color.setRGB(1, .75, .45); sh(RAD, 12); }, [[0, 'heartbeat', .45]]);
 // 67 «Er sammelt. Dann wurde das» (zoom lento): la radio; «ER SAMMELT.» en rojo
 shot(90.64, 'I', 'slow', L => { cuartoS(L); radioOn(L, 1); cm([RAD.x + 1.4, 6.4, RAD.z + 8], [RAD.x + 1.1, 6.2, RAD.z + 5], easeIn(L.k)); camera.lookAt(RAD.x, 6.0, RAD.z); camera.fov = 42; badge('red', 'ER SAMMELT.', W / 2, H * .16, clamp(L.lt / .15), 1, .85); sh(RAD, 12); }, [[0, 'whisper', .4]]);
 // 68 «Signal immer schwächer.»: interferencias: la luz de la radio parpadea y se apaga
 shot(91.91, 'R', null, L => { cuartoS(L); const k = 1 - clamp(L.lt / 1.3); radioOn(L, k * (Math.sin(L.T * 47) > -.2 ? 1 : .2)); TINT = `rgba(255,255,255,${(Math.sin(L.T * 91) * .5 + .5) * .06 * k})`;
   cm([RAD.x + 1.2, 6.2, RAD.z + 6.2], [RAD.x + 1.1, 6.2, RAD.z + 5.6], L.k); camera.lookAt(RAD.x, 6.0, RAD.z); camera.fov = 42; sh(RAD, 12); }, [[0, 'tv_static', .55], [.7, 'glitch', .35]]);
 // 69 «Was sammelt er?»: grito a la radio, sacudiéndola
-shot(93.39, 'C', 'punch', L => { cuartoS(L); radioOn(L, .05); const m = put(ich, RAD.x + 1.4, 0, RAD.z + 6.6, PI + .25); actuar(m, 0, [[0, { aLx: 1.5, aRx: 1.5, aLz: -.3, aRz: -.3, aLe: .8, aRe: .8, lean: .2 + Math.sin(L.T * 30) * .05, headX: -.1 }]], { T: L.T }); cara(m, L.T, { expr: 'shout', mouth: 'scream' });
-  bubble(m, 'WAS SAMMELT ER?', clamp(L.lt / .1), 1.4); onFace(m, 5.5, .2, .5, 42, L.k, 4.8); sh(RAD, 14); }, [[0, 'shout_m', .4], [.2, 'shake', .35]]);
+shot(93.39, 'C', 'punch', L => { cuartoS(L); radioOn(L, .05); const m = put(ich, ZX - 16.5, 0, -5, 1.75); actuar(m, 0, [[0, { aLx: 1.5, aRx: 1.5, aLz: -.3, aRz: -.3, aLe: .8, aRe: .8, lean: .2 + Math.sin(L.T * 30) * .05, headX: -.1 }]], { T: L.T }); cara(m, L.T, { expr: 'shout', mouth: 'scream' });
+  bubble(m, 'WAS SAMMELT ER?', clamp(L.lt / .1), 1.4); cm([ZX - 7, 6.6, 5], [ZX - 7.6, 6.4, 4.4], L.k); camera.lookAt(ZX - 15.5, 5, -6); camera.fov = 42; sh(RAD, 14); }, [[0, 'shout_m', .4], [.2, 'shake', .35]]);
 // ---------- d: el ruido abajo, mi hermano, la calada, el Dampfsammler vuelve (94,35 – 117,9 s) ----------
 const BRP = V(KX - 5.4, 0, -.6);                  // mi hermano junto a la máquina (la máquina a su derecha)
 const MEP = V(KX + 3, 0, 9);                       // donde llego yo al pie de la escalera
@@ -559,7 +559,7 @@ const holdOld = b => { b.aR.hand.add(OLDV); OLDV.visible = true; OLDV.position.s
 
 // 70 «Plötzlich hörte ich etwas unten im»: me giro hacia la puerta; por debajo sale una luz cian
 shot(94.35, 'F', null, L => { cuartoS(L); const m = put(ich, ZX + 10, 0, 2, 1.2); actuar(m, 0, [[0, { headY: .6, aLx: .3, aRx: .3, lean: -.05 }]], { T: L.T }); cara(m, L.T, { expr: 'worried', eyes: 'side_r' });
-  FILL.color.setRGB(.6, .9, 1); cm([ZX + 3, 7.4, 13], [ZX + 4, 7.2, 12], L.k); camera.lookAt(ZX + 14, 5, 3); camera.fov = 46; sh(V(ZX + 12, 0, 3), 16); }, [[0, 'thud', .45], [.6, 'creepy_ting', .4]]);
+  FILL.color.setRGB(.6, .9, 1); cm([ZX + 4, 7, 15], [ZX + 4.6, 6.8, 14], L.k); camera.lookAt(ZX + 11.5, 4.6, 2.5); camera.fov = 46; sh(V(ZX + 12, 0, 3), 16); }, [[0, 'thud', .45], [.6, 'creepy_ting', .4]]);
 // 71 «Keller. Ich stürmte hinunter.»: bajo la escalera del sótano a toda velocidad
 shot(95.67, 'W', null, L => { kellerS(L); const k = clamp(L.lt / 1.3), step = lerp(11, 2, k); const z = 6 - step * 1.3, y = .95 + step * .75;
   const m = put(ich, KX + 17.5, y + Math.abs(Math.sin(L.T * 16)) * .2, z, 0); actuar(m, 0, [[0, { ...walkP(L.T * 1.7, 0), aLx: 1.0, aRx: -.7, lean: .15 }]], { T: L.T }); cara(m, L.T, { expr: 'determined', mouth: 'grimace' });
@@ -575,7 +575,7 @@ shot(99.67, 'C', 'punch', L => { kellerS(L, { off: .35 }); const b = bruAt(L, .7
   const v = wpos(OLDV); cm([v.x + Math.sin(.7) * 3.4, v.y + 1, v.z + Math.cos(.7) * 3.4], [v.x + Math.sin(.7) * 3.0, v.y + .9, v.z + Math.cos(.7) * 3.0], L.k); camera.lookAt(v.x, v.y + .6, v.z); camera.fov = 40; sh(BRP, 12); }, [[0, 'pling', .45]]);
 // 75 «neben der riesigen Maschine.»: plano bajo: mi hermano diminuto al lado de la máquina gigante
 shot(101.02, 'R', null, L => { kellerS(L, { off: .35 }); MACH.userData.setPower(.8); const b = bruAt(L, .7, { aRx: 1.3, aRe: .9, headX: -.3, headY: .5 }, { expr: 'happy', eyes: 'up' }); holdOld(b);
-  cm([KX + 3, 1.4, 10], [KX + 2, 1.8, 9], L.k); camera.lookAt(KX - 3, 7, -3); camera.fov = 52; sh(MP, 22); }, [[0, 'machine_hum', .5], [.6, 'metal_creak', .35]]);
+  cm([KX + 1, 2.2, 11], [KX + .5, 2.4, 10], L.k); camera.lookAt(KX - 6, 5, -1); camera.fov = 52; sh(MP, 22); }, [[0, 'machine_hum', .5], [.6, 'metal_creak', .35]]);
 // 76 «Bevor ich ihn aufhalten konnte,»: corro hacia él con el brazo extendido: «NEIN!»
 shot(102.53, 'W', null, L => { kellerS(L, { off: .35 }); const k = clamp(L.lt / 1.4); const m = put(ich, lerp(MEP.x, MEP.x - 3, k), Math.abs(Math.sin(L.T * 14)) * .18, lerp(MEP.z, MEP.z - 3, k), -2.4);
   actuar(m, 0, [[0, { ...walkP(L.T * 1.5, 0), aRx: 1.7, aRz: .1, aRe: .1, lean: .2 }]], { T: L.T }); cara(m, L.T, { expr: 'shout', mouth: 'scream' }); bubble(m, 'NEIN!', clamp((L.lt - .2) / .1), 1.4);
