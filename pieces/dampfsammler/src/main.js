@@ -83,6 +83,15 @@ const TROPHY = (() => { const g = new THREE.Group(); scene.add(g); const gd = ma
 // anillos de vapor (aros perfectos que suben)
 const RINGS = Array.from({ length: 8 }, () => { const m = new THREE.Mesh(new THREE.TorusGeometry(1, .22, 10, 40), new THREE.MeshStandardMaterial({ color: 0xffffff, transparent: true, opacity: .7, roughness: 1, depthWrite: false })); scene.add(m); return m; });
 const SMK = smokePool(scene, 1400);
+// la sombra del Dampfsammler: humo negro (normal) + jirones azul/morado que brillan (aditivo)
+const DSMK = smokePool(scene, 420); DSMK.tint.setRGB(.06, .04, .1);
+const GSMK = smokePool(scene, 260); GSMK.list.forEach(sp => { sp.material.blending = THREE.AdditiveBlending; sp.renderOrder = 6; });
+// sombra que surge alrededor de c (desde t0): columna giratoria de humo negro con destellos morados y azules
+function shadowBurst(L, c, t0, dur = 1.2, R = 2.6, H_ = 9) { const t = L.T - t0; if (t < -.05) return; const n = 70;
+  for (let i = 0; i < n; i++) { const r = RNG(i * 7 + 3), te = t0 + (i / n) * dur * .7, a = L.T - te; if (a < 0 || a > 1.6) continue; const s = DSMK.take(); if (!s) break; const k = a / 1.6, ang = i * 2.399 + a * 4.5, rad = R * (1.2 - .55 * k) * (.7 + r() * .5);
+    s.position.set(c.x + Math.cos(ang) * rad, c.y + .3 + r() * H_ * .35 + a * H_ * .45, c.z + Math.sin(ang) * rad); const sc = (2.2 + a * 3.2) * (.8 + r() * .5); s.scale.set(sc, sc, 1); s.material.rotation = ang; s.material.opacity = .9 * clamp(a / .12) * (1 - k); s.material.color.copy(DSMK.tint); }
+  for (let i = 0; i < 46; i++) { const r = RNG(i * 13 + 5), te = t0 + (i / 46) * dur * .7, a = L.T - te; if (a < 0 || a > 1.3) continue; const s = GSMK.take(); if (!s) break; const k = a / 1.3, ang = -i * 2.1 - a * 5.5, rad = R * (1 - .5 * k) * (.6 + r() * .6);
+    s.position.set(c.x + Math.cos(ang) * rad, c.y + .5 + r() * H_ * .5 + a * H_ * .3, c.z + Math.sin(ang) * rad); const sc = (1.2 + a * 1.8) * (.7 + r() * .6); s.scale.set(sc, sc, 1); s.material.rotation = ang; s.material.opacity = .55 * clamp(a / .1) * (1 - k); s.material.color.setRGB(...(i % 2 ? [.55, .2, 1] : [.2, .55, 1])); } }
 const CONF = Array.from({ length: 70 }, (_, i) => { const p = new THREE.Mesh(new THREE.PlaneGeometry(.3, .45), new THREE.MeshBasicMaterial({ color: [0xff4a8a, 0xffd23f, 0x3ab8ff, 0x8ad84a, 0xff8a3a][i % 5], side: THREE.DoubleSide })); scene.add(p); return p; });
 const DUST = Array.from({ length: 16 }, () => sphere(1, mat(0xd8c8a8, { roughness: 1, transparent: true, opacity: .6, depthWrite: false }), scene, 0, 0, 0, 10, 8));
 const SWEAT = Array.from({ length: 3 }, () => sphere(.16, mat(0x9fd8ff, { roughness: .05, transparent: true, opacity: .85 }), scene, 0, 0, 0, 10, 8));
@@ -100,7 +109,7 @@ const drawMissing = (c, w, h, name, col, hair) => { c.fillStyle = '#fff6e0'; c.f
   txt(c, name, w / 2, 330, 44, '#1a1a24'); };
 const LITF = (() => { const g = new THREE.Group(); scene.add(g); cyl(3.4, 3.4, 12, mat(0x2a5a3a, { roughness: .6 }), 28, g, 0, 6.6, 0); cyl(3.8, 3.8, .6, mat(0x1a3a2a, { roughness: .5 }), 28, g, 0, .3, 0); cyl(3.9, 3.6, 1.2, mat(0x1a3a2a, { roughness: .5 }), 28, g, 0, 13, 0); sphere(1.2, mat(0x1a3a2a), g, 0, 14, 0, 14, 8);
   const posters = [['DJ BLITZ', '#16161c', '#1a1208'], ['ROCCO', '#d8202f', '#14100c'], ['KAI', '#6a2ac8', '#3ae0ff']];
-  posters.forEach(([n, c1, c2], i) => { const p = textPlane(3.4, 4.6, 260, 360, (c, w, h) => drawMissing(c, w, h, n, c1, c2)); const a = (i - 1) * .62; p.position.set(Math.sin(a) * 3.45, 7, Math.cos(a) * 3.45); p.rotation.y = a; g.add(p); });
+  posters.forEach(([n, c1, c2], i) => { const p = textPlane(2.9, 4.0, 260, 360, (c, w, h) => drawMissing(c, w, h, n, c1, c2)); const a = (i - 1) * .95; p.position.set(Math.sin(a) * 3.45, 7, Math.cos(a) * 3.45); p.rotation.y = a; g.add(p); });
   const wp = warnPoster(3.4, 4.6); wp.position.set(0, 7, -3.45); wp.rotation.y = Math.PI; g.add(wp); return g; })(); outline(LITF, OP);
 const PROPS = [DROPV, LITF, RADIO, MACH, CHAIR, DESK, TROPHY, OLDV, ...RINGS, ...CONF, ...DUST, ...SWEAT, ...TEAR, ...SPARK];
 // ---------- ambiente ----------
@@ -117,7 +126,7 @@ function hideAll() {
   for (const c of POOL) { c.root.visible = false; c.head.visible = true; c.root.rotation.order = 'XYZ'; c.root.rotation.set(0, 0, 0); c.root.scale.setScalar(c.spec.scale || 1); applyPose(c, {}); c.setFace({}); if (c.root.parent !== scene) { c.root.parent.remove(c.root); scene.add(c.root); } VP.get(c).visible = false; VP.get(c).userData.grip.visible = false; VP.get(c).userData.setGlow(0); c.blob.visible = true; }
   sam.setEyes(1); RADIO.userData.setGlow(0); MACH.userData.setPower(.4); OLDV.userData.setGlow(0);
   for (const p of PROPS) { p.visible = false; p.rotation.set(0, 0, 0); p.scale.setScalar(1); if (p.parent !== scene) { p.parent.remove(p); scene.add(p); } }
-  SMK.reset(); WARN.visible = true; CLP.visible = false;
+  SMK.reset(); DSMK.reset(); GSMK.reset(); WARN.visible = true; CLP.visible = false;
   for (const k in SETS) SETS[k].visible = false;
   KE.BULBS.forEach(b => { b.l.intensity = 70; b.bl.material.emissiveIntensity = 2.2; });
   FILL.color.setRGB(1, .96, .91); sun.color.setRGB(1, .95, .86); grade.uniforms.vig.value = .38; grade.uniforms.flash.value = 0; grade.uniforms.lift.value = 0; grade.uniforms.sat.value = 1.42; grade.uniforms.sharp.value = 1.4; grade.uniforms.sepia.value = 0; DARK = 0; TINT = null; BIRDSON = 1; SHAKE = 0; day(); }
@@ -180,7 +189,7 @@ function vaper(ch, L, t0, inh, o = {}) { if (!o.bg) FACES.push(ch); const lt = L
   const chest = ph.ph === 'inh' ? -.05 * ph.inhK : ph.ph === 'exh' ? -.05 * (1 - ph.exhK) : 0;
   const av = armVape(ph.raise); const pose = { ...base, ...av, headX: (base.headX || 0) + tilt + (o.headX || 0), lean: (base.lean || 0) + chest, headY: (base.headY || 0) };
   actuar(ch, 0, [[0, pose]], { T: L.T, extra: o.extra }); ch.aR.sh.rotation.y = av.aRy;
-  const v = o.vape || VP.get(ch); if (!o.noVape) { v.visible = true; v.userData.grip.visible = true; v.userData.setGlow(ph.ph === 'inh' ? .7 + Math.sin(L.T * 30) * .1 : .08); }
+  const v = o.vape || VP.get(ch); if (!o.noVape) { v.visible = true; if (v.userData.grip) v.userData.grip.visible = true; v.userData.setGlow(ph.ph === 'inh' ? .7 + Math.sin(L.T * 30) * .1 : .08); }
   const ex = o.expr || 'neutral'; cara(ch, L.T, { expr: ex, mouth: ph.ph === 'done' ? (o.after || 'smile') : ph.mouth, ...(ph.eyes && !o.eyes ? { eyes: ph.eyes } : {}), ...(o.eyes ? { eyes: o.eyes } : {}) });
   if (lt > ph.t3) { const m = mouthW(ch), d = smokeDir(ch, .3 + (o.dirUp || 0)); SMK.puff(m, d, L.T, t0 + ph.t3, ph.t4 - ph.t3, { pow: o.pow ?? 4.2 + inh * .5, size: o.size ?? (.7 + Math.min(inh, 10) * .12), n: o.n ?? Math.round(30 + Math.min(inh, 10) * 6), dens: o.dens ?? .85, seed: ch.seed + Math.round(t0 * 10), life: o.life ?? 3 }); }
   return ph; }
@@ -234,7 +243,7 @@ const toCam = ch => { const p = ch.root.position; ch.root.rotation.y = Math.atan
 function town(L, o = {}) { use('HB'); if (o.night) night(o.fill ?? 40); else if (o.dusk) { day(); sun.color.setRGB(1, .72, .5); sun.intensity = 2.2; setSky([.16, .2, .55], [.72, .42, .55], [1, .62, .36]); } else day(); RS.bulbs.forEach((b, i) => b.material.emissiveIntensity = 1.4 + Math.sin(L.T * 6 + i) * .8); }
 // club: luces de colores que barren, pantalla LED y suelo que laten con la música; o.off = apagón (0..1); o.clean = sin una sola nube (carteles visibles)
 function clubS(L, o = {}) { use('CL'); MODE = 'in'; BIRDSON = 0; renderer.toneMappingExposure = 1.0; hemi.intensity = .55; hemi.color.setRGB(.8, .7, 1); hemi.groundColor.setRGB(.3, .2, .4); sun.intensity = 0; rim.intensity = 1.2; rim.color.setRGB(1, .5, .9);
-  bloom.strength = .28; bloom.threshold = .82; scene.fog.density = .0002; FILL.intensity = 26; FILL.color.setRGB(1, .85, 1); SMK.tint.setRGB(.95, .85, 1);
+  bloom.strength = .14; bloom.threshold = .9; scene.fog.density = .0002; FILL.intensity = 26; FILL.color.setRGB(1, .85, 1); SMK.tint.setRGB(.95, .85, 1);
   const on = 1 - (o.off ?? 0); CL.drawLED(L.T, on); CL.drawFloor(L.T, on); CL.CONES.forEach((c, i) => { c.rotation.z = Math.sin(L.T * 1.6 + i) * .45; c.rotation.x = Math.cos(L.T * 1.3 + i * 2) * .3; c.visible = on > .5; });
   CL.DB.rotation.y = L.T * .8; CL.LM.intensity = 220 * on; CL.LS.intensity = 160 * on; CL.LC.forEach((l, i) => l.intensity = 90 * on * (.6 + .4 * Math.sin(L.T * 6 + i))); hemi.intensity = .55 * Math.max(.12, on); FILL.intensity = 26 * Math.max(.15, on);
   CLP.visible = !!o.clean; }
@@ -247,15 +256,17 @@ function cuartoS(L, o = {}) { use('CU'); MODE = 'in'; BIRDSON = 0; renderer.tone
 // ---------- el Dampfsammler ----------
 // de pie en (x, z) mirando a ry; o.reach: brazo derecho extendido hacia delante (0..1); o.tip: se quita/toca la chistera
 function samAt(L, x, z, ry, o = {}) { put(sam, x, 0, z, ry); const rc = o.reach ?? 0;
-  const sw = Math.sin(L.T * 1.7) * .08; actuar(sam, 0, [[0, { aRx: lerp(.55 + sw, 1.45, rc), aRz: lerp(.55, .2, rc), aRe: lerp(.8, .2, rc), aLx: .5 - sw, aLz: .58, aLe: .85, lean: .5 + .1 * rc, headX: -.55 + (o.headX ?? 0), headY: o.headY ?? 0, lLx: .25, lRx: .1, lLk: .5, lRk: .35, hipY: 2.9, crouch: .2, ...(o.pose || {}) }]], { T: L.T });
+  const sw = Math.sin(L.T * 1.7) * .08; actuar(sam, 0, [[0, { aRx: lerp(.55 + sw, 1.45, rc), aRz: lerp(.55, .2, rc), aRe: lerp(.8, .2, rc), aLx: .5 - sw, aLz: .58, aLe: .85, lean: .5 + .1 * rc, headX: -.55 + (o.headX ?? 0), headY: o.headY ?? 0, lLx: .25, lRx: .1, lLk: .5, lRk: .35, hipY: 2.9, crouch: .2, ...(o.grab ? { aLx: 1.35, aLz: -.05, aLe: .25, aRx: 1.35, aRz: -.05, aRe: .25, lean: .7 } : {}), ...(o.pose || {}) }]], { T: L.T });
   cara(sam, L.T, { expr: o.expr || 'smug', mouth: o.mouth || 'smirk', eyes: o.eyes || 'half' }); sam.setEyes(o.glow ?? 1); sam.setAura(L.T, o.aura ?? 1); FACES.push(sam); return sam; }
 // aparece: se materializa dentro de una nube densa (escala .35 → 1) con chispas cian
 function appear(L, t0, c, dur = .45) { const k = easeOut(clamp((L.T - t0) / dur)); sam.root.scale.setScalar(1.6 * lerp(.35, 1, k)); sam.root.visible = L.T >= t0 - .02;
   SMK.puff(V(c.x, 1.5, c.z), V(0, 1, 0), L.T, t0 - .1, .5, { n: 60, pow: 2.4, size: 2.4, dens: .75, up: .3, spread: 1.2, life: 2.6, seed: 77 }); sparks(V(c.x, 2, c.z), t0, L.T, 26, .8); return k; }
 // se lleva a alguien: los dos se encogen en un remolino de vapor y chispas y desaparecen (desde t0, en dur s)
-function takeAway(L, chs, t0, c, dur = .55) { const k = clamp((L.T - t0) / dur), e = easeIn(k);
-  chs.forEach(ch => { const s0 = ch.spec.scale || 1; ch.root.scale.setScalar(s0 * (1 - e)); ch.root.rotation.y += e * 6; ch.root.position.y += e * 1.5; if (k >= 1) ch.root.visible = false; ch.blob.visible = k < .6; });
-  if (L.T >= t0 - .1) { SMK.puff(V(c.x, 1.2, c.z), V(0, 1, 0), L.T, t0 - .1, .6, { n: 70, pow: 2.0, size: 2.2, dens: .8, up: .9, spread: 1.4, life: 2.2, seed: 88 }); swirl(V(c.x, 0, c.z), t0, L.T, 2.8, 40); } return k; }
+function takeAway(L, chs, t0, c, dur = .8) { const k = clamp((L.T - t0 - .25) / dur), e = easeIn(k);
+  shadowBurst(L, c, t0 - .1, dur + .3, 2.8, 9);
+  chs.forEach(ch => { const s0 = ch.spec.scale || 1; if (ch !== sam) { const lift = easeOut(clamp((L.T - t0) / .3)) * .8; ch.root.position.y += lift; ch.root.position.x += (c.x - ch.root.position.x) * e; ch.root.position.z += (c.z - ch.root.position.z) * e; }
+    ch.root.scale.setScalar(s0 * (1 - e)); ch.root.rotation.y += e * 5; if (k >= 1) ch.root.visible = false; ch.blob.visible = k < .5; });
+  if (L.T >= t0) swirl(V(c.x, 0, c.z), t0, L.T, 2.8, 40); return k; }
 // aros de vapor perfectos que salen de la boca y suben agrandándose
 function smokeRings(ch, T0, T, n = 5, gap = .22) { const m = mouthW(ch), d = smokeDir(ch, .45); RINGS.forEach((r, i) => { if (i >= n) return; const t = T - T0 - i * gap; if (t < 0 || t > 2.4) return; r.visible = true; const dist = 1.2 + t * 2.6;
   r.position.copy(m).addScaledVector(d, dist).add(V(0, t * .8, 0)); r.lookAt(r.position.clone().add(d)); r.scale.setScalar(.35 + t * .55); r.material.opacity = .8 * (1 - t / 2.4); }); }
