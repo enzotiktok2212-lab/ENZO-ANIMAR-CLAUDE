@@ -55,7 +55,7 @@ shot(51.73, 'I', 'slow', L => { town(L); show(DORNB, DP.x, 0, DP.z, 0); DORNB.us
 shot(53.38, 'F', null, L => { town(L); const k = easeInOut(clamp((L.T - 53.45) / 1.15)); const h = show(HOLES[1], DP.x, 0, DP.z); h.userData.set(k * .5, 0, L.T); show(DORNB, DP.x, k * 3.6, DP.z, 0); DORNB.userData.collar.visible = false;
   const d = put(dorn, DP.x, 0, DP.z - 2.1, 0); actuar(d, 0, [[0, { aLx: 1.6 + k * .7, aRx: 1.6 + k * .7, aLz: -.22, aRz: -.22, aLe: .5, aRe: .5, lean: .3 - k * .35, crouch: .3 * (1 - k), headX: -.1 }]], { T: L.T }); cara(d, L.T, { expr: 'determined', mouth: 'flat' });
   plaza(L, { cx: DP.x, cz: DP.z - 6, n: 10, r0: 6, r1: 16, seed: 59, mode: 'shock' });
-  cm([DP.x + 8, 4.4, DP.z + 2], [DP.x + 7, 4.6, DP.z + 1.2], L.k); camera.lookAt(DP.x, 3.6, DP.z - 1); camera.fov = 46; sh(DP, 14); }, [[0, 'glass_creak', .5], [.6, 'hum_low', .4]]);
+  cm([DP.x + 11, 5, DP.z + 5], [DP.x + 10, 5, DP.z + 4.2], L.k); camera.lookAt(DP.x, 3.6, DP.z - 1); camera.fov = 46; sh(DP, 14); }, [[0, 'glass_creak', .5], [.6, 'hum_low', .4]]);
 // 51 «Darunter ist ein Loch.»: cenital: el agujero, negro y profundo; las cabezas asomándose alrededor
 shot(54.68, 'C', 'punch', L => { town(L); const h = show(HOLES[1], DP.x, 0, DP.z); h.userData.set(.25, 0, L.T);
   crowdAt(L, DP.x, DP.z, 8, 3.2, 4.2, 61, { mode: 'idle', expr: 'shock', face: V(DP.x, 0, DP.z), full: true, list: [dorn, ...EX.slice(0, 7)] });
@@ -78,7 +78,7 @@ shot(58.69, 'C', null, L => { town(L, { lila: 1 }); myChairScene(L); const h = s
   plaza(L, { n: 26, r0: 6, r1: 30, seed: 65, mode: i => i % 3 ? 'ouch' : 'shock' });
   cm([24, 20, 34], [20, 18, 30], L.k); camera.lookAt(0, 2, -2); camera.fov = 50; sh(V(0, 0, 0), 40); }, [[0, 'hum_low', .45], [.3, 'murmur', .35]]);
 // 55 «Sie sind Korken.»: la alcaldesa levanta la botella como un trofeo: «KORKEN!»
-shot(60.59, 'I', 'punch', L => { town(L, { lila: 1 }); const h = show(HOLES[1], DP.x, 0, DP.z); h.userData.set(1, 0, L.T); h.scale.set(1, 1.6, 1);
+shot(60.59, 'I', 'punch', L => { town(L, { lila: 1 }); const h = show(HOLES[1], DP.x, 0, DP.z); h.userData.set(.45, 0, L.T); h.scale.set(1, 1.2, 1);
   const d = put(dorn, DP.x - 3.6, 0, DP.z - 1.4, .9); actuar(d, 0, [[0, { aRx: 2.9, aRz: .3, aRe: .1, aLx: .3, aLz: .3, headX: -.15 }]], { T: L.T }); attach(DORNB, d.aR.el, [0, -1.3, .3], [Math.PI, 0, 0], .7); talk(d, L.T, 60.5, 61.6, 'angry');
   plaza(L, { cx: DP.x, cz: DP.z - 6, n: 8, r0: 6, r1: 16, seed: 67, mode: 'shock' });
   onBody(d, 16, .2, .2, 46, L.k, 13.5, .1, 4.4); badge('gold', 'KORKEN!', W / 2, H * .15, clamp((L.T - 60.95) / .12), 1, 1.1); sh(DP, 16); }, [[.35, 'cork_pop', .6], [.4, 'impact', .5]]);

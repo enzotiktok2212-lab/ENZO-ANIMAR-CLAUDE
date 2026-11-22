@@ -77,7 +77,7 @@ shot(81.35, 'S', null, L => { town(L, { lila: 1 }); const p = rollPath(L.T + .3)
 // 74 «In letzter Sekunde» (zoom lento): me lanzo en plancha a por ella, a cámara lenta
 shot(82.03, 'I', 'slow', L => { town(L, { lila: 1 }); const tt = 82.03 + (L.T - 82.03) * .35, p = rollPath(tt + .3), dir = rollDir(tt + .3); rollBottle(MYB, p, dir, tt * 9);
   const k = clamp((L.T - 82.03) / 1.5); const c = put(ich, p.x - Math.sin(dir) * (3.5 - k * 1.8), 1.2 + Math.sin(k * Math.PI) * .8, p.z - Math.cos(dir) * (3.5 - k * 1.8), dir); c.root.rotation.order = 'YXZ'; c.root.rotation.x = 1.25; actuar(c, 0, [[0, { aLx: 2.9, aRx: 2.9, aLz: .1, aRz: .1, aLe: .1, aRe: .1, lLx: -.2, lRx: .1 }]], { T: L.T }); cara(c, L.T, { expr: 'determined', mouth: 'scream' }); c.blob.visible = false;
-  orbit(V(c.root.position.x, 2.2, c.root.position.z), lerp(14, 11, L.k), dir + 1.3, .12, 46); badge('tag', 'LETZTE SEKUNDE', W / 2, H * .15, clamp((L.T - 82.93) / .12), 1, .9); sh(p, 14); }, [[0, 'slowmo', .5]]);
+  orbit(V(c.root.position.x + Math.sin(dir) * 2.6, 2.4, c.root.position.z + Math.cos(dir) * 2.6), lerp(17, 14, L.k), dir + 1.4, .14, 46); badge('tag', 'LETZTE SEKUNDE', W / 2, H * .15, clamp((L.T - 82.93) / .12), 1, .9); sh(p, 14); }, [[0, 'slowmo', .5]]);
 // 75 «fange ich sie,»: ¡la atrapo! la abrazo contra el pecho
 shot(83.61, 'C', 'punch', L => { town(L, { lila: 1 }); const P = V(HP.x - 3, 0, HP.z - 6); const c = put(ich, P.x, 0, P.z, .4); actuar(c, 0, [[0, { aLx: 1.5, aRx: 1.5, aLz: -.5, aRz: -.5, aLe: .7, aRe: .7, crouch: .25, lean: .1 }]], { T: L.T }); cara(c, L.T, { expr: 'determined', mouth: 'grin' });
   attach(MYB, c.root, [0, 3.2, 1.3], [Math.PI / 2 - .3, 0, 0], .55); dust(V(P.x, 0, P.z), 83.6, L.T, 8, .5);
