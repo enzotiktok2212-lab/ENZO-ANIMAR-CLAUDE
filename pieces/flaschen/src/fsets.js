@@ -42,10 +42,10 @@ export function hole(parent) { const g = G(parent);
   // haz de luz que sale hacia arriba (aditivo)
   const beamT = canvasTex(64, 256, (c, w, h) => { const gr = c.createLinearGradient(0, h, 0, 0); gr.addColorStop(0, 'rgba(255,255,255,.9)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); c.fillStyle = gr; c.fillRect(0, 0, w, h); });
   const beam = new THREE.Mesh(new THREE.CylinderGeometry(1.6, .9, 9, 24, 1, true), new THREE.MeshBasicMaterial({ map: beamT, color: new THREE.Color(LILA).multiplyScalar(1.4), transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, toneMapped: false })); beam.position.y = 4.5; g.add(beam);
-  const L = new THREE.PointLight(LILA, 0, 30, 1.4); L.position.y = 1.5; g.add(L);
+  const L = new THREE.PointLight(LILA, 0, 24, 2); L.position.y = 3.2; g.add(L);
   const BUB = Array.from({ length: 12 }, () => sphere(.22, new THREE.MeshStandardMaterial({ color: 0xd8a0ff, emissive: LILA, emissiveIntensity: 1.2, roughness: .1, transparent: true, opacity: .85 }), g, 0, 0, 0, 10, 8));
   // glow: 0..1 (luz lila); bub: 0..1 (burbujeo); T tiempo
-  g.userData = { set(glow, bub = 0, T = 0) { gl.material.opacity = glow; beam.material.opacity = glow * .55; L.intensity = glow * 260; pit.material.color.setRGB(.02 + glow * .25, .01 + glow * .05, .03 + glow * .4);
+  g.userData = { set(glow, bub = 0, T = 0) { gl.material.opacity = glow; beam.material.opacity = glow * .55; L.intensity = glow * 90; pit.material.color.setRGB(.02 + glow * .25, .01 + glow * .05, .03 + glow * .4);
     BUB.forEach((b, i) => { const r = RNG(i * 7 + 1), k = (T * (1.2 + r() * .8) + r()) % 1; b.visible = bub > 0 && i < 12 * bub; const a = r() * 6.283, rr = r() * .6; b.position.set(Math.cos(a) * rr, .1 + k * (1.2 + bub), Math.sin(a) * rr); b.scale.setScalar((.5 + r() * .8) * (k < .85 ? 1 : 1 - (k - .85) / .15 * .9)); }); } };
   g.userData.set(0); return g; }
 

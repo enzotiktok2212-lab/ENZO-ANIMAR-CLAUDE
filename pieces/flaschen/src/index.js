@@ -51,7 +51,7 @@ const KX = 900, OX = 1300, ZAX = 1700, TX = 2100, ZIX = 2500, HX = 3000, SX = 35
 const KL = klasse(scene, KX), OSt = omaStube(scene, OX), ZA = zahnarzt(scene, ZAX), TR = tramIn(scene, TX), SCR = shopScreen(), ZI = zimmerF(scene, ZIX, SCR), HO = hoehle(scene, HX), SO = sotano(scene, SX);
 // en esta ciudad no hay sillas: fuera las sillas de los pupitres y el sillón de la Oma
 KL.desks.forEach(d => d.children.forEach(ch => { if (ch.isGroup && Math.abs(ch.position.z - 2.8) < .01) ch.visible = false; }));
-OSt.AC.visible = false; if (OSt.SOFA) OSt.SOFA.visible = false;
+OSt.AC.visible = false; [OSt.SOFA, OSt.TB, OSt.cat].forEach(o => o && (o.visible = false));
 const SETS = { HB: HB.G, KL: KL.g, OS: OSt.g, ZA: ZA.g, TR: TR.g, ZI: ZI.g, HO: HO.g, SO: SO.g };
 for (const k in SETS) outline(SETS[k], OS);
 // ---------- reparto ----------
@@ -184,7 +184,7 @@ function crowdGuy(c, x, z, L, i, o) { const T = L.T + i * .37, face = o.face || 
 function onBody(ch, dist, yaw = 0, pitch = .12, fov = 42, k = 0, dist2 = null, yaw2 = null, dy = 3.3) { const s = ch.spec.scale || 1, p = ch.root.position, c = V(p.x, p.y + dy * s, p.z); const q = easeInOut(clamp(k)); orbit(c, lerp(dist, dist2 ?? dist * .88, q) * s, ch.root.rotation.y + lerp(yaw, yaw2 ?? yaw, q), pitch, fov); }
 const toCam = ch => { const p = ch.root.position; ch.root.rotation.y = Math.atan2(camera.position.x - p.x, camera.position.z - p.z); };
 // ---------- escenarios por plano ----------
-function town(L, o = {}) { use('HB'); if (o.night) night(o.fill ?? 40); else if (o.dusk) { day(); sun.color.setRGB(1, .72, .5); sun.intensity = 2.2; setSky([.16, .2, .55], [.72, .42, .55], [1, .62, .36]); } else day(); if (o.lila) { setSky([.22, .1, .4], [.45, .3, .7], [.7, .55, .9]); hemi.color.setRGB(.8, .7, 1); sun.color.setRGB(.9, .75, 1); scene.fog.color.setRGB(.6, .5, .8); } }
+function town(L, o = {}) { use('HB'); if (o.night) { darkNight(); renderer.toneMappingExposure = .8; } else if (o.dusk) { day(); sun.color.setRGB(1, .72, .5); sun.intensity = 2.2; setSky([.16, .2, .55], [.72, .42, .55], [1, .62, .36]); } else day(); if (o.lila) { setSky([.22, .1, .4], [.45, .3, .7], [.7, .55, .9]); hemi.color.setRGB(.8, .7, 1); sun.color.setRGB(.9, .75, 1); scene.fog.color.setRGB(.6, .5, .8); } }
 function klasseS(L) { use('KL'); inside(1.0, 46); }
 function omaS(L) { use('OS'); inside(1.0, 46); }
 function zahnS(L) { use('ZA'); inside(1.05, 40); ZA.LL.visible = true; }
@@ -237,7 +237,7 @@ shot(0, 'C', 'slow', L => { town(L); const c = seat(ich, CP.x, CP.z, 0, L, { pos
 // 2 «auf einer Flasche.»: plano bajo: mi botella, mis piernas colgando, me balanceo
 shot(1.30, 'Z', 'punch', L => { town(L); const c = seat(ich, CP.x, CP.z, 0, L, { wob: .07, pose: { aLx: .6, aRx: .6, aLz: .4, aRz: .4, lLk: 1.2 + Math.sin(L.T * 5) * .3, lRk: 1.2 } }); cara(c, L.T, { expr: 'neutral' });
   plaza(L, { n: 10, r0: 6, r1: 16, seed: 3 });
-  cm([CP.x + 2.6, 1.6, CP.z + 9], [CP.x + 1.8, 1.9, CP.z + 7.6], L.k); camera.lookAt(CP.x, 3.6, CP.z); camera.fov = 46; sh(CP, 18); }, [[.1, 'glass_clink', .6], [.5, 'creak', .3]]);
+  cm([CP.x + 3.4, 2.2, CP.z + 13], [CP.x + 2.6, 2.4, CP.z + 11.5], L.k); camera.lookAt(CP.x, 5.2, CP.z); camera.fov = 48; sh(CP, 18); }, [[.1, 'glass_clink', .6], [.5, 'creak', .3]]);
 // 3 «Und niemand hat mir je»: me encojo de hombros; a mi lado charlan sin explicarme nada
 shot(2.28, 'W', null, L => { town(L); const c = seat(ich, CP.x, CP.z, .15, L, { pose: GEST.shrug }); cara(c, L.T, { expr: 'confused', mouth: 'flat' });
   const a = seat(EX[4], CP.x - 4.2, CP.z - 1.5, .9, L); seatMode(a, L, 1, 'talk'); const b = seat(EX[9], CP.x + 4.4, CP.z - 1.2, -.9, L); seatMode(b, L, 2, 'talk');
@@ -250,15 +250,15 @@ shot(3.55, 'I', null, L => { town(L); const c = seat(ich, CP.x, CP.z, 0, L, { po
 // 5 «Stühle gibt es hier nämlich keine.»: la terraza del café: mesas con botellas en vez de sillas; «KEINE STÜHLE»
 shot(4.55, 'S', null, L => { town(L); const tx = 36, tz = -40; const sp = [[tx + 2.6, tz + 1.8], [tx - 2.8, tz - 1.4], [tx + 2.4, tz + 13.6], [tx - 2.6, tz + 10.6], [tx - 1.6, tz + 26], [tx - 6.8, tz + 22.4]];
   sp.forEach(([x, z], i) => { const c = seat(EX[10 + i], x, z, Math.atan2(tx - x + (i > 3 ? -4 : 0), tz + Math.floor(i / 2) * 12 - z), L); seatMode(c, L, i, i % 2 ? 'talk' : 'read'); });
-  cm([tx + 14, 9, tz + 30], [tx + 9, 8, tz + 24], L.k); camera.lookAt(tx - 1, 3, tz + 6); camera.fov = 48; badge('red', 'KEINE STÜHLE', W / 2, H * .15, clamp((L.lt - .2) / .15), 1, .85); sh(V(tx, 0, tz + 10), 30); }, [[.05, 'cafe', .4], [.3, 'cup', .4]]);
+  cm([tx - 16, 9, tz + 28], [tx - 12, 8, tz + 23], L.k); camera.lookAt(tx, 4, tz + 6); camera.fov = 48; badge('red', 'KEINE STÜHLE', W / 2, H * .15, clamp((L.lt - .2) / .15), 1, .85); sh(V(tx, 0, tz + 10), 30); }, [[.05, 'cafe', .4], [.3, 'cup', .4]]);
 // 6 «In der Straßenbahn sitzen»: travelling por el pasillo del tranvía: dos filas de pasajeros en botellas
 shot(6.03, 'C', null, L => { tramS(L); bottleGrid(L, TX, -16, 2, 7, 5.6, 4.4, { ry: 0, mode: i => ['read', 'idle', 'talk'][i % 3], stagger: 0, face: V(TX, 4, 20) });
   EX.forEach((c, i) => { if (c.root.visible && i < 14) c.root.rotation.y = c.root.position.x < TX ? Math.PI / 2 : -Math.PI / 2; });
-  cm([TX + .4, 7.2, 20], [TX + .2, 6.8, 13], L.k); camera.lookAt(TX, 4.6, -10); camera.fov = 52; sh(V(TX, 0, 0), 30); }, [[0, 'tram_bell', .55], [.2, 'rumble', .4]]);
+  cm([TX + .4, 10.2, 20], [TX + .2, 9.8, 14], L.k); camera.lookAt(TX, 4.4, -10); camera.fov = 52; sh(V(TX, 0, 0), 30); }, [[0, 'tram_bell', .55], [.2, 'rumble', .4]]);
 // 7 «alle auf Flaschen.»: el tranvía frena: todos se balancean sobre sus botellas, uno se agarra a la barra
 shot(6.95, 'R', null, L => { tramS(L); const j = Math.sin(L.lt * 9) * Math.exp(-L.lt * 2) * .25;
   for (let i = 0; i < 4; i++) { const c = seat(EX[16 + i], TX + (i % 2 ? 2.8 : -2.8), -2 + Math.floor(i / 2) * 4.4, i % 2 ? -Math.PI / 2 : Math.PI / 2, L, { wob: .02 }); c.root.rotation.z = j * (i % 2 ? 1 : -1); seatMode(c, L, i, i === 1 ? 'shock' : 'ouch'); }
-  cm([TX + .2, 6.8, 8.5], [TX - .2, 6.4, 7.6], L.k); camera.lookAt(TX, 4.2, -1); camera.fov = 48; sh(V(TX, 0, 0), 20); }, [[0, 'brake', .45], [.3, 'glass_clink', .5]]);
+  cm([TX + 2.2, 7.4, 8], [TX + 2, 7.2, 6.8], L.k); camera.lookAt(TX - 2.8, 6, -.5); camera.fov = 48; sh(V(TX, 0, 0), 20); }, [[0, 'brake', .45], [.3, 'glass_clink', .5]]);
 // 8 «Im Klassenzimmer sitzen»: la clase: la profesora en la pizarra, los alumnos en botellas detrás de los pupitres
 shot(8.10, 'F', null, L => { klasseS(L); const lt = put(lehr, KX - 4, 0, -11, .3); actuar(lt, 0, [[0, { aRx: 2.2, aRz: .3, aRe: .6 + Math.sin(L.T * 3) * .2, headY: .5 }]], { T: L.T }); talk(lt, L.T, 8.1, 9.6, 'happy');
   bottleGrid(L, KX, .8, 3, 3, 11, 8, { ry: Math.PI, mode: i => ['read', 'idle', 'ouch'][i % 3], scale: .78, stagger: 0 });
@@ -268,7 +268,7 @@ shot(8.10, 'F', null, L => { klasseS(L); const lt = put(lehr, KX - 4, 0, -11, .3
 shot(9.00, 'W', null, L => { klasseS(L); const c = seat(EX[20], KX, 8.8, Math.PI, L, { wob: .09 }); c.root.scale.setScalar(.78 * c.spec.scale); c.root.position.y = SEAT + .1 - 2.05 * .78 * c.spec.scale;
   actuar(c, 0, [[0, seatPose({ aRx: 1.3, aRz: -.1, aRe: 1.1 + Math.sin(L.T * 14) * .1, aLx: 1.0, aLe: 1.2, headX: .35 })]], { T: L.T, weight: false }); cara(c, L.T, { expr: 'worried', mouth: 'grimace' }); sweat(c, L.T);
   bottleGrid(L, KX, .8, 3, 2, 11, 8, { ry: Math.PI, mode: 'read', scale: .78, stagger: 0, list: EX.slice(22), skip: (x, z) => Math.abs(x - KX) < 3 && Math.abs(z - 8.8) < 3 });
-  cm([KX + 3, 6, 1.5], [KX + 2.2, 5.6, 2.6], L.k); camera.lookAt(KX, 3.6, 8.8); camera.fov = 46; sh(V(KX, 0, 8), 16); }, [[0, 'pencil', .5], [.4, 'creak', .4]]);
+  cm([KX + 6, 6.4, 3], [KX + 5, 6.2, 4], L.k); camera.lookAt(KX, 4.6, 8.8); camera.fov = 48; sh(V(KX, 0, 8), 16); }, [[0, 'pencil', .5], [.4, 'creak', .4]]);
 // 10 «Sogar beim Zahnarzt»: la consulta: el paciente en una botella, la dentista con el espejito
 shot(10.12, 'C', 'punch', L => { zahnS(L); const p = seat(EX[5], ZAX, 0, .5, L, { wob: .05, pose: { headX: -.45, aLx: .6, aRx: .6, aLz: .5, aRz: .5, aLe: 1.2, aRe: 1.2 } }); cara(p, L.T, { expr: 'worried', eyes: 'wide', mouth: 'o' });
   const z = put(zahn, ZAX + 3.2, 0, 1.4, -1.6); actuar(z, 0, [[0, { aRx: 1.5, aRz: -.3, aRe: .9 + Math.sin(L.T * 8) * .1, aLx: 1.2, aLe: .9, lean: .2, headX: .25, headY: -.2 }]], { T: L.T }); cara(z, L.T, { expr: 'happy' });
@@ -276,7 +276,7 @@ shot(10.12, 'C', 'punch', L => { zahnS(L); const p = seat(EX[5], ZAX, 0, .5, L, 
 // 11 «sitzt du auf einer Flasche.»: plano bajo: la botella bajo el paciente; tiembla con el taladro
 shot(11.24, 'S', null, L => { zahnS(L); const p = seat(EX[5], ZAX, 0, .5, L, { wob: .02, pose: { headX: -.45, aLx: .6, aRx: .6, aLz: .5, aRz: .5, aLe: 1.2, aRe: 1.2, lLk: 1.5 + Math.sin(L.T * 20) * .15, lRk: 1.5 + Math.sin(L.T * 21) * .15 } }); p.root.position.x += Math.sin(L.T * 40) * .04; cara(p, L.T, { expr: 'shock', mouth: 'scream' });
   const z = put(zahn, ZAX + 3.2, 0, 1.4, -1.6); actuar(z, 0, [[0, { aRx: 1.5, aRz: -.3, aRe: .9, aLx: 1.2, aLe: .9, lean: .2, headX: .25 }]], { T: L.T }); cara(z, L.T, { expr: 'happy' });
-  cm([ZAX + 1.8, 1.4, 8.6], [ZAX + 1.2, 1.8, 7.4], L.k); camera.lookAt(ZAX, 4.0, 0); camera.fov = 48; sh(V(ZAX, 0, 0), 14); }, [[0, 'drill', .55], [.4, 'glass_clink', .4]]);
+  cm([ZAX + 3.6, 3.4, 10], [ZAX + 3, 3.8, 9], L.k); camera.lookAt(ZAX, 5, 0); camera.fov = 52; sh(V(ZAX, 0, 0), 14); }, [[0, 'drill', .55], [.4, 'glass_clink', .4]]);
 // 12 «Meine Oma sitzt seit 52 Jahren» (zoom lento): la Oma teje sentada en su botella; «52 JAHRE»
 shot(12.40, 'I', 'slow', L => { omaS(L); const o = seat(oma, OX, 1, .1, L, { wob: .02, pose: { aLx: 1.0, aRx: 1.0, aLz: -.25, aRz: -.25, aLe: 1.3 + Math.sin(L.T * 9) * .12, aRe: 1.3 - Math.sin(L.T * 9) * .12, headX: .25 } }); cara(o, L.T, { expr: 'happy', mouth: 'smile' });
   onBody(o, 17, .1, .1, 44, L.k, 12, 0, 2.8); badge('gold', '52 JAHRE', W / 2, H * .15, clamp((L.T - 13.34) / .15), 1, 1); sh(V(OX, 0, 1), 18); }, [[0, 'clock_tick', .5], [.4, 'knit', .4]]);
@@ -310,39 +310,39 @@ const atDesk = (L, pose = {}, wob = .04) => seat(ich, DESKP.x, DESKP.z, Math.PI,
 const DOORW = V(11.1, 0, 91.3);  // puerta de casa (mira a +x)
 // 19 «Deshalb habe ich mir heimlich»: en mi cuarto, de noche, en mi botella delante del ordenador: miro a los lados
 shot(21.04, 'Z', null, L => { zimmerS(L); hemi.intensity = .6; SCR.draw(0); const c = atDesk(L, { headY: Math.sin(L.lt * 4) * .7 }); cara(c, L.T, { expr: 'sus', mouth: 'flat' });
-  cm([ZIX + 5, 8.4, 5], [ZIX + 3.6, 8, 3.6], L.k); camera.lookAt(ZIX, 6.4, -6); camera.fov = 46; sh(V(ZIX, 0, -4), 16); }, [[0, 'typing', .4], [.6, 'creak', .3]]);
+  cm([ZIX + 8, 8.6, 1], [ZIX + 7, 8.4, 0], L.k); camera.lookAt(ZIX, 7, -5); camera.fov = 46; sh(V(ZIX, 0, -4), 16); }, [[0, 'typing', .4], [.6, 'creak', .3]]);
 // 20 «online einen Stuhl bestellt.»: el monitor: «Stuhl mit Lehne – 89,99 €» → clic en KAUFEN → «BESTELLT ✓»
 shot(22.40, 'F', null, L => { zimmerS(L); const ph = L.T < 22.8 ? 0 : L.T < 22.98 ? 1 : 2; SCR.draw(ph, clamp((L.T - 22.98) / .4)); atDesk(L);
-  cm([ZIX + .4, 8.9, -3.8], [ZIX + .2, 8.7, -4.8], L.k); camera.lookAt(ZIX, 8.2, -10); camera.fov = 44; sh(V(ZIX, 0, -8), 12); }, [[.4, 'click', .7], [.58, 'ding_reveal', .6]]);
+  cm([ZIX + 3.4, 8.6, -1.2], [ZIX + 3, 8.5, -2.2], L.k); camera.lookAt(ZIX, 8.2, -10); camera.fov = 44; sh(V(ZIX, 0, -8), 12); }, [[.4, 'click', .7], [.58, 'ding_reveal', .6]]);
 // 21 «Einen richtigen Stuhl!»: salto de alegría en mi botella, brazos arriba
 shot(23.58, 'C', 'punch', L => { zimmerS(L); SCR.draw(2, 1); const c = atDesk(L, { ...GEST.cheer, aLz: .5 + Math.sin(L.T * 12) * .15, aRz: .5 + Math.sin(L.T * 12) * .15 }, .08); c.root.rotation.y = Math.PI - .5; laughF(c, L.T); confetti(V(ZIX, 4, -3), 23.6, L.T, 40, .5);
-  onBody(c, 14, 0, .14, 44, L.k, 12); sh(V(ZIX, 0, -3), 14); }, [[0, 'cheer', .45], [.1, 'party_horn', .4]]);
+  cm([ZIX + 9, 8.4, 4], [ZIX + 8, 8, 3], L.k); camera.lookAt(ZIX, 6.4, -3); camera.fov = 46; sh(V(ZIX, 0, -3), 14); }, [[0, 'cheer', .45], [.1, 'party_horn', .4]]);
 // 22 «Mit Lehne!»: la foto de la silla en el monitor; un círculo marca el respaldo
-shot(24.74, 'W', null, L => { zimmerS(L); SCR.draw(2, 1); atDesk(L);
-  cm([ZIX - 2, 8.6, -5.6], [ZIX - 2.3, 8.4, -6.2], L.k); camera.lookAt(ZIX - 2.2, 8.3, -10); camera.fov = 40; badge('gold', 'MIT LEHNE!', W / 2, H * .16, clamp((L.T - 25.0) / .12), 1, .95); sh(V(ZIX, 0, -8), 12); }, [[.2, 'sparkle', .5]]);
+shot(24.74, 'W', null, L => { zimmerS(L); SCR.draw(2, 1);
+  cm([ZIX - .6, 8.6, -1.6], [ZIX - 1.2, 8.4, -2.8], L.k); camera.lookAt(ZIX - 1.4, 8.2, -10); camera.fov = 44; badge('gold', 'MIT LEHNE!', W / 2, H * .16, clamp((L.T - 25.0) / .12), 1, .95); sh(V(ZIX, 0, -8), 12); }, [[.2, 'sparkle', .5]]);
 // 23 «Heute Morgen kam endlich»: por la mañana el cartero me trae un paquete enorme a la puerta de casa
-shot(25.60, 'S', null, L => { town(L); const k = clamp(L.lt / .6); const po = put(EX[12], DOORW.x + 7 - k * 2.4, 0, DOORW.z + .2, -Math.PI / 2); actuar(po, 0, [[0, k < 1 ? { ...walkP(L.T, 1), ...GEST.hold } : GEST.hold]], { T: L.T }); cara(po, L.T, { expr: 'happy', mouth: 'smile' });
+shot(25.60, 'S', null, L => { town(L); const k = clamp(L.lt / .6); const po = put(EX[12], DOORW.x + 7 - k * 2.4, 0, DOORW.z + 1.8, -Math.PI / 2); actuar(po, 0, [[0, k < 1 ? { ...walkP(L.T, 1), ...GEST.hold } : GEST.hold]], { T: L.T }); cara(po, L.T, { expr: 'happy', mouth: 'smile' });
   attach(PARCEL, po.root, [0, 2.2, 2.0], [0, 0, 0], .78);
-  const c = put(ich, DOORW.x + 2, 0, DOORW.z - .2, Math.PI / 2); actuar(c, 0, [[0, { aLx: 1.0, aRx: 1.0, aLe: .4, aRe: .4, headX: -.1 }]], { T: L.T }); cara(c, L.T, { expr: 'joy', eyes: 'wide', mouth: 'open_smile' });
+  const c = put(ich, DOORW.x + 2, 0, DOORW.z - 1.8, Math.PI / 2); actuar(c, 0, [[0, { aLx: 1.0, aRx: 1.0, aLe: .4, aRe: .4, headX: -.1 }]], { T: L.T }); cara(c, L.T, { expr: 'joy', eyes: 'wide', mouth: 'open_smile' });
   cm([DOORW.x + 5, 6.5, DOORW.z + 15], [DOORW.x + 5, 6, DOORW.z + 12], L.k); camera.lookAt(DOORW.x + 4, 4, DOORW.z); camera.fov = 46; sh(DOORW, 20); }, [[0, 'doorbell', .55], [.3, 'steps', .35]]);
 // 24 «das Paket.»: abrazo el paquete (enorme: «VORSICHT – STUHL»)
 shot(26.73, 'I', null, L => { town(L); const c = put(ich, DOORW.x + 2.6, 0, DOORW.z, Math.PI / 2 + .3); actuar(c, 0, [[0, { aLx: 1.5, aRx: 1.5, aLz: -.5, aRz: -.5, aLe: .6, aRe: .6, lean: .08 }]], { T: L.T }); grin(c, L.T);
   attach(PARCEL, c.root, [0, .2, 2.4], [0, 0, 0], .9);
   onBody(c, 15, 0, .1, 44, L.k, 13); sh(DOORW, 16); }, [[0, 'box_drop', .45], [.2, 'happy_hum', .35]]);
 // 25 «Also gehe ich zum Domplatz»: cruzo la plaza con el paquete; el Dom al fondo; todos me miran desde sus botellas
-shot(27.34, 'C', null, L => { town(L); const c = put(ich, 10 - L.lt * 2.6, 0, 18 - L.lt * 1.6, -2.1); actuar(c, 0, [[0, { ...walkP(L.T, 0), aLx: 1.4, aRx: 1.4, aLz: -.45, aRz: -.45, aLe: .6, aRe: .6 }]], { T: L.T }); c.root.position.y = Math.abs(Math.sin(L.T * 9)) * .12; grin(c, L.T);
+shot(27.34, 'C', null, L => { town(L); const c = put(ich, -22 + L.lt * 2.6, 0, 12, Math.PI / 2); actuar(c, 0, [[0, { ...walkP(L.T, 0), aLx: 1.4, aRx: 1.4, aLz: -.45, aRz: -.45, aLe: .6, aRe: .6 }]], { T: L.T }); c.root.position.y = Math.abs(Math.sin(L.T * 9)) * .12; grin(c, L.T);
   attach(PARCEL, c.root, [0, .4, 2.3], [0, 0, 0], .85);
   plaza(L, { n: 18, r0: 6, r1: 30, seed: 21, mode: 'stare', face: hp(c) });
-  cm([26, 6.5, 30], [22, 6, 26], L.k); camera.lookAt(-30, 12, -16); camera.fov = 52; sh(V(0, 0, 10), 40); }, [[0, 'steps', .45], [.3, 'murmur', .35]]);
+  cm([-4, 6.5, 17], [-7, 6.2, 16], L.k); camera.lookAt(-44, 10, 6); camera.fov = 52; sh(V(-20, 0, 12), 40); }, [[0, 'steps', .45], [.3, 'murmur', .35]]);
 // 26 «und ziehe eine Flasche»: me agarro a una botella libre y tiro con todas mis fuerzas
 shot(28.69, 'W', null, L => { town(L); show(PARCEL, CP.x - 2.4, 0, CP.z + 2, .4, .85); const up = Math.max(0, Math.sin(L.T * 26)) * .08 + clamp((L.T - 29.6) / .3) * .6;
-  show(MYB, HP.x, up, HP.z, .3); const c = put(ich, HP.x, 0, HP.z + 2.3, Math.PI); actuar(c, 0, [[0, { aLx: 1.5, aRx: 1.5, aLz: -.25, aRz: -.25, aLe: .5, aRe: .5, lean: -.25, crouch: .35, lLx: .5, lRx: -.2, lLk: .6, lRk: .3, headX: -.2 }]], { T: L.T }); cara(c, L.T, { expr: 'determined', eyes: 'closed', mouth: 'grimace' }); sweat(c, L.T);
+  show(MYB, HP.x, up, HP.z, .3); const c = put(ich, HP.x, 0, HP.z - 2.3, 0); actuar(c, 0, [[0, { aLx: 1.5, aRx: 1.5, aLz: -.25, aRz: -.25, aLe: .5, aRe: .5, lean: -.25, crouch: .35, lLx: .5, lRx: -.2, lLk: .6, lRk: .3, headX: -.2 }]], { T: L.T }); cara(c, L.T, { expr: 'determined', eyes: 'closed', mouth: 'grimace' }); sweat(c, L.T);
   plaza(L, { n: 10, r0: 8, r1: 20, seed: 23, mode: 'stare', face: V(HP.x, 3, HP.z) });
   cm([HP.x + 6, 5.5, HP.z + 9], [HP.x + 5, 5, HP.z + 7.8], L.k); camera.lookAt(HP.x, 3, HP.z + 1); camera.fov = 46; sh(HP, 16); }, [[0, 'strain', .5], [.4, 'glass_creak', .45]]);
 // 27 «aus dem Boden,»: ¡PLOP! la botella sale; queda un agujero negro; polvo
 shot(29.95, 'C', 'punch', L => { town(L); show(PARCEL, CP.x - 2.4, 0, CP.z + 2, .4, .85); myHole(L); const k = easeOut(clamp((L.T - 29.95) / .3));
   show(MYB, HP.x + k * .6, 1.2 + k * 2.4, HP.z + 1.4 * k, .3); MYB.rotation.x = -k * .6;
-  const c = put(ich, HP.x, 0, HP.z + 2.6 + k * .8, Math.PI); actuar(c, 0, [[0, { aLx: 2.2, aRx: 2.2, aLz: -.2, aRz: -.2, aLe: .3, aRe: .3, lean: -.35, headX: -.3, lLx: -.3, lRx: .4 }]], { T: L.T }); cara(c, L.T, { expr: 'shock', mouth: 'o' }); dust(V(HP.x, 0, HP.z), 29.95, L.T, 10, .7);
+  const c = put(ich, HP.x, 0, HP.z - 2.6 - k * .8, 0); actuar(c, 0, [[0, { aLx: 2.2, aRx: 2.2, aLz: -.2, aRz: -.2, aLe: .3, aRe: .3, lean: -.35, headX: -.3, lLx: -.3, lRx: .4 }]], { T: L.T }); cara(c, L.T, { expr: 'shock', mouth: 'o' }); dust(V(HP.x, 0, HP.z), 29.95, L.T, 10, .7);
   cm([HP.x + 2.6, 9, HP.z + 9.5], [HP.x + 2, 8.6, HP.z + 8.6], L.k); camera.lookAt(HP.x, 1, HP.z); camera.fov = 46; sh(HP, 14); }, [[0, 'cork_pop', .8], [.05, 'dust_puff', .45]]);
 // 28 «damit mein Stuhl Platz hat.»: abro el paquete: sale la silla gamer entre destellos
 shot(30.45, 'F', null, L => { town(L); myHole(L); show(MYB, HP.x + 2.4, 0, HP.z + 1.6, 0); rollBottle(MYB, V(HP.x + 2.6, 0, HP.z + 2.2), .8, 0);
@@ -352,7 +352,7 @@ shot(30.45, 'F', null, L => { town(L); myHole(L); show(MYB, HP.x + 2.4, 0, HP.z 
   orb(L.k, V(CP.x + 1.5, 3.6, CP.z), null, [17, .35, .14, 44], [15, .2, .12, 44]); sh(CP, 18); }, [[0, 'tape_rip', .55], [.15, 'magic_hit', .45]]);
 // 29 «Ich stelle ihn hin»: coloco la silla junto al agujero
 shot(31.70, 'R', null, L => { town(L); myHole(L); rollBottle(MYB, V(HP.x + 2.6, 0, HP.z + 2.2), .8, 0); const k = easeOut(clamp((L.T - 31.75) / .45));
-  show(CHAIR, CP.x, (1 - k) * 1.2, CP.z, .4 * (1 - k)); const c = put(ich, CP.x + .4, 0, CP.z + 3.4, Math.PI); actuar(c, 0, [[0, { aLx: 1.3, aRx: 1.3, aLe: .4, aRe: .4, lean: .3, crouch: .2 * (1 - k) }]], { T: L.T }); cara(c, L.T, { expr: 'happy', mouth: 'smile' });
+  show(CHAIR, CP.x, (1 - k) * 1.2, CP.z, .4 * (1 - k)); const c = put(ich, CP.x + 3.4, 0, CP.z + .4, -Math.PI / 2); actuar(c, 0, [[0, { aLx: 1.3, aRx: 1.3, aLe: .4, aRe: .4, lean: .3, crouch: .2 * (1 - k) }]], { T: L.T }); cara(c, L.T, { expr: 'happy', mouth: 'smile' });
   plaza(L, { n: 10, r0: 9, r1: 22, seed: 27, mode: 'stare', face: V(CP.x, 3, CP.z) });
   cm([CP.x - 7, 5, CP.z + 9], [CP.x - 6, 4.6, CP.z + 8], L.k); camera.lookAt(CP.x, 2.8, CP.z + 1); camera.fov = 46; sh(CP, 16); }, [[.4, 'thud', .55]]);
 // 30 «und setze mich.»: me dejo caer en la silla: se hunde, me balanceo
@@ -378,10 +378,10 @@ shot(36.29, 'F', 'slow', L => { town(L); grade.uniforms.sat.value = 1.1; myHole(
 // 35 «Die ganze Stadt starrt»: contraplano desde detrás de mí: cientos de ojos clavados en mí
 shot(37.63, 'R', null, L => { town(L); myHole(L); const c = inChair(ich, CP.x, CP.z, Math.PI, L, { lean: -.15, aLx: .3, aRx: .3 }); cara(c, L.T, { expr: 'worried' });
   plaza(L, { cx: CP.x, cz: CP.z - 8, n: 30, r0: 5, r1: 30, seed: 37, mode: 'stare', face: V(CP.x, 4, CP.z), full: true });
-  cm([CP.x + 1.5, 7.5, CP.z + 6], [CP.x + 1.2, 7.2, CP.z + 5], L.k); camera.lookAt(CP.x - 1, 3.2, CP.z - 16); camera.fov = 54; sh(V(CP.x, 0, CP.z - 10), 34); }, [[0, 'tension_hit', .5]]);
+  cm([CP.x + 2.5, 11.5, CP.z + 6], [CP.x + 2.2, 11, CP.z + 5], L.k); camera.lookAt(CP.x - 1, 3.2, CP.z - 16); camera.fov = 54; sh(V(CP.x, 0, CP.z - 10), 34); }, [[0, 'tension_hit', .5]]);
 // 36 «mich an.»: dos caras en primer plano: me miran fijamente, sin parpadear
 shot(38.33, 'Z', null, L => { town(L); const a = seat(EX[6], CP.x - 2, CP.z - 9, 0, L, { wob: .01 }); seatMode(a, L, 1, 'stare', { face: V(CP.x, 4, CP.z + 6) }); const b = seat(EX[14], CP.x + 2.6, CP.z - 11, -.2, L, { wob: .01 }); seatMode(b, L, 2, 'stare', { face: V(CP.x, 4, CP.z + 6) });
-  plaza(L, { cx: CP.x, cz: CP.z - 16, n: 10, r0: 4, r1: 16, seed: 39, mode: 'stare', face: V(CP.x, 4, CP.z + 6) });
+  plaza(L, { cx: CP.x, cz: CP.z - 16, n: 10, r0: 4, r1: 16, seed: 39, mode: 'stare', face: V(CP.x, 4, CP.z + 6), gap: 1.3 });
   cm([CP.x - 1.2, 8.6, CP.z - 1], [CP.x - .4, 8.4, CP.z - 2.4], L.k); camera.lookAt(CP.x + .2, 7.6, CP.z - 10); camera.fov = 44; sh(V(CP.x, 0, CP.z - 10), 16); }, [[0, 'heartbeat', .55]]);
 // 37 «Ein Bäcker kippt vor Schreck»: el panadero en su botella, con una bandeja de Brezeln, abre los ojos de golpe
 shot(39.33, 'W', 'punch', L => { town(L); const b = seat(bak, BKP.x, BKP.z, .5, L, { wob: .03, pose: { aLx: 1.2, aRx: 1.2, aLz: -.2, aRz: -.2, aLe: .9, aRe: .9, lean: -.1 } }); cara(b, L.T, { expr: 'shock', eyes: 'wide', mouth: 'o' });
@@ -389,10 +389,10 @@ shot(39.33, 'W', 'punch', L => { town(L); const b = seat(bak, BKP.x, BKP.z, .5, 
   onBody(b, 15, 0, .1, 44, L.k, 12.5, -.15, 3); sh(BKP, 16); }, [[0, 'gasp', .5]]);
 // 38 «von seiner Flasche.»: se cae de espaldas: las piernas al aire, la bandeja vuela
 shot(40.17, 'C', null, L => { town(L); const k = easeIn(clamp((L.T - 40.2) / .45)); const b = seat(bak, BKP.x, BKP.z, .5, L, { wob: 0, pose: { aLx: 2.4, aRx: 2.4, aLz: .8, aRz: .8, aLe: .3, aRe: .3, lLk: .4, lRk: .4, lLx: 1.6 + k * .6, lRx: 1.4 + k * .6 } });
-  b.root.rotation.x = -k * 1.4; b.root.position.z -= k * 2.2; b.root.position.y -= k * (SEAT - .9); cara(b, L.T, { expr: 'shock', mouth: 'scream' });
+  b.root.rotation.x = -k * 1.4; b.root.position.z -= k * 2.2; b.root.position.y -= k * (SEAT - 1.8); cara(b, L.T, { expr: 'shock', mouth: 'scream' });
   dust(V(BKP.x, 0, BKP.z - 3), 40.6, L.T, 10, .6); stars(b, L.T, L.T > 40.7 ? 4 : 0);
   plaza(L, { cx: BKP.x, cz: BKP.z - 6, n: 8, r0: 6, r1: 16, seed: 43, mode: 'shock' });
-  orbit(V(BKP.x, 2.8, BKP.z - 1.2), 15, .9, .14, 46); sh(BKP, 16); }, [[.05, 'whoosh_down', .45], [.45, 'thud', .7], [.55, 'glass_clink', .35]]);
+  orbit(V(BKP.x, 2.6, BKP.z - 1.2), 14, 2.1, .14, 46); sh(BKP, 16); }, [[.05, 'whoosh_down', .45], [.45, 'thud', .7], [.55, 'glass_clink', .35]]);
 // ---------- c: la policía, «Nein», la alcaldesa, el agujero lila, «Korken» (41,34 – 61,74 s) ----------
 const myChairScene = (L, o = {}) => { myHole(L, o.glow ?? 0, o.bub ?? 0); rollBottle(MYB, V(HP.x + 2.6, 0, HP.z + 2.2), .8, 0); };
 const lilaK = T => clamp((T - 56.2) / .5);     // el resplandor lila (desde que sale la luz)
@@ -413,14 +413,14 @@ shot(42.82, 'C', 'punch', L => { town(L); myChairScene(L); const p = put(cop1, C
 shot(43.70, 'W', null, L => { town(L); myChairScene(L); const c = inChair(ich, CP.x, CP.z, 0, L, { lean: -.2, aLx: .4, aRx: .4, aLz: .3, aRz: .3 }); cara(c, L.T, { expr: 'neutral' });
   const p = put(cop1, CP.x + 1.2, 0, CP.z + 6, Math.PI + .15); actuar(p, 0, [[0, { aRx: 1.0, aRz: -.3, aRe: .1, lean: .1, headX: .25, headY: .35 }]], { T: L.T }); talk(p, L.T, 42.8, 44.4, 'angry');
   const q = put(cop2, CP.x + 4.2, 0, CP.z + 5.4, Math.PI - .5); actuar(q, 0, [[0, GEST.cross]], { T: L.T }); cara(q, L.T, { expr: 'angry', mouth: 'flat' });
-  cm([CP.x - 1.6, 8.6, CP.z - 4.2], [CP.x - 1.2, 8.3, CP.z - 3.4], L.k); camera.lookAt(CP.x + 2, 4, CP.z + 6); camera.fov = 48; sh(V(CP.x, 0, CP.z + 3), 16); }, [[0, 'tsk', .4]]);
+  cm([CP.x - 2.4, 11, CP.z - 5], [CP.x - 2, 10.6, CP.z - 4.2], L.k); camera.lookAt(CP.x + 2, 4, CP.z + 6); camera.fov = 48; sh(V(CP.x, 0, CP.z + 3), 16); }, [[0, 'tsk', .4]]);
 // 42 «Aber ich sage:»: me cruzo de brazos y me recuesto
 shot(44.52, 'F', null, L => { town(L); myChairScene(L); const c = inChair(ich, CP.x, CP.z, 0, L, { ...GEST.cross, lean: -.3 }); cara(c, L.T, { expr: 'smug', mouth: 'smirk' });
   plaza(L, { n: 10, r0: 8, r1: 20, seed: 49, mode: 'stare', face: hp(c) });
   onBody(c, 14, -.35, .1, 44, L.k, 12, -.2, 2.4); sh(CP, 16); }, [[.1, 'cloth', .4]]);
 // 43 «„Nein.»: primer plano: «NEIN.»
 shot(45.54, 'C', 'punch', L => { town(L); myChairScene(L); const c = inChair(ich, CP.x, CP.z, 0, L, { ...GEST.cross, lean: -.3 }); cara(c, L.T, { expr: 'determined', mouth: L.lt < .25 ? 'o' : 'flat' });
-  onFace(c, 4.8, .2, .2, 40, L.k, 4.2); badge('red', 'NEIN.', W / 2, H * .17, clamp(L.lt / .1), 1, 1.1); sh(CP, 12); }, [[0, 'impact', .55]]);
+  onFace(c, 6.2, .3, .2, 40, L.k, 5.4); badge('red', 'NEIN.', W / 2, H * .12, clamp(L.lt / .1), 1, 1.1); sh(CP, 12); }, [[0, 'impact', .55]]);
 // 44 «Mein Stuhl ist»: doy palmaditas al respaldo
 shot(46.03, 'S', null, L => { town(L); myChairScene(L); const c = inChair(ich, CP.x, CP.z, 0, L, { lean: -.3, aRx: -.3 + Math.abs(Math.sin(L.T * 9)) * .3, aRz: .9, aRe: 1.6, aLx: .5, aLz: .4 }); cara(c, L.T, { expr: 'smug', mouth: 'grin' });
   cm([CP.x + 4.5, 5.4, CP.z + 4.4], [CP.x + 3.8, 5.2, CP.z + 3.6], L.k); camera.lookAt(CP.x, 4.4, CP.z - .5); camera.fov = 44; sh(CP, 12); }, [[.15, 'pat', .5], [.35, 'pat', .4]]);
@@ -436,10 +436,10 @@ shot(48.06, 'Z', 'punch', L => { town(L); const k = clamp((L.T - 48.1) / .3); sh
   onBody(d, 15, 0, .14, 44, L.k, 12.5, 0, 3.2); badge('tag', 'BÜRGERMEISTERIN', W / 2, H * .14, clamp((L.lt - .1) / .15), 1, .85); sh(DP, 18); }, [[0, 'shout_f', .55], [.05, 'glass_clink', .4]]);
 // 47 «„Weißt du denn nicht,»: primer plano de la alcaldesa gritando
 shot(49.58, 'C', null, L => { town(L); show(DORNB, DP.x, 0, DP.z, 0); DORNB.userData.collar.visible = true; const d = dornAt(L, { pose: { ...GEST.fists, aRx: 1.4, aRz: .1, aRe: .4, lean: .15 } }); talk(d, L.T, 49.5, 51.5, 'angry');
-  onFace(d, 5.6, .2, .6, 40, L.k, 4.6); bubble(d, 'Weißt du denn nicht, wozu die Flaschen da sind?', clamp((L.lt - .05) / .15), 1.6); sh(DP, 14); }, [[0, 'shout_f', .45]]);
+  onFace(d, 5.6, .2, .6, 40, L.k, 4.6); bubble(d, 'Wozu sind die Flaschen da?', clamp((L.lt - .05) / .15), 1.6); sh(DP, 14); }, [[0, 'shout_f', .45]]);
 // 48 «wozu die Flaschen da sind?“»: desde detrás de ella: señala a toda la plaza sentada en botellas; yo en mi silla al fondo
 shot(50.48, 'W', null, L => { town(L); myChairScene(L); show(DORNB, DP.x, 0, DP.z, 0); DORNB.userData.collar.visible = true; const d = dornAt(L, { pose: { aRx: 1.6, aRz: .4, aRe: .1, aLx: .5, aLz: -.4, aLe: 1.3, headY: .4 } }); talk(d, L.T, 49.5, 51.5, 'angry');
-  const c = inChair(ich, CP.x, CP.z, faceTo(CP, DP), L, { lean: -.2, aLx: .5, aRx: .5 }, 0); cara(c, L.T, { expr: 'confused' });
+  const c = inChair(ich, CP.x, CP.z, faceTo(CP, DP), L, { lean: -.2, aLx: .5, aRx: .5 }); cara(c, L.T, { expr: 'confused' });
   plaza(L, { n: 16, r0: 8, r1: 28, seed: 55, mode: 'stare', face: hp(d) });
   const h = hp(d); cm([h.x + 3.4, 8.4, h.z - 6], [h.x + 2.8, 8.2, h.z - 5], L.k); camera.lookAt(CP.x, 3.4, CP.z); camera.fov = 50; sh(V(CP.x, 0, CP.z), 22); }, [[0, 'murmur', .4]]);
 // 49 «Ganz langsam zieht sie» (zoom lento): se agacha y agarra su propia botella con las dos manos
@@ -450,31 +450,31 @@ shot(51.73, 'I', 'slow', L => { town(L); show(DORNB, DP.x, 0, DP.z, 0); DORNB.us
 shot(53.38, 'F', null, L => { town(L); const k = easeInOut(clamp((L.T - 53.45) / 1.15)); const h = show(HOLES[1], DP.x, 0, DP.z); h.userData.set(k * .5, 0, L.T); show(DORNB, DP.x, k * 3.6, DP.z, 0); DORNB.userData.collar.visible = false;
   const d = put(dorn, DP.x, 0, DP.z - 2.1, 0); actuar(d, 0, [[0, { aLx: 1.6 + k * .7, aRx: 1.6 + k * .7, aLz: -.22, aRz: -.22, aLe: .5, aRe: .5, lean: .3 - k * .35, crouch: .3 * (1 - k), headX: -.1 }]], { T: L.T }); cara(d, L.T, { expr: 'determined', mouth: 'flat' });
   plaza(L, { cx: DP.x, cz: DP.z - 6, n: 10, r0: 6, r1: 16, seed: 59, mode: 'shock' });
-  cm([DP.x + 4.4, 2.2, DP.z + 7.5], [DP.x + 3.6, 2.6, DP.z + 6.5], L.k); camera.lookAt(DP.x, 2.4, DP.z); camera.fov = 46; sh(DP, 14); }, [[0, 'glass_creak', .5], [.6, 'hum_low', .4]]);
+  cm([DP.x + 8, 4.4, DP.z + 2], [DP.x + 7, 4.6, DP.z + 1.2], L.k); camera.lookAt(DP.x, 3.6, DP.z - 1); camera.fov = 46; sh(DP, 14); }, [[0, 'glass_creak', .5], [.6, 'hum_low', .4]]);
 // 51 «Darunter ist ein Loch.»: cenital: el agujero, negro y profundo; las cabezas asomándose alrededor
 shot(54.68, 'C', 'punch', L => { town(L); const h = show(HOLES[1], DP.x, 0, DP.z); h.userData.set(.25, 0, L.T);
   crowdAt(L, DP.x, DP.z, 8, 3.2, 4.2, 61, { mode: 'idle', expr: 'shock', face: V(DP.x, 0, DP.z), full: true, list: [dorn, ...EX.slice(0, 7)] });
   POST.push(() => [dorn, ...EX.slice(0, 7)].forEach((c, i) => { if (c.root.visible) { actuar(c, 0, [[0, { lean: .45, headX: .6, aLx: .3, aRx: .3 }]], { T: L.T }); cara(c, L.T, { expr: 'shock', mouth: 'o' }); } }));
   if (dorn.root) show(DORNB, DP.x + 1.6, 6, DP.z - .4, 0);
-  cm([DP.x + .3, 15.5, DP.z + .6], [DP.x + .2, 13.5, DP.z + .4], L.k); camera.lookAt(DP.x, 0, DP.z); camera.fov = 50; badge('tag', 'EIN LOCH', W / 2, H * .14, clamp((L.T - 55.65) / .12), 1, .9); sh(DP, 12); }, [[0, 'wind', .4], [.9, 'creepy_ting', .4]]);
+  cm([DP.x + .4, 15.5, DP.z + 6], [DP.x + .3, 13.5, DP.z + 5], L.k); camera.lookAt(DP.x, 0, DP.z); camera.fov = 50; badge('tag', 'EIN LOCH', W / 2, H * .14, clamp((L.T - 55.65) / .12), 1, .9); sh(DP, 12); }, [[0, 'wind', .4], [.9, 'creepy_ting', .4]]);
 // 52 «Und aus diesem Loch kommt»: ¡FUUM! un haz de luz lila sale disparado hacia el cielo
 shot(56.14, 'Z', 'punch', L => { town(L, { lila: lilaK(L.T) > .5 }); const g = easeOut(lilaK(L.T)); const h = show(HOLES[1], DP.x, 0, DP.z); h.userData.set(.3 + g * .7, 0, L.T); h.scale.set(1, 1 + g * 2.5, 1);
   const d = put(dorn, DP.x - 1.6, 0, DP.z - 2.4, .5); actuar(d, 0, [[0, { aRx: 2.4, aRz: .4, aRe: .3, aLx: .4, lean: -.1, headX: -.25 }]], { T: L.T }); attach(DORNB, d.aR.el, [0, -1.2, .3], [Math.PI, 0, 0], .7); cara(d, L.T, { expr: 'smug', mouth: 'smirk' });
   plaza(L, { cx: DP.x, cz: DP.z - 4, n: 12, r0: 5, r1: 18, seed: 63, mode: 'shock' }); sparks(V(DP.x, 1, DP.z), 56.2, L.T, 30, .9);
   cm([DP.x + 2, 3, DP.z + 16], [DP.x + 1.6, 4.6, DP.z + 14], L.k); camera.lookAt(DP.x, 7, DP.z); camera.fov = 52; sh(DP, 20); }, [[.05, 'magic_hit', .6], [.1, 'hum_low', .5]]);
 // 53 «ein lila Leuchten.»: mi cara iluminada de lila desde abajo; boca abierta
-shot(57.43, 'S', null, L => { town(L, { lila: 1 }); myChairScene(L); const c = inChair(ich, CP.x, CP.z, faceTo(CP, DP), L, { aLx: .9, aRx: .9, aLz: .5, aRz: .5, aLe: 1.9, aRe: 1.9, lean: -.05 }, 0); cara(c, L.T, { expr: 'shock', mouth: 'o' });
+shot(57.43, 'S', null, L => { town(L, { lila: 1 }); myChairScene(L); const c = inChair(ich, CP.x, CP.z, faceTo(CP, DP), L, { aLx: .9, aRx: .9, aLz: .5, aRz: .5, aLe: 1.9, aRe: 1.9, lean: -.05 }); cara(c, L.T, { expr: 'shock', mouth: 'o' });
   FILL.color.setRGB(.8, .35, 1); FILL.intensity = 70; const h = show(HOLES[1], DP.x, 0, DP.z); h.userData.set(1, 0, L.T); h.scale.set(1, 3.5, 1);
   onFace(c, 5.2, -.2, .5, 40, L.k, 4.4); badge('big', 'LILA', W / 2, H * .15, clamp((L.T - 57.65) / .12), 1, .9); sh(CP, 12); }, [[0, 'shimmer', .5]]);
 // 54 «Denn die Flaschen sind keine Stühle.»: plano general de la plaza teñida de lila: todos se agarran a sus botellas
 shot(58.69, 'C', null, L => { town(L, { lila: 1 }); myChairScene(L); const h = show(HOLES[1], DP.x, 0, DP.z); h.userData.set(1, 0, L.T); h.scale.set(1, 3.5, 1);
   const d = put(dorn, DP.x - 1.6, 0, DP.z - 2.4, .5); actuar(d, 0, [[0, { aRx: 1.2, aRz: .2, aRe: .3, aLx: 1.6, aLz: .3, aLe: .2 }]], { T: L.T }); attach(DORNB, d.aR.el, [0, -1.2, .3], [Math.PI, 0, 0], .7); talk(d, L.T, 58.6, 60.4, 'angry');
-  inChair(ich, CP.x, CP.z, faceTo(CP, DP), L, { aLx: .9, aRx: .9, aLz: .5, aRz: .5, aLe: 1.9, aRe: 1.9 }, 0); cara(ich, L.T, { expr: 'shock' });
+  inChair(ich, CP.x, CP.z, faceTo(CP, DP), L, { aLx: .9, aRx: .9, aLz: .5, aRz: .5, aLe: 1.9, aRe: 1.9 }); cara(ich, L.T, { expr: 'shock' });
   plaza(L, { n: 26, r0: 6, r1: 30, seed: 65, mode: i => i % 3 ? 'ouch' : 'shock' });
   cm([24, 20, 34], [20, 18, 30], L.k); camera.lookAt(0, 2, -2); camera.fov = 50; sh(V(0, 0, 0), 40); }, [[0, 'hum_low', .45], [.3, 'murmur', .35]]);
 // 55 «Sie sind Korken.»: la alcaldesa levanta la botella como un trofeo: «KORKEN!»
-shot(60.59, 'I', 'punch', L => { town(L, { lila: 1 }); const h = show(HOLES[1], DP.x, 0, DP.z); h.userData.set(1, 0, L.T); h.scale.set(1, 3.5, 1);
-  const d = put(dorn, DP.x - 1.6, 0, DP.z - 2.4, .6); actuar(d, 0, [[0, { aRx: 2.9, aRz: .3, aRe: .1, aLx: .3, aLz: .3, headX: -.15 }]], { T: L.T }); attach(DORNB, d.aR.el, [0, -1.3, .3], [Math.PI, 0, 0], .7); talk(d, L.T, 60.5, 61.6, 'angry');
+shot(60.59, 'I', 'punch', L => { town(L, { lila: 1 }); const h = show(HOLES[1], DP.x, 0, DP.z); h.userData.set(1, 0, L.T); h.scale.set(1, 1.6, 1);
+  const d = put(dorn, DP.x - 3.6, 0, DP.z - 1.4, .9); actuar(d, 0, [[0, { aRx: 2.9, aRz: .3, aRe: .1, aLx: .3, aLz: .3, headX: -.15 }]], { T: L.T }); attach(DORNB, d.aR.el, [0, -1.3, .3], [Math.PI, 0, 0], .7); talk(d, L.T, 60.5, 61.6, 'angry');
   plaza(L, { cx: DP.x, cz: DP.z - 6, n: 8, r0: 6, r1: 16, seed: 67, mode: 'shock' });
   onBody(d, 16, .2, .2, 46, L.k, 13.5, .1, 4.4); badge('gold', 'KORKEN!', W / 2, H * .15, clamp((L.T - 60.95) / .12), 1, 1.1); sh(DP, 16); }, [[.35, 'cork_pop', .6], [.4, 'impact', .5]]);
 // ---------- d: la cueva, el agujero burbujea, la persecución de la botella, «Plopp», el final (61,74 s – fin) ----------
@@ -521,7 +521,7 @@ shot(73.84, 'Z', null, L => { town(L, { lila: 1 }); myChairScene(L, { glow: .9, 
   cm([CP.x - 6, 16, CP.z + 26], [CP.x - 4, 14, CP.z + 22], L.k); camera.lookAt(CP.x, 3, CP.z - 4); camera.fov = 50; sh(V(CP.x, 0, CP.z - 4), 34); }, [[0, 'shout_crowd', .55]]);
 // 66 «„Flasche rein!»: primer plano: dos vecinos gritando
 shot(74.62, 'C', 'punch', L => { town(L, { lila: 1 }); const a = seat(EX[2], CP.x - 2, CP.z - 6, .1, L, { wob: .05 }); seatMode(a, L, 1, 'shout'); const b = seat(EX[11], CP.x + 2.2, CP.z - 7.5, -.2, L, { wob: .05 }); seatMode(b, L, 2, 'shout');
-  plaza(L, { cx: CP.x, cz: CP.z - 14, n: 8, r0: 4, r1: 14, seed: 77, mode: 'shout' });
+  plaza(L, { cx: CP.x, cz: CP.z - 14, n: 8, r0: 4, r1: 14, seed: 77, mode: 'shout', gap: 1.5 });
   cm([CP.x + .2, 7.6, CP.z + 4], [CP.x + .1, 7.2, CP.z + 2.8], L.k); camera.lookAt(CP.x, 6, CP.z - 7); camera.fov = 46; badge('red', 'FLASCHE REIN!', W / 2, H * .15, clamp((L.T - 74.62) / .1), 1, .95); sh(V(CP.x, 0, CP.z - 6), 16); }, [[0, 'shout_crowd', .5]]);
 // 67 «Flasche rein!“»: la alcaldesa y los policías también, señalando el agujero
 shot(75.36, 'W', 'punch', L => { town(L, { lila: 1 }); myChairScene(L, { glow: .9, bub: 1 }); const d = put(dorn, HP.x + 4, 0, HP.z - 6, -.6); actuar(d, 0, [[0, { aRx: 1.6, aRz: .05, aRe: .1, aLx: 2.0, aLz: .9, aLe: 1.6, lean: .1 }]], { T: L.T }); cara(d, L.T, { expr: 'shout', mouth: 'talk_wide' });
@@ -543,7 +543,7 @@ shot(78.47, 'R', null, L => { town(L, { lila: 1 }); const p = rollPath(L.T + .3)
 // 71 «Domplatz,»: desde el aire: la botella cruza toda la plaza
 shot(79.69, 'Z', null, L => { town(L, { lila: 1 }); myHole(L, .9, 1); const p = rollPath(L.T + .3); rollBottle(MYB, p, rollDir(L.T + .3), L.T * 9);
   plaza(L, { n: 26, r0: 5, r1: 32, seed: 81, mode: 'point', face: p });
-  cm([p.x + 10, 38, p.z + 26], [p.x + 8, 34, p.z + 22], L.k); camera.lookAt(p.x, 0, p.z - 2); camera.fov = 50; sh(p, 40); }, [[0, 'bottle_roll', .5]]);
+  cm([p.x + 8, 22, p.z + 18], [p.x + 7, 20, p.z + 16], L.k); camera.lookAt(p.x, 0, p.z - 2); camera.fov = 50; sh(p, 40); }, [[0, 'bottle_roll', .5]]);
 // 72 «und die ganze Stadt rennt hinterher.»: todos saltan de sus botellas y corren detrás (los agujeros brillan)
 shot(80.49, 'W', null, L => { town(L, { lila: 1 }); const p = rollPath(L.T + .3); rollBottle(MYB, p, rollDir(L.T + .3), L.T * 9); const dir = rollDir(L.T + .3);
   crowdAt(L, p.x - Math.sin(dir) * 9, p.z - Math.cos(dir) * 9, 18, 2, 10, 83, { mode: 'run', ry: dir, speed: 0, full: true });
@@ -556,7 +556,7 @@ shot(81.35, 'S', null, L => { town(L, { lila: 1 }); const p = rollPath(L.T + .3)
 // 74 «In letzter Sekunde» (zoom lento): me lanzo en plancha a por ella, a cámara lenta
 shot(82.03, 'I', 'slow', L => { town(L, { lila: 1 }); const tt = 82.03 + (L.T - 82.03) * .35, p = rollPath(tt + .3), dir = rollDir(tt + .3); rollBottle(MYB, p, dir, tt * 9);
   const k = clamp((L.T - 82.03) / 1.5); const c = put(ich, p.x - Math.sin(dir) * (3.5 - k * 1.8), 1.2 + Math.sin(k * Math.PI) * .8, p.z - Math.cos(dir) * (3.5 - k * 1.8), dir); c.root.rotation.order = 'YXZ'; c.root.rotation.x = 1.25; actuar(c, 0, [[0, { aLx: 2.9, aRx: 2.9, aLz: .1, aRz: .1, aLe: .1, aRe: .1, lLx: -.2, lRx: .1 }]], { T: L.T }); cara(c, L.T, { expr: 'determined', mouth: 'scream' }); c.blob.visible = false;
-  cm([p.x + Math.cos(dir) * 9, 3, p.z - Math.sin(dir) * 9], [p.x + Math.cos(dir) * 7, 2.6, p.z - Math.sin(dir) * 7], L.k); camera.lookAt(p.x - Math.sin(dir) * 1.5, 1.6, p.z - Math.cos(dir) * 1.5); camera.fov = 46; badge('tag', 'LETZTE SEKUNDE', W / 2, H * .15, clamp((L.T - 82.93) / .12), 1, .9); sh(p, 14); }, [[0, 'slowmo', .5]]);
+  orbit(V(c.root.position.x, 2.2, c.root.position.z), lerp(14, 11, L.k), dir + 1.3, .12, 46); badge('tag', 'LETZTE SEKUNDE', W / 2, H * .15, clamp((L.T - 82.93) / .12), 1, .9); sh(p, 14); }, [[0, 'slowmo', .5]]);
 // 75 «fange ich sie,»: ¡la atrapo! la abrazo contra el pecho
 shot(83.61, 'C', 'punch', L => { town(L, { lila: 1 }); const P = V(HP.x - 3, 0, HP.z - 6); const c = put(ich, P.x, 0, P.z, .4); actuar(c, 0, [[0, { aLx: 1.5, aRx: 1.5, aLz: -.5, aRz: -.5, aLe: .7, aRe: .7, crouch: .25, lean: .1 }]], { T: L.T }); cara(c, L.T, { expr: 'determined', mouth: 'grin' });
   attach(MYB, c.root, [0, 3.2, 1.3], [Math.PI / 2 - .3, 0, 0], .55); dust(V(P.x, 0, P.z), 83.6, L.T, 8, .5);
@@ -564,7 +564,7 @@ shot(83.61, 'C', 'punch', L => { town(L, { lila: 1 }); const P = V(HP.x - 3, 0, 
 // 76 «stecke sie ins Loch»: la clavo boca abajo... no: de pie, en el agujero que burbujea
 shot(84.45, 'F', null, L => { town(L, { lila: 1 }); const k = easeIn(clamp((L.T - 84.5) / .4)); myHole(L, .9 * (1 - k * .5), 1 - k * .5); show(CHAIR, CP.x, 0, CP.z, 0);
   show(MYB, HP.x, lerp(2.2, 0, k), HP.z, 0); MYB.userData.collar.visible = k > .95;
-  const c = put(ich, HP.x, 0, HP.z + 2.3, Math.PI); actuar(c, 0, [[0, { aLx: 1.6, aRx: 1.6, aLz: -.25, aRz: -.25, aLe: .5, aRe: .5, lean: .3, crouch: .2 + k * .2 }]], { T: L.T }); cara(c, L.T, { expr: 'determined', mouth: 'grimace' });
+  const c = put(ich, HP.x, 0, HP.z - 2.3, 0); actuar(c, 0, [[0, { aLx: 1.6, aRx: 1.6, aLz: -.25, aRz: -.25, aLe: .5, aRe: .5, lean: .3, crouch: .2 + k * .2 }]], { T: L.T }); cara(c, L.T, { expr: 'determined', mouth: 'grimace' });
   cm([HP.x + 5, 6, HP.z + 8], [HP.x + 4, 5.4, HP.z + 7], L.k); camera.lookAt(HP.x, 2.4, HP.z + .6); camera.fov = 46; sh(HP, 14); }, [[.35, 'glass_thud', .6]]);
 // 77 «und setze mich drauf.»: me siento encima de golpe; la luz lila se apaga poco a poco
 shot(85.19, 'S', null, L => { town(L, { lila: L.T < 86.2 }); const k = easeOut(clamp((L.T - 85.4) / .35)); myHole(L, 0); show(CHAIR, CP.x, 0, CP.z, 0);
@@ -573,7 +573,7 @@ shot(85.19, 'S', null, L => { town(L, { lila: L.T < 86.2 }); const k = easeOut(c
   onBody(c, 16, .3, .12, 44, L.k, 13, .1, 4.4); sh(HP, 16); }, [[.25, 'thud', .6]]);
 // 78 «Plopp.»: primer plano: «PLOPP!»
 shot(86.60, 'C', 'punch', L => { town(L); const c = seat(ich, HP.x, HP.z, 0, L, { col: 0, wob: .03, pose: { aLx: 1.2, aRx: 1.2, aLz: .3, aRz: .3, lean: .1 } }); cara(c, L.T, { expr: 'shock', eyes: 'wide', mouth: 'o' });
-  cm([HP.x + 3.2, 3.2, HP.z + 6], [HP.x + 2.8, 3.4, HP.z + 5.2], L.k); camera.lookAt(HP.x, 3.6, HP.z); camera.fov = 44; badge('gold', 'PLOPP!', W / 2, H * .17, clamp(L.lt / .1), 1, 1.2); sh(HP, 12); }, [[0, 'cork_pop', .85]]);
+  cm([HP.x + 3.6, 7.6, HP.z + 9.5], [HP.x + 3.2, 7.4, HP.z + 8.5], L.k); camera.lookAt(HP.x, 6.2, HP.z); camera.fov = 44; badge('gold', 'PLOPP!', W / 2, H * .17, clamp(L.lt / .1), 1, 1.2); sh(HP, 12); }, [[0, 'cork_pop', .85]]);
 // 79 «Das Blubbern hört auf.»: silencio; la plaza vuelve a la normalidad; todos respiran aliviados
 shot(87.30, 'W', null, L => { town(L); show(CHAIR, CP.x, 0, CP.z, 0); const c = seat(ich, HP.x, HP.z, 0, L, { col: 0, pose: { aLx: .4, aRx: .4, lean: .2, headX: .2 } }); cara(c, L.T, { expr: 'relief', eyes: 'closed', mouth: 'smile' });
   plaza(L, { n: 24, r0: 6, r1: 30, seed: 89, mode: i => i % 2 ? 'idle' : 'ouch', expr: 'relief' });
@@ -585,7 +585,7 @@ shot(88.89, 'F', null, L => { town(L); show(CHAIR, CP.x - 1, 0, CP.z + .4, .3); 
 // 81 «Jeden einzelnen Tag.»: la plaza de día, al atardecer y de noche: yo siempre en mi botella; «JEDEN TAG»
 shot(90.74, 'C', null, L => { const ph = Math.floor(clamp((L.T - 90.74) / 1.3) * 3); town(L, { dusk: ph === 1, night: ph === 2 }); const c = seat(ich, HP.x, HP.z, 0, L, { col: 0, pose: { aLx: .5, aRx: .5, aLz: .4, aRz: .4, aLe: .6, aRe: .6, lean: .15 } }); cara(c, L.T, { expr: 'sad', eyes: 'half', mouth: 'flat' });
   plaza(L, { n: 14, r0: 7, r1: 26, seed: 93 + ph });
-  orbit(V(HP.x, 4, HP.z), 15 - L.k * 2, .1 - L.k * .2, .14, 44); badge('gold', 'JEDEN TAG', W / 2, H * .15, clamp((L.T - 90.74) / .15), 1, 1); sh(HP, 18); }, [[0, 'clock_tick', .5]]);
+  orbit(V(HP.x, 5, HP.z), 19 - L.k * 2, .1 - L.k * .2, .14, 44); badge('gold', 'JEDEN TAG', W / 2, H * .11, clamp((L.T - 90.74) / .15), 1, 1); sh(HP, 18); }, [[0, 'clock_tick', .5]]);
 // 82 «Mein Stuhl steht jetzt im Keller.»: el sótano: la silla gamer bajo la bombilla, cubierta de polvo
 shot(92.04, 'I', null, L => { sotanoS(L); show(CHAIR, SX, 0, -3, .35); DOF = 1.4;
   cm([SX + 5, 6.4, 10], [SX + 3.4, 5.8, 7.6], L.k); camera.lookAt(SX, 3.4, -3); camera.fov = 46; badge('tag', 'IM KELLER', W / 2, H * .15, clamp((L.T - 93.04) / .12), 1, .9); }, [[0, 'door_creak', .45], [.4, 'cave_drip', .35]]);
@@ -599,7 +599,7 @@ shot(94.41, 'F', null, L => { town(L, { night: 1 }); const c = seat(ich, HP.x, H
 // 85 «an meine Flasche geklopft.»: ¡TOC, TOC! la botella da dos saltos; abro los ojos de golpe
 shot(95.36, 'C', 'punch', L => { town(L, { night: 1 }); const kn = t => Math.max(0, 1 - Math.abs(L.T - t) / .08); const j = kn(95.75) + kn(96.05); const c = seat(ich, HP.x, HP.z, 0, L, { col: 0, wob: 0, pose: { ...GEST.shock } }); c.root.position.y += j * .5; BOTS.forEach(b => { if (b.visible) b.position.y = j * .35; });
   cara(c, L.T, { expr: 'shock', eyes: L.T > 95.7 ? 'wide' : 'half', mouth: L.T > 95.7 ? 'o' : 'flat' }); const h = show(HOLES[0], HP.x, 0, HP.z); h.userData.set(.6 + j * .4, 0, L.T); h.scale.set(1.4, .2, 1.4);
-  onFace(c, 6.4, .2, .4, 42, L.k, 5.2); if (L.T > 95.72) badge('red', 'KLOPF! KLOPF!', W / 2, H * .17, clamp((L.T - 95.72) / .1), 1, 1); sh(HP, 12); }, [[.38, 'knock', .9], [.68, 'knock', .9], [.9, 'braam', .6]]);
+  onFace(c, 8, .4, .4, 42, L.k, 6.8); if (L.T > 95.72) badge('red', 'KLOPF! KLOPF!', W / 2, H * .12, clamp((L.T - 95.72) / .1), 1, 1); sh(HP, 12); }, [[.38, 'knock', .9], [.68, 'knock', .9], [.9, 'braam', .6]]);
 
 
 // ---------- transiciones, sonidos, render ----------

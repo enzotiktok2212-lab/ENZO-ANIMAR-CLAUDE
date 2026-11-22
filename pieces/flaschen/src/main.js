@@ -184,7 +184,7 @@ function crowdGuy(c, x, z, L, i, o) { const T = L.T + i * .37, face = o.face || 
 function onBody(ch, dist, yaw = 0, pitch = .12, fov = 42, k = 0, dist2 = null, yaw2 = null, dy = 3.3) { const s = ch.spec.scale || 1, p = ch.root.position, c = V(p.x, p.y + dy * s, p.z); const q = easeInOut(clamp(k)); orbit(c, lerp(dist, dist2 ?? dist * .88, q) * s, ch.root.rotation.y + lerp(yaw, yaw2 ?? yaw, q), pitch, fov); }
 const toCam = ch => { const p = ch.root.position; ch.root.rotation.y = Math.atan2(camera.position.x - p.x, camera.position.z - p.z); };
 // ---------- escenarios por plano ----------
-function town(L, o = {}) { use('HB'); if (o.night) night(o.fill ?? 40); else if (o.dusk) { day(); sun.color.setRGB(1, .72, .5); sun.intensity = 2.2; setSky([.16, .2, .55], [.72, .42, .55], [1, .62, .36]); } else day(); if (o.lila) { setSky([.22, .1, .4], [.45, .3, .7], [.7, .55, .9]); hemi.color.setRGB(.8, .7, 1); sun.color.setRGB(.9, .75, 1); scene.fog.color.setRGB(.6, .5, .8); } }
+function town(L, o = {}) { use('HB'); if (o.night) { darkNight(); renderer.toneMappingExposure = .8; } else if (o.dusk) { day(); sun.color.setRGB(1, .72, .5); sun.intensity = 2.2; setSky([.16, .2, .55], [.72, .42, .55], [1, .62, .36]); } else day(); if (o.lila) { setSky([.22, .1, .4], [.45, .3, .7], [.7, .55, .9]); hemi.color.setRGB(.8, .7, 1); sun.color.setRGB(.9, .75, 1); scene.fog.color.setRGB(.6, .5, .8); } }
 function klasseS(L) { use('KL'); inside(1.0, 46); }
 function omaS(L) { use('OS'); inside(1.0, 46); }
 function zahnS(L) { use('ZA'); inside(1.05, 40); ZA.LL.visible = true; }
