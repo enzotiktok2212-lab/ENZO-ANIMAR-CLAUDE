@@ -9,7 +9,7 @@ import { FONT, txt } from './props.js';
 import { hufenbach, townhouse } from './gort.js';
 import { makeExtra } from './ecast.js';
 import { zockerhalle, viceScreen } from './zsets.js';
-import { club, ringStage, warnSign, warnPoster, radio, machine, keller, cuarto, glowM } from './ssets.js';
+import { club, ringStage, warnSign, warnPoster, radio, machine, keller, cuarto, glowM, drawNoVape } from './ssets.js';
 import { makeIch, makeBruder, makePapa, makeDJ, makeRocco, makeKai, makeSammler } from './scast.js';
 import { vape, holdVape, smokePool, vapePhase, armVape } from './vape.js';
 import { loadKitFaces, kitFace, kitLips, eyesAlive, GEST, actuar, mirar, caminar, saltar, aire, bandada, camaraEnMano, shiver } from './vivo.js';
