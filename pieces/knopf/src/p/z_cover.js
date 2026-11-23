@@ -29,11 +29,12 @@ window.renderCover = async v => { await document.fonts.load('80px Lucky'); await
   } else { town(L, { dusk: 1 }); const p = V(-14, 0, -18);
     const g = put(gr, p.x, 0, p.z, .15); actuar(g, 0, [[0, { aRx: 1.0, aRz: -.45, aRe: 1.75, aLx: .2, headX: .45, lean: .05 }]], { T }); cara(g, T, { expr: 'shock', eyes: 'wide', mouth: 'o', noBlink: 1 }); g.knopfOn(true, 5.5); g.knopf.scale.setScalar(1.3);
     crowdAt(L, p.x, p.z - 4, 12, 7, 26, 9, { mode: 'knopf' }); while (POST.length) POST.shift()();
-    const q = kp(g); cam([q.x + 1.4, q.y + 3.2, q.z + 9.5], [q.x, q.y + 1.6, q.z], 46); sh(V(p.x, 0, p.z - 3), 26); hemi.intensity = 1.15; FILL.intensity = 40;
+    const q = kp(g); cam([q.x + 1.6, q.y + 3.0, q.z + 11.5], [q.x, q.y + 1.2, q.z], 46); sh(V(p.x, 0, p.z - 3), 26); hemi.intensity = 1.15; FILL.intensity = 40;
     finishCover();
     const kc = proj(q);
-    strokeTxt('NUR EINMAL', W / 2, H * .17, 128, 'Lilita', ['#ffffff', '#ffe2b8'], '#14143a', 26);
-    strokeTxt('IM GANZEN LEBEN', W / 2, H * .235, 104, 'Lilita', ['#8afcff', '#18b8d8'], '#032a38', 24, -.02);
-    ringMark(kc[0], kc[1], 120, 120, '#ff0018');
-    strokeTxt('WEN WÜRDEST DU RETTEN?', W / 2, H * .8, 100, 'Lucky', ['#ff5a5a', '#e0001a'], '#2a0008', 24, -.02);
-    sparkle(W * .88, H * .32, 30, '#fff6c0'); sparkle(W * .12, H * .3, 22, '#c0f6ff'); } };
+    strokeTxt('IN DIESER STADT HAT', W / 2, H * .205, 92, 'Lilita', ['#ffffff', '#ffe2b8'], '#14143a', 22);
+    strokeTxt('JEDER EINEN KNOPF,', W / 2, H * .255, 100, 'Lilita', ['#ffffff', '#ffe2b8'], '#14143a', 22);
+    strokeTxt('DER EINEN TAG NEU STARTET', W / 2, H * .305, 84, 'Lilita', ['#8afcff', '#18b8d8'], '#032a38', 20, -.01);
+    ringMark(kc[0], kc[1], 110, 110, '#ff0018');
+    strokeTxt('… ABER NUR EINMAL!', W / 2, H * .765, 104, 'Lucky', ['#ff5a5a', '#e0001a'], '#2a0008', 24, -.02);
+    sparkle(W * .9, H * .36, 30, '#fff6c0'); sparkle(W * .1, H * .36, 22, '#c0f6ff'); } };
