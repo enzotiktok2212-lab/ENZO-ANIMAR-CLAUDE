@@ -17,10 +17,9 @@ shot(1.10, 'W', null, L => { town(L); for (let i = 0; i < 5; i++) { const c = EX
 // 3 «mit einem Knopf mitten auf dem Bauch»: acercamiento al botón de una vecina; brilla y ella lo toca con orgullo
 shot(1.90, 'Z', 'punch', L => { town(L); const c = put(EX[9], -2, 0, -2, 0); actuar(c, L.lt, [[0, { headX: .3 }], [.4, { aRx: .7, aRz: -.25, aRe: 1.4, headX: .4 }, { dur: .4 }]], { T: L.T }); cara(c, L.T, { expr: 'happy', mouth: 'smile' }); c.knopfOn(true, 2.2 + Math.sin(L.T * 8) * .8);
   crowdAt(L, -2, -8, 6, 8, 20, 3, { mode: 'talk' }); onKnopf(c, 7, 3.4, L.k, .3, 1.2, 40); sh(V(-2, 0, -2), 16); }, [[0, 'pling', .5], [.3, 'hum_glow', .4]]);
-// 4 «geboren»: el hospital: un bebé en la cuna con su botón diminuto brillando; la madre se inclina sonriendo
-shot(2.98, 'F', null, L => { zimmerK(L, { mode: 'day' }); show(CRIB, KZX + 7, 0, 4, -.4); const b = put(baby, KZX + 7, 3.12, 4.4, -.4); b.root.rotation.order = 'YXZ'; b.root.rotation.x = -PI / 2; actuar(b, 0, [[0, { aLx: 2.4 + Math.sin(L.T * 5) * .3, aRx: 2.2, aLe: .6, aRe: .8, lLx: .6 + Math.sin(L.T * 6) * .3, lRx: .4, lLk: .5, lRk: .6 }]], { T: L.T, weight: false }); cara(b, L.T, { eyes: 'happy', mouth: 'open_smile' }); b.blob.visible = false; b.knopfOn(true, 2.6 + Math.sin(L.T * 6));
-  const m = put(EX[4], KZX + 10.4, 0, 5.4, -1.7); actuar(m, 0, [[0, { lean: .35, headX: .3, aLx: .9, aRx: .9, aLe: .9, aRe: .9 }]], { T: L.T }); cara(m, L.T, { expr: 'happy', eyes: 'happy', mouth: 'smile' });
-  cm([KZX + 6.2, 10.4, 8.4], [KZX + 6.6, 9.2, 7.2], L.k); camera.lookAt(KZX + 7, 3.1, 4.3); camera.fov = 38; }, [[0, 'baby_coo', .6], [.2, 'sparkle', .4]]);
+// 4 «Bauch geboren.»: como en la referencia: primerísimo plano del botón en la barriga (camiseta a rayas del niño), la cámara se mete hasta que el botón llena la pantalla y late
+shot(2.98, 'F', null, L => { town(L); const c = put(kl, 6, 0, -2, -.15); actuar(c, 0, [[0, { aLx: .15, aRx: .15, aLz: .1, aRz: .1 }]], { T: L.T }); cara(c, L.T, { expr: 'happy', mouth: 'smile' }); c.knopfOn(true, 2.4 + Math.sin(L.T * 9) * 1.2); c.knopf.scale.setScalar(1 + Math.sin(L.T * 9) * .05);
+  onKnopf(c, 2.9, 1.5, L.k, lerp(.35, -.1, L.k), .2, 40); sparks(kp(c), L.T - L.lt + .35, L.T, 10, .35); sh(V(6, 0, -2), 8); }, [[0, 'zoom_in', .5], [.15, 'hum_glow', .5], [.5, 'sparkle', .4]]);
 // 5 «Und dieser Knopf»: un dedo se acerca despacio al botón
 shot(3.74, 'S', null, L => { town(L); const c = put(EX[11], 4, 0, -4, -.2); actuar(c, L.lt, [[0, { aRx: .5, aRz: -.1, aRe: 1.0, headX: .4 }], [.1, { aRx: .95, aRz: -.42, aRe: 1.7, headX: .45, lean: .06 }, { dur: .7 }]], { T: L.T }); cara(c, L.T, { expr: 'sus', mouth: 'smirk' });
   onKnopf(c, 4.2, 3.2, L.k, -1.2, 1.6, 42); sh(V(4, 0, -4), 14); }, [[.1, 'tension_tick', .4]]);
@@ -44,7 +43,10 @@ shot(9.28, 'I', null, L => { town(L); const c = put(EX[14], 18, 0, -4, -.4); car
   c.knopf.scale.setScalar(1 - k * .99); c.knopfUsed.visible = true; c.knopfUsed.scale.setScalar(1 / Math.max(.01, 1 - k * .99)); sparks(kp(c), L.t0, L.T, 26, .5); onKnopf(c, 4.4, 3.6, L.k, .4, .8, 40);
   badge('red', 'FÜR IMMER', W / 2, H * .19, clamp((L.lt - .35) / .2), 1, 1); sh(V(18, 0, -4), 12); }, [[0, 'sparkle_down', .6], [.35, 'hit_deep', .5]]);
 // 11 «Deshalb heben ihn sich die meisten»: la plaza: todos se tapan el botón con la mano, como un tesoro
-shot(10.59, 'S', null, L => { town(L); crowdAt(L, 4, -12, 20, 3, 24, 7, { full: true, mode: 'knopf' }); orb(L.k, V(4, 3, -12), null, [34, -.5, .35, 46], [28, -.2, .26, 46]); sh(V(4, 0, -12), 34); }, [[0, 'murmur', .4], [.4, 'cloth', .4]]);
+shot(10.59, 'S', null, L => { town(L); const o = put(oma, -3.2, 0, -22, .55), b = put(blond, .2, 0, -21.4, -.6);
+  actuar(o, L.lt, [[0, { aLx: .3, aRx: .2 }], [.15, { aLx: .95, aLz: .35, aLe: 1.5, aRx: .25, headY: Math.sin(L.T * 7) * .25, headX: .05 }, { dur: .35 }]], { T: L.T }); cara(o, L.T, { expr: 'warm', mouth: Math.sin(L.T * 10) > 0 ? 'talk' : 'smile' }); o.knopfOn(true, 2.2 + Math.sin(L.T * 5) * .6);
+  actuar(b, L.lt, [[0, { aRx: .2, aLx: .2 }], [.3, { aRx: .9, aRz: -.3, aRe: 1.5, headX: .12 + Math.max(0, Math.sin(L.T * 6)) * .2, headY: .2 }, { dur: .35 }]], { T: L.T }); cara(b, L.T, { expr: 'happy', mouth: 'smile' }); b.knopfOn(true, 2.2 + Math.sin(L.T * 5 + 1) * .6);
+  cm([5.2, 4.6, -9.6], [2.6, 4.3, -11.4], L.k); camera.lookAt(-2.4, 3.5, -21.7); camera.fov = 44; sh(V(-1.5, 0, -21.6), 12); }, [[0, 'murmur', .35], [.25, 'cloth', .45], [.6, 'sparkle', .3]]);
 // 12 «für etwas Wichtiges auf.»: una boda delante de la iglesia: los novios, los botones intactos, lluvia de confeti
 shot(12.03, 'Z', null, L => { town(L); const a = put(EX[5], -2.4, 0, -96, .3), b = put(EX[1], 2.4, 0, -96, -.3); [a, b].forEach((c, i) => { actuar(c, 0, [[0, { aRx: i ? .5 : .2, aLx: i ? .2 : .5, aLz: i ? 0 : -.5, aRz: i ? -.5 : 0, aLe: 1, aRe: 1, headY: i ? -.3 : .3 }]], { T: L.T }); grin(c, L.T); });
   confRain(V(0, 0, -96), L.T); crowdAt(L, 0, -92, 10, 8, 18, 8, { mode: 'cheer' }); orb(L.k, V(0, 3.6, -96), null, [22, .1, .2, 44], [17, -.05, .16, 44]); sh(V(0, 0, -96), 24); }, [[0, 'church_bells', .5], [.2, 'cheer', .35]]);

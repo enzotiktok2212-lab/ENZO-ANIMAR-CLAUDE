@@ -11,7 +11,7 @@ import { makeLehrerin } from './acast.js';
 import { zimmer, klasse, kueche } from './svsets.js';
 import { football } from './hsets.js';
 import { lindenthal, opaHaus, schule, sportplatz, klinikAussen, klinikZimmer, glowM } from './nsets.js';
-import { makeKlein, makeGross, makeOpaK, makeFreund, makeSchwester, makeKicker, makeTorwart, makeBaby, addKnopf, KCOL } from './ncast.js';
+import { makeKlein, makeGross, makeOpaK, makeFreund, makeSchwester, makeKicker, makeTorwart, makeBaby, makeOma, makeBlond, addKnopf, KCOL } from './ncast.js';
 import { loadKitFaces, kitFace, kitLips, eyesAlive, GEST, actuar, mirar, caminar, saltar, aire, bandada, camaraEnMano, shiver } from './vivo.js';
 
 await document.fonts.load('700 40px Cap'); await loadKitFaces();
@@ -43,12 +43,13 @@ for (const k in SETS) outline(SETS[k], OS);
 // ---------- reparto ----------
 const kl = makeKlein(scene), gr = makeGross(scene), opa = makeOpaK(scene), opaH = makeOpaK(scene, true), fr = makeFreund(scene), sw = makeSchwester(scene), lehr = makeLehrerin(scene), tw = makeTorwart(scene);
 addKnopf(lehr, .62);
+const oma = makeOma(scene), blond = makeBlond(scene); kitFace(oma, 'girl'); kitFace(blond, 'girl');
 const baby = makeBaby(scene); kitFace(baby, 'kid');
 const TEAM = Array.from({ length: 6 }, (_, i) => makeKicker(scene, i)), RIV = Array.from({ length: 5 }, (_, i) => makeKicker(scene, i + 10, true));
 kitFace(kl, 'kid'); kitFace(gr, 'hero'); kitFace(opa, 'mustache'); kitFace(opaH, 'mustache'); kitFace(fr, 'plain'); kitFace(sw, 'girl'); kitFace(lehr, 'girl'); kitFace(tw, 'kid');
 TEAM.forEach((c, i) => kitFace(c, ['kid', 'girl', 'kid', 'plain', 'kid', 'girl'][i])); RIV.forEach((c, i) => kitFace(c, ['plain', 'kid', 'girl', 'kid', 'plain'][i]));
 const EX = Array.from({ length: 26 }, (_, i) => { const c = makeExtra(scene, i + 3); addKnopf(c, .6); return c; }); EX.forEach((c, i) => kitFace(c, ['plain', 'hero', 'kid', 'girl', 'mustache', 'girl'][i % 6]));
-const MAIN = [baby, kl, gr, opa, opaH, fr, sw, lehr, tw, ...TEAM, ...RIV];
+const MAIN = [baby, oma, blond, kl, gr, opa, opaH, fr, sw, lehr, tw, ...TEAM, ...RIV];
 const POOL = [...MAIN, ...EX];
 POOL.forEach(c => outline(c.root, OC));
 const BLOBT = canvasTex(128, 128, (c, w, h) => { const g = c.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w / 2); g.addColorStop(0, 'rgba(0,0,0,.55)'); g.addColorStop(.5, 'rgba(0,0,0,.3)'); g.addColorStop(1, 'rgba(0,0,0,0)'); c.fillStyle = g; c.fillRect(0, 0, w, h); });
@@ -187,7 +188,7 @@ function schulS(L, o = {}) { use('SC'); o.dusk ? dusk() : day(); }
 function sportS(L, o = {}) { use('SP'); o.dusk ? dusk() : day(); SP.SB.userData.set(...(o.score || [0, 0])); }
 function klinikS(L, o = {}) { use('KA'); o.night ? (night(30), TINT = 'rgba(10,16,60,.2)') : o.dusk ? dusk() : day(); }
 // habitación: o.mode 'day' | 'dusk' | 'night'; o.flat = instante (absoluto) en que la línea del monitor se queda plana
-function zimmerK(L, o = {}) { use('KZ'); const m = o.mode || 'night'; inside(m === 'night' ? .75 : 1.0, m === 'night' ? 30 : 46); if (m === 'night') { hemi.color.setRGB(.8, .85, 1); KZ.LMP.intensity = 70; KZ.BEDL.intensity = 60; FILL.color.setRGB(1, .85, .7); } else { KZ.LMP.intensity = 140; KZ.BEDL.intensity = 0; } KZ.view(m); KZ.ecg(L.T, o.flat || 0, o.bpm || 64); }
+function zimmerK(L, o = {}) { use('KZ'); const m = o.mode || 'night'; inside(m === 'night' ? .75 : 1.0, m === 'night' ? 30 : 46); if (m === 'night') { hemi.intensity = .55; hemi.color.setRGB(.8, .85, 1); KZ.LMP.intensity = 45; KZ.BEDL.intensity = 38; FILL.color.setRGB(1, .85, .7); renderer.toneMappingExposure = .8; } else { hemi.intensity = .72; KZ.LMP.intensity = 80; KZ.BEDL.intensity = 0; renderer.toneMappingExposure = .8; } bloom.strength = .12; bloom.threshold = .92; KZ.view(m); KZ.ecg(L.T, o.flat || 0, o.bpm || 64); }
 function meinZimmer(L, o = {}) { use('ZI'); inside(o.dark ? .6 : 1.0, o.dark ? 24 : 46); ZI.LMP.intensity = o.dark ? 30 : 120; }
 function kuecheS(L) { use('KU'); inside(1.0, 46); }
 function klasseS(L) { use('KL'); inside(1.0, 46); }

@@ -11,7 +11,7 @@ import { makeLehrerin } from './acast.js';
 import { zimmer, klasse, kueche } from './svsets.js';
 import { football } from './hsets.js';
 import { lindenthal, opaHaus, schule, sportplatz, klinikAussen, klinikZimmer, glowM } from './nsets.js';
-import { makeKlein, makeGross, makeOpaK, makeFreund, makeSchwester, makeKicker, makeTorwart, makeBaby, addKnopf, KCOL } from './ncast.js';
+import { makeKlein, makeGross, makeOpaK, makeFreund, makeSchwester, makeKicker, makeTorwart, makeBaby, makeOma, makeBlond, addKnopf, KCOL } from './ncast.js';
 import { loadKitFaces, kitFace, kitLips, eyesAlive, GEST, actuar, mirar, caminar, saltar, aire, bandada, camaraEnMano, shiver } from './vivo.js';
 
 await document.fonts.load('700 40px Cap'); await loadKitFaces();
@@ -43,12 +43,13 @@ for (const k in SETS) outline(SETS[k], OS);
 // ---------- reparto ----------
 const kl = makeKlein(scene), gr = makeGross(scene), opa = makeOpaK(scene), opaH = makeOpaK(scene, true), fr = makeFreund(scene), sw = makeSchwester(scene), lehr = makeLehrerin(scene), tw = makeTorwart(scene);
 addKnopf(lehr, .62);
+const oma = makeOma(scene), blond = makeBlond(scene); kitFace(oma, 'girl'); kitFace(blond, 'girl');
 const baby = makeBaby(scene); kitFace(baby, 'kid');
 const TEAM = Array.from({ length: 6 }, (_, i) => makeKicker(scene, i)), RIV = Array.from({ length: 5 }, (_, i) => makeKicker(scene, i + 10, true));
 kitFace(kl, 'kid'); kitFace(gr, 'hero'); kitFace(opa, 'mustache'); kitFace(opaH, 'mustache'); kitFace(fr, 'plain'); kitFace(sw, 'girl'); kitFace(lehr, 'girl'); kitFace(tw, 'kid');
 TEAM.forEach((c, i) => kitFace(c, ['kid', 'girl', 'kid', 'plain', 'kid', 'girl'][i])); RIV.forEach((c, i) => kitFace(c, ['plain', 'kid', 'girl', 'kid', 'plain'][i]));
 const EX = Array.from({ length: 26 }, (_, i) => { const c = makeExtra(scene, i + 3); addKnopf(c, .6); return c; }); EX.forEach((c, i) => kitFace(c, ['plain', 'hero', 'kid', 'girl', 'mustache', 'girl'][i % 6]));
-const MAIN = [baby, kl, gr, opa, opaH, fr, sw, lehr, tw, ...TEAM, ...RIV];
+const MAIN = [baby, oma, blond, kl, gr, opa, opaH, fr, sw, lehr, tw, ...TEAM, ...RIV];
 const POOL = [...MAIN, ...EX];
 POOL.forEach(c => outline(c.root, OC));
 const BLOBT = canvasTex(128, 128, (c, w, h) => { const g = c.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w / 2); g.addColorStop(0, 'rgba(0,0,0,.55)'); g.addColorStop(.5, 'rgba(0,0,0,.3)'); g.addColorStop(1, 'rgba(0,0,0,0)'); c.fillStyle = g; c.fillRect(0, 0, w, h); });
@@ -187,7 +188,7 @@ function schulS(L, o = {}) { use('SC'); o.dusk ? dusk() : day(); }
 function sportS(L, o = {}) { use('SP'); o.dusk ? dusk() : day(); SP.SB.userData.set(...(o.score || [0, 0])); }
 function klinikS(L, o = {}) { use('KA'); o.night ? (night(30), TINT = 'rgba(10,16,60,.2)') : o.dusk ? dusk() : day(); }
 // habitación: o.mode 'day' | 'dusk' | 'night'; o.flat = instante (absoluto) en que la línea del monitor se queda plana
-function zimmerK(L, o = {}) { use('KZ'); const m = o.mode || 'night'; inside(m === 'night' ? .75 : 1.0, m === 'night' ? 30 : 46); if (m === 'night') { hemi.color.setRGB(.8, .85, 1); KZ.LMP.intensity = 70; KZ.BEDL.intensity = 60; FILL.color.setRGB(1, .85, .7); } else { KZ.LMP.intensity = 140; KZ.BEDL.intensity = 0; } KZ.view(m); KZ.ecg(L.T, o.flat || 0, o.bpm || 64); }
+function zimmerK(L, o = {}) { use('KZ'); const m = o.mode || 'night'; inside(m === 'night' ? .75 : 1.0, m === 'night' ? 30 : 46); if (m === 'night') { hemi.intensity = .55; hemi.color.setRGB(.8, .85, 1); KZ.LMP.intensity = 45; KZ.BEDL.intensity = 38; FILL.color.setRGB(1, .85, .7); renderer.toneMappingExposure = .8; } else { hemi.intensity = .72; KZ.LMP.intensity = 80; KZ.BEDL.intensity = 0; renderer.toneMappingExposure = .8; } bloom.strength = .12; bloom.threshold = .92; KZ.view(m); KZ.ecg(L.T, o.flat || 0, o.bpm || 64); }
 function meinZimmer(L, o = {}) { use('ZI'); inside(o.dark ? .6 : 1.0, o.dark ? 24 : 46); ZI.LMP.intensity = o.dark ? 30 : 120; }
 function kuecheS(L) { use('KU'); inside(1.0, 46); }
 function klasseS(L) { use('KL'); inside(1.0, 46); }
@@ -237,10 +238,9 @@ shot(1.10, 'W', null, L => { town(L); for (let i = 0; i < 5; i++) { const c = EX
 // 3 «mit einem Knopf mitten auf dem Bauch»: acercamiento al botón de una vecina; brilla y ella lo toca con orgullo
 shot(1.90, 'Z', 'punch', L => { town(L); const c = put(EX[9], -2, 0, -2, 0); actuar(c, L.lt, [[0, { headX: .3 }], [.4, { aRx: .7, aRz: -.25, aRe: 1.4, headX: .4 }, { dur: .4 }]], { T: L.T }); cara(c, L.T, { expr: 'happy', mouth: 'smile' }); c.knopfOn(true, 2.2 + Math.sin(L.T * 8) * .8);
   crowdAt(L, -2, -8, 6, 8, 20, 3, { mode: 'talk' }); onKnopf(c, 7, 3.4, L.k, .3, 1.2, 40); sh(V(-2, 0, -2), 16); }, [[0, 'pling', .5], [.3, 'hum_glow', .4]]);
-// 4 «geboren»: el hospital: un bebé en la cuna con su botón diminuto brillando; la madre se inclina sonriendo
-shot(2.98, 'F', null, L => { zimmerK(L, { mode: 'day' }); show(CRIB, KZX + 7, 0, 4, -.4); const b = put(baby, KZX + 7, 3.12, 4.4, -.4); b.root.rotation.order = 'YXZ'; b.root.rotation.x = -PI / 2; actuar(b, 0, [[0, { aLx: 2.4 + Math.sin(L.T * 5) * .3, aRx: 2.2, aLe: .6, aRe: .8, lLx: .6 + Math.sin(L.T * 6) * .3, lRx: .4, lLk: .5, lRk: .6 }]], { T: L.T, weight: false }); cara(b, L.T, { eyes: 'happy', mouth: 'open_smile' }); b.blob.visible = false; b.knopfOn(true, 2.6 + Math.sin(L.T * 6));
-  const m = put(EX[4], KZX + 10.4, 0, 5.4, -1.7); actuar(m, 0, [[0, { lean: .35, headX: .3, aLx: .9, aRx: .9, aLe: .9, aRe: .9 }]], { T: L.T }); cara(m, L.T, { expr: 'happy', eyes: 'happy', mouth: 'smile' });
-  cm([KZX + 6.2, 10.4, 8.4], [KZX + 6.6, 9.2, 7.2], L.k); camera.lookAt(KZX + 7, 3.1, 4.3); camera.fov = 38; }, [[0, 'baby_coo', .6], [.2, 'sparkle', .4]]);
+// 4 «Bauch geboren.»: como en la referencia: primerísimo plano del botón en la barriga (camiseta a rayas del niño), la cámara se mete hasta que el botón llena la pantalla y late
+shot(2.98, 'F', null, L => { town(L); const c = put(kl, 6, 0, -2, -.15); actuar(c, 0, [[0, { aLx: .15, aRx: .15, aLz: .1, aRz: .1 }]], { T: L.T }); cara(c, L.T, { expr: 'happy', mouth: 'smile' }); c.knopfOn(true, 2.4 + Math.sin(L.T * 9) * 1.2); c.knopf.scale.setScalar(1 + Math.sin(L.T * 9) * .05);
+  onKnopf(c, 2.9, 1.5, L.k, lerp(.35, -.1, L.k), .2, 40); sparks(kp(c), L.T - L.lt + .35, L.T, 10, .35); sh(V(6, 0, -2), 8); }, [[0, 'zoom_in', .5], [.15, 'hum_glow', .5], [.5, 'sparkle', .4]]);
 // 5 «Und dieser Knopf»: un dedo se acerca despacio al botón
 shot(3.74, 'S', null, L => { town(L); const c = put(EX[11], 4, 0, -4, -.2); actuar(c, L.lt, [[0, { aRx: .5, aRz: -.1, aRe: 1.0, headX: .4 }], [.1, { aRx: .95, aRz: -.42, aRe: 1.7, headX: .45, lean: .06 }, { dur: .7 }]], { T: L.T }); cara(c, L.T, { expr: 'sus', mouth: 'smirk' });
   onKnopf(c, 4.2, 3.2, L.k, -1.2, 1.6, 42); sh(V(4, 0, -4), 14); }, [[.1, 'tension_tick', .4]]);
@@ -264,7 +264,10 @@ shot(9.28, 'I', null, L => { town(L); const c = put(EX[14], 18, 0, -4, -.4); car
   c.knopf.scale.setScalar(1 - k * .99); c.knopfUsed.visible = true; c.knopfUsed.scale.setScalar(1 / Math.max(.01, 1 - k * .99)); sparks(kp(c), L.t0, L.T, 26, .5); onKnopf(c, 4.4, 3.6, L.k, .4, .8, 40);
   badge('red', 'FÜR IMMER', W / 2, H * .19, clamp((L.lt - .35) / .2), 1, 1); sh(V(18, 0, -4), 12); }, [[0, 'sparkle_down', .6], [.35, 'hit_deep', .5]]);
 // 11 «Deshalb heben ihn sich die meisten»: la plaza: todos se tapan el botón con la mano, como un tesoro
-shot(10.59, 'S', null, L => { town(L); crowdAt(L, 4, -12, 20, 3, 24, 7, { full: true, mode: 'knopf' }); orb(L.k, V(4, 3, -12), null, [34, -.5, .35, 46], [28, -.2, .26, 46]); sh(V(4, 0, -12), 34); }, [[0, 'murmur', .4], [.4, 'cloth', .4]]);
+shot(10.59, 'S', null, L => { town(L); const o = put(oma, -3.2, 0, -22, .55), b = put(blond, .2, 0, -21.4, -.6);
+  actuar(o, L.lt, [[0, { aLx: .3, aRx: .2 }], [.15, { aLx: .95, aLz: .35, aLe: 1.5, aRx: .25, headY: Math.sin(L.T * 7) * .25, headX: .05 }, { dur: .35 }]], { T: L.T }); cara(o, L.T, { expr: 'warm', mouth: Math.sin(L.T * 10) > 0 ? 'talk' : 'smile' }); o.knopfOn(true, 2.2 + Math.sin(L.T * 5) * .6);
+  actuar(b, L.lt, [[0, { aRx: .2, aLx: .2 }], [.3, { aRx: .9, aRz: -.3, aRe: 1.5, headX: .12 + Math.max(0, Math.sin(L.T * 6)) * .2, headY: .2 }, { dur: .35 }]], { T: L.T }); cara(b, L.T, { expr: 'happy', mouth: 'smile' }); b.knopfOn(true, 2.2 + Math.sin(L.T * 5 + 1) * .6);
+  cm([5.2, 4.6, -9.6], [2.6, 4.3, -11.4], L.k); camera.lookAt(-2.4, 3.5, -21.7); camera.fov = 44; sh(V(-1.5, 0, -21.6), 12); }, [[0, 'murmur', .35], [.25, 'cloth', .45], [.6, 'sparkle', .3]]);
 // 12 «für etwas Wichtiges auf.»: una boda delante de la iglesia: los novios, los botones intactos, lluvia de confeti
 shot(12.03, 'Z', null, L => { town(L); const a = put(EX[5], -2.4, 0, -96, .3), b = put(EX[1], 2.4, 0, -96, -.3); [a, b].forEach((c, i) => { actuar(c, 0, [[0, { aRx: i ? .5 : .2, aLx: i ? .2 : .5, aLz: i ? 0 : -.5, aRz: i ? -.5 : 0, aLe: 1, aRe: 1, headY: i ? -.3 : .3 }]], { T: L.T }); grin(c, L.T); });
   confRain(V(0, 0, -96), L.T); crowdAt(L, 0, -92, 10, 8, 18, 8, { mode: 'cheer' }); orb(L.k, V(0, 3.6, -96), null, [22, .1, .2, 44], [17, -.05, .16, 44]); sh(V(0, 0, -96), 24); }, [[0, 'church_bells', .5], [.2, 'cheer', .35]]);
@@ -458,11 +461,11 @@ function handCam(t, L) { const q = wpos(opaH.aR.hand), k0 = easeInOut(L.k); retu
 // mi botón: me pongo de pie junto a la ventana (mirando +x) para que la cama no tape; arms = brazos y cabeza
 function myKnopfCam(t, L, arms = { headX: .6, aLx: .3, aRx: .3 }) { put(t, KZX + 7.4, 0, 1.6, PI / 2 - .3); actuar(t, 0, [[0, arms]], { T: L.T }); t.blob.visible = true; onKnopf(t, 4.4, 3.2, L.k, .4, 1.0, 40); }
 // cara del Opa en la cama (para encuadres)
-const opaHead = () => hp(opaH);
+const opaHead = () => { const p = hp(opaH); p.y += 1.35; p.z += .3; return p; };
 // primer plano del Opa: cabeza y hombros, cámara delante de su cara (él mira +z)
 function opaCam(L, d0, d1, side = 0) { const h = opaHead(); cm([h.x + side, h.y + 1.3, h.z + d0], [h.x + side * .8, h.y + 1.1, h.z + d1], L.k); camera.lookAt(h.x, h.y - .9, h.z); camera.fov = 40; }
 // plano de los dos (Opa en la cama y yo en la silla), desde delante a la derecha
-function twoShot(L, a = 0) { cm([KZX + 9 + a, 11.5, 12], [KZX + 8 + a, 10.8, 10.4], L.k); camera.lookAt(KZX + 1.8, 5.4, -1.4); camera.fov = 46; }
+function twoShot(L, a = 0) { cm([KZX + 9 + a, 11.5, 12], [KZX + 8 + a, 10.8, 10.4], L.k); camera.lookAt(KZX + 1.8, 6.8, -1.6); camera.fov = 46; }
 
 // 65 «Die Jahre vergingen.»: el reloj de la iglesia gira a toda velocidad; el cielo pasa de día a noche varias veces
 shot(75.72, 'R', null, L => { town(L); const sp = L.lt * 30; show(CLOCK, 0, 40, -106.6); CLOCK.userData.H1.rotation.z = -sp * .5; CLOCK.userData.H2.rotation.z = -sp * 6; const q = (Math.sin(L.lt * 9) + 1) / 2;
@@ -479,18 +482,19 @@ shot(78.92, 'S', null, L => { opaS(L); const up = Math.max(0, Math.sin(clamp(L.l
   const t = put(gr, OB.x + 3.4, 0, OB.z + 3.2, -.9); myBtn(t, L.T); actuar(t, 0, [[0, { aRx: 1.4, aRe: .3, lean: .15 }]], { T: L.T }); cara(t, L.T, { expr: 'worried', mouth: 'flat' });
   orb(L.k, V(OB.x + 1.6, 3.8, OB.z + 1), null, [16, -.2, .14, 42], [13.5, -.05, .12, 42]); sh(OB, 12); }, [[.1, 'groan', .5], [.9, 'bench_creak', .5]]);
 // 69 «kam er nicht mehr zu meinen Spielen.»: la grada; su sitio, vacío; yo lo miro desde el campo
-shot(80.27, 'I', null, L => { sportS(L, { dusk: true }); [[-3.4, 0], [3.4, 1], [-6.8, 2], [6.6, 3]].forEach(([z, i]) => crowdGuy(EX[14 + i], SPX - 27.8, z, L, i, { mode: 'sitb', seat: 2.65, ry: PI / 2 }));
-  const c = put(gr, SPX - 16, 0, 2, -PI / 2 - .2); myBtn(c, L.T); actuar(c, 0, [[0, { headX: .1, aLx: .1, aRx: .1 }]], { T: L.T }); cara(c, L.T, { expr: 'sad', mouth: 'frown' });
-  cm([SPX - 10, 5.6, 6], [SPX - 11, 5.4, 5], L.k); camera.lookAt(SPX - 27.8, 3.4, 0); camera.fov = 40; sh(V(SPX - 22, 0, 0), 16); }, [[0, 'wind_soft', .5]]);
+shot(80.27, 'I', null, L => { sportS(L, { dusk: true }); let n = 0; for (let r = 0; r < 3; r++) for (let j = 0; j < 9; j++) { const z = -11.2 + j * 2.8; if (r === 0 && j === 4) continue; if (n >= EX.length) break; crowdGuy(EX[n], SPX - 27.8 - r * 3, z, L, n, { mode: 'sitb', seat: 2.65 + r * 1.6, ry: PI / 2 }); n++; }
+  const c = put(gr, SPX - 15, 0, 2.2, -PI / 2 - .25); myBtn(c, L.T); actuar(c, 0, [[0, { headX: .05, aLx: .1, aRx: .1 }]], { T: L.T }); cara(c, L.T, { expr: 'sad', mouth: 'frown' });
+  cm([SPX - 9.4, 5.4, 6.2], [SPX - 12, 4.8, 4.6], L.k); camera.lookAt(SPX - 27.8, 3.6, 0); camera.fov = 42; sh(V(SPX - 24, 0, 0), 18);
+  badge3('tag', 'OPAS PLATZ', V(SPX - 27.8, 5.6, -.1), clamp((L.lt - .35) / .2), .85); }, [[0, 'crowd_cheer_small', .3], [.4, 'wind_soft', .5]]);
 // 70 «Irgendwann musste er sogar ins»: el hospital del pueblo
-shot(81.58, 'Z', null, L => { klinikS(L); crowdAt(L, KAX, 0, 5, 6, 18, 16, { mode: 'walk' }); cm([KAX + 20, 22, 70], [KAX + 12, 14, 52], L.k); camera.lookAt(KAX, 16, -20); camera.fov = 48; sh(V(KAX, 0, -10), 50); }, [[0, 'siren_far', .4]]);
+shot(81.58, 'Z', null, L => { klinikS(L); crowdAt(L, KAX, 0, 5, 6, 18, 16, { mode: 'walk' }); cm([KAX + 18, 20, 58], [KAX + 12, 14, 46], L.k); camera.lookAt(KAX, 16, -20); camera.fov = 48; sh(V(KAX, 0, -10), 50); }, [[0, 'siren_far', .4]]);
 // 71 «Krankenhaus.»: el Opa en la cama; una enfermera le arregla la almohada
 shot(82.64, 'S', null, L => { zimmerK(L, { mode: 'day' }); const c = opaBed(L); cara(c, L.T, { expr: 'tired', mouth: 'flat' }); const n = put(sw, KZX - 4.4, 0, -1.6, PI / 2 + .3); actuar(n, 0, [[0, { aRx: 1.9, aLx: 1.7, aRe: .6, aLe: .7, lean: .2 }]], { T: L.T }); cara(n, L.T, { expr: 'happy', mouth: 'smile' });
   cm([KZX + 4, 9, 13], [KZX + 3, 8.4, 11], L.k); camera.lookAt(KZX - 1, 4.4, -4); camera.fov = 46; badge('tag', 'KRANKENHAUS', W / 2, H * .17, clamp((L.lt - .1) / .15), 1, .85); }, [[0, 'monitor_beep', .4], [.3, 'pillow', .4]]);
 // 72 «Trotzdem stellte er mir jeden Abend»: anochece; entro en la habitación y él levanta la mano
 shot(83.67, 'S', null, L => { zimmerK(L, { mode: 'dusk' }); const c = opaBed(L, { aRx: 1.4 + Math.sin(L.T * 8) * .3, aRz: -.2, aRe: .4 }); cara(c, L.T, { expr: 'happy', mouth: 'smile' });
   const t = put(gr, KZX + 2 + L.lt * .6, 0, 9 - L.lt * 2.2, PI + .5); myBtn(t, L.T); actuar(t, 0, [[0, walkP(L.T, 0)]], { T: L.T }); cara(t, L.T, { expr: 'happy', mouth: 'smile' });
-  cm([KZX - 9, 9, 10], [KZX - 8, 8.4, 8.6], L.k); camera.lookAt(KZX + 1, 4.6, 0); camera.fov = 48; }, [[0, 'door_open', .5], [.4, 'steps', .4]]);
+  cm([KZX - 5.5, 8.6, 9], [KZX - 4.6, 8.2, 7.6], L.k); camera.lookAt(KZX - .5, 6.4, -1.4); camera.fov = 50; }, [[0, 'door_open', .5], [.4, 'steps', .4]]);
 // 73 «dieselbe Frage:»: noche tras noche: el reloj de la pared avanza y él levanta el dedo
 shot(85.25, 'C', null, L => { zimmerK(L, { mode: 'night' }); const c = opaBed(L, { aRx: 1.2, aRz: -.1, aRe: 1.4 }); cara(c, L.T, { expr: 'warm', mouth: 'smile' }); const h = opaHead();
   cm([h.x + 3.4, h.y + 1.4, h.z + 7], [h.x + 2.8, h.y + 1.2, h.z + 6], L.k); camera.lookAt(h.x, h.y - .4, h.z); camera.fov = 42; }, [[0, 'clock_tick', .5]]);
@@ -500,7 +504,7 @@ shot(86.29, 'Z', null, L => { zimmerK(L, { mode: 'night' }); const c = opaBed(L)
 shot(87.49, 'W', null, L => { zimmerK(L, { mode: 'night' }); const c = opaBed(L); cara(c, L.T, { expr: 'tired', mouth: L.lt > .5 && L.lt < 1.1 ? 'yawn' : 'flat' }); const h = opaHead(); cm([h.x - 2, h.y + 1.6, h.z + 5], [h.x - 1.6, h.y + 1.3, h.z + 4.2], L.k); camera.lookAt(h.x, h.y - .3, h.z); camera.fov = 40; }, [[.5, 'yawn_old', .5]]);
 // 76 «er hörte immer zu.»: yo hablo desde la silla; él me mira y asiente
 shot(88.88, 'I', null, L => { zimmerK(L, { mode: 'night' }); const c = opaBed(L, { headY: -.4 }); cara(c, L.T, { expr: 'warm', eyes: 'half', mouth: 'smile' }); const t = teenChair(L, { aRx: 1.1 + Math.sin(L.T * 6) * .3, aRe: 1.1 }); cara(t, L.T, { expr: 'happy', mouth: Math.sin(L.T * 11) > 0 ? 'talk' : 'smile' });
-  cm([KZX + 2.4, 8.4, 12], [KZX + 2, 7.8, 10.6], L.k); camera.lookAt(KZX + 2, 4.6, -1); camera.fov = 44; }, [[0, 'murmur_soft', .4]]);
+  twoShot(L, 1.5); }, [[0, 'murmur_soft', .4]]);
 
 // ---------- la última noche ----------
 // 77 «Eines Abends kam ich nach einem weiteren»: camino de noche por Lindenthal, capucha puesta, cabizbajo
@@ -531,14 +535,14 @@ shot(99.24, 'F', null, L => { zimmerK(L, { mode: 'night' }); const c = opaBed(L)
 shot(100.54, 'S', 'slow', L => { zimmerK(L, { mode: 'night' }); const c = opaBed(L); cara(c, L.T, { expr: 'tired', mouth: 'flat' }); grade.uniforms.sat.value = 1.1; opaCam(L, 8.6, 6.7, 0.8); }, [[0, 'breath_slow', .5]]);
 // 86 «Aber sobald er mich sah,»: aparezco a los pies de la cama
 shot(101.84, 'W', null, L => { zimmerK(L, { mode: 'night' }); const t = put(gr, KZX + 1, 0, 9, PI); myBtn(t, L.T); actuar(t, 0, [[0, { headX: .2, aLx: .1, aRx: .1 }]], { T: L.T }); cara(t, L.T, { expr: 'sad', mouth: 'flat' }); opaBed(L); cara(opaH, L.T, { expr: 'tired', mouth: 'flat' });
-  cm([KZX - 1.6, 10, -4], [KZX - 1.2, 9.6, -3], L.k); camera.lookAt(KZX + 1, 5.4, 9); camera.fov = 42; }, [[0, 'steps_soft', .4]]);
+  cm([KZX - .6, 8.2, -1.5], [KZX - .3, 7.8, -.5], L.k); camera.lookAt(KZX + 1, 4.4, 9); camera.fov = 40; }, [[0, 'steps_soft', .4]]);
 // 87 «lächelte er.»: se le ilumina la cara
 shot(102.54, 'F', null, L => { zimmerK(L, { mode: 'night' }); const c = opaBed(L); cara(c, L.T, { expr: 'warm', eyes: 'happy', mouth: 'smile' }); opaCam(L, 7.7, 6.4, 0.8); }, [[0, 'chime_soft', .3]]);
 // 88 «Wie war dein Tag, Großer?»: con voz débil
 shot(103.73, 'Z', null, L => { zimmerK(L, { mode: 'night' }); const c = opaBed(L, { aRx: .8, aRe: .5 }); talk(c, L.T, 103.7, 105.12, 'warm'); cm([KZX + 4.4, 7, 4], [KZX + 3.6, 6.6, 3], L.k); camera.lookAt(KZX, 4.8, -4); camera.fov = 42; }, [[0, 'monitor_beep', .3]]);
 // 89 «Ich setzte mich neben ihn.»: me dejo caer en la silla junto a la cama
 shot(105.12, 'S', null, L => { zimmerK(L, { mode: 'night' }); opaBed(L); cara(opaH, L.T, { expr: 'warm', mouth: 'smile' }); const d = (1 - easeOut(clamp(L.lt / .5))) * 1.6; const t = teenChair(L, { headX: .3 }); t.root.position.y += d; cara(t, L.T, { expr: 'sad', mouth: 'frown' });
-  cm([KZX + 9, 7.6, 9], [KZX + 8.2, 7.2, 8], L.k); camera.lookAt(KZX + 3, 4.4, -1); camera.fov = 46; }, [[.3, 'chair_creak', .6]]);
+  cm([KZX + 9, 7.6, 9], [KZX + 8.2, 7.2, 8], L.k); camera.lookAt(KZX + 2.4, 6.2, -1.4); camera.fov = 46; }, [[.3, 'chair_creak', .6]]);
 // 90 «Nicht der beste, Opa.»: lo digo mirando al suelo
 shot(106.19, 'C', null, L => { zimmerK(L, { mode: 'night' }); opaBed(L); const t = teenChair(L, { headX: .25 }); talk(t, L.T, 106.1, 107.25, 'sad'); onFace(t, 4.2, .1, .8, 40, L.k, 3.6); }, [[0, 'sigh', .5]]);
 // 91 «Er sah mich an.»: gira la cabeza hacia mí
@@ -608,12 +612,12 @@ shot(135.39, 'I', null, L => { zimmerK(L, { mode: 'day' }); const c = opaBed(L, 
 shot(136.59, 'C', null, L => { zimmerK(L, { mode: 'day' }); const c = opaBed(L, { aRx: 1.2, aRe: 1, headX: .3 + Math.sin(L.T * 18) * .06 }); laughF(c, L.T); opaCam(L, 7.4, 6.1, 1.4); }, [[0, 'laugh_old', .7]]);
 // 116 «Was ist denn mit dir los, Großer?»: divertido, me mira de reojo
 shot(137.58, 'Z', null, L => { zimmerK(L, { mode: 'day' }); const c = opaBed(L, { headY: -.5, aRx: .9, aRz: .4, aRe: .6 }); talk(c, L.T, 137.5, 139.02, 'smile', { eyes: 'squint' }); const t = teenChair(L); cara(t, L.T, { expr: 'happy', mouth: 'smile' });
-  cm([KZX - 2, 8.6, 6], [KZX - 1.6, 8, 5], L.k); camera.lookAt(KZX + 1.4, 4.8, -3); camera.fov = 44; }, [[0, 'chuckle', .4]]);
+  cm([KZX - 3.4, 8.8, 5], [KZX - 2.8, 8.4, 4], L.k); camera.lookAt(KZX - .9, 6.6, -3.2); camera.fov = 44; }, [[0, 'chuckle', .4]]);
 // 117 «Ich sagte es ihm nicht.»: sonrío con los ojos brillantes y niego con la cabeza
 shot(139.02, 'W', null, L => { zimmerK(L, { mode: 'day' }); opaBed(L); const t = teenChair(L, { headY: Math.sin(L.T * 9) * .3 }); cara(t, L.T, { expr: 'happy', eyes: 'happy', mouth: 'smile' }); tears(t, L.T); onFace(t, 4.4, .1, .4, 40, L.k, 3.6); }, [[0, 'sniff', .3]]);
 // 118 «Stattdessen blieb ich den ganzen Tag bei ihm.»: la luz de la ventana pasa de la mañana a la tarde; el reloj corre
 shot(140.15, 'R', null, L => { const m = L.k < .5 ? 'day' : 'dusk'; zimmerK(L, { mode: m }); const c = opaBed(L); cara(c, L.T, { expr: 'happy', mouth: 'smile' }); const t = teenChair(L, { aRx: .8, aRe: .9 }); cara(t, L.T, { expr: 'happy', mouth: 'smile' });
-  cm([KZX - 9, 10, 10], [KZX - 8, 9.6, 8], L.k); camera.lookAt(KZX + 2, 5, -2); camera.fov = 48; badge('tag', 'DEN GANZEN TAG', W / 2, H * .17, clamp((L.lt - .2) / .2), 1, .85); }, [[0, 'clock_fast', .4]]);
+  cm([KZX - 7, 10, 9], [KZX - 6.2, 9.6, 7.4], L.k); camera.lookAt(KZX - .4, 6.4, -2.2); camera.fov = 48; badge('tag', 'DEN GANZEN TAG', W / 2, H * .17, clamp((L.lt - .2) / .2), 1, .85); }, [[0, 'clock_fast', .4]]);
 // 119 «Wir blätterten durch sein altes Fotoalbum.»: el álbum abierto sobre la manta: fotos de los dos
 shot(142.21, 'S', null, L => { zimmerK(L, { mode: 'day' }); const c = opaBed(L, { headX: .8 }); cara(c, L.T, { expr: 'warm', eyes: 'down', mouth: 'smile' }); const t = teenChair(L, { ...handPose, headX: .5 }); cara(t, L.T, { expr: 'happy', eyes: 'down', mouth: 'smile' });
   show(ALBUM, KZX + 1.2, 4.75, -1.4, -.3); const p = wpos(ALBUM); cm([p.x + 2.6, p.y + 4.4, p.z + 4], [p.x + 2, p.y + 3.6, p.z + 3.2], L.k); camera.lookAt(p.x, p.y, p.z - .2); camera.fov = 42; }, [[0, 'page_turn', .6], [1, 'page_turn', .5]]);
@@ -623,7 +627,7 @@ shot(144.12, 'F', null, L => { zimmerK(L, { mode: 'day' }); const c = opaBed(L, 
   cm([KZX - .4, 8.4, 3.4], [KZX - .3, 8, 2.6], L.k); camera.lookAt(KZX + .4, 6.2, -2.2); camera.fov = 44; }, [[0, 'crowd_tv', .5], [.8, 'cheer_small', .4]]);
 // 121 «Und redeten über alles.»: charlamos y nos reímos, el Opa gesticulando
 shot(145.98, 'W', null, L => { zimmerK(L, { mode: 'day' }); const c = opaBed(L, { aRx: 1.2 + Math.sin(L.T * 6) * .4, aRz: .3, aRe: 1 }); cara(c, L.T, { expr: 'happy', mouth: Math.sin(L.T * 10) > 0 ? 'talk_wide' : 'laugh' }); const t = teenChair(L, { aLx: .9 + Math.sin(L.T * 7) * .3, aLe: 1 }); laughF(t, L.T + .3);
-  cm([KZX + 9, 8, -5], [KZX + 8.4, 7.6, -4], L.k); camera.lookAt(KZX + 2, 5, -2); camera.fov = 46; }, [[0, 'laugh_old', .4], [.5, 'laugh_teen', .4]]);
+  cm([KZX - 6, 8.6, 7], [KZX - 5.2, 8.2, 6], L.k); camera.lookAt(KZX - .6, 6.4, -2); camera.fov = 46; }, [[0, 'laugh_old', .4], [.5, 'laugh_teen', .4]]);
 // 122 «Ich bat ihn sogar, mir Geschichten zu erzählen,»: el Opa cuenta una historia con las manos
 shot(147.62, 'Z', null, L => { zimmerK(L, { mode: 'dusk' }); const c = opaBed(L, { aRx: 1.5 + Math.sin(L.T * 4) * .3, aLx: 1.3 + Math.cos(L.T * 4) * .3, aRz: .5, aLz: .5, aRe: .8, aLe: .8, headY: -.3 }); talk(c, L.T, 147.5, 149.6, 'happy'); const h = opaHead();
   cm([h.x + 3, h.y + 1, h.z + 6], [h.x + 2.4, h.y + .8, h.z + 5], L.k); camera.lookAt(h.x, h.y - .6, h.z); camera.fov = 42; }, [[0, 'story_hum', .4]]);
@@ -635,7 +639,7 @@ shot(151.30, 'I', 'slow', L => { zimmerK(L, { mode: 'dusk' }); opaBed(L); const 
 
 // ---------- el final ----------
 // 125 «Am Abend saß ich neben seinem Bett.»: anochece; la lámpara encendida
-shot(153.12, 'B', null, L => { zimmerK(L, { mode: 'night' }); const c = opaBed(L); cara(c, L.T, { expr: 'tired', mouth: 'smile' }); const t = teenChair(L); cara(t, L.T, { expr: 'happy', mouth: 'smile' }); cm([KZX + 10, 11, 10], [KZX + 9, 10, 8.4], L.k); camera.lookAt(KZX + 1, 4.4, -2); camera.fov = 48; }, [[0, 'room_tone', .4]]);
+shot(153.12, 'B', null, L => { zimmerK(L, { mode: 'night' }); const c = opaBed(L); cara(c, L.T, { expr: 'tired', mouth: 'smile' }); const t = teenChair(L); cara(t, L.T, { expr: 'happy', mouth: 'smile' }); cm([KZX + 8, 10, 8.5], [KZX + 7.2, 9.4, 7.2], L.k); camera.lookAt(KZX + 1.2, 6.2, -2); camera.fov = 48; }, [[0, 'room_tone', .4]]);
 // 126 «Er sah mich an.»
 shot(154.91, 'S', null, L => { zimmerK(L, { mode: 'night' }); const c = opaBed(L, { headY: -.6 }); cara(c, L.T, { expr: 'warm', mouth: 'smile' }); opaCam(L, 6.7, 5.8, 2.1); }, [[0, 'sheet_rustle', .3]]);
 // 127 «Wie war dein Tag, Großer?»
@@ -685,7 +689,7 @@ shot(180.83, 'C', null, L => { zimmerK(L, { mode: 'night' }); opaBed(L); const t
 shot(181.49, 'F', null, L => { zimmerK(L, { mode: 'night' }); opaBed(L); const t = teenChair(L, handPose); talk(t, L.T, 181.4, 182.57, 'happy', { eyes: 'happy' }); tears(t, L.T); onFace(t, 3.8, .1, .5, 40, L.k, 3.2); }, [[0, 'music_swell', .4]]);
 // 148 «Und erst in diesem Moment verstand ich,» (zoom lento): los dos desde fuera de la ventana, la habitación encendida en la noche
 shot(182.57, 'B', 'slow', L => { zimmerK(L, { mode: 'night' }); const c = opaBed(L, { headY: -.6, aRx: 1.1, aRz: -.5, aRe: .3 }); cara(c, L.T, { expr: 'warm', eyes: 'happy', mouth: 'smile' }); const t = teenChair(L, handPose); cara(t, L.T, { expr: 'happy', eyes: 'happy', mouth: 'smile' });
-  cm([KZX + 12, 12, 4], [KZX + 10.6, 11, 3], L.k); camera.lookAt(KZX + 1.6, 5.6, -2); camera.fov = 46; }, [[0, 'music_swell', .4]]);
+  cm([KZX + 12, 12, 4], [KZX + 10.6, 11, 3], L.k); camera.lookAt(KZX + .7, 6.8, -2.4); camera.fov = 46; }, [[0, 'music_swell', .4]]);
 // 149 «warum er es nie bereut hat,»: recuerdo cálido: el Opa en la grada, saltando y celebrando mi gol
 shot(184.55, 'S', null, L => { sportS(L, { dusk: true, score: [1, 0] }); grade.uniforms.sepia.value = .45; const j = Math.abs(Math.sin(L.T * 6)) * .6; const c = put(opa, SPX - 27.8, 1.2 + j, 0, PI / 2); opaBtn(c, L.T); actuar(c, 0, [[0, GEST.cheer]], { T: L.T }); laughF(c, L.T); confetti(V(SPX - 26, 2, 0), L.t0, L.T, 40, .8);
   onBody(c, 12, .15, .06, 42, L.k, 10.5, .05, 3.6); sh(V(SPX - 28, 0, 0), 14); }, [[0, 'goal_crowd', .3]]);

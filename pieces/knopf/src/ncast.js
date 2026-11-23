@@ -69,3 +69,17 @@ export function makeTorwart(scene) { const o = mk(scene, S({ seed: 9620, scale: 
 // bebé recién nacido: pelele amarillo claro, un mechón, mejillas sonrosadas (el botón ya brilla)
 export function makeBaby(scene) { const o = mk(scene, S({ seed: 9630, scale: .36, skin: 0xf6d2b8, shirt: 0xfff0a8, shirt2: 0xfff0a8, cuffs: 0xfff0a8, pants: 0xfff0a8, shoes: 0xfff0a8, sole: 0xfff0a8, hair: 0x6a4428,
   hairBuild: h => { const m = mat(0x6a4428, { roughness: .6 }); const t = new THREE.Mesh(new THREE.ConeGeometry(.16, .5, 6), m); t.position.set(0, 1.42, .1); t.rotation.z = -.4; h.add(t); }, face: { iris: '#3a6a9a', blush: .7 } })); addKnopf(o); o.knopf.scale.setScalar(1.6); return o; }
+
+// ---------- vecinas del gancho (0:10–0:12): una Oma con vestido de flores y una vecina rubia ----------
+const floral = (bg, fl) => canvasTex(128, 128, (c, w, h) => { c.fillStyle = bg; c.fillRect(0, 0, w, h); let s = 7; const r = () => (s = (s * 9301 + 49297) % 233280) / 233280;
+  for (let i = 0; i < 26; i++) { const x = r() * w, y = r() * h, R = 5 + r() * 6, col = fl[i % fl.length]; c.fillStyle = col; for (let k = 0; k < 5; k++) { const a = k / 5 * 6.283; c.beginPath(); c.arc(x + Math.cos(a) * R * .6, y + Math.sin(a) * R * .6, R * .5, 0, 7); c.fill(); } c.fillStyle = '#ffe27a'; c.beginPath(); c.arc(x, y, R * .3, 0, 7); c.fill(); }
+  c.fillStyle = '#7ab86a'; for (let i = 0; i < 30; i++) { c.beginPath(); c.ellipse(r() * w, r() * h, 3, 1.6, r() * 3, 0, 7); c.fill(); } }, true);
+const dress = (bg, fl, col) => sp => { const m = mat(0xffffff, { map: floral(bg, fl), roughness: .9 }); box(2.16, 2.1, 1.18, m, .16, sp, 0, 1.0, 0); box(1.0, .22, .1, mat(col), .06, sp, 0, 1.98, .58); box(2.3, .5, 1.3, m, .14, sp, 0, .05, 0); };
+const omaBun = col => h => { const m = mat(col, { roughness: .7 }); const c = new THREE.Mesh(new THREE.SphereGeometry(.74, 26, 13, 0, 6.283, 0, 1.35), m); c.position.y = .98; c.scale.set(1.06, .7, 1.06); h.add(c); sphere(.4, m, h, 0, 1.55, -.42, 14, 10);
+  for (const s of [-1, 1]) box(.24, .62, .8, m, .1, h, s * .68, .78, -.12); for (let i = -2; i <= 2; i++) { const f = box(.32, .3, .2, m, .1, h, i * .26, 1.18, .56); f.rotation.x = -.35; } };
+const blondLong = col => h => { const m = mat(col, { roughness: .5 }); const c = new THREE.Mesh(new THREE.SphereGeometry(.75, 26, 13, 0, 6.283, 0, 1.35), m); c.position.y = .98; c.scale.set(1.07, .68, 1.07); h.add(c);
+  for (const s of [-1, 1]) box(.34, 1.7, .9, m, .14, h, s * .68, .3, -.1); box(1.46, 1.8, .34, m, .14, h, 0, .3, -.58); const f = box(1.3, .36, .24, m, .12, h, .15, 1.16, .55); f.rotation.set(-.3, 0, -.18); };
+export function makeOma(scene) { const o = mk(scene, S({ seed: 9530, scale: .9, skin: 0xf2cfb4, shirt: 0x2a2a5a, shirt2: 0x2a2a5a, cuffs: 0xe8e0f0, pants: 0x1a1a2a, shoes: 0x3a2418, hair: 0xd8d8de, hairBuild: omaBun(0xd8d8de),
+  torsoDetail: dress('#2c2a5e', ['#e8506a', '#f4a6c0', '#ffffff', '#c84a8a'], 0xe8e0f0), face: { iris: '#4a6a8a', browColor: '#b8b8c0', blush: .5, lips: 1 } }), [o => glasses(o.head)]); addKnopf(o, .62); return o; }
+export function makeBlond(scene) { const o = mk(scene, S({ seed: 9531, scale: .92, skin: 0xf6d2b8, shirt: 0x6ab8e8, shirt2: 0x6ab8e8, cuffs: 0xffffff, pants: 0x3a5a9a, shoes: 0xffffff, hair: 0xf2cc50, hairBuild: blondLong(0xf2cc50), sleeveShort: true,
+  torsoDetail: dress('#7ac0ee', ['#ffffff', '#fff2a0'], 0xffffff), face: { iris: '#3a7ab8', browColor: '#c8a040', blush: .45, lips: 1 } })); addKnopf(o, .62); return o; }
