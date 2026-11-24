@@ -1,30 +1,30 @@
-[excited] In dieser Stadt bekommst du jedes Mal Geld, wenn du einen Schluck Bier trinkst. Und je länger du trinkst, ohne abzusetzen, desto mehr bekommst du. [fast] Eine Sekunde? Zwanzig Euro. Fünf Sekunden? Sechshundert Euro. Zwanzig Sekunden? [shouting] Glückwunsch! Du bist Millionär!
+[excited] In dieser Stadt bekommst du jedes Mal Geld, wenn du ein Bier trinkst. Und je mehr Bier du trinkst, desto mehr bekommst du. [fast] Ein Bier? Zwanzig Euro. Fünf Bier? Sechshundert Euro. Zwanzig Bier? [shouting] Glückwunsch! Du bist Millionär!
 
-[mysterious] Und es gibt eine Legende: Wer fünfhundert Bier am Stück schafft, wird Trillionär. [whispers] Geschafft hat das noch nie jemand.
+[mysterious] Und es gibt eine Legende: Wer fünfhundert Bier schafft, wird Trillionär. [whispers] Geschafft hat das noch nie jemand.
 
 [curious] Stell dir vor, wie viel du heute schon verdient hättest. [deadpan] Eben. [confident] Deshalb ist Biertrinken hier kein Hobby, sondern ein Beruf. Die Büros stehen leer. Stattdessen sitzen alle im Biergarten, heben ihre Krüge und schauen auf ihr Konto.
 
-[serious] Aber nicht jedes Bier zählt. Der Zähler erkennt nur echtes, gutes Bier. [proud] Und das allerbeste? Weihenstephaner. Aus der ältesten Brauerei der Welt, gebraut seit dem Jahr tausendvierzig. [excited] Ein Schluck davon zählt doppelt. Deshalb steht vor jedem Getränkemarkt eine Schlange bis um die Ecke.
+[serious] Aber nicht jedes Bier zählt. Der Zähler erkennt nur echtes, gutes Bier. [proud] Und das allerbeste? Weihenstephaner. Aus der ältesten Brauerei der Welt, gebraut seit dem Jahr tausendvierzig. [excited] Ein Weihenstephaner zählt doppelt. Deshalb steht vor jedem Getränkemarkt eine Schlange bis um die Ecke.
 
-[amused] Meine Nachbarin hat sich nach einem einzigen Abend auf dem Oktoberfest eine Villa am See gekauft. Ihr Geheimtipp? Paulaner. [confident] Weil es so süffig ist, merkst du gar nicht, wie lange du schon trinkst. Und genau das macht dich reich.
+[amused] Meine Nachbarin hat sich nach einem einzigen Abend auf dem Oktoberfest eine Villa am See gekauft. Ihr Geheimtipp? Paulaner. [confident] Es ist so süffig, dass du eins nach dem anderen trinkst, ohne es zu merken. Und genau das macht dich reich.
 
-[amused] Mein Sportlehrer hat in der Halbzeit getrunken und aus Versehen den ganzen Fußballverein gekauft. [mischievously] Und der Bürgermeister? Der hat seit zwölf Jahren kein Glas Wasser mehr angefasst. Deshalb gehört ihm die halbe Stadt.
+[amused] Mein Sportlehrer hat in der Halbzeit ein paar Bier getrunken und aus Versehen den ganzen Fußballverein gekauft. [mischievously] Und der Bürgermeister? Der hat seit zwölf Jahren kein Glas Wasser mehr angefasst. Deshalb gehört ihm die halbe Stadt.
 
-[serious] Aber Vorsicht. Die Regierung versteht da keinen Spaß. Jeder trägt einen Schluckzähler am Hals, und wer schummelt, landet sofort im Gefängnis. Letzte Woche hat einer Apfelschorle in einen Bierkrug gefüllt. [dramatic] Dreißig Jahre.
+[serious] Aber Vorsicht. Die Regierung versteht da keinen Spaß. Jeder trägt einen Bierzähler am Hals, und wer schummelt, landet sofort im Gefängnis. Letzte Woche hat einer Apfelschorle in einen Bierkrug gefüllt. [dramatic] Dreißig Jahre.
 
-[sad] Und ich? Ich hatte keinen einzigen Cent. Denn ich habe den kleinsten Magen der ganzen Stadt. Während die anderen ganze Maßkrüge leerten, schaffte ich zwei Sekunden. Vierzig Euro. [sighs] Dann kam der Schluckauf.
+[sad] Und ich? Ich hatte keinen einzigen Cent. Denn ich habe den kleinsten Magen der ganzen Stadt. Während die anderen eine Maß nach der anderen leerten, schaffte ich ein einziges Bier. Zwanzig Euro. [sighs] Dann kam der Schluckauf.
 
-[whispers] Bis ich eines Nachts etwas fand. Im Keller einer verlassenen Brauerei, ganz hinten unter Spinnweben: einen goldenen Krug. [slowly] Darauf stand: „Warnung: Niemals mehr als einen Schluck."
+[whispers] Bis ich eines Nachts etwas fand. Im Keller einer verlassenen Brauerei, ganz hinten unter Spinnweben: einen goldenen Krug. [slowly] Darauf stand: „Warnung: Niemals mehr als ein Bier."
 
-[mischievously] Also füllte ich ihn natürlich bis zum Rand. Mit Weihenstephaner, versteht sich. Und trank alles auf einmal.
+[mischievously] Also füllte ich ihn natürlich bis zum Rand. Mit Weihenstephaner, versteht sich. Und trank ihn leer.
 
-[building tension] Ein paar Sekunden lang: nichts. Dann wurde der Krug warm, und mein Schluckzähler fing an zu rattern. [fast] Eine Sekunde. Zwanzig Euro. Fünf Sekunden. Sechshundert Euro. Zwanzig Sekunden. Millionär. [tense] Aber der Krug wurde einfach nicht leer. Er füllte sich immer wieder von selbst. [fast] Zehn Bier. Hundert Bier. [shouting] Dreihundert Bier!
+[building tension] Ein paar Sekunden lang: nichts. Dann wurde der Krug warm, und er füllte sich von selbst wieder. Mein Bierzähler fing an zu rattern. [fast] Ein Bier. Zwanzig Euro. Fünf Bier. Sechshundert Euro. Zwanzig Bier. Millionär. [tense] Aber ich konnte nicht mehr aufhören. Der Krug füllte sich immer wieder. [fast] Hundert Bier. Zweihundert Bier. [shouting] Dreihundert Bier!
 
 [dramatic] Der Schaum quoll über den Rand, lief über die Straßen und füllte die ganze Stadt. Autos schwammen davon, der Brunnen auf dem Marktplatz sprudelte Bier, und die Leute paddelten in Fässern durch die Gassen. [excited] Und mein Konto? Es stieg und stieg.
 
 [amazed] Sogar der Bürgermeister hat mich angerufen. Unter Tränen. So etwas hatte die Stadt noch nie gesehen.
 
-[whispers] Und auf einmal: Ruhe. Der Krug war leer. Ich schaute auf meinen Zähler. [slowly] Fünfhundert Bier. [pause] [shouting] Ich war Trillionär!
+[whispers] Und auf einmal: Ruhe. Der Krug blieb leer. Ich schaute auf meinen Zähler. [slowly] Fünfhundert Bier. [pause] [shouting] Ich war Trillionär!
 
 [proud] Der reichste Mensch der Welt. [pause] [nervous] Bis mein Telefon vibrierte. Meine Bank. [serious] Durch so viel Geld war die ganze Wirtschaft zusammengebrochen. Jeder Euro war jetzt weniger wert als ein Bierdeckel.
 
