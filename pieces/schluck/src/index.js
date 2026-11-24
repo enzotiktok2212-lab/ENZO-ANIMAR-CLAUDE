@@ -363,7 +363,7 @@ shot(1.35, 'W', 'punch', L => { town(L); const c = put(CR[1], 0, 0, 10, 0); drin
   orbit(V(0, 5.6, 10), lerp(11, 9, L.k), -.18, .06, 40); sh(V(0, 0, 10), 18); }, [[0, 'ahh', .6], [.15, 'cash_reg', .6], [.3, 'paper', .4]]);
 // 3 «wenn du ein Bier trinkst.»: en la mesa, un hombre con camisa de cuadros se bebe la Maß de un trago (de perfil a tres cuartos); la cámara se acerca
 shot(2.39, 'Z', null, L => { town(L); const c = sit2(CR[2], -14, 21.7, 0); drink(c, L, L.t0 - .05, 1.0, { sit: true, pose: SITP, meter: true, expr: 'determined', bg: false });
-  tableFolk(L, 0, -1, 3, 'sitdrink', 3, { dx: -6 }); tableMugs(0, 3);
+  tableMugs(0, 3); crowdAt(L, -14, 14, 5, 8, 14, 3, { mode: 'drink', gap: 1.6 });
   dcam(c, L.k, 11, -1.0, 4.2); sh(V(-14, 0, 22), 18); }, [[0, 'swoosh_up', .5], [.1, 'gulp_long', .7], [.8, 'glass_down', .4]]);
 // 4 «Und je mehr Bier du trinkst,»: la pizarra de la regla con las barras que crecen; la gente debajo mira con su jarra
 shot(3.59, 'S', null, L => { town(L, { bg: false }); show(TAFEL, TAFP.x, 0, TAFP.z, .25); TAFEL.userData.draw((c, w, h) => drawRule(c, w, h, L.lt / 1.1));
@@ -436,7 +436,7 @@ shot(21.09, 'W', null, L => { town(L); for (let t = 0; t < 6; t++) { tableFolk(L
   crowdAt(L, 0, 6, 8, 4, 12, 37, { mode: 'drink', full: true }); cm([0, 46, 90, 0, 2, 26, 46], [0, 30, 76, 0, 3, 26, 46], L.k, easeOut); sh(V(0, 0, 26), 50); DOF = 0; }, [[0, 'crowd_murmur', .5], [.2, 'glass_clink', .5], [.6, 'gulp', .4]]);
 // 21 «hier kein Hobby,»: un vecino tira su caña de pescar a la papelera y coge una Maß; cartel HOBBY tachado
 shot(21.95, 'S', null, L => { town(L, { bg: false }); const c = put(CR[14], -6, 0, -40, 0); const k = clamp(L.lt / .5), k2 = easeOut(clamp((L.lt - .2) / .2)); holdOnly(c, L, { pose: { aLx: lerp(1.5, .3, k2), aLz: lerp(.2, 1.4, k2), aLe: .3 } }); cara(c, L.T, { expr: 'determined', mouth: 'smirk' });
-  show(DS1, -6, 11.5, -40.5, 0, .5); DS1.userData.draw('hobby', (cx, w, h) => { cx.fillStyle = '#f4f0e4'; cx.fillRect(0, 0, w, h); cx.fillStyle = '#1a1a1a'; cx.font = `700 120px ${FONT}`; cx.textAlign = 'center'; cx.textBaseline = 'middle'; cx.fillText('HOBBY', w / 2, h / 2); cx.strokeStyle = '#d8202a'; cx.lineWidth = 26; cx.beginPath(); cx.moveTo(40, 40); cx.lineTo(w - 40, h - 40); cx.moveTo(w - 40, 40); cx.lineTo(40, h - 40); cx.stroke(); });
+  show(DS1, -2.6, 9.2, -40.5, 0, .3); DS1.userData.draw('hobby', (cx, w, h) => { cx.fillStyle = '#f4f0e4'; cx.fillRect(0, 0, w, h); cx.fillStyle = '#1a1a1a'; cx.font = `700 120px ${FONT}`; cx.textAlign = 'center'; cx.textBaseline = 'middle'; cx.fillText('HOBBY', w / 2, h / 2); cx.strokeStyle = '#d8202a'; cx.lineWidth = 26; cx.beginPath(); cx.moveTo(40, 40); cx.lineTo(w - 40, h - 40); cx.moveTo(w - 40, 40); cx.lineTo(40, h - 40); cx.stroke(); });
   const rod = PADDLE[0]; show(rod, -6 + 3 + k * 4, 6 - k * 4, -40 + 1, 0, 1); rod.rotation.z = -1 - k * 2;
   cm([-6, 6.4, -27, -6, 6.6, -40, 46], [-6, 6.4, -29, -6, 6.6, -40, 46], L.k); sh(V(-6, 0, -40), 20); }, [[0, 'swipe', .4], [.25, 'throw', .5], [.5, 'thud', .4]]);
 // 22 «sondern ein Beruf.»: un señor con traje y corbata ficha en el Biergarten: «BERUF: BIERTRINKER»
@@ -448,7 +448,7 @@ shot(23.95, 'R', null, L => { bueroS(L); DUST.forEach((d, i) => { const r = RNG(
 // 24 «Stattdessen sitzen alle im Biergarten,»: grúa sobre el Biergarten lleno: todas las mesas ocupadas, camareras con jarras
 shot(25.23, 'W', null, L => { town(L); for (let t = 0; t < 6; t++) { tableFolk(L, t, -1, 3, i => ['sitdrink', 'sithold', 'sitprost'][i % 3], 0); tableFolk(L, t, 1, 3, i => ['sithold', 'sitdrink', 'sitprost'][i % 3], 0); tableMugs(t, 2); }
   const r = put(resi, 0, 0, 30 + L.lt * 3, 0); actuar(r, 0, [[0, { ...walkP(L.T, 0), aLx: 1.2, aLe: 1.3 }]], { T: L.T }); holdOnly(r, L); cara(r, L.T, { expr: 'happy' });
-  cm([0, 36, 84, 0, 3, 30, 46], [0, 24, 72, 0, 4, 30, 46], L.k, easeOut); sh(V(0, 0, 32), 46); DOF = 0; }, [[0, 'crowd_murmur', .6], [.4, 'accordion', .5], [.8, 'glass_clink', .4]]);
+  cm([0, 38, 66, 0, 3, 28, 50], [0, 26, 60, 0, 4, 28, 50], L.k, easeOut); sh(V(0, 0, 32), 46); DOF = 0; }, [[0, 'crowd_murmur', .6], [.4, 'accordion', .5], [.8, 'glass_clink', .4]]);
 // 25 «heben ihre Krüge»: una fila de sentados alza las Maß a la vez: ¡Prost!
 shot(26.83, 'C', null, L => { town(L); const row = [CR[15], CR[16], CR[17], CR[18]]; row.forEach((c, i) => { sit2(c, -18.8 + i * 3.2, 39.3, PI); prost(c, L, easeOut(clamp((L.lt - i * .06) / .35)), { sit: true, pose: SITP }); laughF(c, L.T + i); });
   tableMugs(2, 2, .9); orbit(V(-14, 6, 39.3), lerp(14, 12, L.k), PI, .12, 44); sh(V(-14, 0, 38), 18); }, [[0, 'prost', .7], [.3, 'glass_clink', .7], [.5, 'cheer', .4]]);
@@ -468,7 +468,7 @@ shot(30.66, 'S', null, L => { town(L); const c = put(CR[20], -2, 0, 10, 0); pros
 shot(31.74, 'Z', null, L => { town(L); const c = put(CR[20], -2, 0, 10, 0); drink(c, L, L.t0 + .35, .6, { meter: true, expr: 'happy' }); meterOf(c).userData.set('ECHT ✓', '+20 €', '#5aff9a'); badge('green', 'ECHT ✓', W / 2, H * .2, clamp(L.lt / .2), 1, 1.1);
   crowdAt(L, -2, 10, 6, 6, 12, 41, { mode: 'drink', from: 0, gap: 1.4 }); dcam(c, L.k); sh(V(-2, 0, 10), 16); }, [[0, 'ding_reveal', .6], [.4, 'gulp', .5]]);
 // 30 «Und das allerbeste?» (zoom lento): dentro del Getränkemarkt, travelling hacia el estante de honor; se enciende el foco
-shot(33.18, 'W', 'slow', L => { regalS(L, lerp(0, 160, easeIn(clamp(L.lt / .7)))); crowdAt(L, RGX, -2, 4, 3, 8, 43, { mode: 'idle', face: V(RGX, 6, -16), full: true });
+shot(33.18, 'W', 'slow', L => { regalS(L, lerp(0, 160, easeIn(clamp(L.lt / .7)))); crowdAt(L, RGX, -6, 4, 7, 10, 43, { mode: 'idle', face: V(RGX, 6, -16), full: true, gap: 1.2 });
   cm([RGX, 7.5, 16, RGX, 6, -16, 46], [RGX, 6.8, 2, RGX, 6, -16, 42], L.k, easeIn); sh(V(RGX, 0, -8), 26); }, [[0, 'whoosh_soft', .4], [.2, 'hum', .4]]);
 // 31 «Weihenstephaner.»: la botella protagonista en el estante de honor, girando bajo el foco, con destellos
 shot(34.06, 'F', 'punch', L => { regalS(L, 160); const b = show(BW, RGX, 5.1, -14.6, PI + Math.sin(L.T * 1.5) * .35, 1.8); confetti(V(RGX, 7, -14.6), L.t0 + .1, L.T, 24, .6);
@@ -517,7 +517,7 @@ shot(46.97, 'R', null, L => { seeS(L); const c = put(huber, SVX - 4, 0, -8, .2);
 shot(48.58, 'C', null, L => { town(L, { bg: false }); const c = put(huber, HX - 4, 0, HZ, -PI / 2); actuar(c, 0, [[0, { aLx: 2.2, aLz: -.25, aLe: 2.3, lean: .22, headX: .1, headY: .2 }]], { T: L.T }); cara(c, L.T, { expr: 'sus', eyes: 'squint', mouth: 'smirk' });
   onFace(c, 5.6, 0, .4, 40, L.k, 4.8); sh(V(HX - 4, 0, HZ), 14); }, [[0, 'shh', .6]]);
 // 42 «Paulaner.»: levanta una botella de Paulaner junto a su cara, destellos
-shot(49.17, 'Z', 'punch', L => { town(L, { bg: false }); const c = put(huber, HX - 4, 0, HZ, -PI / 2); actuar(c, 0, [[0, { aRx: 2.3, aRz: -.1, aRe: 1.0, headY: -.15 }]], { T: L.T }); POST.push(() => { const h = c.aR.hand.localToWorld(V(0, -.6, .6)); show(BP, h.x, h.y - 1.2, h.z, 0, 1.3); BP.rotation.y = Math.atan2(camera.position.x - h.x, camera.position.z - h.z) + PI; }); cara(c, L.T, { expr: 'happy', eyes: 'happy', mouth: 'open_smile' });
+shot(49.17, 'Z', 'punch', L => { town(L, { bg: false }); const c = put(huber, HX - 4, 0, HZ, -PI / 2); actuar(c, 0, [[0, { aRx: 2.3, aRz: -.1, aRe: 1.0, headY: -.15 }]], { T: L.T }); POST.push(() => { const h = hp(c), cd = camera.position.clone().sub(h).setY(0).normalize(), rt = V(cd.z, 0, -cd.x); const p = h.clone().addScaledVector(rt, -1.5).addScaledVector(cd, .8).add(V(0, -1.2, 0)); show(BP, p.x, p.y, p.z, 0, .95); BP.rotation.y = Math.atan2(cd.x, cd.z) + PI; }); cara(c, L.T, { expr: 'happy', eyes: 'happy', mouth: 'open_smile' });
   confetti(hp(c).add(V(0, 1, 0)), L.t0, L.T, 20, .4); onFace(c, 6.6, .4, -.6, 40, L.k, 5.8); sh(V(HX - 4, 0, HZ), 14); }, [[0, 'magic_hit', .6], [.1, 'sparkle', .5]]);
 // 43 «Es ist so süffig,»: bebe tranquila, con los ojos cerrados de gusto, en la terraza del café
 shot(50.15, 'S', null, L => { town(L, { bg: false }); const c = sit2(huber, 34.5, -26, PI / 2, 3.0); drink(c, L, L.t0 + .05, 1.0, { sit: true, pose: SITP, meter: true, expr: 'happy', sip: true }); meterOf(c).userData.set('48 Bier', '2,2 Mio. €', '#ffd23f');
@@ -558,7 +558,7 @@ shot(62.44, 'F', null, L => { amtS(L); const c = sit2(kranzl, AMX, -10.4, 0, 3.4
   badge('num', '12 JAHRE', W / 2, H * .18, clamp((L.lt - .5) / .2), 1, 1.1); cm([AMX + 3, 8.5, 6, AMX + 3, 8.2, -12, 46], [AMX + 3, 8.4, 4, AMX + 3, 8.2, -12, 44], L.k); sh(V(AMX + 3, 0, -8), 20); }, [[0, 'flash', .4], [.1, 'pages_flip', .6], [.5, 'pages_flip', .5]]);
 // 53 «kein Glas Wasser mehr angefasst.»: aparta el vaso de agua con asco; aspa roja
 shot(63.62, 'C', null, L => { amtS(L); const c = sit2(kranzl, AMX, -10.4, 0, 3.4); const k = easeOut(clamp((L.lt - .2) / .4)); actuar(c, 0, [[0, { ...SITP, aLx: 1.2, aLz: lerp(-.2, .6, k), aLe: .4, lean: -.15, headY: .4, headX: .1 }]], { T: L.T, weight: false }); holdMug(c); c.aR.sh.rotation.y = HOLDY; cara(c, L.T, { expr: 'angry', mouth: 'grimace' });
-  AM.GLASS.position.x = -3 - k * 2.5; badge('red', '✕', W * .38, H * .36, clamp((L.lt - .5) / .2), 1, 1.6); cm([AMX - 2.4, 7.6, 5, AMX - 1.6, 6.2, -7, 42], [AMX - 2.4, 7.4, 3.6, AMX - 1.6, 6.2, -7, 40], L.k); sh(V(AMX, 0, -8), 14); }, [[0, 'glass_slide', .6], [.4, 'buzzer', .5], [.3, 'sigh', .4]]);
+  AM.GLASS.position.x = -3 - k * 2.5; badge('red', '✕', W * .38, H * .36, clamp((L.lt - .5) / .2), 1, 1.6); cm([AMX - 3, 10.5, 4, AMX - 2, 5.4, -7, 44], [AMX - 3, 10, 2.6, AMX - 2, 5.4, -7, 42], L.k); sh(V(AMX, 0, -8), 14); }, [[0, 'glass_slide', .6], [.4, 'buzzer', .5], [.3, 'sigh', .4]]);
 // 54 «Deshalb gehört ihm die halbe Stadt.»: vista aérea del pueblo: la mitad de los tejados con banderas doradas «K»
 shot(65.25, 'S', null, L => { town(L); kflags(6, L.T); badge('gold', 'HALBE STADT', W / 2, H * .18, clamp(L.lt / .2), 1, 1); crowdAt(L, 0, 0, 10, 4, 30, 59, { mode: 'walk', full: true });
   cm([30, 70, 50, -40, 12, -6, 50], [24, 64, 38, -40, 12, -10, 50], L.k); sh(V(0, 0, -10), 70); DOF = 0; }, [[0, 'whoosh', .4], [.2, 'flag_flutter', .5], [.5, 'ding', .4]]);
@@ -597,7 +597,7 @@ shot(75.54, 'F', null, L => { town(L, { night: true, bg: false }); const c = put
 // 64 «30 Jahre.»: en el tribunal la jueza da el mazazo: «30 JAHRE»
 shot(76.84, 'C', 'punch', L => { gerS(L); const j = put(rich, GEX, 3.0, -12.4, 0); const k = clamp((L.lt - .12) / .1); actuar(j, 0, [[0, { aRx: lerp(2.6, 1.2, k), aRe: .3 }]], { T: L.T }); attach(GAVEL, j.aR.hand, [0, -.8, .4], [0, 0, 0], 1.2); cara(j, L.T, { expr: 'angry', mouth: 'talk' }); if (L.lt > .22) SHAKE = Math.max(0, 1 - (L.lt - .22) / .3);
   const d = put(schum, GEX + 5, 0, 4, PI - .4); actuar(d, 0, [[0, 'hands_head']], { T: L.T }); cara(d, L.T, { expr: 'cry' }); badge('red', '30 JAHRE', W / 2, H * .2, clamp((L.lt - .22) / .2), 1, 1.4);
-  cm([GEX + 6, 9.5, 12, GEX + 2, 8.4, -6, 50], [GEX + 5, 9.5, 10, GEX + 2, 8.4, -6, 48], L.k); sh(V(GEX, 0, -4), 22); }, [[.22, 'gavel', 1], [.3, 'gasp', .4]]);
+  cm([GEX + 4, 10, 4, GEX + 1, 9, -12, 46], [GEX + 3.5, 10, 2.5, GEX + 1, 9, -12, 44], L.k); sh(V(GEX, 0, -4), 22); }, [[.22, 'gavel', 1], [.3, 'gasp', .4]]);
 // ---------- c: yo, el estómago pequeño y el goldener Krug (77,9 – 103,7 s) ----------
 // Felix en la plaza (0, 0, 9). Cervecería abandonada (ABX): puerta tapiada en (0, -20,4). Sótano (KEX): balda con el Krug en (0, 5.4, -18.3), barriles a x = ±13.
 // barrigas para los grandullones de la comparación
@@ -606,7 +606,7 @@ const BELLY = [0, 1].map(() => { const b = P_(sphere(1.4, mat(0xf4f4f0, { roughn
 const STREAM = P_(cyl(.09, .07, 1, mat(0xf6a81c, { emissive: 0x8a4a00, emissiveIntensity: .5, roughness: .1, transparent: true, opacity: .9 }), 8, null));
 function streamTo(a, b) { STREAM.visible = true; const d = b.clone().sub(a); STREAM.position.copy(a).addScaledVector(d, .5); STREAM.scale.set(1, d.length(), 1); STREAM.quaternion.setFromUnitVectors(V(0, 1, 0), d.normalize()); }
 // Felix con la linterna: el foco sale de la mano izquierda en la dirección en la que mira
-function linterna(c, target) { attach(FLASH, c.aL.hand, [0, -.7, .3], [PI / 2, 0, 0], 1); const p = wpos(FLASH); FLASHL.intensity = 160; FLASHL.position.copy(p); FLASHL.target.position.copy(target); FLASHL.color.setRGB(1, .94, .78); }
+function linterna(c, target) { attach(FLASH, c.aL.hand, [0, -.7, .3], [PI / 2, 0, 0], 1); const p = wpos(FLASH); FLASHL.intensity = 70; FLASHL.position.copy(p); FLASHL.target.position.copy(target); FLASHL.color.setRGB(1, .94, .78); }
 const KGP = V(KEX, 5.4, -18.3);
 // placa de rayos X (2D) con el estómago diminuto
 function xray(L, k) { FX2D.push(c => { if (k <= 0) return; const s = spring(clamp(k) * 1.3), x = W * .7, y = H * .36; c.save(); c.translate(x, y); c.scale(s, s); c.rotate(.06); c.fillStyle = '#0a1a2e'; c.strokeStyle = '#ffffff'; c.lineWidth = 8; c.beginPath(); c.roundRect(-190, -250, 380, 500, 26); c.fill(); c.stroke();
@@ -619,7 +619,7 @@ shot(77.94, 'Z', null, L => { town(L); const c = put(felix, 0, 0, 9, 0); actuar(
   crowdAt(L, 0, 9, 10, 6, 14, 71, { mode: i => ['drink', 'prost'][i % 2], gap: 1.1 }); onBody(c, 16, 0, .12, 44, L.k, 13, 0, 4); sh(V(0, 0, 9), 24); }, [[0, 'zoom_in', .4], [.15, 'hey', .4]]);
 // 66 «Ich hatte keinen einzigen Cent.»: abre la cartera: vacía; sale volando una polilla. Bierzähler: 0 €
 shot(78.54, 'W', null, L => { town(L); const c = put(felix, 0, 0, 9, 0); actuar(c, 0, [[0, { aLx: 1.0, aLe: 1.0, aLz: -.35, aRx: 1.0, aRe: 1.0, aRz: -.35, headX: .3 }]], { T: L.T }); cara(c, L.T, { expr: 'sad', eyes: 'down', mouth: 'frown' }); meterOf(c).userData.set('0 Bier', '0 €', '#ff4a4a');
-  const wp = hp(c).add(V(0, -2.0, 1.6)); show(WALLET, wp.x, wp.y, wp.z, 0, 1); WALLET.rotation.x = .9; const t = clamp((L.lt - .3) / 1.2); show(MOTH, wp.x + t * 3, wp.y + .5 + t * 5 + Math.sin(L.T * 10) * .3, wp.z + t * 2, 0, 1); MOTH.children.forEach(w => { if (w.name) w.rotation.y = (w.name === 'w1' ? 1 : -1) * Math.sin(L.T * 30) * .9; });
+  const wp = hp(c).add(V(0, -2.0, 1.6)); show(WALLET, wp.x, wp.y, wp.z, 0, 1); WALLET.rotation.x = .9; const t = clamp((L.lt - .3) / 1.2); show(MOTH, wp.x + t * 2.4, wp.y + 1 + t * 4 + Math.sin(L.T * 10) * .3, wp.z + .6 + t * 1.5, 0, 2.6); MOTH.children.forEach(w => { if (w.name) w.rotation.y = (w.name === 'w1' ? 1 : -1) * Math.sin(L.T * 30) * .9; });
   badge('red', '0,00 €', W / 2, H * .2, clamp((L.lt - .2) / .2), 1, 1.1); onFace(c, 7.6, .4, -.3, 40, L.k, 6.6); sh(V(0, 0, 9), 14); }, [[0, 'wallet', .5], [.3, 'moth', .6], [.6, 'sad_trombone', .4]]);
 // 67 «Denn ich habe den kleinsten Magen»: radiografía junto a Felix: el estómago es diminuto; él se toca la barriga avergonzado
 shot(80.24, 'S', null, L => { town(L, { bg: false }); const c = put(felix, -6, 0, 6, .3); actuar(c, 0, [[0, { aRx: .8, aRe: 1.6, aRz: -.4, aLx: .6, aLe: 1.5, aLz: -.4, headX: .25 }]], { T: L.T }); cara(c, L.T, { expr: 'worried', mouth: 'frown' }); xray(L, clamp((L.lt - .1) / .25));
@@ -634,7 +634,7 @@ shot(82.42, 'W', null, L => { town(L); for (let i = 0; i < 4; i++) { const c = s
   orbit(V(-14, 5, 21.7), lerp(17, 15, L.k), -.4, .16, 46); sh(V(-14, 0, 22), 18); }, [[0, 'gulp', .5], [.4, 'glass_down', .5], [.8, 'gulp', .4], [1.2, 'glass_down', .5]]);
 // 70 «nach der anderen leerten,»: Resi deja en la mesa jarras vacías una tras otra: ¡clonc, clonc, clonc!
 shot(84.09, 'C', null, L => { town(L); const c = put(resi, 14, 0, 19.4, 0); const j = Math.floor(L.lt / .25); actuar(c, 0, [[0, { aRx: 1.0 + Math.abs(Math.sin(L.lt / .25 * PI)) * .5, aRe: .8, aLx: .6, lean: .25 }]], { T: L.T }); cara(c, L.T, { expr: 'joy' });
-  for (let i = 0; i <= Math.min(j, 6); i++) { const m = KRUG[i]; show(m, 10.5 + i * 1.2, 4.15, 23, 0, 1); m.userData.level(0, 0); } 
+  for (let i = 0; i <= Math.min(j, 6); i++) { const m = KRUG[i]; show(m, 15.6 + i * 1.2, 4.15, 23, 0, 1); m.userData.level(0, 0); } 
   cm([14, 8.5, 32, 13, 5, 23, 40], [14, 8, 30, 13, 5, 23, 38], L.k); sh(V(14, 0, 23), 16); }, [[0, 'glass_down', .6], [.25, 'glass_down', .6], [.5, 'glass_down', .6], [.75, 'glass_down', .6]]);
 // 71 «schaffte ich ein einziges Bier.»: Felix sentado bebe su única Maß con esfuerzo, sudando
 shot(85.13, 'S', null, L => { town(L); const c = sit2(felix, 14, 21.7, 0); drink(c, L, L.t0 + .1, 1.2, { sit: true, pose: SITP, meter: true, expr: 'worried', eyesD: 'squint', l1: .0 }); sweat(c, L.T, 2); meterOf(c).userData.set('0 Bier', '0 €');
@@ -656,35 +656,35 @@ shot(91.21, 'W', null, L => { altS(L); const c = put(felix, ABX + lerp(6, 1, eas
 shot(93.07, 'S', null, L => { kellerS(L); KE.GK.visible = true; const c = put(felix, KEX + 1.5, 0, -2 - L.lt * 2.4, PI); actuar(c, 0, [[0, { ...walkP(L.T * .6, 0), crouch: .2, lean: .15, aLx: 1.4, aLe: .3, headY: Math.sin(L.T * 2) * .4 }]], { T: L.T }); cara(c, L.T, { expr: 'scared' }); linterna(c, KGP);
   KE.GK.userData.setGlow(.2); beam(L, V(KEX + 6, 6, -4), L.T); orbit(V(KEX + 1.5, 4.6, -3 - L.lt * 2.4), lerp(13, 11, L.k), PI - .5, .16, 46); sh(V(KEX, 0, -8), 22); }, [[0, 'drip', .5], [.3, 'creak', .4], [.6, 'rat', .3]]);
 // 77 «einen goldenen Krug.» (zoom lento): en la última balda, entre botellas polvorientas, el goldener Krug brilla
-shot(94.66, 'F', 'slow', L => { kellerS(L); KE.GK.visible = true; KE.GK.userData.setGlow(.35 + Math.sin(L.T * 3) * .15); FLASHL.intensity = 130; FLASHL.position.set(KEX + 2, 7, -6); FLASHL.target.position.copy(KGP);
+shot(94.66, 'F', 'slow', L => { kellerS(L); KE.GK.visible = true; KE.GK.userData.setGlow(.35 + Math.sin(L.T * 3) * .15); FLASHL.intensity = 55; FLASHL.position.set(KEX + 2, 7, -6); FLASHL.target.position.copy(KGP);
   confetti(KGP.clone().add(V(0, 1, 0)), L.t0 + .2, L.T, 12, .3); cm([KEX + 1.2, 7, -7, KEX, 6.2, -18.3, 40], [KEX + .4, 6.6, -12.4, KEX, 6.3, -18.3, 34], L.k, easeIn); sh(V(KEX, 0, -16), 14); DOF = 0; }, [[0, 'shimmer', .6], [.3, 'choir', .5]]);
 // 78 «Darauf stand:»: Felix lo coge y le quita el polvo con la manga
 shot(95.96, 'C', null, L => { kellerS(L); KE.GK.visible = false; const c = put(felix, KEX, 0, -14, 0); actuar(c, 0, [[0, { aRx: 1.2, aRe: 1.3, aRz: .1, aLx: 1.3, aLe: 1.2 + Math.sin(L.T * 14) * .2, aLz: -.4, headX: .3 }]], { T: L.T }); attach(GK2, c.aR.hand, [-.86, -.2, -.66], [PI / 2, 0, 0], .78); GK2.userData.setGlow(.3); GK2.userData.fill(0);
-  cara(c, L.T, { expr: 'gasp' }); FLASHL.intensity = 130; FLASHL.position.set(KEX + 3, 8, -6); FLASHL.target.position.set(KEX, 5, -14); dust(wpos(GK2), L.t0 + .2, L.T, 8, .4);
+  cara(c, L.T, { expr: 'gasp' }); FLASHL.intensity = 55; FLASHL.position.set(KEX + 3, 8, -6); FLASHL.target.position.set(KEX, 5, -14); dust(wpos(GK2), L.t0 + .2, L.T, 8, .4);
   onFace(c, 7, -.2, .8, 40, L.k, 6); sh(V(KEX, 0, -14), 14); }, [[0, 'wipe', .6], [.4, 'wipe', .5]]);
 // 79 «„Warnung:»: primer plano de la placa grabada del Krug
-shot(96.52, 'Z', null, L => { kellerS(L); show(GK2, KEX, 4, -14, 0, 1); GK2.userData.setGlow(.3); GK2.userData.fill(0); GK2.userData.setLid(0); FLASHL.intensity = 130; FLASHL.position.set(KEX + 2, 8, -8); FLASHL.target.position.set(KEX, 4.7, -14);
+shot(96.52, 'Z', null, L => { kellerS(L); show(GK2, KEX, 4, -14, 0, 1); GK2.userData.setGlow(.3); GK2.userData.fill(0); GK2.userData.setLid(0); FLASHL.intensity = 55; FLASHL.position.set(KEX + 2, 8, -8); FLASHL.target.position.set(KEX, 4.7, -14);
   cm([KEX + .3, 5.2, -8.6, KEX, 4.8, -14, 30], [KEX + .2, 5.1, -9.6, KEX, 4.8, -14, 28], L.k); sh(V(KEX, 0, -14), 8); DOF = 0; }, [[0, 'zoom_in', .4], [.1, 'warning', .6]]);
 // 80 «Niemals mehr»: la cámara baja por el grabado
-shot(97.55, 'S', null, L => { kellerS(L); show(GK2, KEX, 4, -14, 0, 1); GK2.userData.setGlow(.3); GK2.userData.fill(0); FLASHL.intensity = 130; FLASHL.position.set(KEX + 2, 8, -8); FLASHL.target.position.set(KEX, 4.7, -14);
+shot(97.55, 'S', null, L => { kellerS(L); show(GK2, KEX, 4, -14, 0, 1); GK2.userData.setGlow(.3); GK2.userData.fill(0); FLASHL.intensity = 55; FLASHL.position.set(KEX + 2, 8, -8); FLASHL.target.position.set(KEX, 4.7, -14);
   badge('red', 'NIEMALS MEHR', W / 2, H * .2, clamp(L.lt / .2), 1, 1); cm([KEX - .4, 4.9, -10, KEX, 4.75, -14, 24], [KEX + .4, 4.8, -10, KEX, 4.75, -14, 24], L.k); sh(V(KEX, 0, -14), 8); DOF = 0; }, [[0, 'tense', .5]]);
 // 81 «als ein Bier."»: Felix lee y traga saliva
 shot(98.39, 'C', 'punch', L => { kellerS(L); KE.GK.visible = false; const c = put(felix, KEX, 0, -14, 0); actuar(c, 0, [[0, { aRx: 1.2, aRe: 1.4, aRz: .1, headX: .32 }]], { T: L.T }); attach(GK2, c.aR.hand, [-.86, -.2, -.66], [PI / 2, 0, 0], .78); GK2.userData.setGlow(.3); cara(c, L.T, { expr: 'worried', mouth: 'o' });
-  badge('red', 'NUR 1 BIER!', W / 2, H * .2, clamp(L.lt / .2), 1, 1.1); FLASHL.intensity = 130; FLASHL.position.set(KEX + 3, 8, -6); FLASHL.target.position.set(KEX, 5, -14); onFace(c, 5.6, .1, .5, 40, L.k, 5); sh(V(KEX, 0, -14), 12); }, [[0, 'gulp_nervous', .6], [.2, 'thump', .4]]);
+  badge('red', 'NUR 1 BIER!', W / 2, H * .2, clamp(L.lt / .2), 1, 1.1); FLASHL.intensity = 55; FLASHL.position.set(KEX + 3, 8, -6); FLASHL.target.position.set(KEX, 5, -14); onFace(c, 5.6, .1, .5, 40, L.k, 5); sh(V(KEX, 0, -14), 12); }, [[0, 'gulp_nervous', .6], [.2, 'thump', .4]]);
 // 82 «Also füllte ich ihn natürlich»: sonrisa traviesa; deja el Krug sobre un barril y saca una Weihenstephaner
 shot(99.55, 'W', null, L => { kellerS(L); KE.GK.visible = false; const c = put(felix, KEX + 1, 0, -10, -.3); actuar(c, 0, [[0, { aLx: 1.6, aLe: 1.0, aLz: -.2, aRx: .3 }]], { T: L.T }); attach(BW, c.aL.hand, [0, -.7, .3], [-.3, 0, 0], .8); cara(c, L.T, { expr: 'wink' });
-  show(GK2, KEX - 2.4, 3.6, -9.4, .3, .9); GK2.userData.setGlow(.3); GK2.userData.fill(0); const f = FASS[0]; show(f, KEX - 2.4, 0, -9.4, 0, .9); FLASHL.intensity = 130; FLASHL.position.set(KEX + 4, 9, -2); FLASHL.target.position.set(KEX, 4, -10);
+  show(GK2, KEX - 2.4, 3.6, -9.4, .3, .9); GK2.userData.setGlow(.3); GK2.userData.fill(0); const f = FASS[0]; show(f, KEX - 2.4, 0, -9.4, 0, .9); FLASHL.intensity = 55; FLASHL.position.set(KEX + 4, 9, -2); FLASHL.target.position.set(KEX, 4, -10);
   onBody(c, 13, -.5, .12, 44, L.k, 11, -.4, 4.4); sh(V(KEX, 0, -10), 14); }, [[0, 'swipe', .4], [.2, 'chuckle_m', .5], [.6, 'bottle_open', .6]]);
 // 83 «bis zum Rand.»: vierte la Weihenstephaner en el Krug; la espuma sube hasta el borde
 shot(100.77, 'F', null, L => { kellerS(L); const c = put(felix, KEX - .2, 0, -9.6, -PI / 2 + .25); const k = clamp(L.lt / 1.0); actuar(c, 0, [[0, { aLx: 1.7, aLz: -.3, aLe: .6, headX: .35, headY: .2 }]], { T: L.T }); attach(BW, c.aL.hand, [0, -.6, .4], [-.3 - k * 1.2, 0, 0], .8); cara(c, L.T, { expr: 'happy', eyes: 'down' });
   show(GK2, KEX - 2.4, 3.6, -9.4, .3, .9); GK2.userData.setGlow(.3); GK2.userData.fill(k); show(FASS[0], KEX - 2.4, 0, -9.4, 0, .9); POST.push(() => { BW.updateMatrixWorld(true); const top = BW.localToWorld(V(0, 2.55, 0)); streamTo(top, V(KEX - 2.4, 3.6 + 1.5 * .9 * k + .2, -9.4)); });
-  FLASHL.intensity = 130; FLASHL.position.set(KEX + 3, 9, -3); FLASHL.target.position.set(KEX - 2.4, 4, -9.4); cm([KEX - 1, 6.4, -2.6, KEX - 2.2, 4.8, -9.4, 38], [KEX - 1.2, 6.2, -4, KEX - 2.2, 4.8, -9.4, 36], L.k); sh(V(KEX, 0, -9), 12); }, [[0, 'pour', .8], [.6, 'fizz', .6]]);
+  FLASHL.intensity = 55; FLASHL.position.set(KEX + 3, 9, -3); FLASHL.target.position.set(KEX - 2.4, 4, -9.4); cm([KEX - 1, 6.4, -2.6, KEX - 2.2, 4.8, -9.4, 38], [KEX - 1.2, 6.2, -4, KEX - 2.2, 4.8, -9.4, 36], L.k); sh(V(KEX, 0, -9), 12); }, [[0, 'pour', .8], [.6, 'fizz', .6]]);
 // 84 «Mit Weihenstephaner, versteht sich.»: Felix guiña el ojo con la botella junto a la cara, la etiqueta bien visible
 shot(101.91, 'R', null, L => { kellerS(L); const c = put(felix, KEX, 0, -9, 0); actuar(c, 0, [[0, { aLx: 2.2, aLz: -.25, aLe: 1.7, headY: .15 }]], { T: L.T }); POST.push(() => { const h = c.aL.hand.localToWorld(V(0, -.6, .6)); show(BW, h.x, h.y - 1.2, h.z, 0, 1.3); BW.rotation.y = Math.atan2(camera.position.x - h.x, camera.position.z - h.z) + PI; }); cara(c, L.T, { expr: 'wink', mouth: 'smirk' });
-  FLASHL.intensity = 130; FLASHL.position.set(KEX + 3, 9, -2); FLASHL.target.position.set(KEX, 6, -9); confetti(hp(c).add(V(0, 1, 0)), L.t0, L.T, 16, .35); onFace(c, 6.4, .2, -.5, 40, L.k, 5.6); sh(V(KEX, 0, -9), 12); }, [[0, 'whirl', .4], [.2, 'wink', .5], [.4, 'sparkle', .4]]);
+  FLASHL.intensity = 55; FLASHL.position.set(KEX + 3, 9, -2); FLASHL.target.position.set(KEX, 6, -9); confetti(hp(c).add(V(0, 1, 0)), L.t0, L.T, 16, .35); onFace(c, 6.4, .2, -.5, 40, L.k, 5.6); sh(V(KEX, 0, -9), 12); }, [[0, 'whirl', .4], [.2, 'wink', .5], [.4, 'sparkle', .4]]);
 // ---------- d: el Krug que no se vacía y la ciudad inundada de cerveza (103,7 – 139,5 s) ----------
 // Felix en el sótano en (KEX, 0, -9) mirando +z; el Krug dorado en su mano derecha (kind 'gold').
-const kel = (L, lamp = 1) => { kellerS(L); KE.GK.visible = false; FLASHL.intensity = 140 * lamp; FLASHL.position.set(KEX + 3, 9, -1); FLASHL.target.position.set(KEX, 5, -9); FILL.intensity = 8; };
+const kel = (L, lamp = 1) => { kellerS(L); KE.GK.visible = false; FLASHL.intensity = 60 * lamp; FLASHL.position.set(KEX + 3, 9, -1); FLASHL.target.position.set(KEX, 5, -9); FILL.intensity = 8; };
 const fel = (x = 0, z = -9, ry = 0) => put(felix, KEX + x, 0, z, ry);
 const fluten = (lvl, T, x = 0, z = 0) => { FLOOD.visible = true; FLOOD.position.x = x; FLOOD.position.z = z; FLOOD.userData.set(lvl, T); };
 // cuenta de cervezas de la escena del Krug: 0 en 111,1 s → 1 → 5 → 20 → 100 → 200 → 300 → 500 en 143,8 s
@@ -775,7 +775,7 @@ shot(135.77, 'S', null, L => { kel(L); fluten(1.6, L.T, KEX, -9); show(PHONE, KE
 shot(136.72, 'C', null, L => { amtS(L); fluten(3.2, L.T, AMX, 0); const c = put(kranzl, AMX + 3, 0, -3, -.3); actuar(c, 0, [[0, { aRx: 2.4, aRz: -.2, aRe: 2.2, headX: .1 }]], { T: L.T }); attach(PHONE, c.aR.hand, [0, -.6, .5], [0, 0, 0], .9); cara(c, L.T, { expr: 'cry', mouth: Math.sin(L.T * 9) > 0 ? 'ah' : 'frown' }); tears(c, L.T, 0);
   onFace(c, 6, .1, -.3, 40, L.k, 5.2); sh(V(AMX + 3, 0, -3), 12); }, [[0, 'cry_m', .7], [.4, 'sniff', .4]]);
 // 115 «So etwas hatte die Stadt noch nie gesehen.»: los vecinos asomados a los balcones miran la ciudad de cerveza, boquiabiertos
-shot(137.76, 'R', null, L => { town(L); fluten(5.5, L.T); for (let i = 0; i < 6; i++) { const c = put(CR[i + 4], [-18, -14, -10, 10, 14, 18][i], 4.15, 24 + (i % 2) * .6, (i < 3 ? .3 : -.3)); actuar(c, 0, [[0, i % 2 ? 'hands_head' : 'shock']], { T: L.T }); cara(c, L.T + i, { expr: 'shock', mouth: 'o' }); c.blob.visible = false; }
+shot(137.76, 'R', null, L => { town(L); fluten(3.0, L.T); for (let i = 0; i < 6; i++) { const c = put(CR[i + 4], [-4.5, -1.5, 1.5, 4.5, -3, 3][i], 0, [30, 31, 30, 31, 34, 34][i], (i % 2 ? .3 : -.3)); actuar(c, 0, [[0, i % 2 ? 'hands_head' : 'shock']], { T: L.T }); cara(c, L.T + i, { expr: 'shock', mouth: 'o' }); c.blob.visible = false; }
   cm([0, 12, 52, 0, 8, 20, 50], [0, 13, 46, 0, 8.4, 20, 50], L.k); sh(V(0, 0, 24), 40); DOF = 0; }, [[0, 'whirl', .4], [.2, 'gasp', .5], [.6, 'river', .4]]);
 // ---------- e: 500 Bier, Trillionär, la crisis y el Schluckauf (139,5 – 168 s) ----------
 // corona dorada para el reichster Mensch der Welt
@@ -795,7 +795,7 @@ shot(140.89, 'C', null, L => { kel(L, .7); fluten(1.8, L.T, KEX, -9); const c = 
   meterOf(c).userData.set('499 Bier', euro(money(499)), '#ffd23f'); setHUD(499, '#ffd23f'); onFace(c, 7, .2, .4, 40, L.k, 6.4); sh(V(KEX, 0, -9), 12); }, [[0, 'silence', .3]]);
 // 118 «Der Krug blieb leer.»: dentro del Krug, vacío; Felix mira por encima del borde
 shot(141.32, 'S', null, L => { kel(L, .7); fluten(1.8, L.T, KEX, -9); const c = fel(); holdOnly(c, L, { kind: 'gold', pose: { aRx: 1.0, aRe: .9, headX: .45 } }); GK2.userData.setGlow(.15); GK2.userData.fill(0); GK2.userData.setLid(0); cara(c, L.T, { expr: 'confused', eyes: 'down', mouth: 'o' });
-  const p = wpos(GK2); cm([p.x + .6, p.y + 5.2, p.z + 3.2, p.x, p.y + .6, p.z, 40], [p.x + .5, p.y + 4.6, p.z + 2.6, p.x, p.y + .6, p.z, 38], L.k); sh(V(KEX, 0, -9), 10); DOF = 0; }, [[0, 'echo_drip', .5]]);
+  onFace(c, 7, .6, .6, 40, L.k, 6); sh(V(KEX, 0, -9), 10); DOF = 0; }, [[0, 'echo_drip', .5]]);
 // 119 «Ich schaute auf meinen Zähler.»: baja la cabeza hacia el Bierzähler del pecho
 shot(142.42, 'W', null, L => { kel(L, .7); fluten(1.8, L.T, KEX, -9); const c = fel(); holdOnly(c, L, { kind: 'gold', pose: { headX: lerp(.1, .5, easeOut(clamp(L.lt / .5))) } }); GK2.userData.setGlow(.15); GK2.userData.fill(0); cara(c, L.T, { expr: 'gasp', eyes: 'down' }); meterOf(c).userData.set('499 Bier', euro(money(499)), '#ffd23f'); setHUD(499, '#ffd23f');
   onFace(c, 6.4, -.6, -.8, 40, L.k, 5.6); sh(V(KEX, 0, -9), 12); }, [[0, 'heartbeat', .5]]);
@@ -826,10 +826,10 @@ shot(153.46, 'W', null, L => { town(L, { bg: false }); BILL.forEach((f, i) => { 
   for (let i = 0; i < 3; i++) { const c = put(CR[33 + i], -6 + i * 6, 0, 10 + i * 2, PI / 2); actuar(c, 0, [[0, { ...walkP(L.T, i) }]], { T: L.T }); c.root.position.x += L.lt * 2; cara(c, L.T + i, { expr: 'bored' }); }
   cm([-4, 3, 28, 0, 1.4, 10, 46], [0, 3, 26, 2, 1.4, 10, 46], L.k); sh(V(0, 0, 12), 24); }, [[0, 'wind', .7], [.3, 'paper', .4]]);
 // 128 «weniger wert als ein Bierdeckel.»: la balanza: un montón de billetes pesa menos que un Bierdeckel
-shot(154.42, 'C', null, L => { town(L, { bg: false }); const k = easeOut(clamp((L.lt - .1) / .6)); show(WAAGE, 0, 0, 0, 0, 1); WAAGE.userData.set(lerp(0, .35, k)); const bp = WAAGE.userData.beam;
+shot(154.42, 'C', null, L => { town(L, { bg: false }); const k = easeOut(clamp((L.lt - .1) / .6)); show(WAAGE, 0, 0, 0, 0, .72); WAAGE.userData.set(lerp(0, .35, k)); const bp = WAAGE.userData.beam;
   POST.push(() => { WAAGE.updateMatrixWorld(true); const pl = WAAGE.getObjectByName('pan-1'), pr = WAAGE.getObjectByName('pan1'); const a = pl.localToWorld(V(0, -3.2, 0)), b = pr.localToWorld(V(0, -3.2, 0)); for (let i = 0; i < 6; i++) { const f = BILL[i]; f.visible = true; f.position.copy(b).add(V((i % 2 - .5) * .3, i * .12, (i % 3 - 1) * .2)); f.rotation.set(-PI / 2, i * .4, 0); } show(DECK, a.x, a.y + .1, a.z, 0, 1.4); });
   badge('red', 'EURO', W * .7, H * .52, clamp(L.lt / .2), 1, .8); badge('gold', 'BIERDECKEL', W * .3, H * .3, clamp(L.lt / .2), 1, .8);
-  cm([0, 7, 26, 0, 5.2, 0, 46], [0, 7, 23, 0, 5.2, 0, 44], L.k); sh(V(0, 0, 0), 16); }, [[0, 'whoosh_soft', .4], [.3, 'scale_tip', .7], [.7, 'thud', .4]]);
+  cm([0, 6, 21, 0, 4.4, 0, 46], [0, 6, 19, 0, 4.4, 0, 44], L.k); sh(V(0, 0, 0), 16); }, [[0, 'whoosh_soft', .4], [.3, 'scale_tip', .7], [.7, 'thud', .4]]);
 // 129 «Also brauchte das Land»: en el ministerio, los funcionarios piensan con la mano en la barbilla
 shot(156.18, 'F', null, L => { minS(L); MI.scr.userData.draw((cx, w, h) => { cx.fillStyle = '#1a2a4a'; cx.fillRect(0, 0, w, h); cx.fillStyle = '#ffffff'; cx.font = `700 90px ${FONT}`; cx.textAlign = 'center'; cx.textBaseline = 'middle'; cx.fillText('KRISENSITZUNG', w / 2, h / 2); });
   BEA.forEach((b, i) => { const a = (i - 1) * .22; put(b, MIX + Math.sin(a) * 26 * .9, 0, -32 + Math.cos(a) * 26 - 6 - 2.6, -a); actuar(b, 0, [[0, 'think']], { T: L.T + i }); cara(b, L.T + i, { expr: 'confused' }); });

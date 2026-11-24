@@ -1,6 +1,6 @@
 // ---------- d: el Krug que no se vacía y la ciudad inundada de cerveza (103,7 – 139,5 s) ----------
 // Felix en el sótano en (KEX, 0, -9) mirando +z; el Krug dorado en su mano derecha (kind 'gold').
-const kel = (L, lamp = 1) => { kellerS(L); KE.GK.visible = false; FLASHL.intensity = 140 * lamp; FLASHL.position.set(KEX + 3, 9, -1); FLASHL.target.position.set(KEX, 5, -9); FILL.intensity = 8; };
+const kel = (L, lamp = 1) => { kellerS(L); KE.GK.visible = false; FLASHL.intensity = 60 * lamp; FLASHL.position.set(KEX + 3, 9, -1); FLASHL.target.position.set(KEX, 5, -9); FILL.intensity = 8; };
 const fel = (x = 0, z = -9, ry = 0) => put(felix, KEX + x, 0, z, ry);
 const fluten = (lvl, T, x = 0, z = 0) => { FLOOD.visible = true; FLOOD.position.x = x; FLOOD.position.z = z; FLOOD.userData.set(lvl, T); };
 // cuenta de cervezas de la escena del Krug: 0 en 111,1 s → 1 → 5 → 20 → 100 → 200 → 300 → 500 en 143,8 s
@@ -91,5 +91,5 @@ shot(135.77, 'S', null, L => { kel(L); fluten(1.6, L.T, KEX, -9); show(PHONE, KE
 shot(136.72, 'C', null, L => { amtS(L); fluten(3.2, L.T, AMX, 0); const c = put(kranzl, AMX + 3, 0, -3, -.3); actuar(c, 0, [[0, { aRx: 2.4, aRz: -.2, aRe: 2.2, headX: .1 }]], { T: L.T }); attach(PHONE, c.aR.hand, [0, -.6, .5], [0, 0, 0], .9); cara(c, L.T, { expr: 'cry', mouth: Math.sin(L.T * 9) > 0 ? 'ah' : 'frown' }); tears(c, L.T, 0);
   onFace(c, 6, .1, -.3, 40, L.k, 5.2); sh(V(AMX + 3, 0, -3), 12); }, [[0, 'cry_m', .7], [.4, 'sniff', .4]]);
 // 115 «So etwas hatte die Stadt noch nie gesehen.»: los vecinos asomados a los balcones miran la ciudad de cerveza, boquiabiertos
-shot(137.76, 'R', null, L => { town(L); fluten(5.5, L.T); for (let i = 0; i < 6; i++) { const c = put(CR[i + 4], [-18, -14, -10, 10, 14, 18][i], 4.15, 24 + (i % 2) * .6, (i < 3 ? .3 : -.3)); actuar(c, 0, [[0, i % 2 ? 'hands_head' : 'shock']], { T: L.T }); cara(c, L.T + i, { expr: 'shock', mouth: 'o' }); c.blob.visible = false; }
+shot(137.76, 'R', null, L => { town(L); fluten(3.0, L.T); for (let i = 0; i < 6; i++) { const c = put(CR[i + 4], [-4.5, -1.5, 1.5, 4.5, -3, 3][i], 0, [30, 31, 30, 31, 34, 34][i], (i % 2 ? .3 : -.3)); actuar(c, 0, [[0, i % 2 ? 'hands_head' : 'shock']], { T: L.T }); cara(c, L.T + i, { expr: 'shock', mouth: 'o' }); c.blob.visible = false; }
   cm([0, 12, 52, 0, 8, 20, 50], [0, 13, 46, 0, 8.4, 20, 50], L.k); sh(V(0, 0, 24), 40); DOF = 0; }, [[0, 'whirl', .4], [.2, 'gasp', .5], [.6, 'river', .4]]);

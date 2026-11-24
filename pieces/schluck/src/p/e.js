@@ -16,7 +16,7 @@ shot(140.89, 'C', null, L => { kel(L, .7); fluten(1.8, L.T, KEX, -9); const c = 
   meterOf(c).userData.set('499 Bier', euro(money(499)), '#ffd23f'); setHUD(499, '#ffd23f'); onFace(c, 7, .2, .4, 40, L.k, 6.4); sh(V(KEX, 0, -9), 12); }, [[0, 'silence', .3]]);
 // 118 «Der Krug blieb leer.»: dentro del Krug, vacío; Felix mira por encima del borde
 shot(141.32, 'S', null, L => { kel(L, .7); fluten(1.8, L.T, KEX, -9); const c = fel(); holdOnly(c, L, { kind: 'gold', pose: { aRx: 1.0, aRe: .9, headX: .45 } }); GK2.userData.setGlow(.15); GK2.userData.fill(0); GK2.userData.setLid(0); cara(c, L.T, { expr: 'confused', eyes: 'down', mouth: 'o' });
-  const p = wpos(GK2); cm([p.x + .6, p.y + 5.2, p.z + 3.2, p.x, p.y + .6, p.z, 40], [p.x + .5, p.y + 4.6, p.z + 2.6, p.x, p.y + .6, p.z, 38], L.k); sh(V(KEX, 0, -9), 10); DOF = 0; }, [[0, 'echo_drip', .5]]);
+  onFace(c, 7, .6, .6, 40, L.k, 6); sh(V(KEX, 0, -9), 10); DOF = 0; }, [[0, 'echo_drip', .5]]);
 // 119 «Ich schaute auf meinen Zähler.»: baja la cabeza hacia el Bierzähler del pecho
 shot(142.42, 'W', null, L => { kel(L, .7); fluten(1.8, L.T, KEX, -9); const c = fel(); holdOnly(c, L, { kind: 'gold', pose: { headX: lerp(.1, .5, easeOut(clamp(L.lt / .5))) } }); GK2.userData.setGlow(.15); GK2.userData.fill(0); cara(c, L.T, { expr: 'gasp', eyes: 'down' }); meterOf(c).userData.set('499 Bier', euro(money(499)), '#ffd23f'); setHUD(499, '#ffd23f');
   onFace(c, 6.4, -.6, -.8, 40, L.k, 5.6); sh(V(KEX, 0, -9), 12); }, [[0, 'heartbeat', .5]]);
@@ -47,10 +47,10 @@ shot(153.46, 'W', null, L => { town(L, { bg: false }); BILL.forEach((f, i) => { 
   for (let i = 0; i < 3; i++) { const c = put(CR[33 + i], -6 + i * 6, 0, 10 + i * 2, PI / 2); actuar(c, 0, [[0, { ...walkP(L.T, i) }]], { T: L.T }); c.root.position.x += L.lt * 2; cara(c, L.T + i, { expr: 'bored' }); }
   cm([-4, 3, 28, 0, 1.4, 10, 46], [0, 3, 26, 2, 1.4, 10, 46], L.k); sh(V(0, 0, 12), 24); }, [[0, 'wind', .7], [.3, 'paper', .4]]);
 // 128 «weniger wert als ein Bierdeckel.»: la balanza: un montón de billetes pesa menos que un Bierdeckel
-shot(154.42, 'C', null, L => { town(L, { bg: false }); const k = easeOut(clamp((L.lt - .1) / .6)); show(WAAGE, 0, 0, 0, 0, 1); WAAGE.userData.set(lerp(0, .35, k)); const bp = WAAGE.userData.beam;
+shot(154.42, 'C', null, L => { town(L, { bg: false }); const k = easeOut(clamp((L.lt - .1) / .6)); show(WAAGE, 0, 0, 0, 0, .72); WAAGE.userData.set(lerp(0, .35, k)); const bp = WAAGE.userData.beam;
   POST.push(() => { WAAGE.updateMatrixWorld(true); const pl = WAAGE.getObjectByName('pan-1'), pr = WAAGE.getObjectByName('pan1'); const a = pl.localToWorld(V(0, -3.2, 0)), b = pr.localToWorld(V(0, -3.2, 0)); for (let i = 0; i < 6; i++) { const f = BILL[i]; f.visible = true; f.position.copy(b).add(V((i % 2 - .5) * .3, i * .12, (i % 3 - 1) * .2)); f.rotation.set(-PI / 2, i * .4, 0); } show(DECK, a.x, a.y + .1, a.z, 0, 1.4); });
   badge('red', 'EURO', W * .7, H * .52, clamp(L.lt / .2), 1, .8); badge('gold', 'BIERDECKEL', W * .3, H * .3, clamp(L.lt / .2), 1, .8);
-  cm([0, 7, 26, 0, 5.2, 0, 46], [0, 7, 23, 0, 5.2, 0, 44], L.k); sh(V(0, 0, 0), 16); }, [[0, 'whoosh_soft', .4], [.3, 'scale_tip', .7], [.7, 'thud', .4]]);
+  cm([0, 6, 21, 0, 4.4, 0, 46], [0, 6, 19, 0, 4.4, 0, 44], L.k); sh(V(0, 0, 0), 16); }, [[0, 'whoosh_soft', .4], [.3, 'scale_tip', .7], [.7, 'thud', .4]]);
 // 129 «Also brauchte das Land»: en el ministerio, los funcionarios piensan con la mano en la barbilla
 shot(156.18, 'F', null, L => { minS(L); MI.scr.userData.draw((cx, w, h) => { cx.fillStyle = '#1a2a4a'; cx.fillRect(0, 0, w, h); cx.fillStyle = '#ffffff'; cx.font = `700 90px ${FONT}`; cx.textAlign = 'center'; cx.textBaseline = 'middle'; cx.fillText('KRISENSITZUNG', w / 2, h / 2); });
   BEA.forEach((b, i) => { const a = (i - 1) * .22; put(b, MIX + Math.sin(a) * 26 * .9, 0, -32 + Math.cos(a) * 26 - 6 - 2.6, -a); actuar(b, 0, [[0, 'think']], { T: L.T + i }); cara(b, L.T + i, { expr: 'confused' }); });

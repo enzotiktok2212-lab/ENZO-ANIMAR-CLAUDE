@@ -25,7 +25,7 @@ shot(1.35, 'W', 'punch', L => { town(L); const c = put(CR[1], 0, 0, 10, 0); drin
   orbit(V(0, 5.6, 10), lerp(11, 9, L.k), -.18, .06, 40); sh(V(0, 0, 10), 18); }, [[0, 'ahh', .6], [.15, 'cash_reg', .6], [.3, 'paper', .4]]);
 // 3 «wenn du ein Bier trinkst.»: en la mesa, un hombre con camisa de cuadros se bebe la Maß de un trago (de perfil a tres cuartos); la cámara se acerca
 shot(2.39, 'Z', null, L => { town(L); const c = sit2(CR[2], -14, 21.7, 0); drink(c, L, L.t0 - .05, 1.0, { sit: true, pose: SITP, meter: true, expr: 'determined', bg: false });
-  tableFolk(L, 0, -1, 3, 'sitdrink', 3, { dx: -6 }); tableMugs(0, 3);
+  tableMugs(0, 3); crowdAt(L, -14, 14, 5, 8, 14, 3, { mode: 'drink', gap: 1.6 });
   dcam(c, L.k, 11, -1.0, 4.2); sh(V(-14, 0, 22), 18); }, [[0, 'swoosh_up', .5], [.1, 'gulp_long', .7], [.8, 'glass_down', .4]]);
 // 4 «Und je mehr Bier du trinkst,»: la pizarra de la regla con las barras que crecen; la gente debajo mira con su jarra
 shot(3.59, 'S', null, L => { town(L, { bg: false }); show(TAFEL, TAFP.x, 0, TAFP.z, .25); TAFEL.userData.draw((c, w, h) => drawRule(c, w, h, L.lt / 1.1));
@@ -98,7 +98,7 @@ shot(21.09, 'W', null, L => { town(L); for (let t = 0; t < 6; t++) { tableFolk(L
   crowdAt(L, 0, 6, 8, 4, 12, 37, { mode: 'drink', full: true }); cm([0, 46, 90, 0, 2, 26, 46], [0, 30, 76, 0, 3, 26, 46], L.k, easeOut); sh(V(0, 0, 26), 50); DOF = 0; }, [[0, 'crowd_murmur', .5], [.2, 'glass_clink', .5], [.6, 'gulp', .4]]);
 // 21 «hier kein Hobby,»: un vecino tira su caña de pescar a la papelera y coge una Maß; cartel HOBBY tachado
 shot(21.95, 'S', null, L => { town(L, { bg: false }); const c = put(CR[14], -6, 0, -40, 0); const k = clamp(L.lt / .5), k2 = easeOut(clamp((L.lt - .2) / .2)); holdOnly(c, L, { pose: { aLx: lerp(1.5, .3, k2), aLz: lerp(.2, 1.4, k2), aLe: .3 } }); cara(c, L.T, { expr: 'determined', mouth: 'smirk' });
-  show(DS1, -6, 11.5, -40.5, 0, .5); DS1.userData.draw('hobby', (cx, w, h) => { cx.fillStyle = '#f4f0e4'; cx.fillRect(0, 0, w, h); cx.fillStyle = '#1a1a1a'; cx.font = `700 120px ${FONT}`; cx.textAlign = 'center'; cx.textBaseline = 'middle'; cx.fillText('HOBBY', w / 2, h / 2); cx.strokeStyle = '#d8202a'; cx.lineWidth = 26; cx.beginPath(); cx.moveTo(40, 40); cx.lineTo(w - 40, h - 40); cx.moveTo(w - 40, 40); cx.lineTo(40, h - 40); cx.stroke(); });
+  show(DS1, -2.6, 9.2, -40.5, 0, .3); DS1.userData.draw('hobby', (cx, w, h) => { cx.fillStyle = '#f4f0e4'; cx.fillRect(0, 0, w, h); cx.fillStyle = '#1a1a1a'; cx.font = `700 120px ${FONT}`; cx.textAlign = 'center'; cx.textBaseline = 'middle'; cx.fillText('HOBBY', w / 2, h / 2); cx.strokeStyle = '#d8202a'; cx.lineWidth = 26; cx.beginPath(); cx.moveTo(40, 40); cx.lineTo(w - 40, h - 40); cx.moveTo(w - 40, 40); cx.lineTo(40, h - 40); cx.stroke(); });
   const rod = PADDLE[0]; show(rod, -6 + 3 + k * 4, 6 - k * 4, -40 + 1, 0, 1); rod.rotation.z = -1 - k * 2;
   cm([-6, 6.4, -27, -6, 6.6, -40, 46], [-6, 6.4, -29, -6, 6.6, -40, 46], L.k); sh(V(-6, 0, -40), 20); }, [[0, 'swipe', .4], [.25, 'throw', .5], [.5, 'thud', .4]]);
 // 22 «sondern ein Beruf.»: un señor con traje y corbata ficha en el Biergarten: «BERUF: BIERTRINKER»
@@ -110,7 +110,7 @@ shot(23.95, 'R', null, L => { bueroS(L); DUST.forEach((d, i) => { const r = RNG(
 // 24 «Stattdessen sitzen alle im Biergarten,»: grúa sobre el Biergarten lleno: todas las mesas ocupadas, camareras con jarras
 shot(25.23, 'W', null, L => { town(L); for (let t = 0; t < 6; t++) { tableFolk(L, t, -1, 3, i => ['sitdrink', 'sithold', 'sitprost'][i % 3], 0); tableFolk(L, t, 1, 3, i => ['sithold', 'sitdrink', 'sitprost'][i % 3], 0); tableMugs(t, 2); }
   const r = put(resi, 0, 0, 30 + L.lt * 3, 0); actuar(r, 0, [[0, { ...walkP(L.T, 0), aLx: 1.2, aLe: 1.3 }]], { T: L.T }); holdOnly(r, L); cara(r, L.T, { expr: 'happy' });
-  cm([0, 36, 84, 0, 3, 30, 46], [0, 24, 72, 0, 4, 30, 46], L.k, easeOut); sh(V(0, 0, 32), 46); DOF = 0; }, [[0, 'crowd_murmur', .6], [.4, 'accordion', .5], [.8, 'glass_clink', .4]]);
+  cm([0, 38, 66, 0, 3, 28, 50], [0, 26, 60, 0, 4, 28, 50], L.k, easeOut); sh(V(0, 0, 32), 46); DOF = 0; }, [[0, 'crowd_murmur', .6], [.4, 'accordion', .5], [.8, 'glass_clink', .4]]);
 // 25 «heben ihre Krüge»: una fila de sentados alza las Maß a la vez: ¡Prost!
 shot(26.83, 'C', null, L => { town(L); const row = [CR[15], CR[16], CR[17], CR[18]]; row.forEach((c, i) => { sit2(c, -18.8 + i * 3.2, 39.3, PI); prost(c, L, easeOut(clamp((L.lt - i * .06) / .35)), { sit: true, pose: SITP }); laughF(c, L.T + i); });
   tableMugs(2, 2, .9); orbit(V(-14, 6, 39.3), lerp(14, 12, L.k), PI, .12, 44); sh(V(-14, 0, 38), 18); }, [[0, 'prost', .7], [.3, 'glass_clink', .7], [.5, 'cheer', .4]]);
@@ -130,7 +130,7 @@ shot(30.66, 'S', null, L => { town(L); const c = put(CR[20], -2, 0, 10, 0); pros
 shot(31.74, 'Z', null, L => { town(L); const c = put(CR[20], -2, 0, 10, 0); drink(c, L, L.t0 + .35, .6, { meter: true, expr: 'happy' }); meterOf(c).userData.set('ECHT ✓', '+20 €', '#5aff9a'); badge('green', 'ECHT ✓', W / 2, H * .2, clamp(L.lt / .2), 1, 1.1);
   crowdAt(L, -2, 10, 6, 6, 12, 41, { mode: 'drink', from: 0, gap: 1.4 }); dcam(c, L.k); sh(V(-2, 0, 10), 16); }, [[0, 'ding_reveal', .6], [.4, 'gulp', .5]]);
 // 30 «Und das allerbeste?» (zoom lento): dentro del Getränkemarkt, travelling hacia el estante de honor; se enciende el foco
-shot(33.18, 'W', 'slow', L => { regalS(L, lerp(0, 160, easeIn(clamp(L.lt / .7)))); crowdAt(L, RGX, -2, 4, 3, 8, 43, { mode: 'idle', face: V(RGX, 6, -16), full: true });
+shot(33.18, 'W', 'slow', L => { regalS(L, lerp(0, 160, easeIn(clamp(L.lt / .7)))); crowdAt(L, RGX, -6, 4, 7, 10, 43, { mode: 'idle', face: V(RGX, 6, -16), full: true, gap: 1.2 });
   cm([RGX, 7.5, 16, RGX, 6, -16, 46], [RGX, 6.8, 2, RGX, 6, -16, 42], L.k, easeIn); sh(V(RGX, 0, -8), 26); }, [[0, 'whoosh_soft', .4], [.2, 'hum', .4]]);
 // 31 «Weihenstephaner.»: la botella protagonista en el estante de honor, girando bajo el foco, con destellos
 shot(34.06, 'F', 'punch', L => { regalS(L, 160); const b = show(BW, RGX, 5.1, -14.6, PI + Math.sin(L.T * 1.5) * .35, 1.8); confetti(V(RGX, 7, -14.6), L.t0 + .1, L.T, 24, .6);
