@@ -874,20 +874,26 @@ function finishCover() { grade.uniforms.sharp.value = 1.55; grade.uniforms.vig.v
 function ringMark(x, y, rx, ry, col = '#ff2a4a') { const c = octx; c.save(); c.lineWidth = 20; c.strokeStyle = col; c.shadowColor = 'rgba(0,0,0,.4)'; c.shadowBlur = 12; c.beginPath(); c.ellipse(x, y, rx, ry, -.08, .2, 6.1); c.stroke(); c.restore(); }
 function arrowTo(x0, y0, x1, y1, col = '#ff2a4a') { const c = octx, a = Math.atan2(y1 - y0, x1 - x0); c.save(); c.lineWidth = 18; c.lineCap = 'round'; c.strokeStyle = col; c.fillStyle = col; c.shadowColor = 'rgba(0,0,0,.4)'; c.shadowBlur = 12;
   c.beginPath(); c.moveTo(x0, y0); c.quadraticCurveTo((x0 + x1) / 2 + 60, (y0 + y1) / 2 - 40, x1, y1); c.stroke(); c.translate(x1, y1); c.rotate(a + .3); c.beginPath(); c.moveTo(14, 0); c.lineTo(-40, -30); c.lineTo(-40, 30); c.closePath(); c.fill(); c.restore(); }
+function bigArrow(x0, y0, x1, y1, bend = 80, col = '#ff1a2e') { const c = octx, mx = (x0 + x1) / 2 + bend, my = (y0 + y1) / 2 - bend * .6, a = Math.atan2(y1 - my, x1 - mx);
+  const head = (lw, fill, stroke) => { c.save(); c.translate(x1, y1); c.rotate(a); c.beginPath(); c.moveTo(18, 0); c.lineTo(-78, -58); c.lineTo(-58, 0); c.lineTo(-78, 58); c.closePath(); c.lineJoin = 'round'; if (stroke) { c.lineWidth = lw; c.strokeStyle = stroke; c.stroke(); } if (fill) { c.fillStyle = fill; c.fill(); } c.restore(); };
+  const ex = x1 - Math.cos(a) * 60, ey = y1 - Math.sin(a) * 60; c.save(); c.lineCap = 'round'; c.shadowColor = 'rgba(0,0,0,.45)'; c.shadowBlur = 22; c.shadowOffsetY = 8;
+  c.beginPath(); c.moveTo(x0, y0); c.quadraticCurveTo(mx, my, ex, ey); c.lineWidth = 58; c.strokeStyle = '#000'; c.stroke(); head(24, null, '#000'); c.shadowColor = 'transparent';
+  c.beginPath(); c.moveTo(x0, y0); c.quadraticCurveTo(mx, my, ex, ey); c.lineWidth = 36; const g = c.createLinearGradient(x0, y0, x1, y1); g.addColorStop(0, '#ff5a5a'); g.addColorStop(1, col); c.strokeStyle = g; c.stroke(); head(0, col, null);
+  c.beginPath(); c.moveTo(x0, y0); c.quadraticCurveTo(mx, my, ex, ey); c.lineWidth = 8; c.strokeStyle = 'rgba(255,255,255,.35)'; c.stroke(); c.restore(); }
 function sparkle(x, y, r, col = '#fff6c0') { const c = octx; c.save(); c.translate(x, y); c.fillStyle = col; c.shadowColor = col; c.shadowBlur = 20; c.beginPath(); for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4, rr = i % 2 ? r * .28 : r; c.lineTo(Math.cos(a) * rr, Math.sin(a) * rr); } c.closePath(); c.fill(); c.restore(); }
 // 1: el Biergarten de Brauheim: Felix en el centro con el goldener Krug en alto y su Bierzähler en «500 Bier»; lluvia de billetes y monedas; vecinos brindando alrededor.
 // 2: dentro del Bierzelt: Frau Huber de pie en el banco bebiendo su Maß; todos brindan y caen billetes; «1 BIER = 20 €».
 window.renderCover = async v => { await document.fonts.load('80px Lucky'); await document.fonts.load('80px Lilita'); out.width = 2 * W; out.height = 2 * H; octx.setTransform(2, 0, 0, 2, 0, 0); octx.imageSmoothingEnabled = true; octx.imageSmoothingQuality = 'high'; const T = 20.3, L = { T, lt: 1, k: 1, t0: 20, t1: 21 }; hideAll(); BAD_.length = 0; BIRDSON = 0; DOF = 0;
   if (v === 0) { town(L); const p = V(0, 0, 30);
-    const f = put(felix, p.x, 0, p.z, 0); prost(f, L, 1, { kind: 'gold', pose: { aLx: 2.5, aLz: .55, aLe: .3, headX: -.08 } }); GK2.userData.fill(1); GK2.userData.setGlow(.9); cara(f, T, { expr: 'joy', eyes: 'happy', mouth: 'laugh', noBlink: 1 }); meterOf(f).userData.set('500 Bier', '1 Trillion €', '#ffd23f');
+    const f = put(felix, p.x, 0, p.z, 0); prost(f, L, 1, { kind: 'gold', pose: { aLx: .9, aLz: .35, aLe: 1.9, headX: -.08 } }); GK2.userData.fill(1); GK2.userData.setGlow(.9); cara(f, T, { expr: 'joy', eyes: 'happy', mouth: 'laugh', noBlink: 1 }); meterOf(f).userData.set('500 Bier', '1 Trillion €', '#ffd23f');
     [[CR[0], -5.2, -2.5], [CR[1], 5.4, -2.8], [CR[2], -8.5, -7], [CR[3], 8.6, -7.4], [CR[5], -3.5, -10], [CR[6], 3.6, -10.5]].forEach(([c, dx, dz], i) => { const x = p.x + dx, z = p.z + dz; put(c, x, 0, z, Math.atan2(p.x - x, p.z + 6 - z) * .6); if (i % 2) prost(c, L, .9, { pose: { aLx: 2.4, aLz: .5 } }); else { actuar(c, 0, [[0, { aLx: 1.0, aLz: .4, aLe: 1.6, aRx: 1.0, aRz: .4, aRe: 1.6 }]], { T }); } cara(c, T + i, { expr: i % 2 ? 'joy' : 'gasp', noBlink: 1 }); });
-    cam([p.x + .2, 6.2, p.z + 16], [p.x, 6.4, p.z], 50); billRain(V(p.x, 0, p.z), T, 36, 22, 12, 18, 5); coins(V(p.x, 10, p.z + 2), T - .6, T, 24); clearFaces(); sh(V(p.x, 0, p.z - 3), 26); hemi.intensity = 1.15;
+    cam([p.x + .15, 3.6, p.z + 18], [p.x + .15, 3.4, p.z], 50); billRain(V(p.x, 0, p.z), T, 36, 22, 12, 18, 5); coins(V(p.x, 10, p.z + 2), T - .6, T, 24); clearFaces(); sh(V(p.x, 0, p.z - 3), 26); hemi.intensity = 1.15;
     finishCover();
     const top = proj(V(p.x, 10.2, p.z)), bot = proj(V(p.x, -.1, p.z)), sl = proj(V(p.x - 2.6, 4, p.z)), sr = proj(V(p.x + 2.6, 4, p.z));
     strokeTxt('IN DIESER STADT', W / 2, H * .2, 96, 'Lucky', ['#ffffff', '#ffe2b8'], '#14143a', 26);
     strokeTxt('BRINGT JEDES BIER', W / 2, H * .248, 90, 'Lucky', ['#ffffff', '#ffe2b8'], '#14143a', 24);
     strokeTxt('GELD!', W / 2, H * .31, 150, 'Lucky', ['#fff2a0', '#f0a820'], '#3a2400', 30, -.03);
-    ringMark((sl[0] + sr[0]) / 2, (top[1] + bot[1]) / 2, (sr[0] - sl[0]) / 2 + 20, (bot[1] - top[1]) / 2 - 10, '#ff0018');
+    const hd = proj(hp(f).add(V(-.75, .65, 0))); bigArrow(W * .1, H * .6, hd[0] - 40, hd[1] + 10, 70);
     strokeTxt('500 BIER = TRILLIONÄR?', W / 2, H * .79, 92, 'Lucky', ['#9aff9a', '#1ab84a'], '#04300e', 24, -.02);
     sparkle(W * .1, H * .19, 28); sparkle(W * .9, H * .26, 24); sparkle(W * .86, H * .66, 20);
   } else { zelt(L); const p = V(BZX, 2.6, -22.3);
