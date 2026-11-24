@@ -8,13 +8,13 @@ const PUSH = { aLx: 1.55, aRx: 1.55, aLe: .3, aRe: .3, lean: .3, lLx: .4, lRx: -
 // preso en el patio (fila o grupo)
 function yard(L, n = 6, o = {}) { crowdAt(L, KNX + (o.x ?? 0), o.z ?? 6, n, o.r0 ?? 6, o.r1 ?? 18, o.seed ?? 3, { list: INS, from: o.from ?? 6, mode: o.mode || (i => ['talk', 'walk', 'idle', 'talk'][i % 4]), speed: 1.4, expr: o.expr }); }
 
-// 1 «In dieser Stadt sind Frauenrechte heilig.»: dos Wärterinnen empujan a un hombre a través del portón y lo cierran de golpe; la estatua al fondo
-shot(0, 'C', null, L => { knast(L); const lt = L.lt; const m = put(INS[0], KNX - 1, 0, lerp(0, -15.6, easeIn(clamp(lt / 1.0))), PI); actuar(m, lt, [[0, { lean: -.3, aLx: -.4, aRx: -.4, aLz: .5, aRz: .5, headX: -.3 }], [.5, { lean: .4, aLx: 1.4, aRx: 1.4, headX: .3, lLx: -.6, lRx: .4 }, { dur: .25 }]], { T: L.T }); cara(m, L.T, { expr: 'scream' });
-  for (const s of [-1, 1]) { const g = put(WA[s < 0 ? 0 : 1], KNX + s * 2.6, 0, lerp(2, -9, easeOut(clamp(lt / .7))), PI); actuar(g, lt, [[0, PUSH], [.7, { aLx: .2, aRx: .2, lean: -.05 }, { dur: .3 }]], { T: L.T }); cara(g, L.T, { expr: 'angry' }); }
-  gateAt((lt - 1.0) / .18); if (lt > 1.18) { const p = put(INS[1], KNX + 3, 0, -22, 0); actuar(p, 0, [[0, { aLx: 2.3, aRx: 2.3, aLz: .3, aRz: .3, aLe: 1.5, aRe: 1.5 }]], { T: L.T }); cara(p, L.T, { expr: 'cry' }); }
-  put(STAT, KNX - 36, 10, -70, .3); STAT.root.visible = true; STAT.blob.visible = false; actuar(STAT, 0, [[0, { aRx: 3.0, aRz: .2, aRe: .1, aLx: .3 }]], { T: 0, weight: false, breathe: false }); attach(TORCH, STAT.aR.hand, [0, -.5, 0], [PI, 0, 0], 1); show(PED, KNX - 36, 0, -70, .3);
-  cm([KNX + 20, 5.4, 0], [KNX + 15, 6, -4], L.k, easeOut); camera.lookAt(KNX - 1.5, 5.6, -10); camera.fov = 50; DOF = .6; sh(V(KNX, 0, -8), 30); },
-  [[0, 'shout_m', .5], [.1, 'run_cobble', .4], [.55, 'thud', .5], [1.05, 'slam', .9], [1.12, 'chain_rattle', .5], [1.3, 'keys', .4]]);
+// 1 «In dieser Stadt sind Frauenrechte heilig.»: dos Wärterinnen arrastran a un hombre por el patio hasta el portón, lo empujan dentro y la reja se cierra de golpe
+shot(0, 'C', null, L => { knast(L); const lt = L.lt, a = easeInOut(clamp(lt / .75)), b = easeIn(clamp((lt - .75) / .3));
+  const m = put(INS[0], KNX + lerp(12, 0, a), 0, lerp(-10.5, -15.8, b), lt < .75 ? -PI / 2 : PI); actuar(m, lt, [[0, { lean: -.25, aLx: -.5, aRx: -.5, aLz: .5, aRz: .5, headX: -.25, ...walkP(L.T, 0) }], [.75, { lean: .45, aLx: 1.4, aRx: 1.4, headX: .3, lLx: -.6, lRx: .4 }, { dur: .2 }]], { T: L.T }); cara(m, L.T, { expr: 'scream' });
+  for (const s_ of [-1, 1]) { const g = put(WA[s_ < 0 ? 0 : 1], KNX + lerp(15, 3.2, a) + (s_ < 0 ? 0 : 1.4), 0, -10.5 + s_ * 1.6 + b * -2, lt < .75 ? -PI / 2 : PI - s_ * .4); actuar(g, lt, [[0, { ...walkP(L.T, s_ + 2), aLx: 1.3, aRx: 1.3, aLe: .4, aRe: .4, lean: .2 }], [.75, PUSH, { dur: .15 }], [1.05, { aLx: .2, aRx: .2, lean: -.05 }, { dur: .3 }]], { T: L.T }); cara(g, L.T, { expr: 'angry', mouth: lt > 1.05 ? 'smirk' : 'talk_wide' }); }
+  gateAt((lt - 1.0) / .18); if (lt > 1.18) { actuar(m, 0, [[0, { aLx: 2.3, aRx: 2.3, aLz: .3, aRz: .3, aLe: 1.5, aRe: 1.5 }]], { T: L.T }); m.root.position.z = -16.2; m.root.rotation.y = 0; cara(m, L.T, { expr: 'cry' }); }
+  cm([KNX + 7, 5.4, 9], [KNX + 4.6, 5.8, 3.5], L.k, easeOut); camera.lookAt(KNX + 3.5, 5, -12); camera.fov = 50; sh(V(KNX + 4, 0, -10), 24); },
+  [[0, 'shout_m', .5], [.1, 'run_cobble', .4], [.75, 'thud', .5], [1.02, 'slam', .9], [1.1, 'chain_rattle', .5], [1.3, 'keys', .4]]);
 // 2 «heilig.»: la estatua desde abajo, antorcha encendida; mujeres aplauden a sus pies
 shot(1.50, 'Z', 'punch', L => { town(L); crowdAt(L, 0, -38, 14, 6, 18, 2, { mode: i => i % 3 ? 'clap' : 'cheer' }); orb(L.k, V(0, 26, -52), V(0, 30, -52), [62, .15, -.05, 50], [52, .05, .02, 46], easeOut); sh(V(0, 0, -44), 40); },
   [[0, 'choir', .5], [.2, 'cheer', .4]]);
@@ -64,14 +64,14 @@ shot(15.54, 'C', null, L => { knast(L); const c = put(INS[5], KNX + 11 - L.lt * 
 shot(16.47, 'I', null, L => { zelleS(L, { tally: '∞', n: 14 }); const c = sit(dieter, ZEX - 3, 2.7, -7, 0, L, { headX: .4, aLx: .4, aRx: .4, aLe: .6, aRe: .6 }); cara(c, L.T, { expr: 'sleepy' });
   badge('red', 'FÜR IMMER', W / 2, H * .18, clamp((L.lt - .1) / .15), 1, 1.1); cm([ZEX - 2, 6, 12], [ZEX - 2.6, 5.4, 9], L.k); camera.lookAt(ZEX - 3, 4.6, -7); camera.fov = 42; sh(V(ZEX, 0, -4), 14); }, [[0, 'sad_tone', .5], [.1, 'drip', .3]]);
 // 15 «Ich hatte Glück.»: yo (Ben) contra la pared de medir, sudando; la guardiana sube la escuadra
-shot(17.15, 'W', null, L => { knast(L); const c = put(ben, KNX + 11, 0, -12.9, 0); actuar(c, 0, [[0, { headX: -.1, aLz: .05, aRz: .05 }]], { T: L.T }); cara(c, L.T, { expr: 'worried', mouth: 'grimace' }); sweat(c, L.T);
+shot(17.15, 'W', null, L => { knast(L); const c = put(ben, KNX + 11, 0, -13.3, 0); actuar(c, 0, [[0, { headX: -.1, aLz: .05, aRz: .05 }]], { T: L.T }); cara(c, L.T, { expr: 'worried', mouth: 'grimace' }); sweat(c, L.T);
   const g = put(WA[1], KNX + 6, 0, -11.6, .9); actuar(g, 0, [[0, { aRx: 2.4, aRz: .3, aRe: .8 }]], { T: L.T }); cara(g, L.T, { expr: 'sus' });
-  heightTo(c, 1.99); onFace(c, 9, -.3, .8, 42, L.k, 7.6); sh(V(KNX + 10, 0, -12), 14); }, [[0, 'heartbeat', .6]]);
+  heightTo(c, 2.02); onFace(c, 9, -.3, .8, 42, L.k, 7.6); sh(V(KNX + 10, 0, -12), 14); }, [[0, 'heartbeat', .6]]);
 // 16 «1,99.»: zoom lento a la coronilla: queda justo por encima de la raya roja; 1,99 m en verde
-shot(17.61, 'F', 'slow', L => { knast(L); const c = put(ben, KNX + 11, 0, -12.9, 0); actuar(c, 0, [[0, { headX: -.05 }]], { T: L.T }); heightTo(c, 1.99); cara(c, L.T, { expr: 'worried', eyes: 'up', mouth: 'flat' }); sweat(c, L.T);
-  cm([KNX + 15, 8.6, -4], [KNX + 12.4, 8.1, -8.4], L.k); camera.lookAt(KNX + 11, 7.85, -13.8); camera.fov = 40; badge('green', '1,99 m', W / 2, H * .19, clamp((L.lt - .9) / .2), 1, 1.1); sh(V(KNX + 11, 0, -12), 10); }, [[0, 'tick', .4]]);
+shot(17.61, 'F', 'slow', L => { knast(L); const c = put(ben, KNX + 11, 0, -13.3, 0); actuar(c, 0, [[0, { headX: -.05 }]], { T: L.T }); heightTo(c, 2.02); cara(c, L.T, { expr: 'worried', eyes: 'up', mouth: 'flat' }); sweat(c, L.T);
+  cm([KNX + 13, 7.88, -4], [KNX + 11.8, 7.88, -8.4], L.k); camera.lookAt(KNX + 11, 7.88, -13.8); camera.fov = 40; badge('green', '1,99 m', W / 2, H * .19, clamp((L.lt - .9) / .2), 1, 1.1); sh(V(KNX + 11, 0, -12), 10); }, [[0, 'tick', .4]]);
 // 17 «Ein einziger Zentimeter»: macro del hueco de 1 cm entre la coronilla y la raya
-shot(19.11, 'C', 'punch', L => { knast(L); const c = put(ben, KNX + 11, 0, -12.9, 0); cara(c, L.T, { expr: 'gasp' }); heightTo(c, 1.99); cm([KNX + 12.2, 7.9, -9.6], [KNX + 11.9, 7.9, -10.6], L.k); camera.lookAt(KNX + 11, 7.85, -13.8); camera.fov = 34;
+shot(19.11, 'C', 'punch', L => { knast(L); const c = put(ben, KNX + 11, 0, -13.3, 0); cara(c, L.T, { expr: 'gasp' }); heightTo(c, 2.02); cm([KNX + 12.6, 7.88, -8.6], [KNX + 12.2, 7.88, -9.8], L.k); camera.lookAt(KNX + 11, 7.88, -13.8); camera.fov = 34;
   badge('gold', '1 cm', W / 2, H * .2, clamp(L.lt / .15), 1, 1.1); sh(V(KNX + 11, 0, -12), 10); }, [[0, 'impact', .5], [.2, 'sparkle', .5]]);
 // 18 «hat mein Leben gerettet.»: salto de alegría; los demás presos me miran con envidia
 shot(20.32, 'Z', null, L => { knast(L); const j = Math.abs(Math.sin(L.lt * 7)); const c = put(ben, KNX + 9, j * 1.6, -9, .2); actuar(c, 0, [[0, { aLx: 2.9, aRx: 2.9, aLz: .4, aRz: .4, aLe: .2, aRe: .2, lLk: j * .8, lRk: j * .8 }]], { T: L.T }); grin(c, L.T);

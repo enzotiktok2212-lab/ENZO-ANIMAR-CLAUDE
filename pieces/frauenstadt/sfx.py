@@ -482,7 +482,7 @@ for _a, _b in [('alarm_beep', 'alarm'), ('alarm_ring', 'alarm'), ('argue', 'shou
     ('pillow', 'blanket'), ('pop_big', 'pop'), ('push', 'thud'), ('rewind', 'clock_spin'), ('room_tone', 'hum_low'), ('sad_hit', 'sad_tone'), ('sad_piano_hit', 'piano_note'), ('sheet_rustle', 'blanket'), ('shout_angry', 'shout_m'),
     ('shout_far', 'shout_m'), ('siren_far', 'siren'), ('sob_old', 'cry_girl'), ('soft_air', 'whoosh_soft'), ('sparkle_down', 'sparkle'), ('splat', 'slap'), ('stadium_crowd', 'shout_crowd'), ('steps_slow', 'steps'), ('steps_soft', 'steps'),
     ('story_hum', 'murmur'), ('tension_low', 'tension_str'), ('tension_tick', 'tick'), ('thunder_far', 'boom'), ('tick_fast', 'ticks'), ('trip', 'thud'), ('whittle', 'brush'), ('whoosh_ball', 'whoosh'), ('whoosh_time', 'whoosh_up'),
-    ('wind_soft', 'wind'), ('wink', 'pling'), ('yawn', 'yawn_m'), ('sob', 'cry_girl'), ('steps_run', 'steps_run')]:
+    ('wind_soft', 'wind'), ('wink', 'pling'), ('buzz', 'alarm_soft'), ('fanfare', 'bells'), ('punch', 'kick'), ('yawn', 'yawn_m'), ('sob', 'cry_girl'), ('steps_run', 'steps_run')]:
     if _a not in LIB and _b in LIB: LIB[_a] = LIB[_b]
 
 if __name__ == '__main__':

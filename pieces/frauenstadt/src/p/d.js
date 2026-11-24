@@ -70,10 +70,10 @@ shot(128.55, 'S', null, L => { restS(L); const b = sit(benC, REX, RSEAT, 3.4, PI
 shot(129.55, 'C', null, L => { restS(L); const j = sit(jana, REX, RSEAT, -3.4, 0, L, { aRx: 2.0, aRz: -.1, aRe: .6, aLx: 1.1, aLe: 1.4, lean: .1 }); talk(j, L.T, 129.55, 130.53, 'smile'); hearts(V(REX, 7, -2), L.t0, L.T, 3, .5);
   onFace(j, 6.4, .2, 3.4, 42, L.k, 5.6); sh(V(REX, 0, -3), 12); }, [[0, 'pop', .3]]);
 // 97 «Aber ich stehe eher auf Bad Boys.»: ella mira por la ventana soñadora; yo me quedo blanco
-shot(130.64, 'Z', null, L => { restS(L); const b = sit(benC, REX, RSEAT, 3.4, PI, L, { aLx: .9, aRx: .9, aLe: 1.2, aRe: 1.2 }); cara(b, L.T, { expr: 'shock' }); const j = sit(jana, REX, RSEAT, -3.4, 0, L, { headY: .7, headX: -.2, aRx: 1.9, aRz: -.4, aRe: 2.2 }); talk(j, L.T, 130.64, 132.12, 'love');
-  cm([REX - 8, 7, 3], [REX - 7, 6.6, 2], L.k); camera.lookAt(REX, 5, 0); camera.fov = 44; sh(V(REX, 0, 0), 12); }, [[0, 'sad_tone', .4]]);
-// 98 «Auf die, die noch drinsitzen.»: en la celda: Kevin detrás de los barrotes le guiña; Jana le saluda enamorada desde fuera; yo, a su lado, me tapo la cara
-shot(132.42, 'C', 'punch', L => { zelleS(L, { tally: 'LEBENSLANG', n: 20 }); const k = put(kevinJ, ZEX + 1, 0, 4.6, PI - .5); actuar(k, 0, [[0, { aRx: 2.6, aRz: .3 + Math.sin(L.T * 8) * .25, aRe: .4, aLx: 1.8, aLe: 1.6 }]], { T: L.T }); cara(k, L.T, { expr: 'wink' });
-  const j = put(jana, ZEX - 3, 0, 10.2, 2.5); actuar(j, 0, [[0, { aRx: 2.7, aRz: .4 + Math.sin(L.T * 9) * .3, aRe: .3, headZ: .2 }]], { T: L.T }); cara(j, L.T, { expr: 'love' }); hearts(V(ZEX - 1, 7, 8), L.t0, L.T, 5, .6);
-  const b = put(benC, ZEX + 5, 0, 11.6, .7); actuar(b, 0, [[0, 'facepalm']], { T: L.T }); cara(b, L.T, { expr: 'sad' });
-  cm([ZEX + 11, 6.4, 19], [ZEX + 9, 6, 16.5], L.k); camera.lookAt(ZEX, 5, 7.5); camera.fov = 48; sh(V(ZEX, 0, 8), 16); }, [[0, 'slam', .4], [.3, 'laugh_deep', .3], [.7, 'sad_tone', .5], [1.4, 'boing_metal', .3]]);
+shot(130.64, 'Z', null, L => { restS(L); const b = sit(benC, REX, RSEAT, 3.4, PI, L, { aLx: .9, aRx: .9, aLe: 1.2, aRe: 1.2 }); cara(b, L.T, { expr: 'shock' }); const j = sit(jana, REX, RSEAT, -3.4, 0, L, { headY: -.7, headX: -.2, aRx: 1.9, aRz: -.4, aRe: 2.2 }); talk(j, L.T, 130.64, 132.12, 'love');
+  cm([REX - 7.4, 6.9, 1.2], [REX - 6.6, 6.6, .4], L.k); camera.lookAt(REX, 5.6, -3.2); camera.fov = 44; sh(V(REX, 0, 0), 12); }, [[0, 'sad_tone', .4]]);
+// 98 «Auf die, die noch drinsitzen.»: desde dentro de la celda, por encima del hombro de Kevin (M-∞): Jana le saluda enamorada desde fuera; yo, al lado, me tapo la cara
+shot(132.42, 'C', 'punch', L => { zelleS(L, { tally: 'LEBENSLANG', n: 20 }); const k = put(kevinJ, ZEX + 3.4, 0, 4.6, -.5); actuar(k, 0, [[0, { aRx: 2.6, aRz: .3 + Math.sin(L.T * 8) * .25, aRe: .4, aLx: 1.6, aLe: 1.8 }]], { T: L.T }); cara(k, L.T, { expr: 'wink' });
+  const j = put(jana, ZEX - 2, 0, 10.6, PI + .25); actuar(j, 0, [[0, { aRx: 2.7, aRz: .4 + Math.sin(L.T * 9) * .3, aRe: .3, headZ: .2 }]], { T: L.T }); cara(j, L.T, { expr: 'love' }); hearts(V(ZEX - 2, 7.5, 10), L.t0, L.T, 5, .6);
+  const b = put(benC, ZEX - 7, 0, 11.8, PI + .7); actuar(b, 0, [[0, 'facepalm']], { T: L.T }); cara(b, L.T, { expr: 'sad' });
+  cm([ZEX + 5.2, 6.6, -1.6], [ZEX + 4.4, 6.3, .2], L.k); camera.lookAt(ZEX - 2.6, 5.2, 10); camera.fov = 48; sh(V(ZEX, 0, 6), 16); }, [[0, 'slam', .4], [.3, 'laugh_deep', .3], [.7, 'sad_tone', .5], [1.4, 'boing_metal', .3]]);

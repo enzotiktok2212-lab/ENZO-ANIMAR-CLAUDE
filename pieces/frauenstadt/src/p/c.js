@@ -43,8 +43,8 @@ shot(79.28, 'F', null, L => { hallS(L); for (let i = 0; i < 5; i++) { const c = 
   cm([THX, 3.6, 13], [THX, 3.3, 11], L.k); camera.lookAt(THX, 2.8, 0); camera.fov = 46; sh(V(THX, 0, 0), 16); }, [[.3, 'punch', .5], [.35, 'shout_m', .2]]);
 // 61 «Ab der ersten Klasse.»: Mia (6) me lanza por encima del hombro y caigo de espaldas en la colchoneta
 shot(80.66, 'Z', 'punch', L => { hallS(L); const m = put(mia, THX, .7, 0, 0); actuar(m, 0, [[0, { aLx: 2.6, aRx: 2.6, aLe: .6, aRe: .6, lean: .5 }]], { T: L.T }); cara(m, L.T, { expr: 'determined' });
-  const k = easeInOut(clamp(L.lt / .6)); const b = put(ben, THX + lerp(0, 0, k), .7 + Math.sin(k * PI) * 5, lerp(-2.4, 3.8, k), 0); b.root.rotation.x = -k * PI * 1.05; actuar(b, 0, [[0, { aLx: 2.4, aRx: 2.4, aLz: .5, aRz: .5, lLx: -.5, lRx: .5 }]], { T: L.T }); cara(b, L.T, { expr: 'panic' });
-  badge('gold', '1. KLASSE', W / 2, H * .18, clamp((L.lt - .6) / .15), 1, 1.1); dust(V(THX, .8, 4), L.t0 + .6, L.T, 8, .7); orb(L.k, V(THX, 4.6, 1), null, [24, 1.3, .2, 48], [21, 1.4, .16, 48]); sh(V(THX, 0, 1), 16); }, [[0, 'whoosh', .6], [.6, 'thud', .8], [.7, 'back_crack', .4]]);
+  const k = easeInOut(clamp(L.lt / .6)); const b = put(ben, THX + 1, .7 + Math.sin(k * PI) * 3.5, lerp(-1.6, 1.8, k), PI); b.root.rotation.x = k * 1.5; actuar(b, 0, [[0, { aLx: 2.4, aRx: 2.4, aLz: .5, aRz: .5, lLx: -.5, lRx: .5 }]], { T: L.T }); cara(b, L.T, { expr: 'panic' });
+  badge('gold', '1. KLASSE', W / 2, H * .18, clamp((L.lt - .6) / .15), 1, 1.1); dust(V(THX, .8, 4), L.t0 + .6, L.T, 8, .7); orb(L.k, V(THX, 4.2, 1.5), null, [19, 1.3, .1, 48], [17, 1.4, .08, 48]); sh(V(THX, 0, 1), 16); }, [[0, 'whoosh', .6], [.6, 'thud', .8], [.7, 'back_crack', .4]]);
 // 62 «Und nein, ich habe das nicht nur wegen der Punkte gemacht.»: yo a cámara, serio, con la mano en el pecho; detrás el marcador sube
 shot(81.96, 'S', null, L => { knast(L, { sb: [String(Math.round(lerp(6200, 7400, L.k))).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' / 10.000'] }); const c = put(ben, KNX - 18, 0, 4, .3); actuar(c, 0, [[0, { aRx: 1.2, aRz: -.6, aRe: 1.8, headY: Math.sin(L.T * 4) * .15 }]], { T: L.T }); cara(c, L.T, { expr: 'determined' });
   onBody(c, 15, 0, .1, 44, L.k, 12.5); sh(V(KNX - 18, 0, 2), 22); }, [[0, 'hum', .3]]);
@@ -66,8 +66,8 @@ shot(92.45, 'S', null, L => { town(L); const w = put(hfrau, 2 + L.lt * 2, 0, 4, 
   const b = put(ben, -3, 0, 9, .6); actuar(b, 0, [[0, { aLx: .6, aRx: .6 }]], { T: L.T }); cara(b, L.T, { expr: 'gasp' });
   cm([6, 2, 14], [5, 1.6, 11], L.k); camera.lookAt(2.4, lerp(3, .6, L.k), 4.8); camera.fov = 42; sh(V(2, 0, 5), 14); }, [[.3, 'whoosh_down', .4], [1.5, 'glass_crack', .2], [1.55, 'thud', .5]]);
 // 69 «Wenn ich es aufhebe:»: mi mano duda sobre el móvil
-shot(94.69, 'C', null, L => { town(L); show(PHONE, 3.2, .2, 4.8); PHONE.rotation.set(-PI / 2, 0, .4); const b = put(ben, 3.2, 0, 8, PI); actuar(b, 0, [[0, { crouch: .4, lean: .55, aRx: 1.5 + Math.sin(L.T * 10) * .1, aRe: .4, headX: .4 }]], { T: L.T, weight: false }); cara(b, L.T, { expr: 'worried' }); sweat(b, L.T);
-  cm([8, 3.2, 3.4], [7, 2.6, 4], L.k); camera.lookAt(3.2, 1.4, 5.6); camera.fov = 44; sh(V(3, 0, 6), 10); }, [[0, 'heartbeat', .5]]);
+shot(94.69, 'C', null, L => { town(L); show(PHONE, 3.2, .2, 4.8); PHONE.rotation.set(-PI / 2, 0, .4); const b = put(ben, 3.2, 0, 8.6, PI); actuar(b, 0, [[0, { crouch: .3, lean: .4, aRx: 1.5 + Math.sin(L.T * 10) * .1, aRe: .4, headX: .4 }]], { T: L.T, weight: false }); cara(b, L.T, { expr: 'worried' }); sweat(b, L.T);
+  cm([7.4, 3, -.6], [6.8, 2.6, .2], L.k); camera.lookAt(3.2, 1.8, 6.2); camera.fov = 44; sh(V(3, 0, 6), 10); }, [[0, 'heartbeat', .5]]);
 // 70 «zehn Punkte.»: imagino el marcador: +10 en verde
 shot(95.44, 'Z', 'punch', L => { town(L); show(PHONE, 3.2, .2, 4.8); PHONE.rotation.set(-PI / 2, 0, .4); const b = put(ben, 3.2, 0, 8, PI); actuar(b, 0, [[0, { crouch: .4, lean: .55, aRx: 1.5, aRe: .4, headX: .2 }]], { T: L.T, weight: false }); grin(b, L.T);
   badge('green', '+10', W / 2, H * .22, clamp(L.lt / .12), 1, 1.3); onFace(b, 7, 0, 0, 42, L.k, 6); sh(V(3, 0, 6), 10); }, [[0, 'ding_soft', .7], [.05, 'coin_flip', .5]]);
