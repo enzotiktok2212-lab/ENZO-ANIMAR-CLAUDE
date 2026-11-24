@@ -53,6 +53,7 @@ const GMP = LT.HS[2].position.clone(), BANKP = LT.HS[9].position.clone();   // G
 // cajas apiladas delante del Getränkemarkt
 const STACK = new THREE.Group(); scene.add(STACK); for (let i = 0; i < 9; i++) { const c = crate(STACK, ['WEIHENSTEPHANER', 'PAULANER'][i % 2], { bottles: i > 5 }); c.position.set((i % 3) * 3.8 - 3.8, Math.floor(i / 3) * 1.65, 0); }
 STACK.position.set(GMP.x + 12, 0, GMP.z + 11); STACK.rotation.y = Math.PI / 2;
+{ const s = sign('GETRÄNKEMARKT', 16, 2.6, '#d8202a', '#ffffff', '#ffffff', .62); s.position.set(GMP.x + 9.4, 9.6, GMP.z); s.rotation.y = Math.PI / 2; scene.add(s); }
 // ---------- reparto ----------
 const felix = makeFelix(scene), huber = makeHuber(scene), resi = makeResi(scene), brandl = makeBrandl(scene), kranzl = makeKranzl(scene), schum = makeSchummler(scene), moench = makeMoench(scene), banker = makeBanker(scene), rich = makeRichterin(scene);
 const BEA = [0, 1, 2].map(i => makeBeamter(scene, i)), COPS = [0, 1].map(i => makeCop(scene, i));
@@ -229,7 +230,7 @@ function amtS(L) { use('AM'); inside(.95, 38); FILL.color.setRGB(1, .92, .82); }
 function minS(L) { use('MI'); inside(1.0, 40); }
 function gerS(L) { use('GE'); inside(1.0, 40); }
 function altS(L) { use('AB'); night(22); renderer.toneMappingExposure = .9; TINT = 'rgba(10,16,60,.2)'; }
-function kellerS(L, lamp = 1) { use('KE'); inside(.42, 10); FILL.color.setRGB(1, .86, .62); renderer.toneMappingExposure = .82; FLASHL.intensity = 0; }
+function kellerS(L, lamp = 1) { use('KE'); inside(.3, 6); FILL.color.setRGB(1, .82, .56); renderer.toneMappingExposure = .78; FLASHL.intensity = 0; bloom.strength = .3; }
 function zimmerS(L, o = {}) { use('ZI'); if (o.night) { inside(.6, 22); ZI.WP.material.color.setRGB(.06, .08, .22); FILL.color.setRGB(1, .86, .66); } else { inside(.95, 36); ZI.WP.material.color.setRGB(.55, .8, 1); } }
 function bankS(L) { use('BK'); inside(1.0, 40); }
 function sportS(L) { use('SP'); day(); }
@@ -283,7 +284,7 @@ function billDrop(ch, T0, T, n = 1, spread = 1.4, from = 90) { const h = hp(ch);
   if (y > yEnd + .01) f.rotation.set(Math.sin(t * 4 + j) * .7, t * 1.5 + j, Math.cos(t * 3 + j) * .5); else if (j === 0) { f.lookAt(camera.position); } else f.rotation.set(-PI / 2, j, 0); }); }
 const cashPop = (ch, text, k, kind = 'green', sc = 1, dy = 2.8) => badge3(kind, text, hp(ch).add(V(0, dy * (ch.spec.scale || 1), 0)), k, sc);
 function coins(c, T0, T, n = 20) { COIN.forEach((m, i) => { if (i >= n) return; const r = RNG(i * 5 + 1), t = T - T0; if (t < 0) return; m.visible = true; m.position.set(c.x + (r() - .5) * 6, c.y + 7 - ((t * (6 + r() * 4) + r() * 7) % 9), c.z + (r() - .5) * 4); m.rotation.set(PI / 2, T * 6 + i, 0); }); }
-const setHUD = (n, col, a = 1) => { HUD = { n: nBier(n) + ' Bier', e: euro(money(n)), col: col || '#7aff9a', a }; };
+const setHUD = (n, col, a = 1) => { n = Math.floor(n + 1e-6); HUD = { n: nBier(n) + ' Bier', e: euro(money(n)), col: col || '#7aff9a', a }; };
 // nada tapa la cara de un protagonista: billetes y espuma delante de la cara se apartan
 function clearFaces() { if (!FACES.length) return; camera.updateMatrixWorld(); camera.updateProjectionMatrix();
   const F = FACES.filter(c => c.root.visible).map(c => { const h = hp(c).add(V(0, .65 * (c.spec.scale || 1), 0)); const p = h.clone().project(camera); const d = camera.position.distanceTo(h); const r = 1.25 * (c.spec.scale || 1) / (d * Math.tan(camera.fov * PI / 360)); return { p, d, r }; });

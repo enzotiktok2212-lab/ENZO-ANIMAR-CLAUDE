@@ -43,7 +43,7 @@ export function kastanie(parent, x, z, s = 1) { const g = G(parent, x, 0, z); g.
 // ---------- Biergarten (se coloca en la plaza): 3 × 2 garnituras, 6 castaños, guirnaldas, banderines, Ausschank con barriles ----------
 export function biergarten(parent, x = 0, z = 0) { const g = G(parent, x, 0, z); const gr = rep(noiseTex('#d8c8a0', ['#c8b890', '#e4d6b2', '#bca880'], 4000, 2, 1), 10, 10); plane(70, 60, mat(0xffffff, { map: gr, roughness: 1 }), g, 0, .05, 0);
   const T = []; for (let r = 0; r < 3; r++) for (let c = 0; c < 2; c++) T.push(garnitur(g, -14 + c * 28, -20 + r * 13, 0));
-  const K = [[-30, -26], [0, -28], [30, -26], [-33, 12], [33, 12]].map(([a, b]) => kastanie(g, a, b, 1.05));
+  const K = [[-30, -26], [30, -26], [-33, 12], [33, 12]].map(([a, b]) => kastanie(g, a, b, 1.05));
   for (const [a, b] of [[[-28, 18, -26], [0, 18, -27]], [[0, 18, -27], [28, 18, -26]], [[-33, 18, 12], [-28, 18, -26]], [[33, 18, 12], [28, 18, -26]]]) lights(g, a, b, 16, 1.2);
   for (const [a, b] of [[[-33, 15, 12], [-30, 15, -26]], [[33, 15, 12], [30, 15, -26]]]) rauten(g, a, b, 16, .8);
   // Ausschank (caseta con barra, barriles y cartel)
@@ -96,7 +96,7 @@ export function regal(scene, X) { const g = room(scene, X, 44, 40, 18, mat(0xfff
   const sh = mat(0xd8dce4, { metalness: .6, roughness: .35 }); const brands = ['WEIHENSTEPHANER', 'PAULANER', 'BILLIG'];
   for (const s of [-1, 1]) { const R = G(g, s * 16, 0, 0); for (let lv = 0; lv < 4; lv++) box(6, .3, 34, sh, .03, R, 0, .4 + lv * 3.6, 0); box(.3, 14, 34, sh, .02, R, -s * 3, 7, 0); for (let lv = 0; lv < 4; lv++) for (let k = 0; k < 8; k++) { const c = crate(R, brands[(k + lv + (s > 0 ? 1 : 0)) % 3], { bottles: lv > 1 }); c.position.set(0, .55 + lv * 3.6, -14 + k * 4); c.rotation.y = s * Math.PI / 2; c.scale.setScalar(.95); } }
   // estante de honor al fondo
-  const H = G(g, 0, 0, -16); box(14, 9, 3, mat(0x3a2412, { roughness: .5 }), .1, H, 0, 4.5, 0); box(14.6, .5, 3.4, mat(0xd8a020, { metalness: .9, roughness: .2 }), .05, H, 0, 9.2, 0); box(10, 1, 3.2, mat(0xffffff), .05, H, 0, 4.6, .1);
+  const H = G(g, 0, 0, -16); box(14, 9, .6, mat(0x3a2412, { roughness: .5 }), .1, H, 0, 4.5, -1.4); for (const sx of [-1, 1]) box(.5, 9, 3, mat(0x3a2412), .05, H, sx * 6.8, 4.5, 0); box(14.6, .5, 3.4, mat(0xd8a020, { metalness: .9, roughness: .2 }), .05, H, 0, 9.2, 0); box(13, .5, 3, mat(0x5a3a22), .05, H, 0, 4.85, 0);
   const B = []; for (let k = 0; k < 5; k++) { const b = bottle(H, 'WEIHENSTEPHANER', { s: 1.25 }); b.position.set(-4 + k * 2, 5.1, .4); B.push(b); }
   const sg = sign('UNSER BESTES', 10, 1.6, '#1a3a8a', '#ffd23f', '#ffd23f', .6); sg.position.set(0, 11, 1.6); H.add(sg);
   const SPOT = new THREE.SpotLight(0xfff0c0, 0, 60, .45, .5, 1.2); SPOT.position.set(0, 17, 0); SPOT.target.position.set(0, 5, -16); g.add(SPOT, SPOT.target);

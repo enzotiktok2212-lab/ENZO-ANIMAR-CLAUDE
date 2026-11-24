@@ -7,12 +7,12 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
 // ---------- dinero por cervezas (1 = 20 €, 5 = 600 €, 20 = 1 Mio., 100, 200, 300 …, 500 = 1 Trillion) ----------
 const KP = [[0, 0], [1, 20], [5, 600], [20, 1e6], [100, 4e8], [200, 1e11], [300, 2e13], [500, 1e18]];
-export function money(n) { if (n <= 0) return 0; if (n < 1) return 20 * n;
+export function money(n) { if (n <= 0) return 0; if (n < 1) return 20 * n; if (n >= 500) return 1e18;
   for (let i = 1; i < KP.length - 1; i++) { const [a, va] = KP[i], [b, vb] = KP[i + 1]; if (n <= b) return Math.exp(lerp(Math.log(va), Math.log(vb), (n - a) / (b - a))); }
   return KP[KP.length - 1][1]; }
 export function euro(v) { v = Math.round(v); if (v < 1e6) return v.toLocaleString('de-DE') + ' €';
   const U = [[1e18, 'Trillion'], [1e15, 'Brd.'], [1e12, 'Bio.'], [1e9, 'Mrd.'], [1e6, 'Mio.']];
-  for (const [d, n] of U) if (v >= d) { const x = v / d; return (x >= 100 ? Math.round(x) : x.toFixed(x >= 10 ? 0 : 1).replace('.', ',')) + ' ' + n + ' €'; } }
+  for (const [d, n] of U) if (v >= d * .9995) { const x = v / d; return (x >= 100 ? Math.round(x) : x.toFixed(x >= 10 ? 0 : 1).replace('.', ',')) + ' ' + n + ' €'; } }
 export const nBier = n => Math.floor(n).toLocaleString('de-DE');
 
 // ---------- materiales ----------

@@ -485,9 +485,51 @@ for _a, _b in [('alarm_beep', 'alarm'), ('alarm_ring', 'alarm'), ('argue', 'shou
     ('wind_soft', 'wind'), ('wink', 'pling'), ('buzz', 'alarm_soft'), ('fanfare', 'bells'), ('punch', 'kick'), ('yawn', 'yawn_m'), ('sob', 'cry_girl'), ('steps_run', 'steps_run')]:
     if _a not in LIB and _b in LIB: LIB[_a] = LIB[_b]
 
+# --- SCHLUCK: cerveza (tragos, jarras, espuma), dinero, hipo y alias ---
+def gulp_f(s, n=1, gap=.28):
+    out = np.zeros(int((n * gap + .3) * SR))
+    for k in range(n):
+        d = .16; t = T(d); f = glide(160 * R(s + k, .9, 1.15), 330 * R(s + k + 7, .9, 1.1), d, .6)
+        b = norm(sine(f, d) * np.sin(np.pi * t / d) ** 1.5) * .9 + norm(lp(noise(d, s + k), 600)) * np.exp(-t * 30) * .3
+        at(out, b, k * gap)
+    return norm(out)
+def clink_f(s, f=2600): d = .5; t = T(d); return norm(sum(sine(f * m * R(s + i, .98, 1.02), d) * np.exp(-t * (14 + i * 6)) for i, m in enumerate([1, 1.62, 2.31, 3.1])) + hp(noise(d, s), 3000) * np.exp(-t * 80) * .5)
+def glass_down_f(s): out = np.zeros(int(.6 * SR)); at(out, norm(lp(noise(.12, s), 300)) * np.exp(-T(.12) * 30), 0); at(out, clink_f(s, 1900) * .5, .005); return norm(out)
+def pour_f(s, d=1.2): t = T(d); x = bp(noise(d, s), 400, 2600) * (.6 + .4 * np.sin(2 * np.pi * 9 * t)); bub = seq([(norm(sine(glide(500 * R(s + k), 1200, .05), .05) * np.exp(-T(.05) * 60)) * .3, k * d / 22) for k in range(22)], d); return norm(x * adsr(d, .05, .3) + bub)
+def fizz_f(s, d=1.0): t = T(d); x = hp(noise(d, s), 4000) * (np.random.default_rng(s).random(int(d * SR)) > .985) * 3 + hp(noise(d, s + 1), 6000) * .3; return norm(x * adsr(d, .02, .4))
+def pop_cork(s): out = np.zeros(int(.7 * SR)); at(out, norm(sine(glide(900, 300, .05), .05) * np.exp(-T(.05) * 40)), 0); at(out, norm(hp(noise(.6, s), 2500) * adsr(.6, .005, .3)) * .5, .03); return norm(out)
+def hic_f(s, f=330): d = .22; t = T(d); v = voice([f, f * 1.5, f * 1.2], [I_, I_, E], d, .25, s); return norm(v[:len(t)] * np.exp(-t * 9) + pad(norm(hp(noise(.05, s), 1500)) * np.exp(-T(.05) * 60), d)[:len(t)] * .4)
+def ahh_f(s, f=150): return norm(voice([f * 1.3, f * 1.1, f * .9], [A, A, A], .7, .45, s) * adsr(.7, .04, .3))
+def splash_f(s, d=.7): t = T(d); return norm(bp(noise(d, s), 300, 5000) * np.exp(-t * 6) + lp(noise(d, s + 1), 250) * np.exp(-t * 10) * .8)
+def river_f(s, d=2.0): t = T(d); return norm(bp(noise(d, s), 200, 2500) * (.7 + .3 * np.sin(2 * np.pi * 1.3 * t)) * adsr(d, .2, .5) + seq([(norm(sine(glide(300 * R(s + k), 700, .08), .08) * np.exp(-T(.08) * 40)) * .25, k * d / 16) for k in range(16)], d))
+def trombone_f(s): fs = [233, 220, 207, 185]; out = np.zeros(int(1.6 * SR)); [at(out, norm(lp(saw(glide(f, f * .97, .38), .38), 1600)) * env(.38, .02, .2), i * .36) for i, f in enumerate(fs)]; return norm(out)
+def counter_f(s, d=1.0): return norm(seq([(click(.02, 2200 + (k % 3) * 400, s + k), k * .045) for k in range(int(d / .045))], d))
+def phone_vib(s, d=1.0): t = T(d); return norm(lp(sine(150, d) * (np.sin(2 * np.pi * 2.2 * t) > 0), 400) * adsr(d, .01, .1))
+def ring_f(s, d=1.2): t = T(d); return norm((sine(1320, d) + sine(1650, d)) * (np.sin(2 * np.pi * 12 * t) > 0) * (t % .6 < .4) * .5)
+LIB.update({
+  'gulp': (lambda s, c: gulp_f(s, 2), .5), 'gulp_long': (lambda s, c: gulp_f(s, 4, .24), .5), 'gulp_nervous': (lambda s, c: gulp_f(s, 1), .5),
+  'glass_down': (lambda s, c: glass_down_f(s), .5), 'prost': (lambda s, c: norm(seq([(clink_f(s), 0), (clink_f(s + 3, 2300) * .8, .05), (clink_f(s + 5, 2800) * .6, .11)], .7)), .5),
+  'pour': (lambda s, c: pour_f(s), .5), 'fizz': (lambda s, c: fizz_f(s), .4), 'bottle_open': (lambda s, c: pop_cork(s), .5), 'can_open': (lambda s, c: pop_cork(s + 9), .5),
+  'hiccup': (lambda s, c: hic_f(s, 300 * R(s, .9, 1.15)), .6), 'ahh': (lambda s, c: ahh_f(s), .45), 'splash': (lambda s, c: splash_f(s), .5), 'river': (lambda s, c: river_f(s), .5),
+  'water_slosh': (lambda s, c: river_f(s + 3, 1.2), .45), 'foam_gush': (lambda s, c: norm(river_f(s, 1.5) + fizz_f(s, 1.5)[:int(1.5 * SR)] * .5), .55), 'fountain': (lambda s, c: river_f(s + 7, 1.6), .5),
+  'paddle': (lambda s, c: splash_f(s + 2, .4), .45), 'sad_trombone': (lambda s, c: trombone_f(s), .4), 'counter_fast': (lambda s, c: counter_f(s), .45), 'rattle': (lambda s, c: counter_f(s + 4, .8), .45),
+  'phone_vibrate': (lambda s, c: phone_vib(s), .5), 'ringtone': (lambda s, c: ring_f(s), .35),
+})
+for _a, _b in [('cash_reg', 'cash'), ('money_rain', 'coins'), ('money_burst', 'cash'), ('crowd_cheer', 'cheer'), ('crowd_stadium', 'stadium_crowd'), ('ding', 'ding_good'), ('double', 'ding_good'), ('hello_f', 'shout_f'), ('scale_tip', 'metal_creak'), ('wipe', 'brush'), ('notif', 'ding_soft'), ('scan', 'beep'), ('double', 'ding'), ('oompah', 'cheer'), ('accordion', 'murmur'),
+  ('hello_f', 'hey'), ('keys', 'click_metal'), ('shh', 'whoosh_soft'), ('laugh_f', 'laugh_m'), ('whistle_half', 'whistle'), ('spit_take', 'spit'), ('chuckle_m', 'laugh_m'), ('pages_flip', 'pages'), ('glass_slide', 'wheels'),
+  ('flag_flutter', 'cloth'), ('pen_click', 'click_set'), ('fist', 'table_bang'), ('sneak', 'steps'), ('owl', 'pigeon'), ('scream_m', 'shout_m'), ('gavel', 'table_bang'), ('wallet', 'cloth'), ('moth', 'feathers'),
+  ('xray', 'neon_buzz'), ('boing', 'spring'), ('cough', 'sigh'), ('wood_crack', 'wood_creak'), ('rat', 'squeak'), ('warning', 'alarm_soft'), ('tense', 'tension_str'), ('magic_rise', 'riser_short'), ('sizzle', 'steam'),
+  ('struggle', 'strain'), ('screams', 'shout_crowd'), ('car_horn', 'honk'), ('phone_dial', 'beep'), ('cry_m', 'cry_girl'), ('sniff', 'sigh'), ('silence', 'wind'), ('echo_drip', 'drip'), ('explosion_gold', 'boom'),
+  ('camera_shutter', 'click_set'), ('office_amb', 'murmur'), ('phone_line', 'beep'), ('down_whistle', 'whoosh_down'), ('crash', 'impact'), ('question', 'pling'), ('hmm', 'murmur'), ('reveal', 'ding_reveal'),
+  ('drumroll', 'ticks'), ('room_amb', 'hum_low'), ('mystery', 'tension_str'), ('dream', 'sparkle'), ('stamp', 'thud'), ('throw', 'whoosh'), ('street', 'murmur'), ('iris_pop', 'pop'), ('zoom_in', 'whoosh_up'),
+  ('confetti_pop', 'pop'), ('clap', 'clap'), ('alarm', 'alarm_soft'), ('hey', 'shout_m'), ('swoosh_up', 'whoosh_up'), ('zoom_fast', 'whoosh_up'), ('flash', 'pling'), ('swipe', 'whoosh_soft'), ('paper', 'paper'),
+  ('glass_clink', 'porcelain'), ('crowd_murmur', 'murmur'), ('choir', 'choir'), ('coins', 'coins'), ('ding_soft', 'ding'), ('ding_reveal', 'ding'), ('power_on', 'neon_buzz'), ('wind', 'wind'), ('bells', 'bell_far'),
+  ('crickets', 'crickets'), ('steps', 'steps'), ('drip', 'tick_hollow'), ('birds', 'chirps'), ('gong', 'bell_far'), ('steam', 'steam'), ('bubbling', 'steam'), ('shimmer', 'sparkle'), ('slowmo', 'whoosh'), ('heartbeat', 'heartbeat')]:
+    if _a not in LIB and _b in LIB: LIB[_a] = LIB[_b]
+
 if __name__ == '__main__':
     cues_f, voice_f, music_f, out_f = sys.argv[1:5]
-    cues = json.load(open(cues_f)); DUR = 134.6
+    cues = json.load(open(cues_f)); DUR = 168.0
     cues = fill_gaps(cues, DUR); print(len(cues), 'efectos; hueco máximo', max(np.diff(sorted([0] + [c['t'] for c in cues] + [DUR]))).round(2))
     TEN = {'riser', 'braam', 'riser_short', 'braam_short'}
     ten = render([c for c in cues if c['s'] in TEN], DUR); ten = norm(ten, 0.9)
