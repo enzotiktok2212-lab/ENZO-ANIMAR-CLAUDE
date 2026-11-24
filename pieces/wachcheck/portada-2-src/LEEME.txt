@@ -1,0 +1,1 @@
+Se ejecuta dentro de pieces/knopf (rama claude/trusting-newton-0hk9y9): copiar wach.js a src/, wach.html y shotw.mjs a la raíz, y 'node shotw.mjs portada.png'.
