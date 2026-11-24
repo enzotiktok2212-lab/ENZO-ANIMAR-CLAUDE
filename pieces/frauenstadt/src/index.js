@@ -604,28 +604,28 @@ window.renderCover = async v => { await document.fonts.load('80px Lucky'); await
     const b = put(ben, p.x, 0, p.z, 0); actuar(b, 0, [[0, { aLx: .5, aRx: .5, aLz: .45, aRz: .45, aLe: 1.1, aRe: 1.1, headX: -.1 }]], { T }); cara(b, T, { expr: 'worried', eyes: 'wide', mouth: 'grimace', noBlink: 1 }); sweat(b, T, 2);
     for (const s of [-1, 1]) { const g = put(WA[s < 0 ? 0 : 1], p.x + s * 4.6, 0, p.z - 1.4, -s * .35); actuar(g, 0, [[0, 'cross']], { T }); cara(g, T, { expr: 'smug', noBlink: 1 }); }
     [[INS[2], -7.5, -5], [INS[3], 7.8, -5.4], [INS[4], -3.5, -8], [INS[5], 3.6, -8.4]].forEach(([c, dx, dz], i) => { put(c, p.x + dx, 0, p.z + dz, Math.atan2(-dx, -dz) * .3); actuar(c, 0, [[0, i % 2 ? 'point' : 'hands_head']], { T }); cara(c, T + i, { expr: 'shock', noBlink: 1 }); });
-    KN.SB.visible = false; cam([p.x + .6, 4.6, p.z + 17.5], [p.x, 5.2, p.z], 50); sh(V(p.x, 0, p.z - 3), 26); hemi.intensity = 1.15;
+    KN.SB.visible = false; cam([p.x + .6, 4.6, p.z + 23], [p.x, 5.0, p.z], 50); sh(V(p.x, 0, p.z - 3), 26); hemi.intensity = 1.15;
     finishCover();
     const top = proj(V(p.x, 8.4, p.z)), bot = proj(V(p.x, -.1, p.z)), sl = proj(V(p.x - 2.6, 4, p.z)), sr = proj(V(p.x + 2.6, 4, p.z));
-    strokeTxt('IN DIESER STADT', W / 2, H * .14, 110, 'Lucky', ['#ffffff', '#ffe2b8'], '#14143a', 26);
-    strokeTxt('IST JEDER MANN', W / 2, H * .193, 104, 'Lucky', ['#ffffff', '#ffe2b8'], '#14143a', 24);
-    strokeTxt('IM GEFÄNGNIS', W / 2, H * .25, 120, 'Lucky', ['#ffb070', '#ff6a10'], '#3a1400', 26, -.02);
+    strokeTxt('IN DIESER STADT', W / 2, H * .215, 96, 'Lucky', ['#ffffff', '#ffe2b8'], '#14143a', 26);
+    strokeTxt('IST JEDER MANN', W / 2, H * .262, 92, 'Lucky', ['#ffffff', '#ffe2b8'], '#14143a', 24);
+    strokeTxt('IM GEFÄNGNIS', W / 2, H * .315, 106, 'Lucky', ['#ffb070', '#ff6a10'], '#3a1400', 26, -.02);
     ringMark((sl[0] + sr[0]) / 2, (top[1] + bot[1]) / 2, (sr[0] - sl[0]) / 2 + 10, (bot[1] - top[1]) / 2 - 6, '#ff0018');
-    strokeTxt('9.990 / 10.000 PUNKTE', W / 2, H * .845, 96, 'Lucky', ['#ff5a5a', '#e0001a'], '#2a0008', 24, -.02);
-    sparkle(W * .1, H * .12, 28); sparkle(W * .9, H * .19, 22);
+    strokeTxt('9.990 / 10.000 PUNKTE', W / 2, H * .775, 96, 'Lucky', ['#ff5a5a', '#e0001a'], '#2a0008', 24, -.02);
+    sparkle(W * .1, H * .2, 28); sparkle(W * .9, H * .27, 22);
   } else { town(L, { dusk: 1 }); const p = V(-6, 0, -6);
     show(CRIB, p.x, 0, p.z, 0); const b = put(baby, p.x, 3.05, p.z - .2, 0); b.root.scale.setScalar(.5); b.blob.visible = false; actuar(b, 0, [[0, { aLx: 2.3, aRx: 2.3, aLz: .35, aRz: .35, aLe: 1.1, aRe: 1.1 }]], { T }); cara(b, T, { expr: 'cry', noBlink: 1 }); tears(b, T);
     const g = put(WA[2], p.x + 4.4, 0, p.z - 1, -.4); actuar(g, 0, [[0, { aRx: 1.4, aRe: .4 }]], { T }); attach(CUFFS, g.aR.hand, [0, -.6, 0], [0, 0, 0], 1); cara(g, T, { expr: 'smug', noBlink: 1 });
     [[EX[1], -5, -1.5], [EX[3], -6.5, -5], [EX[5], 6.8, -5], [EX[7], -2.8, -7.5], [EX[9], 3, -7.8]].forEach(([c, dx, dz], i) => { const x = p.x + dx, z = p.z + dz; put(c, x, 0, z, Math.atan2(p.x - x, p.z - z)); actuar(c, 0, [[0, i % 2 ? 'point' : { aLx: 1.0, aLz: .4, aLe: 1.6, aRx: 1.0, aRz: .4, aRe: 1.6 }]], { T }); cara(c, T + i, { expr: i % 2 ? 'smug' : 'gasp', noBlink: 1 }); });
-    const q = hp(b); cam([q.x + .6, q.y + 1.6, q.z + 7.5], [q.x, q.y - .5, q.z], 50); sh(V(p.x, 0, p.z - 3), 24); hemi.intensity = 1.2; FILL.intensity = 40;
+    const q = hp(b); cam([q.x + .6, q.y + 1.8, q.z + 10.5], [q.x, q.y - .8, q.z], 50); sh(V(p.x, 0, p.z - 3), 24); hemi.intensity = 1.2; FILL.intensity = 40;
     finishCover();
     const bc = proj(q.clone().add(V(0, .1, 0)));
-    strokeTxt('IN DIESER STADT', W / 2, H * .15, 104, 'Lilita', ['#ffffff', '#ffe2b8'], '#14143a', 22);
-    strokeTxt('SIND FRAUENRECHTE', W / 2, H * .205, 100, 'Lilita', ['#ffffff', '#ffe2b8'], '#14143a', 22);
-    strokeTxt('HEILIG', W / 2, H * .27, 150, 'Lucky', ['#ff9ad0', '#ff2a8a'], '#3a0020', 28, -.02);
-    ringMark(bc[0], bc[1] + 60, 200, 250, '#ff0018');
-    strokeTxt('SCHON ALS BABY IM KNAST', W / 2, H * .865, 92, 'Lucky', ['#ffb070', '#ff6a10'], '#3a1400', 22, -.02);
-    sparkle(W * .9, H * .33, 30); sparkle(W * .1, H * .34, 22, '#ffd0f0'); } };
+    strokeTxt('IN DIESER STADT', W / 2, H * .215, 92, 'Lilita', ['#ffffff', '#ffe2b8'], '#14143a', 22);
+    strokeTxt('SIND FRAUENRECHTE', W / 2, H * .262, 88, 'Lilita', ['#ffffff', '#ffe2b8'], '#14143a', 22);
+    strokeTxt('HEILIG', W / 2, H * .322, 128, 'Lucky', ['#ff9ad0', '#ff2a8a'], '#3a0020', 28, -.02);
+    ringMark(bc[0], bc[1] + 45, 150, 190, '#ff0018');
+    strokeTxt('SCHON ALS BABY IM KNAST', W / 2, H * .775, 92, 'Lucky', ['#ffb070', '#ff6a10'], '#3a1400', 22, -.02);
+    sparkle(W * .9, H * .36, 30); sparkle(W * .1, H * .37, 22, '#ffd0f0'); } };
 
 
 // ---------- transiciones, sonidos, render ----------
