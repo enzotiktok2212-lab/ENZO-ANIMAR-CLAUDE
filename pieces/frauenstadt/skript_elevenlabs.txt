@@ -1,23 +1,31 @@
-[confident] In dieser Stadt sind Frauenrechte heilig. [dramatic] So heilig, dass jeder Mann im Gefängnis geboren wird. Raus kommst du nur mit Punkten: zehn pro guter Tat für eine Frau.
+[confident] In dieser Stadt sind Frauenrechte heilig. [dramatic] So heilig, dass jeder Mann im Gefängnis geboren wird. Und raus kommst du nur mit Punkten. Zehn Punkte pro guter Tat für eine Frau. Zehntausend brauchst du.
 
-[serious] Aber zuerst musst du mindestens eins Komma achtundneunzig groß sein. Bist du kleiner? Dann bleibst du drin. [pause] Für immer. [mischievously] Wie groß bist du? [chuckles] Ja… du wärst auch noch drin.
+[serious] Aber bevor du überhaupt Punkte sammeln darfst, musst du mindestens eins achtundneunzig groß sein. Bist du kleiner? Dann bleibst du drin. [pause] Für immer. [relieved] Ich hatte Glück. Eins neunundneunzig. Ein einziger Zentimeter hat mein Leben gerettet.
 
-[serious] Und das ist noch harmlos. Männer dürfen nämlich keine Meinung haben. Es gibt sogar ein Gesetz dafür: [slowly] Kein Uterus, kein Urteil.
+[serious] Und das ist noch harmlos. Denn Männer dürfen hier keine Meinung haben. Es gibt sogar ein Gesetz dafür: [slowly] Kein Uterus, kein Urteil.
 
-[sad] Mein kleiner Bruder hat im Kindergarten einem Mädchen widersprochen. Er sitzt seit zwölf Jahren in Einzelhaft. [whispers] Denn er hat gesagt: Fußball ist besser als Ponys.
+[sad] Mein kleiner Bruder hat im Kindergarten einem Mädchen widersprochen. Seitdem sitzt er in Einzelhaft. Zwölf Jahre. [whispers] Denn er hat gesagt: Fußball ist besser als Ponys.
 
-[sighs] Mein Onkel hat einer Frau mal die Einkaufstüten getragen. Fünfundzwanzig Jahre. Weil er damit gesagt hat, sie wäre zu schwach dafür.
+[sighs] Mein Onkel hat einer Frau vor dem Lidl die Einkaufstüten getragen. Fünfundzwanzig Jahre. Weil er damit angedeutet hat, sie wäre zu schwach dafür.
+
+[mischievously] Und mein Cousin? Der hatte sein erstes Date. Am Ende hat er gesagt: Lass uns die Rechnung teilen. [dramatic] Lebenslang. [deadpan] Denn hier zahlt der Mann. Immer. Auch wenn er nur Wasser bestellt hat.
 
 [deadpan] Mein Vater sagt, früher war alles andersrum. Keiner glaubt ihm.
 
+[sarcastic] Im Gefängnis gibt es sogar Pflichtkurse. Zuhören für Anfänger. Entschuldigen ohne Grund. Und mein Lieblingskurs: Recht haben ist nicht wichtig.
+
 [proud] Aber ich war anders. Ich war praktisch die Mutter Teresa dieser Stadt.
 
-[excited] Ich habe dafür gekämpft, dass Binden und Tampons in jeder Schule gratis sind. Danach habe ich Nachttaxis organisiert, damit jede Frau sicher nach Hause kommt. Und ich habe sogar Selbstverteidigung als Schulfach durchgesetzt. Für jedes Mädchen.
+[excited] Ich habe dafür gekämpft, dass Binden und Tampons bei dm und Rossmann komplett gratis sind. Dann habe ich mit Uber Nachtfahrten organisiert, damit jede Frau nach zehn Uhr kostenlos und sicher nach Hause kommt. Ich habe sogar Selbstverteidigung als Schulfach durchgesetzt. Für jedes Mädchen. Ab der ersten Klasse.
 
-[building tension] Punkt für Punkt kam ich näher. Bis ich endlich genug hatte. [happy] Ich war frei.
+[defensive] Und nein, ich habe das nicht nur wegen der Punkte gemacht. [pause] [sheepishly] Okay. Vielleicht ein bisschen.
 
-[proud] Die Frauen haben mich gefeiert. Die Bürgermeisterin hat mir einen Orden gegeben. Sie haben sogar eine Straße nach mir benannt. [serious] Aber ich habe das Schild selbst abgeschraubt. Denn ein Mann sollte keine Straße dafür kriegen, dass er das Richtige tut.
+[building tension] Punkt für Punkt kam ich näher. Neuntausendneunhundertneunzig. Mir fehlte nur noch eine einzige gute Tat.
 
-Deshalb habe ich das Preisgeld, fünfzigtausend Euro, dem Frauenhaus gespendet. Und ich habe sogar gratis Programmierkurse für Mädchen gestartet.
+[tense] Dann hat eine Frau vor mir ihr Handy fallen lassen. Wenn ich es aufhebe: zehn Punkte. Oder fünfundzwanzig Jahre, wie mein Onkel. [nervous] Also habe ich gefragt: Darf ich dir helfen? [pause] Sie hat genickt. [excited] Zehntausend. Ich war frei.
 
-[proud] Am Ende war ich der größte Feminist der ganzen Stadt. [sad] Und trotzdem… hab ich bis heute keine Fr—
+[proud] Die Frauen haben mich gefeiert. Die Bürgermeisterin hat mir einen Orden gegeben. Sie haben sogar eine Straße nach mir benannt. [serious] Aber ich habe das Schild selbst abgeschraubt. Denn ein Mann sollte keine Straße dafür kriegen, dass er einfach das Richtige tut.
+
+Deshalb habe ich das ganze Preisgeld, fünfzigtausend Euro, dem Frauenhaus gespendet. Und ich habe sogar gratis Programmierkurse für Mädchen gestartet. Jede hat ihr eigenes MacBook bekommen.
+
+[proud] Am Ende war ich der größte Feminist der ganzen Stadt. [sad] Und trotzdem habe ich bis heute keine Freundin. [deadpan] Die Letzte hat gesagt: Du bist echt süß. Aber ich stehe eher auf Bad Boys. [pause] Auf die, die noch drinsitzen.
