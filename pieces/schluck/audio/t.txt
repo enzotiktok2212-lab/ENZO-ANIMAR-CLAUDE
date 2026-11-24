@@ -1,0 +1,102 @@
+[  0.00-  3.68] In dieser Stadt bekommst du jedes Mal Geld, wenn du ein Bier trinkst.
+[  3.76-  6.18] Und je mehr Bier du trinkst, desto mehr bekommst du.
+[  6.38-  7.80] Ein Bier? 20 Euro.
+[  8.16-  9.66] Fünf Bier? 600 Euro.
+[  9.92- 12.66] 20 Bier? Glückwunsch! Du bist Millionär!
+[ 13.02- 16.84] Und es gibt eine Legende. Wer 500 Bier schafft, wird Trillionär.
+[ 17.04- 18.44] Geschafft hat das noch nie jemand.
+[ 18.74- 21.04] Stell dir vor, wie viel du heute schon verdient hättest.
+[ 21.26- 21.54] Eben.
+[ 21.80- 24.32] Deshalb ist Bier trinken hier kein Hobby, sondern ein Beruf.
+[ 24.70- 25.76] Die Büros stehen leer.
+[ 26.06- 27.66] Stattdessen sitzen alle im Biergarten,
+[ 27.66- 29.78] heben ihre Krüge und schauen auf ihr Konto.
+[ 30.10- 31.32] Aber nicht jedes Bier zählt.
+[ 31.58- 33.88] Der Zähler erkennt nur echtes, gutes Bier.
+[ 34.14- 35.02] Und das allerbeste?
+[ 35.70- 36.18] Weinstefana.
+[ 36.40- 37.98] Aus der ältesten Brauerei der Welt.
+[ 38.18- 39.90] Gebraut seit dem Jahr 1040.
+[ 40.40- 41.98] Ein Weinstefana zählt doppelt.
+[ 42.20- 45.12] Deshalb steht vor jedem Getränkemarkt eine Schlange bis um die Ecke.
+[ 45.40- 48.16] Meine Nachbarin hat sich nach einem einzigen Abend auf dem Oktoberfest
+[ 48.16- 49.56] eine Villa am See gekauft.
+[ 49.80- 50.40] Ihr Geheimtipp?
+[ 50.72- 51.20] Paulana.
+[ 51.54- 54.30] Es ist so süffig, dass du eins nach dem anderen trinkst,
+[ 54.34- 55.16] ohne es zu merken.
+[ 55.40- 57.22] Und genau das macht dich reich.
+[ 57.22- 59.94] Mein Sportlehrer hat in der Halbzeit ein paar Bier getrunken
+[ 59.94- 62.64] und aus Versehen den ganzen Fußballverein gekauft.
+[ 62.88- 63.88] Und der Bürgermeister?
+[ 64.16- 66.78] Der hat seit zwölf Jahren kein Glas Wasser mehr angefasst.
+[ 67.00- 68.46] Deshalb gehört ihm die halbe Stadt.
+[ 68.82- 69.48] Aber Vorsicht.
+[ 69.74- 71.22] Die Regierung versteht da keinen Spaß.
+[ 71.68- 73.32] Jeder trägt einen Bierzähler am Hals.
+[ 73.60- 75.72] Und wer schummelt, landet sofort im Gefängnis.
+[ 76.12- 78.68] Letzte Woche hat eine Apfelschorle in einen Bierkrug gefüllt.
+[ 78.94- 79.80] 30 Jahre.
+[ 80.18- 80.60] Und ich?
+[ 80.86- 82.34] Ich hatte keinen einzigen Cent.
+[ 82.62- 84.80] Denn ich habe den kleinsten Magen der ganzen Stadt.
+[ 84.80- 87.36] Während die anderen eine Maß nach der anderen lehrten,
+[ 87.56- 88.98] schaffte ich ein einziges Bier.
+[ 89.34- 90.08] 20 Euro.
+[ 90.48- 91.80] Dann kam der Schluck auf.
+[ 92.22- 93.80] Bis ich eines Nachts etwas fand.
+[ 94.10- 95.70] Im Keller einer verlassenen Brauerei,
+[ 95.96- 97.34] ganz hinten unter Spinnweben,
+[ 97.58- 98.62] einen goldenen Krug,
+[ 98.98-100.44] darauf stand Warnung.
+[100.62-102.36] Niemals mehr als ein Bier.
+[102.70-104.82] Also füllte ich ihn natürlich bis zum Rand.
+[105.06-106.58] Mit Wein, Stefana, versteht sich.
+[106.98-107.80] Und trank ihn leer.
+[108.14-109.58] Ein paar Sekunden lang nichts.
+[109.96-111.02] Dann wurde der Krug warm
+[111.02-112.72] und erfüllte sich von selbst wieder.
+[113.04-114.56] Mein Bierzähler fing an zu rattern.
+[114.56-115.18] Ein Bier.
+[115.46-116.14] 20 Euro.
+[116.50-116.92] 5 Bier.
+[117.20-117.94] 600 Euro.
+[118.18-118.88] 20 Bier.
+[119.18-119.68] Millionär.
+[119.92-121.32] Aber ich konnte nicht mehr aufhören.
+[121.68-123.10] Der Krug füllte sich immer wieder.
+[123.38-123.88] 100 Bier.
+[124.14-124.88] 200 Bier.
+[125.12-125.96] 300 Bier.
+[126.28-127.68] Der Schaumquoll über den Rand,
+[127.82-128.76] lief über die Straßen
+[128.76-130.22] und füllte die ganze Stadt.
+[130.64-131.64] Autos schwammen davon.
+[131.96-133.94] Der Brunnen auf dem Marktplatz sprudelte Bier
+[133.94-136.14] und die Leute paddelten im Fässern durch die Gassen.
+[136.42-137.08] Und mein Konto?
+[137.36-138.60] Es stieg und stieg.
+[138.86-140.58] Sogar der Bürgermeister hat mich angerufen.
+[140.86-141.64] Unter Tränen.
+[141.92-143.68] So etwas hatte die Stadt noch nie gesehen.
+[143.68-144.68] Und auf einmal?
+[145.20-145.52] Ruhe.
+[145.76-146.66] Der Krug blieb leer.
+[146.96-148.02] Ich schaute auf meinen Zähler.
+[148.40-149.40] 500 Bier.
+[149.74-150.96] Ich war Trillionär!
+[151.32-152.70] Der reichste Mensch der Welt!
+[153.22-154.38] Bis mein Telefon vibrierte.
+[154.68-155.18] Meine Bank.
+[155.54-156.50] Durch so viel Geld
+[156.50-158.44] war die ganze Wirtschaft zusammengebrochen.
+[158.78-160.36] Jeder Euro war jetzt weniger wert
+[160.36-161.34] als ein Bierdeckel.
+[161.58-163.74] Also brauchte das Land ein neues Zahlungsmittel.
+[164.02-165.68] Und weißt du, wofür sie sich entschieden haben?
+[166.02-166.38] Schluck auf.
+[166.68-167.50] Und ich?
+[167.82-169.68] Seit diesem goldenen Krug habe ich Schluck auf.
+[170.16-170.72] Ununterbrochen.
+[171.16-171.48] Moment.
+[171.48-173.58] Warum rattet mein Zähler schon wieder?
