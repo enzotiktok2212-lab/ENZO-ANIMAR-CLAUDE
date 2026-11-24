@@ -13,25 +13,25 @@ shot(63.98, 'Z', 'slow', L => { knast(L); const c = put(ben, KNX, 0, 4, 0); actu
   hearts(V(KNX, 7, 4), L.t0, L.T, 6, .7); grade.uniforms.lift.value = .03 * L.k; orb(L.k, V(KNX, 5, 4), null, [18, 0, .1, 46], [12, 0, .06, 42]); sh(V(KNX, 0, 4), 16); }, [[0, 'choir', .6], [.3, 'sparkle', .5]]);
 // 51 «Ich habe dafür gekämpft,»: en la plaza, yo con la pancarta «GRATIS BINDEN!» delante de una multitud de mujeres
 shot(66.32, 'W', null, L => { town(L); const c = put(ben, 0, 0, 0, 0); const j = Math.abs(Math.sin(L.T * 6)); actuar(c, 0, [[0, { aRx: 2.7 + j * .2, aRe: .3, aLx: 1.2, aLz: .4, aLe: 1.6 }]], { T: L.T }); cara(c, L.T, { expr: 'shout' }); attach(PROTEST, c.aR.hand, [0, -.5, 0], [-PI / 2, 0, 0], 1);
-  crowdAt(L, 0, -6, 14, 5, 16, 12, { mode: i => i % 2 ? 'cheer' : 'clap' }); orb(L.k, V(0, 6, 0), null, [24, .2, .05, 46], [20, .1, .02, 46]); sh(V(0, 0, -4), 26); }, [[0, 'crowd_run', .3], [.2, 'cheer', .5], [.6, 'shout_m', .3]]);
+  crowdAt(L, 0, -6, 14, 5, 16, 12, { mode: i => i % 2 ? 'cheer' : 'clap' }); orb(L.k, V(0, 4.4, 0), null, [19, .2, .06, 46], [16, .1, .04, 46]); sh(V(0, 0, -4), 26); }, [[0, 'crowd_run', .3], [.2, 'cheer', .5], [.6, 'shout_m', .3]]);
 // 52 «dass Binden und Tampons»: estanterías rosa (BINDEN) y lila (TAMPONS) de la droguería
 shot(67.50, 'C', null, L => { drogS(L); cm([DRX - 6, 5.6, 4], [DRX - 7.6, 5, -2], L.k); camera.lookAt(DRX - 12, 4.2, -6); camera.fov = 44; sh(V(DRX, 0, 0), 22); }, [[0, 'rummage', .5]]);
 // 53 «bei dm und Rossmann»: la droguería llena: mujeres llenando las cestas felices
 shot(68.54, 'S', null, L => { drogS(L); crowdAt(L, DRX, -3, 7, 3, 9, 13, { mode: i => ['cheer', 'talk', 'walk', 'clap'][i % 4], speed: 1.2 }); const k = put(EX[7], DRX - 9, 0, 4, -PI / 2); actuar(k, 0, [[0, { aRx: 1.8, aRe: .3, lean: .1 }]], { T: L.T }); grin(k, L.T);
   cm([DRX + 8, 9, 22], [DRX + 4, 8, 17], L.k); camera.lookAt(DRX - 2, 4, -6); camera.fov = 48; sh(V(DRX, 0, 0), 24); }, [[0, 'door_bell', .5], [.3, 'kids_laugh', .2], [.6, 'rummage', .4]]);
 // 54 «komplett gratis sind.»: la cajera tacha el precio: 0,00 €; ella se lleva una caja gratis
-shot(69.64, 'Z', 'punch', L => { drogS(L); const cs = put(EX[8], DRX - 2, 0, 6, 0); actuar(cs, 0, [[0, { aRx: 2.6, aRz: .3, aRe: .4 }]], { T: L.T }); cara(cs, L.T, { expr: 'joy' }); const cu = put(EX[9], DRX + 1.6, 0, 12.5, PI); actuar(cu, 0, [[0, { aLx: 1.4, aRx: 1.4, aLe: 1.2, aRe: 1.2 }]], { T: L.T }); grin(cu, L.T);
+shot(69.64, 'Z', 'punch', L => { drogS(L); const cs = put(EX[8], DRX - 2, 0, 6, 0); actuar(cs, 0, [[0, { aRx: 2.6, aRz: .3, aRe: .4 }]], { T: L.T }); cara(cs, L.T, { expr: 'joy' }); const cu = put(EX[9], DRX + 6.5, 0, 11, -PI / 2 - .6); actuar(cu, 0, [[0, { aLx: 1.4, aRx: 1.4, aLe: 1.2, aRe: 1.2 }]], { T: L.T }); grin(cu, L.T);
   badge('green', '0,00 €', W / 2, H * .2, clamp(L.lt / .12), 1, 1.2); confetti(V(DRX, 2, 9), L.t0 + .1, L.T, 40, .8); orb(L.k, V(DRX, 4.6, 9), null, [16, .45, .14, 46], [14, .35, .12, 44]); sh(V(DRX, 0, 9), 16); }, [[0, 'cash_reg', .7], [.1, 'confetti', .5], [.3, 'cheer', .3]]);
 // 55 «Dann habe ich mit Uber Nachtfahrten organisiert,»: de noche: un coche con «NACHTFAHRT 0 €» avanza por la calle iluminada
-shot(71.05, 'W', null, L => { town(L, { night: true, statue: false }); show(TAXI, -3, 0, 124 - L.lt * 22, PI); crowdAt(L, -10, 104, 3, 2, 5, 14, { mode: 'walk', speed: 1.5 });
-  cm([-12, 3.6, 62], [-11, 3.2, 70], L.k); camera.lookAt(-3, 3, 104 - L.lt * 16); camera.fov = 44; sh(V(4, 0, 100), 30); }, [[0, 'car', .6], [.4, 'crickets', .3]]);
+shot(71.05, 'W', null, L => { town(L, { night: true, statue: false }); show(TAXI, 0, 0, -34 + L.lt * 20, 0); crowdAt(L, 0, -10, 4, 10, 18, 14, { mode: 'walk', speed: 1.5 });
+  cm([7, 3.6, 16], [6, 3.2, 12], L.k); camera.lookAt(0, 2.8, -26 + L.lt * 16); camera.fov = 44; sh(V(4, 0, 100), 30); }, [[0, 'car', .6], [.4, 'crickets', .3]]);
 // 56 «damit jede Frau nach zehn Uhr»: bajo una farola, una mujer mira el móvil: son las 22:00
-shot(73.23, 'C', null, L => { town(L, { night: true, statue: false }); const w = put(hfrau, -6, 0, 80, .3); actuar(w, 0, [[0, 'phone_look']], { T: L.T }); cara(w, L.T, { expr: 'worried' }); attach(PHONE, w.aR.hand, [0, -.6, .4], [-.5, PI, 0], .8);
-  badge('cyan', '22:00', W / 2, H * .2, clamp(L.lt / .15), 1, 1.1); onFace(w, 9, .4, 2.4, 44, L.k, 8); sh(V(-6, 0, 80), 14); }, [[0, 'owl', .3], [.3, 'notif', .5]]);
+shot(73.23, 'C', null, L => { town(L, { night: true, statue: false }); const w = put(hfrau, -30.5, 0, -4, .5); actuar(w, 0, [[0, 'phone_look']], { T: L.T }); cara(w, L.T, { expr: 'worried' }); attach(PHONE, w.aR.hand, [0, -.6, .4], [-.5, PI, 0], .8);
+  badge('cyan', '22:00', W / 2, H * .2, clamp(L.lt / .15), 1, 1.1); onFace(w, 9.5, .4, 1.6, 44, L.k, 8.5); sh(V(-30, 0, -4), 14); }, [[0, 'owl', .3], [.3, 'notif', .5]]);
 // 57 «kostenlos und sicher nach Hause kommt.»: el coche para; ella sube y se despide sonriendo; yo le hago el pulgar desde la acera
-shot(74.69, 'S', null, L => { town(L, { night: true, statue: false }); const k = clamp(L.lt / .9); show(TAXI, -1, 0, lerp(96, 84, easeOut(k)), PI); const w = put(hfrau, -6 + k * 2.4, 0, 82, PI / 2); actuar(w, 0, [[0, k < 1 ? walkP(L.T, 0) : 'wave']], { T: L.T }); cara(w, L.T, { expr: 'happy' });
-  const b = put(ben, -9, 0, 76, .7); actuar(b, 0, [[0, { aRx: 1.6, aRz: -.3, aRe: 1.6 }]], { T: L.T }); grin(b, L.T); badge('green', '0 €', W / 2, H * .2, clamp((L.lt - .4) / .15), 1, 1.1);
-  orb(L.k, V(-4, 4, 82), null, [20, -.25, .12, 46], [17, -.1, .1, 46]); sh(V(-4, 0, 82), 20); }, [[0, 'car', .4], [.6, 'door_open', .5], [1.1, 'ding_soft', .5]]);
+shot(74.69, 'S', null, L => { town(L, { night: true, statue: false }); const k = clamp(L.lt / .9); show(TAXI, -24, 0, lerp(-26, -10, easeOut(k)), 0); const w = put(hfrau, -30.5 + k * 3, 0, -4, PI / 2); actuar(w, 0, [[0, k < 1 ? walkP(L.T, 0) : 'wave']], { T: L.T }); cara(w, L.T, { expr: 'happy' });
+  const b = put(ben, -32, 0, 4, 2.2); actuar(b, 0, [[0, { aRx: 1.6, aRz: -.3, aRe: 1.6 }]], { T: L.T }); grin(b, L.T); badge('green', '0 €', W / 2, H * .2, clamp((L.lt - .4) / .15), 1, 1.1);
+  orb(L.k, V(-27, 3.8, -5), null, [20, .6, .1, 46], [17, .75, .08, 46]); sh(V(-27, 0, -4), 20); }, [[0, 'car', .4], [.6, 'door_open', .5], [1.1, 'ding_soft', .5]]);
 // 58 «Ich habe sogar Selbstverteidigung»: en el gimnasio, chicas practicando patadas sobre las colchonetas
 shot(76.78, 'W', null, L => { hallS(L); for (let i = 0; i < 6; i++) { const c = EX[i * 2 + (i > 2 ? 1 : 0)], x = THX - 9 + (i % 3) * 9, z = -4 + Math.floor(i / 3) * 7; put(c, x, .7, z, 0); const kk = Math.max(0, Math.sin(L.T * 5 + i)); actuar(c, 0, [[0, { lRx: -1.6 * kk, lRk: .2, aLx: 1.3, aRx: 1.3, aLe: 2, aRe: 2, lean: -.15 * kk }]], { T: L.T }); cara(c, L.T + i, { expr: 'determined' }); }
   cm([THX + 12, 12, 22], [THX + 6, 10, 18], L.k); camera.lookAt(THX, 3, -2); camera.fov = 46; sh(V(THX, 0, 0), 24); }, [[0, 'whoosh', .5], [.4, 'kick', .5], [.8, 'kick', .5]]);
@@ -49,7 +49,7 @@ shot(80.66, 'Z', 'punch', L => { hallS(L); const m = put(mia, THX, .7, 0, 0); ac
 shot(81.96, 'S', null, L => { knast(L, { sb: [String(Math.round(lerp(6200, 7400, L.k))).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' / 10.000'] }); const c = put(ben, KNX - 18, 0, 4, .3); actuar(c, 0, [[0, { aRx: 1.2, aRz: -.6, aRe: 1.8, headY: Math.sin(L.T * 4) * .15 }]], { T: L.T }); cara(c, L.T, { expr: 'determined' });
   onBody(c, 15, 0, .1, 44, L.k, 12.5); sh(V(KNX - 18, 0, 2), 22); }, [[0, 'hum', .3]]);
 // 63 «Okay.»: miro de reojo; una gota de sudor
-shot(84.54, 'C', null, L => { knast(L); const c = put(ben, KNX - 18, 0, 4, .3); cara(c, L.T, { expr: 'side_r', mouth: 'grimace' }); sweat(c, L.T, 1); onFace(c, 6.6, 0, 0, 40, L.k, 6); sh(V(KNX - 18, 0, 4), 12); }, [[0, 'boing_metal', .3]]);
+shot(84.54, 'C', null, L => { knast(L); const c = put(ben, KNX - 18, 0, 4, .3); cara(c, L.T, { expr: 'side_r', mouth: 'grimace' }); sweat(c, L.T, 1); onFace(c, 8.6, 0, 0, 40, L.k, 7.8); sh(V(KNX - 18, 0, 4), 12); }, [[0, 'boing_metal', .3]]);
 // 64 «Vielleicht ein bisschen.»: sonrisa pícara y el gesto de «un poquito» con los dedos
 shot(85.17, 'I', null, L => { knast(L); const c = put(ben, KNX - 18, 0, 4, .3); actuar(c, 0, [[0, { aRx: 1.6, aRz: -.3, aRe: 1.2, headZ: .2 }]], { T: L.T }); grin(c, L.T); badge('gold', 'EIN BISSCHEN', W / 2, H * .2, clamp((L.lt - .2) / .15), 1, 1); onFace(c, 8, 0, 0, 42, L.k, 7); sh(V(KNX - 18, 0, 4), 12); }, [[0, 'pop', .5]]);
 // 65 «Punkt für Punkt kam ich näher.»: el marcador corre de 8.000 a 9.990; yo lo miro con los puños apretados
