@@ -45,16 +45,17 @@ const M2U = 3.95;
 // ---------- escenarios ----------
 // Zischelbach-Dorf (x = 0, lindenthal): plaza z ∈ [-70, 50], casas a x = ±52 (fachadas en x = ±43), carretera hacia +z (x ∈ ±8), iglesia z = -120,
 // Maibaum (18,-14), fuente (-14,-26). Pórtico con la señal «S verboten» sobre la carretera en z = 70. Pantallas gigantes en la plaza.
-const LT = lindenthal(scene, { name: 'ZISCHELBACH', shops: { 2: 'BÄCKEREI', 5: 'GATHTHOF', 9: 'CAFÉ', 12: 'THUPERMARKT' } });
-const GAN = gantry(scene, 0, 70, 'S'); LT.g.add(GAN);
+const LT = lindenthal(scene, { name: 'ZISCHELBACH', shops: { 2: 'THUPERMARKT', 5: 'GATHTHOF', 9: 'CAFÉ', 12: 'BÄCKEREI' } });
+const GAN = gantry(scene, 0, 36, 'S'); LT.g.add(GAN);
 const DSCR = [[-30, -20, .5], [30, -20, -.5]].map(([x, z, r]) => { const b = bigScreen(scene, 18, 10.125, 640, 360); b.position.set(x, 0, z); b.rotation.y = r; LT.g.add(b); b.visible = false; return b; });
 const SCX = 1400, KLX = 2200, ZOX = 3000, WZX = 3800, RPX = 4600, SAX = 5600;
 const SC = schule(scene, SCX), KL = klasse(scene, KLX), ZO = spieleladen(scene, ZOX), RP = rathausPlatz(scene, RPX), SA = saal(scene, SAX);
 // cartel pintado del colegio (THCHULE) delante del rótulo original
 const SCHILD = new THREE.Group(); SC.g.add(SCHILD); SCHILD.position.set(0, 26.4, -25.6);
 { const cv = document.createElement('canvas'); cv.width = 900; cv.height = 108; const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; const m = new THREE.Mesh(new THREE.PlaneGeometry(30, 3.6), new THREE.MeshStandardMaterial({ map: t, roughness: .7 })); SCHILD.add(m); let key = null;
-  SCHILD.userData.draw = k => { const kk = Math.round(k * 20); if (kk === key) return; key = kk; const c = cv.getContext('2d'); c.fillStyle = '#ffffff'; c.fillRect(0, 0, 900, 108); txt(c, 'SCHULE AM BERG', 450, 58, 76, '#2a4a7a');
-    if (k > 0) { c.save(); c.beginPath(); c.rect(118, 0, 80 * clamp(k * 1.4), 108); c.clip(); c.fillStyle = '#ffffff'; c.fillRect(118, 6, 80, 96); c.restore(); c.save(); c.beginPath(); c.rect(110, 0, 150 * clamp(k * 1.4 - .3), 108); c.clip(); c.font = `700 76px ${FONT}`; c.fillStyle = '#d8202a'; c.textAlign = 'left'; c.textBaseline = 'middle'; c.fillText('TH', 112, 60); c.restore(); } t.needsUpdate = true; }; SCHILD.userData.draw(0); }
+  SCHILD.userData.draw = k => { const kk = Math.round(k * 20); if (kk === key) return; key = kk; const c = cv.getContext('2d'); c.fillStyle = '#ffffff'; c.fillRect(0, 0, 900, 108); c.font = `700 76px ${FONT}`; c.textBaseline = 'middle'; c.textAlign = 'left';
+    if (k < .5) { const tw = c.measureText('SCHULE AM BERG').width, x0 = 450 - tw / 2, sw = c.measureText('S').width; c.fillStyle = '#2a4a7a'; c.fillText('SCHULE AM BERG', x0, 60); c.fillStyle = '#ffffff'; c.fillRect(x0 - 4, 8, (sw + 8) * clamp(k / .45), 92); }
+    else { const tw = c.measureText('THCHULE AM BERG').width, x0 = 450 - tw / 2, th = c.measureText('TH').width; c.fillStyle = '#2a4a7a'; c.fillText('CHULE AM BERG', x0 + th, 60); c.save(); c.beginPath(); c.rect(x0 - 4, 0, (th + 8) * clamp((k - .5) / .4), 108); c.clip(); c.fillStyle = '#d8202a'; c.fillText('TH', x0, 60); c.restore(); } t.needsUpdate = true; }; SCHILD.userData.draw(0); }
 // tele del salón: noticias con un atril vacío o el robot
 const TVC = document.createElement('canvas'); TVC.width = 640; TVC.height = 360; const TVT = new THREE.CanvasTexture(TVC); TVT.colorSpace = THREE.SRGBColorSpace;
 const WZ = wohnzimmer(scene, WZX, TVT);
@@ -301,6 +302,6 @@ function renderAt(T) {
   for (const f of FX2D) f(octx); for (const b of BAD_) drawBadge(b); caption(T);
 }
 window.renderAt = renderAt; window.DUR = DUR; window.FPS = FPS; window.CUES = CUES; window.SHOTS = S.map(s => [s.t0, s.t1, s.tr, s.zoom]); window.__ready = true;
-window.DBG = { applyPose, hp, jonte, renderer, composer, bloom, sun, grade, scene, camera };
+window.DBG = { applyPose, hp, jonte, zisch, SA, renderer, composer, bloom, sun, grade, scene, camera };
 // ---------- portadas (1080×1920; lo importante entre y = 240 y 1680) ----------
 //@@COVER@@

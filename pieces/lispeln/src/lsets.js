@@ -85,7 +85,7 @@ export function rathausPlatz(scene, X) { const g = G(scene, X);
   const STG = G(g, 0, 0, -12); box(30, 2.4, 14, mat(0x8a2a2a, { roughness: .8 }), .1, STG, 0, 1.2, 0); box(30.4, .3, 14.4, mat(0xd8c8a0), .05, STG, 0, 2.5, 0); for (let k = 0; k < 4; k++) box(8, .6, 1.4, mat(0x6a2020), .05, STG, 0, .3 + k * .6, 7.6 + (3 - k) * 1.2);
   const ROB = robot(g); ROB.position.set(0, 2.5, -14); ROB.visible = false;
   // pantallas gigantes a ambos lados (también se usan en el pueblo)
-  const SCR = [-1, 1].map(s => { const b = bigScreen(g, 18, 10.125, 640, 360); b.position.set(s * 36, 0, -4); b.rotation.y = -s * .35; b.visible = false; return b; });
+  const SCR = [-1, 1].map(s => { const b = bigScreen(g, 18, 10.125, 640, 360); b.position.set(s * 27, 0, 2); b.rotation.y = -s * .55; b.visible = false; return b; });
   return { g: shade(g), BAL, BANS, ROB, STG, SCR, R }; }
 
 // ---------- sala de ensayo del alcalde (X): suelo de parqué, paredes con boiserie, telón rojo enorme que se abre (TEL.userData.open(k)),
@@ -98,9 +98,9 @@ export function saal(scene, X) { const g = G(scene, X); const wd = mat(0xffffff,
   // araña
   const CH = G(g, 0, 22, -4); cyl(.1, .1, 4, mat(0xd8b040, { metalness: .9 }), 6, CH, 0, 2, 0); const ring = new THREE.Mesh(new THREE.TorusGeometry(2.6, .15, 8, 28), mat(0xd8b040, { metalness: .9, roughness: .2 })); ring.rotation.x = Math.PI / 2; CH.add(ring); for (let k = 0; k < 8; k++) { const a = k / 8 * 6.283; sphere(.35, glowM(0xfff0c0, 2.2), CH, Math.cos(a) * 2.6, .5, Math.sin(a) * 2.6, 10, 8); }
   // atril con fichas (textura dibujable) y micrófono
-  const AT = G(g, 0, 0, -6); box(4.2, 6.4, 2.6, mat(0x6a3a1a, { roughness: .5 }), .2, AT, 0, 3.2, 0); const top = box(4.8, .3, 3.2, mat(0x7a4626, { roughness: .45 }), .1, AT, 0, 6.6, .2); top.rotation.x = .35;
-  const emb = textPlane(2.2, 2.2, 96, 96, (c, w, h) => { c.fillStyle = '#c8202a'; c.beginPath(); c.moveTo(16, 12); c.lineTo(80, 12); c.lineTo(80, 50); c.quadraticCurveTo(48, 92, 16, 50); c.fill(); c.fillStyle = '#ffd23f'; c.fillRect(42, 18, 12, 56); c.lineWidth = 5; c.strokeStyle = '#ffd23f'; c.strokeRect(16, 12, 64, 38); }); emb.position.set(0, 3.6, 1.32); AT.add(emb);
-  const mic = G(AT, 0, 6.8, 1.2); cyl(.06, .06, 1.6, mat(0x2a2a2a, { metalness: .8 }), 6, mic, 0, .8, 0).rotation.x = .5; sphere(.22, mat(0x3a3a3a, { metalness: .6 }), mic, 0, 1.5, .4, 10, 8);
+  const AT = G(g, 0, 0, -6); box(3.8, 3.9, 2.2, mat(0x6a3a1a, { roughness: .5 }), .2, AT, 0, 1.95, 0); const top = box(4.4, .3, 2.8, mat(0x7a4626, { roughness: .45 }), .1, AT, 0, 4.0, .2); top.rotation.x = .35;
+  const emb = textPlane(2.2, 2.2, 96, 96, (c, w, h) => { c.fillStyle = '#c8202a'; c.beginPath(); c.moveTo(16, 12); c.lineTo(80, 12); c.lineTo(80, 50); c.quadraticCurveTo(48, 92, 16, 50); c.fill(); c.fillStyle = '#ffd23f'; c.fillRect(42, 18, 12, 56); c.lineWidth = 5; c.strokeStyle = '#ffd23f'; c.strokeRect(16, 12, 64, 38); }); emb.position.set(0, 2.2, 1.12); AT.add(emb);
+  const mic = G(AT, 1.5, 4.1, 1.0); cyl(.06, .06, 1.6, mat(0x2a2a2a, { metalness: .8 }), 6, mic, 0, .8, 0).rotation.x = .5; sphere(.22, mat(0x3a3a3a, { metalness: .6 }), mic, 0, 1.5, .4, 10, 8);
   const CARD = new THREE.Group(); g.add(CARD); { const cv = document.createElement('canvas'); cv.width = 360; cv.height = 240; const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; const m = new THREE.Mesh(new THREE.PlaneGeometry(2.7, 1.8), new THREE.MeshStandardMaterial({ map: t, roughness: .8, emissive: 0xffffff, emissiveMap: t, emissiveIntensity: .25 })); CARD.add(m); let key = null;
     CARD.userData.draw = (k, fn) => { if (k === key) return; key = k; const c = cv.getContext('2d'); c.fillStyle = '#fffaf0'; c.fillRect(0, 0, 360, 240); c.fillStyle = '#c8d8f0'; for (let y = 50; y < 240; y += 34) c.fillRect(0, y, 360, 2); c.fillStyle = '#e88a8a'; c.fillRect(40, 0, 3, 240); fn(c, 360, 240); t.needsUpdate = true; }; }
   // espejo de pie

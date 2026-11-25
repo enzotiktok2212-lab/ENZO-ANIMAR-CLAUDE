@@ -14,11 +14,11 @@ shot(78.43, 'C', null, L => { platzS(L); RP.BANS.visible = true; const [r, l] = 
   crowdAt(L, RPX, -10, 8, 3, 10, 73, { mode: 'shock', face: RW(0, 15, -31), full: true });
   orbit(RW(0, 18.5, -27), lerp(26, 22, L.k), .12, .02, 44); sh(RW(0, 15, -27), 16); }, [[0, 'pop', .6], [.1, 'stamp', .6], [.5, 'evil_laugh', .4]]);
 // 62 «Die ganze Menge wuwde stiww.»: la plaza en silencio; nadie se mueve; una bola de papel rueda; hojas al viento
-shot(79.91, 'S', null, L => { platzS(L); RP.BANS.visible = true; crowdAt(L, RPX, 0, 20, 3, 18, 75, { mode: 'silent', face: RW(0, 15, -31), full: true }); dust(RW(-6, 0, 12), L.t0, L.T, 6, .3);
-  cm([RPX - 24, 8, 30, RPX, 8, -6, 48], [RPX - 22, 8.5, 27, RPX, 8.5, -6, 46], L.k); sh(RW(0, 0, 0), 34); grade.uniforms.sat.value = .9; }, [[0, 'wind', .6], [.6, 'crickets', .5]]);
+shot(79.91, 'S', null, L => { platzS(L); RP.BANS.visible = true; crowdAt(L, RPX, 4, 20, 3, 16, 75, { mode: 'silent', face: RW(0, 15, -31), full: true }); dust(RW(-6, 0, -4), L.t0, L.T, 6, .3);
+  cm([RPX + 6, 10, -20, RPX, 4.5, 6, 50], [RPX + 5, 10.4, -18, RPX, 4.6, 6, 48], L.k); sh(RW(0, 0, 4), 34); grade.uniforms.sat.value = .9; }, [[0, 'wind', .6], [.6, 'crickets', .5]]);
 // 63 «Dann wief ein Powizist:»: un policía levanta el megáfono entre la gente
 shot(81.33, 'W', null, L => { platzS(L); RP.BANS.visible = true; const c = put(COPS[3], RPX - 6, 0, 4, .4); actuar(c, 0, [[0, { aRx: 1.7, aRz: -.2, aRe: 1.5, aLx: .3 }]], { T: L.T }); attach(MEGA, c.aR.hand, [0, -.7, .6], [-.2, 0, 0], 1.0); cara(c, L.T, { expr: 'determined', mouth: 'flat' }); hero(c);
-  crowdAt(L, RPX - 6, 4, 8, 4, 10, 77, { mode: 'silent', full: true, avoid: [[RPX - 6, 4]] });
+  crowdAt(L, RPX - 6, 0, 8, 5, 11, 77, { mode: 'silent', gap: 1.8, avoid: [[RPX - 6, 4]] });
   onBody(c, 12, .3, .1, 42, L.k, 10, .2, 4.6); sh(RW(-6, 0, 4), 14); }, [[0, 'megaphone_on', .6]]);
 // 64 «„Awwe bweiben wuhig!“»: primer plano del policía gritando por el megáfono
 shot(82.94, 'Z', 'punch', L => { platzS(L); const c = put(COPS[3], RPX - 6, 0, 4, .4); actuar(c, 0, [[0, { aRx: 1.7, aRz: -.2, aRe: 1.5, aLx: .3, lean: .08 }]], { T: L.T }); attach(MEGA, c.aR.hand, [0, -.7, .6], [-.2, 0, 0], 1.0); talk(c, L.T, 82.94, 84.23, 'angry'); hero(c);
@@ -40,11 +40,11 @@ shot(87.68, 'S', null, L => { platzS(L); const t = put(kess, 0, 0, 0, 0); walkTo
   orb(L.k, RW(-7, 4, 20), RW(-5, 4, 26), [22, 1.3, .14, 46], [20, 1.1, .14, 46]); sh(RW(-6, 0, 24), 22); }, [[0, 'run_steps', .6], [.3, 'kids_scream', .4]]);
 // 69 «Ich sah den Büwgewmeistew an.»: Jonte se gira despacio hacia el balcón, furioso
 shot(89.59, 'R', null, L => { platzS(L); RP.BANS.visible = true; const c = put(jonte, RPX + 1, 0, 2, lerp(.8, PI, easeInOut(clamp(L.lt / .9)))); actuar(c, 0, [[0, { aLx: .2, aRx: .2, aLz: .3, aRz: -.3, headX: -.25, sx: .05 }]], { T: L.T }); cara(c, L.T, { expr: 'angry', mouth: 'frown' }); holdBag(c); hero(c);
-  crowdAt(L, RPX + 1, 2, 8, 4, 10, 79, { mode: 'silent', full: true, avoid: [[RPX + 1, 2]] });
-  cm([RPX - 2, 6, 14, RPX + 1, 5, 2, 44], [RPX - 1, 6.4, 11, RPX + 1, 5.2, 2, 42], L.k); sh(RW(1, 0, 2), 14); }, [[0, 'whoosh_soft', .3], [.5, 'heartbeat', .4]]);
+  crowdAt(L, RPX + 1, 8, 8, 5, 10, 79, { mode: 'silent', gap: 1.9, avoid: [[RPX + 1, 2]] });
+  cm([RPX - 3, 5.4, -6.5, RPX + 1, 5.2, 2, 44], [RPX - 2, 5.3, -5, RPX + 1, 5.3, 2, 42], L.k); sh(RW(1, 0, 2), 14); }, [[0, 'whoosh_soft', .3], [.5, 'heartbeat', .4]]);
 // 70 «„Das ist doch nicht dein Ewnst!“»: Jonte, de frente y desde abajo, grita con los brazos abiertos hacia el balcón
-shot(91.2, 'C', 'punch', L => { platzS(L); const c = put(jonte, RPX + 1, 0, 2, PI); actuar(c, 0, [[0, { aLx: 1.0, aRx: 1.0, aLz: .9, aRz: .9, aLe: .5, aRe: .5, headX: -.25 }]], { T: L.T }); talk(c, L.T, 91.2, 92.53, 'angry'); hero(c);
-  cm([RPX + 1.6, 3.2, -6, RPX + 1, 5.8, 2, 42], [RPX + 1.5, 3.4, -4.8, RPX + 1, 5.8, 2, 40], L.k); sh(RW(1, 0, 2), 12); }, [[0, 'impact', .5], [.2, 'gasp', .3]]);
+shot(91.2, 'C', 'punch', L => { platzS(L); const c = put(jonte, RPX + 1, 0, 2, PI); actuar(c, 0, [[0, { aLx: 1.0, aRx: 1.0, aLz: .9, aRz: .9, aLe: .5, aRe: .5, headX: -.15 }]], { T: L.T }); talk(c, L.T, 91.2, 92.53, 'angry'); hero(c);
+  onFace(c, 6.4, .6, .3, 42, L.k, 5.4); sh(RW(1, 0, 2), 12); }, [[0, 'impact', .5], [.2, 'gasp', .3]]);
 // 71 «Und ew wächewte.»: el alcalde sonríe con una sonrisa enorme; zoom lento con viñeta
 shot(92.53, 'I', 'slow', L => { platzS(L); RP.BANS.visible = true; const m = balcony(L); actuar(m, 0, [[0, { aLx: .4, aRx: .4, aLz: -.4, aRz: -.4, aLe: 1.5, aRe: 1.5, headZ: .12 }]], { T: L.T }); cara(m, L.T, { expr: 'smug', eyes: 'squint', mouth: 'grin' }); hero(m);
   onFace(m, 6, -.2, .5, 40, L.k, 4.4); sh(RW(0, 15, -28), 10); }, [[0, 'evil_chime', .5]]);
