@@ -527,9 +527,13 @@ for _a, _b in [('cash_reg', 'cash'), ('money_rain', 'coins'), ('money_burst', 'c
   ('crickets', 'crickets'), ('steps', 'steps'), ('drip', 'tick_hollow'), ('birds', 'chirps'), ('gong', 'bell_far'), ('steam', 'steam'), ('bubbling', 'steam'), ('shimmer', 'sparkle'), ('slowmo', 'whoosh'), ('heartbeat', 'heartbeat')]:
     if _a not in LIB and _b in LIB: LIB[_a] = LIB[_b]
 
+# lispeln: alias de efectos nuevos
+for _a, _b in [('arcade_bleeps', 'notif'), ('balcony_door', 'door_open'), ('boots', 'steps_heavy'), ('box_rattle', 'rattle'), ('cable_plug', 'click_metal'), ('car_alarm', 'alarm_beep'), ('car_door', 'truck_door'), ('chair_scrape', 'chairs_scrape'), ('chime_shop', 'door_bell'), ('class_laugh', 'kids_laugh'), ('crowd_boo', 'shout_crowd'), ('crowd_chant', 'shout_crowd'), ('crowd_gasp', 'gasp_crowd'), ('crowd_laugh', 'laugh_deep'), ('cry', 'kid_cry'), ('curtain_open', 'curtain'), ('curtain_rustle', 'sheet_rustle'), ('desk_slam', 'table_bang'), ('door_kick', 'door_crash'), ('evil_chime', 'creepy_ting'), ('fall_whistle', 'down_whistle'), ('flex', 'stretch_creak'), ('giggle', 'kids_laugh'), ('glass_shake', 'glass_rattle'), ('headset_off', 'cloth'), ('kids_scream', 'scream_kid'), ('laugh_man', 'laugh_m'), ('mayor_lisp_fx', 'spit'), ('megaphone_buzz', 'buzz'), ('megaphone_on', 'switch'), ('metal_clang', 'metal_hit'), ('music_stop', 'record_scratch'), ('night_crickets', 'crickets'), ('paint_brush', 'brush'), ('paper_crumple', 'paper_slap'), ('plastic_box', 'box_drop'), ('radio_chatter', 'radio'), ('rec_beep', 'camera_beep'), ('robot_stomp', 'boom'), ('robot_voice', 'machine_hum'), ('scream_man', 'scream_m'), ('servo', 'gears'), ('sneak_steps', 'sneak'), ('snicker', 'chuckle'), ('snort', 'chuckle_m'), ('stomp', 'steps_heavy'), ('throat_clear', 'cough'), ('trombone_wah', 'sad_trombone'), ('tv_news', 'crowd_tv'), ('tv_on', 'power_on'), ('wink_ding', 'wink')]:
+    if _a not in LIB and _b in LIB: LIB[_a] = LIB[_b]
+
 if __name__ == '__main__':
     cues_f, voice_f, music_f, out_f = sys.argv[1:5]
-    cues = json.load(open(cues_f)); DUR = 168.0
+    cues = json.load(open(cues_f)); DUR = 95.9
     cues = fill_gaps(cues, DUR); print(len(cues), 'efectos; hueco máximo', max(np.diff(sorted([0] + [c['t'] for c in cues] + [DUR]))).round(2))
     TEN = {'riser', 'braam', 'riser_short', 'braam_short'}
     ten = render([c for c in cues if c['s'] in TEN], DUR); ten = norm(ten, 0.9)

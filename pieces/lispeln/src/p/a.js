@@ -18,9 +18,9 @@ function drawBubbleWord(ch, text, k, col = '#ffffff') { bubble(ch, text, k); }
 const bannerSign = (g, k) => { const S = g.userData.sign; S.scale.setScalar(1 + .06 * Math.sin(k * 30) * (1 - k)); };
 
 // 1 «In diether Thtadt»: la carretera de Zischelbach con el pórtico y la señal gigante «S verboten»; Jonte camina hacia cámara mirando la señal; zoom lento hacia ella
-shot(0, 'C', null, L => { town(L); const c = put(jonte, 0, 0, 0, 0); walkTo(c, L, -.8, 38.5, -.4, 41.5); c.root.rotation.y = .05; cara(c, L.T, { expr: 'worried', eyes: 'up' }); holdBag(c); hero(c);
+shot(0, 'C', null, L => { town(L); const c = put(jonte, 0, 0, 0, 0); walkTo(c, L, -.6, 37.5, -.3, 40); c.root.rotation.y = .05; cara(c, L.T, { expr: 'worried', eyes: 'up' }); holdBag(c); hero(c);
   crowdAt(L, 0, 30, 9, 6, 16, 3, { mode: i => ['walk', 'talk', 'walk', 'point'][i % 4], gap: 1.5, dir: PI * .5 }); bannerSign(GAN, L.k);
-  cm([0, 7, 66, 0, 7.4, 36, 50], [0, 7.4, 60, 0, 7.8, 36, 46], L.k, easeOut); sh(V(0, 0, 40), 36); }, [[0, 'whoosh', .5], [.1, 'crowd_murmur', .3], [.5, 'steps', .3]]);
+  cm([0, 2.6, 66, 0, 7.5, 36, 50], [0, 2.8, 59, 0, 7.6, 36, 46], L.k, easeOut); sh(V(0, 0, 40), 36); }, [[0, 'whoosh', .5], [.1, 'crowd_murmur', .3], [.5, 'steps', .3]]);
 // 2 «itht der Buchthtabe S verboten.»: la señal de cerca; la barra roja golpea la S; vibra
 shot(1.05, 'Z', 'punch', L => { town(L); const S = GAN.userData.sign; const k = clamp(L.lt / .35); S.userData.bar.scale.set(easeOut(k), 1, 1); S.rotation.z = Math.sin(L.T * 40) * .03 * (1 - clamp(L.lt / .6));
   crowdAt(L, 0, 26, 6, 6, 12, 5, { mode: 'point', face: V(0, 10, 36), gap: 1.2 });
@@ -71,8 +71,8 @@ shot(11.68, 'W', null, L => { klasseS(L); DOOR.rotation.y = 1.45; const b = put(
 shot(12.74, 'F', null, L => { klasseS(L); const b = put(bela, KLX + 2, 0, 10.8, PI / 2); talk(b, L.T, 12.74, 13.9, 'shock'); actuar(b, 0, [[0, { aLx: .55, aLz: -.25, aLe: .8, aRx: .55, aRz: -.25, aRe: .8, headX: -.08, ...shiver(L.T, .5) }]], { T: L.T }); attach(BOX, b.aL.hand, [.5, -.7, .5], [0, 0, 0], .9); spit(b, L.T, 12.74, 6); tears(b, L.T); hero(b);
   classKids(L, [[1, 1]]); onFace(b, 7.4, -.9, 0, 42, L.k, 6.2); sh(V(KLX + 2, 0, 10.8), 14); }, [[0, 'flash', .3], [.1, 'cry', .5], [.6, 'box_rattle', .4]]);
 // 13 «geklaut!»: plano detalle de la fiambrera vacía con migas; Bela la sacude boca abajo; un queso pinchado en el borde
-shot(13.9, 'C', 'punch', L => { klasseS(L); const b = put(bela, KLX + 2, 0, 10.8, PI / 2); actuar(b, 0, [[0, { aLx: 1.6, aLe: .4, aRx: 1.4, aRe: .6, headX: .2 }]], { T: L.T }); attach(BOX, b.aL.hand, [0, -.6, .4], [PI * .85 + Math.sin(L.T * 20) * .15, 0, 0], 1.1); cara(b, L.T, { expr: 'cry', mouth: 'scream' }); hero(b);
-  dust(wpos(b.aL.hand).add(V(0, -1, 0)), L.t0 + .05, L.T, 8, .3); const hp_ = wpos(b.aL.hand); cm([hp_.x + 4.6, hp_.y + 1.4, hp_.z + .6, hp_.x, hp_.y + .2, hp_.z, 42], [hp_.x + 4, hp_.y + 1.6, hp_.z + .5, hp_.x, hp_.y + .3, hp_.z, 40], L.k); sh(V(KLX + 2, 0, 10.8), 12); DOF = 0; }, [[0, 'impact_soft', .5], [.05, 'box_rattle', .6]]);
+shot(13.9, 'C', 'punch', L => { klasseS(L); const b = put(bela, KLX + 2, 0, 10.8, PI / 2); actuar(b, 0, [[0, { aLx: .8, aLz: -1.0, aLe: .2, aRx: .4, aRz: .3, aRe: .3, headX: .25 }]], { T: L.T }); attach(BOX, b.aL.hand, [0, -.8, .5], [PI * .9 + Math.sin(L.T * 20) * .2, 0, 0], .9); cara(b, L.T, { expr: 'cry', mouth: 'scream' }); tears(b, L.T); hero(b);
+  dust(wpos(b.aL.hand).add(V(0, -1.4, 0)), L.t0 + .05, L.T, 8, .3); onBody(b, 10.5, .35, .12, 44, L.k, 9, null, 4.2); sh(V(KLX + 2, 0, 10.8), 12); }, [[0, 'impact_soft', .5], [.05, 'box_rattle', .6]]);
 // 14 «Ich konnte nicht aufhören zu lachen.»: Jonte en su pupitre se parte de risa y golpea la mesa
 shot(14.95, 'W', null, L => { klasseS(L); const [x, z] = seatAt(1, 1); const j = Math.abs(Math.sin(L.T * 10)); sit(jonte, x, 2.45, z, PI + .25, L, { aLx: 1.2 + j * .4, aRx: 1.2 + j * .4, aLe: 1.4, aRe: 1.4, lean: .2 + j * .15, headX: -.1 + j * .1 }); laughF(jonte, L.T); tears(jonte, L.T); hero(jonte);
   classKids(L, [[1, 1]]); const b = put(bela, x + 6, 0, z + 1, -1.2); actuar(b, 0, [[0, { aLx: 1.5, aLe: .8 }]], { T: L.T }); attach(BOX, b.aL.hand, [0, -.6, .4], [0, 0, 0], .9); cara(b, L.T, { expr: 'sad', mouth: 'frown' });

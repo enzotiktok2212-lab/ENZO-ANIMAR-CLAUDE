@@ -265,9 +265,9 @@ function drawBubbleWord(ch, text, k, col = '#ffffff') { bubble(ch, text, k); }
 const bannerSign = (g, k) => { const S = g.userData.sign; S.scale.setScalar(1 + .06 * Math.sin(k * 30) * (1 - k)); };
 
 // 1 «In diether Thtadt»: la carretera de Zischelbach con el pórtico y la señal gigante «S verboten»; Jonte camina hacia cámara mirando la señal; zoom lento hacia ella
-shot(0, 'C', null, L => { town(L); const c = put(jonte, 0, 0, 0, 0); walkTo(c, L, -.8, 38.5, -.4, 41.5); c.root.rotation.y = .05; cara(c, L.T, { expr: 'worried', eyes: 'up' }); holdBag(c); hero(c);
+shot(0, 'C', null, L => { town(L); const c = put(jonte, 0, 0, 0, 0); walkTo(c, L, -.6, 37.5, -.3, 40); c.root.rotation.y = .05; cara(c, L.T, { expr: 'worried', eyes: 'up' }); holdBag(c); hero(c);
   crowdAt(L, 0, 30, 9, 6, 16, 3, { mode: i => ['walk', 'talk', 'walk', 'point'][i % 4], gap: 1.5, dir: PI * .5 }); bannerSign(GAN, L.k);
-  cm([0, 7, 66, 0, 7.4, 36, 50], [0, 7.4, 60, 0, 7.8, 36, 46], L.k, easeOut); sh(V(0, 0, 40), 36); }, [[0, 'whoosh', .5], [.1, 'crowd_murmur', .3], [.5, 'steps', .3]]);
+  cm([0, 2.6, 66, 0, 7.5, 36, 50], [0, 2.8, 59, 0, 7.6, 36, 46], L.k, easeOut); sh(V(0, 0, 40), 36); }, [[0, 'whoosh', .5], [.1, 'crowd_murmur', .3], [.5, 'steps', .3]]);
 // 2 «itht der Buchthtabe S verboten.»: la señal de cerca; la barra roja golpea la S; vibra
 shot(1.05, 'Z', 'punch', L => { town(L); const S = GAN.userData.sign; const k = clamp(L.lt / .35); S.userData.bar.scale.set(easeOut(k), 1, 1); S.rotation.z = Math.sin(L.T * 40) * .03 * (1 - clamp(L.lt / .6));
   crowdAt(L, 0, 26, 6, 6, 12, 5, { mode: 'point', face: V(0, 10, 36), gap: 1.2 });
@@ -318,8 +318,8 @@ shot(11.68, 'W', null, L => { klasseS(L); DOOR.rotation.y = 1.45; const b = put(
 shot(12.74, 'F', null, L => { klasseS(L); const b = put(bela, KLX + 2, 0, 10.8, PI / 2); talk(b, L.T, 12.74, 13.9, 'shock'); actuar(b, 0, [[0, { aLx: .55, aLz: -.25, aLe: .8, aRx: .55, aRz: -.25, aRe: .8, headX: -.08, ...shiver(L.T, .5) }]], { T: L.T }); attach(BOX, b.aL.hand, [.5, -.7, .5], [0, 0, 0], .9); spit(b, L.T, 12.74, 6); tears(b, L.T); hero(b);
   classKids(L, [[1, 1]]); onFace(b, 7.4, -.9, 0, 42, L.k, 6.2); sh(V(KLX + 2, 0, 10.8), 14); }, [[0, 'flash', .3], [.1, 'cry', .5], [.6, 'box_rattle', .4]]);
 // 13 «geklaut!»: plano detalle de la fiambrera vacía con migas; Bela la sacude boca abajo; un queso pinchado en el borde
-shot(13.9, 'C', 'punch', L => { klasseS(L); const b = put(bela, KLX + 2, 0, 10.8, PI / 2); actuar(b, 0, [[0, { aLx: 1.6, aLe: .4, aRx: 1.4, aRe: .6, headX: .2 }]], { T: L.T }); attach(BOX, b.aL.hand, [0, -.6, .4], [PI * .85 + Math.sin(L.T * 20) * .15, 0, 0], 1.1); cara(b, L.T, { expr: 'cry', mouth: 'scream' }); hero(b);
-  dust(wpos(b.aL.hand).add(V(0, -1, 0)), L.t0 + .05, L.T, 8, .3); const hp_ = wpos(b.aL.hand); cm([hp_.x + 4.6, hp_.y + 1.4, hp_.z + .6, hp_.x, hp_.y + .2, hp_.z, 42], [hp_.x + 4, hp_.y + 1.6, hp_.z + .5, hp_.x, hp_.y + .3, hp_.z, 40], L.k); sh(V(KLX + 2, 0, 10.8), 12); DOF = 0; }, [[0, 'impact_soft', .5], [.05, 'box_rattle', .6]]);
+shot(13.9, 'C', 'punch', L => { klasseS(L); const b = put(bela, KLX + 2, 0, 10.8, PI / 2); actuar(b, 0, [[0, { aLx: .8, aLz: -1.0, aLe: .2, aRx: .4, aRz: .3, aRe: .3, headX: .25 }]], { T: L.T }); attach(BOX, b.aL.hand, [0, -.8, .5], [PI * .9 + Math.sin(L.T * 20) * .2, 0, 0], .9); cara(b, L.T, { expr: 'cry', mouth: 'scream' }); tears(b, L.T); hero(b);
+  dust(wpos(b.aL.hand).add(V(0, -1.4, 0)), L.t0 + .05, L.T, 8, .3); onBody(b, 10.5, .35, .12, 44, L.k, 9, null, 4.2); sh(V(KLX + 2, 0, 10.8), 12); }, [[0, 'impact_soft', .5], [.05, 'box_rattle', .6]]);
 // 14 «Ich konnte nicht aufhören zu lachen.»: Jonte en su pupitre se parte de risa y golpea la mesa
 shot(14.95, 'W', null, L => { klasseS(L); const [x, z] = seatAt(1, 1); const j = Math.abs(Math.sin(L.T * 10)); sit(jonte, x, 2.45, z, PI + .25, L, { aLx: 1.2 + j * .4, aRx: 1.2 + j * .4, aLe: 1.4, aRe: 1.4, lean: .2 + j * .15, headX: -.1 + j * .1 }); laughF(jonte, L.T); tears(jonte, L.T); hero(jonte);
   classKids(L, [[1, 1]]); const b = put(bela, x + 6, 0, z + 1, -1.2); actuar(b, 0, [[0, { aLx: 1.5, aLe: .8 }]], { T: L.T }); attach(BOX, b.aL.hand, [0, -.6, .4], [0, 0, 0], .9); cara(b, L.T, { expr: 'sad', mouth: 'frown' });
@@ -384,20 +384,20 @@ shot(22.84, 'W', null, L => { ladenS(L); const c = put(jonte, 0, 0, 0, 0); walkT
   const z = put(zock, ZOX, 0, -9, -.3); actuar(z, 0, [[0, 'wave']], { T: L.T }); cara(z, L.T, { expr: 'happy' }); crowdAt(L, ZOX + 10, 6, 2, 3, 5, 21, { mode: 'talk', from: 12, gap: 2 });
   cm([ZOX + 3, 7, 11, ZOX - 10, 4.4, -1, 48], [ZOX + 2, 6.8, 10, ZOX - 8, 4.4, -1, 46], L.k); sh(ZW(-8, 0, 0), 22); }, [[0, 'door_bell', .6], [.2, 'arcade_bleeps', .4], [.5, 'steps', .3]]);
 // 23 «GTA Thechth kaufen.»: el póster «BALD: GTA 6» brilla; Jonte lo señala ilusionado; un «6» gigante salta
-shot(23.89, 'Z', 'slow', L => { ladenS(L); const c = put(jonte, ZOX + 4.5, 0, -3, PI + .55); actuar(c, 0, [[0, { aRx: 2.5, aRz: -.1, aRe: .2, aLx: .6, aLe: 1.6, lean: -.06, headX: -.3 }]], { T: L.T }); cara(c, L.T, { expr: 'joy', eyes: 'up', mouth: 'open_smile' }); holdBag(c); hero(c);
+shot(23.89, 'Z', 'slow', L => { ladenS(L); const c = put(jonte, ZOX + 1.6, 0, -1.5, PI + .3); actuar(c, 0, [[0, { aRx: 2.5, aRz: -.1, aRe: .2, aLx: .6, aLe: 1.6, lean: -.06, headX: -.3 }]], { T: L.T }); cara(c, L.T, { expr: 'joy', eyes: 'up', mouth: 'open_smile' }); holdBag(c); hero(c);
   badge3('gold', '6', ZW(4, 13.5, -14.8), (L.lt - .45) / .25, 1.6);
-  cm([ZOX - 1, 7.8, 12, ZOX + 2, 6.6, -10, 50], [ZOX - .5, 7.4, 9.5, ZOX + 2, 6.8, -10, 48], L.k); sh(ZW(2, 0, -6), 20); DOF = 0; }, [[0, 'sparkle', .6], [.5, 'ding', .5]]);
+  cm([ZOX - 1, 7.4, 12, ZOX + 2, 5.5, -10, 50], [ZOX - .5, 7.2, 9.5, ZOX + 2, 5.7, -10, 48], L.k); sh(ZW(2, 0, -6), 20); DOF = 0; }, [[0, 'sparkle', .6], [.5, 'ding', .5]]);
 // 24 «„Kann ich GTA Thechth haben, bitte?“»: Jonte en el mostrador, educado, con las manos juntas; el dependiente escucha
 shot(25.33, 'S', null, L => { ladenS(L); const c = put(jonte, ZOX - .4, 0, -2.4, PI); talk(c, L.T, 25.33, 26.87, 'happy'); actuar(c, 0, [[0, { aLx: 1.0, aRx: 1.0, aLz: -.35, aRz: -.35, aLe: 1.4, aRe: 1.4, lean: .08, headZ: .1 }]], { T: L.T }); spit(c, L.T, 25.33, 6); holdBag(c);
   const z = put(zock, ZOX + .4, 0, -9.4, 0); actuar(z, 0, [[0, 'listen']], { T: L.T }); cara(z, L.T, { expr: 'confused' }); hero(c, z);
-  cm([ZOX + 10, 8.8, -3.6, ZOX, 5, -5.9, 44], [ZOX + 9, 8.4, -4.2, ZOX, 5, -5.9, 42], L.k); sh(ZW(0, 0, -5), 18); }, [[0, 'tape', .3], [.4, 'arcade_bleeps', .3]]);
+  cm([ZOX + 5.5, 7.6, -13.5, ZOX - .4, 4.6, -2.4, 44], [ZOX + 5, 7.4, -12.5, ZOX - .4, 4.7, -2.4, 42], L.k); sh(ZW(0, 0, -5), 18); }, [[0, 'tape', .3], [.4, 'arcade_bleeps', .3]]);
 // 25 «Der Verkäufer thagte:»: el dependiente se quita un auricular, se inclina sobre el mostrador
 shot(26.87, 'C', null, L => { ladenS(L); const z = put(zock, ZOX + .4, 0, -9, .12); actuar(z, 0, [[0, { aRx: .9, aLx: .9, aRz: -.3, aLz: -.3, aLe: .5, aRe: .5, lean: .18 }]], { T: L.T }); talk(z, L.T, 26.87, 28.1, 'sad'); hero(z);
-  onBody(z, 10, .15, .06, 42, L.k, 8.6, null, 4.8); sh(ZW(0, 0, -8), 14); }, [[0, 'thump', .4], [.3, 'headset_off', .4]]);
+  onBody(z, 10, .15, .26, 42, L.k, 8.6, null, 5.4); sh(ZW(0, 0, -8), 14); }, [[0, 'thump', .4], [.3, 'headset_off', .4]]);
 // 26 «„Tut mir leid, wir haben nur GTA Fünf.“»: se encoge de hombros con una caja de GTA 5 en la mano
 shot(28.1, 'F', null, L => { ladenS(L); const z = put(zock, ZOX + .4, 0, -9, .2); talk(z, L.T, 28.1, 29.28, 'sad'); actuar(z, 0, [[0, { aRx: 1.35, aRz: -.25, aRe: .25, aLx: .3, aLz: .5, aLe: 1.6, headZ: .12, sx: .05 }]], { T: L.T }); attach(GAME, z.aR.hand, [0, -.9, .4], [-1.2, 0, 0], 1.3); hero(z);
   const c = put(jonte, ZOX - .8, 0, -2.4, PI - .1); actuar(c, 0, [[0, 'idle']], { T: L.T }); cara(c, L.T, { expr: 'shock', mouth: 'o' });
-  cm([ZOX + 6.5, 7.6, -2.6, ZOX + .4, 5.2, -9, 42], [ZOX + 5.6, 7.3, -3.4, ZOX + .4, 5.2, -9, 40], L.k); sh(ZW(0, 0, -7), 14); }, [[0, 'flash', .3], [.2, 'plastic_box', .5], [.6, 'sad_trombone', .3]]);
+  cm([ZOX + 5, 9.4, -1.5, ZOX + .4, 5.6, -9, 42], [ZOX + 4.4, 9.1, -2.4, ZOX + .4, 5.6, -9, 40], L.k); sh(ZW(0, 0, -7), 14); }, [[0, 'flash', .3], [.2, 'plastic_box', .5], [.6, 'sad_trombone', .3]]);
 // 27 «nur GTA Fünf.»: toda la estantería llena de cajas de GTA 5; un «5» rojo salta; el dependiente la presenta con los brazos
 shot(29.28, 'W', 'punch', L => { ladenS(L); const z = put(zock, ZOX + 12.5, 0, 4, -2.3); actuar(z, 0, [[0, { aLx: 1.4, aLz: .6, aLe: .3, aRx: .4 }]], { T: L.T }); cara(z, L.T, { expr: 'happy', mouth: 'grin' }); hero(z);
   badge3('red', 'GTA 5', ZW(19, 15, -2), (L.lt - .1) / .2, 1.3);
