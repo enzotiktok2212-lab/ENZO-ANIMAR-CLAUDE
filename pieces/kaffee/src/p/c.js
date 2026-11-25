@@ -3,8 +3,8 @@ const SAC = V(SAX, 0, -4);   // sillón central del salón
 const DROP = P_(sphere(.16, mat(0x6a3a1a, { roughness: .1, emissive: 0x2a1204, emissiveIntensity: .3 }), scene, 0, 0, 0, 10, 8));
 // 44 «Meine Friseurin»: Jacky en su salón cortando el pelo a una clienta, tijeras en una mano
 shot(65.30, 'W', null, L => { salonS(L); const cl = sit2(CR[23], SAX, -4, PI, 3.0); actuar(cl, 0, [[0, sitPose({ aLx: .4, aRx: .4 })]], { T: L.T, weight: false }); cara(cl, L.T, { expr: 'happy', mouth: 'smile' });
-  const j = put(jacky, SAX + 2.6, 0, -1.6, PI + .9); actuar(j, 0, [[0, { aRx: 2.0 + Math.sin(L.T * 14) * .12, aRz: .5, aRe: 1.0, aLx: 1.6, aLz: .3, aLe: 1.2, lean: .08 }]], { T: L.T }); cara(j, L.T, { expr: 'happy', mouth: 'talk' });
-  orbit(V(SAX + 1, 5.2, -3), lerp(14, 12, L.k), .5, .12, 44); sh(V(SAX, 0, -3), 16); }, [[0, 'scissors', .6], [.4, 'scissors', .6], [.8, 'hairdryer', .3]]);
+  const j = put(jacky, SAX - 2.6, 0, -1.6, -.6); actuar(j, 0, [[0, { aRx: 2.0 + Math.sin(L.T * 14) * .12, aRz: .5, aRe: 1.0, aLx: 1.6, aLz: .3, aLe: 1.2, lean: .08 }]], { T: L.T }); cara(j, L.T, { expr: 'happy', mouth: 'talk' });
+  orbit(V(SAX - 1, 5.2, -3), lerp(12, 10.5, L.k), -.5, .12, 44); sh(V(SAX, 0, -3), 16); }, [[0, 'scissors', .6], [.4, 'scissors', .6], [.8, 'hairdryer', .3]]);
 // 45 «trinkt nur Jacobs Krönung.»: Jacky deja las tijeras, coge su taza y bebe; el paquete JACOBS KRÖNUNG en primer término
 shot(66.06, 'C', null, L => { salonS(L); const j = put(jacky, SAX + 2.6, 0, 1.2, PI + .6); drink(j, L, L.t0 + .05, .5, { meter: true, expr: 'happy', after: 'joy', steam: 1 }); show(PACKS.JACOBS[0], SAX + 4.8, 0, 3.6, -.4 + PI, 1.5);
   dcam(j, L.k, 11, -.7, 5, 42); sh(V(SAX + 3, 0, 2), 16); }, [[0, 'sip', .6], [.6, 'aah', .4]]);
@@ -16,24 +16,24 @@ shot(69.47, 'S', null, L => { salonS(L); const j = put(jacky, SAX - 2, 0, 1.2, P
   for (let i = 0; i < 9; i++) { const t = CUPS[i]; show(t, SAX - 9 + (i % 5) * 1.3, 3.55 + (i / 5 | 0) * 1.2, -13, i, .8); t.userData.level(0); } badge('num', L.lt < .7 ? '9' : '10', W / 2, H * .2, clamp(L.lt / .15), 1, 1.2);
   dcam(j, L.k, 11, -.85, 5, 42); sh(V(SAX - 2, 0, 0), 16); }, [[0, 'sip', .5], [.7, 'beep', .6], [.75, 'sparkle', .4]]);
 // 48 «schenkt dir der Zähler eine goldene Krone,»: ¡pling! una corona de oro cae del cielo y aterriza en la cabeza de Jacky; ella abre la boca
-shot(70.63, 'C', 'punch', L => { salonS(L); const j = put(jacky, SAX, 0, 1.2, PI); actuar(j, L.lt, [[0, {}], [.5, { aLx: 2.4, aRx: 2.4, aLz: .5, aRz: .5, aLe: 1.6, aRe: 1.6 }, { dur: .3 }]], { T: L.T }); cara(j, L.T, { expr: L.lt < .5 ? 'happy' : 'shock', mouth: L.lt < .5 ? 'smile' : 'o' });
+shot(70.63, 'C', 'punch', L => { salonS(L); const j = put(jacky, SAX, 0, 1.2, 0); actuar(j, L.lt, [[0, {}], [.5, { aLx: 2.4, aRx: 2.4, aLz: .5, aRz: .5, aLe: 1.6, aRe: 1.6 }, { dur: .3 }]], { T: L.T }); cara(j, L.T, { expr: L.lt < .5 ? 'happy' : 'shock', mouth: L.lt < .5 ? 'smile' : 'o' });
   const k = easeIn(clamp(L.lt / .45)); const cr = CROWNS[2]; const h = hp(j); show(cr, h.x, h.y + 1.25 + (1 - k) * 9, h.z, L.T * (1 - k) * 4, .95); confetti(h, L.t0 + .45, L.T, 30, .6);
   onFace(j, 7.2, 1.8, 0, 42, L.k); sh(V(SAX, 0, 1), 14); }, [[0, 'whoosh_down', .5], [.45, 'ding_big', .7], [.5, 'sparkle', .5]]);
 // 49 «tausend Euro wert.»: la corona en primer plano gira con su etiqueta «1.000 €»; billetes alrededor
-shot(72.51, 'F', null, L => { salonS(L); const j = put(jacky, SAX, 0, 1.2, PI); actuar(j, 0, [[0, { aLx: 2.6, aLz: .3, aLe: 1.8 }]], { T: L.T }); grin(j, L.T); const h = hp(j); show(CROWNS[2], h.x, h.y + 1.25, h.z, 0, .95);
+shot(72.51, 'F', null, L => { salonS(L); const j = put(jacky, SAX, 0, 1.2, 0); actuar(j, 0, [[0, { aLx: 2.6, aLz: .3, aLe: 1.8 }]], { T: L.T }); grin(j, L.T); const h = hp(j); show(CROWNS[2], h.x, h.y + 1.25, h.z, 0, .95);
   cashPop(j, '1.000 €', clamp(L.lt / .2), 'gold', 1.4, 3.4); billRain(V(SAX, 0, 1), L.T, 40, 14, 8, 14); onFace(j, 6.6, 1.6, .5, 40, L.k); sh(V(SAX, 0, 1), 14); }, [[0, 'cha_ching', .6], [.3, 'money_rain', .5]]);
 // 50 «Sie hat schon sieben»: Jacky con SIETE coronas apiladas en la cabeza, haciendo equilibrio, orgullosa; las clientas aplauden
-shot(74.01, 'W', null, L => { salonS(L); const j = put(jacky, SAX, 0, 1.2, PI); actuar(j, 0, [[0, { aLx: .9, aLz: .9, aRx: .9, aRz: .9, aLe: .4, aRe: .4, headZ: Math.sin(L.T * 3) * .06 }]], { T: L.T }); grin(j, L.T); const h = hp(j);
+shot(74.01, 'W', null, L => { salonS(L); const j = put(jacky, SAX, 0, 1.2, 0); actuar(j, 0, [[0, { aLx: .9, aLz: .9, aRx: .9, aRz: .9, aLe: .4, aRe: .4, headZ: Math.sin(L.T * 3) * .06 }]], { T: L.T }); grin(j, L.T); const h = hp(j);
   for (let i = 0; i < 7; i++) show(CROWNS[i], h.x + Math.sin(L.T * 3 + i * .5) * .05 * i, h.y + 1.25 + i * .62 * Math.min(1, L.lt * 3 - i * .15 + 1), h.z, i * .5, .95 - i * .03);
   badge('num', '7 KRONEN', W / 2, H * .17, clamp(L.lt / .2), 1, 1); crowdAt(L, SAX, 0, 4, 6, 10, 50, { mode: 'clap', face: V(SAX, 5, 1), gap: 1.6 });
-  orbit(V(SAX, 8, 1.2), lerp(17, 15, L.k), PI + .25, .1, 44); sh(V(SAX, 0, 1), 16); }, [[0, 'clap', .5], [.3, 'ding', .4], [.6, 'ding', .4], [.9, 'ding', .4]]);
+  orbit(V(SAX, 8, 1.2), lerp(15, 13, L.k), .25, .1, 44); sh(V(SAX, 0, 1), 16); }, [[0, 'clap', .5], [.3, 'ding', .4], [.6, 'ding', .4], [.9, 'ding', .4]]);
 // 51 «und sich davon einen Salon in Paris gekauft.»: nuevo salón rosa en París con la Torre Eiffel en la ventana; Jacky con boina saluda con las coronas puestas
 shot(75.57, 'F', null, L => { salonS(L, 1); const j = put(jacky, SPX + 6, 0, 2, -PI / 2 - .5); actuar(j, 0, [[0, 'wave']], { T: L.T }); laughF(j, L.T); const h = hp(j); for (let i = 0; i < 3; i++) show(CROWNS[i], h.x, h.y + 1.25 + i * .6, h.z, i, .9);
   badge('tag', 'PARIS', W / 2, H * .18, clamp(L.lt / .2), 1, 1.1); confRain(V(SPX + 6, 2, 2), L.T, 30, 14, 8, 14); orbit(V(SPX + 10, 7, 0), lerp(20, 17, L.k), -PI / 2 + .35, .1, 46); sh(V(SPX + 8, 0, 0), 20); }, [[0, 'accordion', .5], [.4, 'kiss', .4], [.9, 'sparkle', .4]]);
 // 52 «Mein Zahnarzt brüht nur mit Melitta.»: en la consulta, el Dr. Brenner vierte agua caliente en el filtro rojo de Melitta sobre la cafetera; vapor
 shot(77.30, 'W', null, L => { zahnS(L); const d = put(brenner, ZAX - 4, 0, -2, .3); actuar(d, 0, [[0, { aRx: 1.5, aRz: .1, aRe: 1.0, aLx: .9, aLe: 1.2, lean: .05 }]], { T: L.T }); cara(d, L.T, { expr: 'happy', mouth: 'smile' });
   const K = KAN[1]; show(K, ZAX - 3.4, 3.6, 1.2, 0, 1); K.userData.level(clamp(.2 + L.lt * .3)); K.userData.steam(L.T, 1); show(FILT, ZAX - 3.4, 6.1, 1.2, 0, 1); show(PACKS.MELITTA[0], ZAX - 6, 3.6, 1.6, .3, 1.1);
-  const cu = CUPS[11]; attach(cu, d.aR.hand, [-.84, -.2, -.72], [PI / 2 + .7, 0, 0], .9); cu.userData.level(0); orbit(V(ZAX - 3.6, 5.4, 0), lerp(13, 11, L.k), .35, .14, 42); sh(V(ZAX - 3, 0, 0), 16); }, [[0, 'pour', .6], [.6, 'drip', .5], [1.2, 'steam', .4]]);
+  const cu = CUPS[11]; attach(cu, d.aR.hand, [-.84, -.2, -.72], [PI / 2 + .7, 0, 0], .9); cu.userData.level(0); CAMK = 1; orbit(V(ZAX - 3.6, 5.4, 0), lerp(12, 10.5, L.k), .1, .14, 42); sh(V(ZAX - 3, 0, 0), 16); }, [[0, 'pour', .6], [.6, 'drip', .5], [1.2, 'steam', .4]]);
 // 53 «Wusstest du,»: el dentista mira a cámara con el dedo índice levantado, como contando un secreto
 shot(79.52, 'C', 'punch', L => { zahnS(L); const d = put(brenner, ZAX, 0, 2, 0); actuar(d, L.lt, [[0, {}], [.05, { aRx: 2.0, aRz: -.1, aRe: 1.8, lean: .06 }, { dur: .25 }]], { T: L.T }); talk(d, L.T, L.t0, L.t1, 'smug');
   onFace(d, 5.4, .3, .5, 38, L.k); sh(V(ZAX, 0, 2), 12); }, [[0, 'ding_reveal', .5]]);
@@ -65,7 +65,7 @@ shot(89.28, 'W', null, L => { zahnS(L); const d = sit2(brenner, ZAX - 8, 2, .3, 
   orbit(V(ZAX - 8, 4.6, 2), lerp(12, 10.5, L.k), .6, .14, 42); sh(V(ZAX - 8, 0, 2), 14); }, [[0, 'sip', .5], [.8, 'phone_tap', .4]]);
 // 61 «hat er sich aus Versehen»: primer plano del pulgar que, al dar un sorbo, toca sin querer el botón «KAUFEN»: ¡clic! «GEKAUFT»
 shot(90.66, 'C', 'punch', L => { zahnS(L); const d = sit2(brenner, ZAX - 8, 2, .3, 2.8); drink(d, L, L.t0 - .1, .35, { sit: true, pose: { ...SITP, aLx: 1.2, aLe: 1.4 }, expr: 'happy', after: 'shock', afterMouth: 'o' }); const k = L.lt > .45;
-  attach(PHONE, d.aL.hand, [0, -.6, .5], [-.4, 0, 0], .9); PHONE.userData.draw(c => { c.fillStyle = k ? '#1a8a3a' : '#1a4ab8'; c.fillRect(0, 0, 300, 560); txt(c, 'MS ESPRESSO', 150, 140, 38, '#ffffff'); txt(c, k ? 'GEKAUFT!' : '', 150, 280, 48, '#ffd23f'); c.fillStyle = '#ffd23f'; c.beginPath(); c.roundRect(40, 380, 220, 100, 26); c.fill(); txt(c, 'KAUFEN', 150, 432, 44, '#1a1a1a'); });
+  const hw = wpos(d.aL.hand); show(PHONE, hw.x + .2, hw.y + .8, hw.z + .4, .35, .9); PHONE.rotation.x = -.3; PHONE.userData.draw(c => { c.fillStyle = k ? '#1a8a3a' : '#1a4ab8'; c.fillRect(0, 0, 300, 560); txt(c, 'MS ESPRESSO', 150, 140, 38, '#ffffff'); txt(c, k ? 'GEKAUFT!' : '', 150, 280, 48, '#ffd23f'); c.fillStyle = '#ffd23f'; c.beginPath(); c.roundRect(40, 380, 220, 100, 26); c.fill(); txt(c, 'KAUFEN', 150, 432, 44, '#1a1a1a'); });
   const w = wpos(PHONE); cm([w.x + 1.6, w.y + 2.2, w.z + 4.4, w.x, w.y, w.z, 34], [w.x + 1.2, w.y + 1.8, w.z + 3.6, w.x, w.y, w.z, 32], L.k); sh(V(ZAX - 8, 0, 2), 12); DOF = 1.4; }, [[0, 'sip', .4], [.45, 'click', .7], [.5, 'cha_ching', .5]]);
 // 62 «ein Kreuzfahrtschiff gekauft.»: el MS ESPRESSO en alta mar, enorme; el dentista en la proa con la bata al viento, saludando, y la bocina retumba
 shot(91.56, 'F', null, L => { meerS(L); SCHIFF.position.y = Math.sin(L.T * 1.2) * .3; const d = put(brenner, MEX, 15.8, 28, 0); d.blob.visible = false; actuar(d, 0, [[0, 'wave']], { T: L.T }); laughF(d, L.T);
@@ -75,7 +75,7 @@ shot(93.20, 'Z', null, L => { town(L, { morning: 1 }); crowdAt(L, 0, -40, 10, 4,
   cm([0, 30, 40, 0, 20, -150, 50], [0, 40, -10, 0, 30, -150, 46], L.k); sh(V(0, 0, -40), 50); }, [[0, 'whoosh_up', .5], [.4, 'church_bell', .6]]);
 // 64 «Unser Pfarrer.»: el Pfarrer Lindemann ante el portal de la catedral, con los brazos abiertos, rodeado de billetes que caen; feligreses
 shot(94.35, 'C', 'punch', L => { town(L, { morning: 1 }); const p = put(pfarrer, 0, 0, -128, 0); actuar(p, 0, [[0, { aLx: 2.2, aRx: 2.2, aLz: .9, aRz: .9, aLe: .3, aRe: .3 }]], { T: L.T }); laughF(p, L.T); billRain(V(0, 0, -128), L.T, 50, 16, 8, 14);
-  badge('tag', 'PFARRER LINDEMANN', W / 2, H * .18, clamp(L.lt / .2), 1, 1); crowdAt(L, 0, -118, 6, 5, 10, 54, { mode: 'clap', face: V(0, 5, -128), gap: 1.6 }); orbit(V(0, 6, -128), lerp(17, 15, L.k), 0, .14, 44); sh(V(0, 0, -126), 20); }, [[0, 'church_bell', .5], [.2, 'cha_ching', .5]]);
+  badge('tag', 'PFARRER LINDEMANN', W / 2, H * .18, clamp(L.lt / .2), 1, 1); crowdAt(L, 0, -118, 6, 5, 10, 54, { mode: 'clap', face: V(0, 5, -128), gap: 1.6 }); CAMK = 1; orbit(V(0, 6, -128), lerp(9, 8, L.k), 0, .14, 44); sh(V(0, 0, -126), 20); }, [[0, 'church_bell', .5], [.2, 'cha_ching', .5]]);
 // 65 «Er trinkt sogar während der Predigt.»: en la Kanzel, sermoneando con una mano en alto… y con la otra da un sorbo a su taza; los fieles en los bancos
 shot(95.17, 'W', null, L => { kircheS(L); const p = put(pfarrer, KIX - 11, 9.2, -10, .5); p.blob.visible = false; drink(p, L, L.t0 + .7, .4, { pose: { aLx: 2.6, aLz: .3, aLe: .4 }, meter: true, expr: 'happy' }); if (L.lt < .7) talk(p, L.T, L.t0, L.t0 + .7, 'happy');
   POST.push(() => { const l = CR.filter(c => !c.root.visible); let i = 0; for (const z of [2, 6.6, 11.2]) for (const s of [-1, 1]) for (const dx of [-2.6, 2.6]) { const c = l[i++]; if (!c) continue; sit2(c, KIX + s * 9 + dx, z, PI, 2.5); actuar(c, 0, [[0, sitPose({ aLx: .6, aRx: .6, aLe: 1.2, aRe: 1.2 })]], { T: L.T, weight: false }); cara(c, L.T + i, { expr: 'happy' }); } });
@@ -91,8 +91,8 @@ shot(98.38, null, 'slow', L => { kircheS(L, { night: 1 }); const p = sit2(pfarre
 shot(99.77, 'C', null, L => { town(L, { dusk: 1 }); const t = put(trick, -38, 0, -50, PI / 2); actuar(t, 0, [[0, { ...GEST.sneak, headY: Math.sin(L.T * 5) * .7 }]], { T: L.T }); cara(t, L.T, { expr: 'sus', mouth: 'smirk' }); show(BUCKET, -36.6, 0, -48.8, 0, 1.2);
   orbit(V(-37, 4.6, -50), lerp(11, 9.5, L.k), PI / 2 + .3, .12, 42); sh(V(-37, 0, -50), 14); }, [[0, 'sneak', .6], [.3, 'suspense_pluck', .4]]);
 // 69 «Lieber nicht.»: un policía en la esquina mueve el dedo índice: «no, no»
-shot(100.50, 'W', 'punch', L => { town(L, { dusk: 1 }); const c = put(COPS[0], -30, 0, -40, -.6); actuar(c, 0, [[0, { aRx: 2.0, aRz: -.1, aRe: 1.8, aLx: .3 }]], { T: L.T, extra: { aRz: -.1 + Math.sin(L.T * 14) * .25 } }); cara(c, L.T, { expr: 'smug', mouth: 'smirk' });
-  onFace(c, 5.6, .4, .6, 40, L.k); sh(V(-30, 0, -40), 12); }, [[0, 'tsk', .6]]);
+shot(100.50, 'W', 'punch', L => { town(L, { dusk: 1 }); const c = put(COPS[0], -22, 0, -28, -.6); actuar(c, 0, [[0, { aRx: 2.0, aRz: -.1, aRe: 1.8, aLx: .3 }]], { T: L.T, extra: { aRz: -.1 + Math.sin(L.T * 14) * .25 } }); cara(c, L.T, { expr: 'smug', mouth: 'smirk' });
+  onFace(c, 5.6, .4, .6, 40, L.k); sh(V(-22, 0, -28), 12); }, [[0, 'tsk', .6]]);
 // 70 «Neulich hat einer braunes Wasser in seine Tasse gefüllt.»: el tramposo vierte agua de una jarra en su taza y la tiñe con pintura marrón del cubo
 shot(101.40, 'S', null, L => { town(L, { dusk: 1 }); const t = put(trick, -38, 0, -50, PI / 2 - .3); const k = clamp(L.lt / 1.2); actuar(t, 0, [[0, { aRx: 1.4, aRz: -.2, aRe: .8, aLx: 1.2, aLz: .2, aLe: 1.2, lean: .1 }]], { T: L.T }); cara(t, L.T, { expr: 'sus', mouth: 'smirk' });
   attach(WATERJUG, t.aR.hand, [-.3, -.5, -.6], [PI / 2 + .8 * k, 0, 0], .9); const cu = CUPS[12]; attach(cu, t.aL.hand, [.84, -.2, -.72], [PI / 2, 0, 0], .9); cu.userData.level(k * .8); show(BUCKET, -36.4, 0, -48.6, 0, 1.2);

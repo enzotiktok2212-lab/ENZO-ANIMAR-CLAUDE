@@ -51,10 +51,10 @@ shot(54.96, 'S', null, L => { town(L, { morning: 1 }); const c = put(CR[20], 0, 
   if (L.lt > .9) badge('red', 'X  0 €', W / 2, H * .22, clamp((L.lt - .9) / .2), 1, 1.1); crowdAt(L, 0, 6, 6, 7, 13, 38, { mode: 'drink', gap: 1.4 });
   dcam(c, L.k, 10, -.9, 5.2, 42); sh(V(0, 0, 14), 16); }, [[0, 'sip', .5], [.9, 'error_buzz', .6]]);
 // 38 «Und das Verrückte:»: Jacky, la peluquera, se gira hacia cámara con una sonrisa traviesa y la ceja levantada
-shot(57.44, 'C', 'punch', L => { town(L, { morning: 1 }); const c = put(jacky, 14, 0, 10, -.2); actuar(c, L.lt, [[0, {}], [.1, 'lean_in', { dur: .3 }]], { T: L.T }); cara(c, L.T, { expr: 'smug', eyes: 'squint', mouth: 'smirk' });
-  crowdAt(L, 14, 2, 6, 6, 12, 40, { mode: 'drink', gap: 1.6 }); onFace(c, 5.6, .4, -.6, 40, L.k); sh(V(14, 0, 10), 14); }, [[0, 'whoosh', .4], [.2, 'ding_reveal', .4]]);
+shot(57.44, 'C', 'punch', L => { town(L, { morning: 1 }); const c = put(jacky, 4, 0, 16, -.2); actuar(c, L.lt, [[0, {}], [.1, 'lean_in', { dur: .3 }]], { T: L.T }); cara(c, L.T, { expr: 'smug', eyes: 'squint', mouth: 'smirk' });
+  crowdAt(L, 4, 8, 6, 6, 12, 40, { mode: 'drink', gap: 1.6 }); onFace(c, 5.6, .4, -.6, 40, L.k); sh(V(4, 0, 16), 14); }, [[0, 'whoosh', .4], [.2, 'ding_reveal', .4]]);
 // 39 «Der beste ist nicht der teuerste.»: un señor de traje bebe de una taza de oro con etiqueta de 39,99 €: su reloj da +1 €; a su lado un abuelo con su taza normal recibe una lluvia
-shot(58.36, 'W', null, L => { town(L, { morning: 1 }); const a = put(CR[21], -4, 0, 12, .25), b = put(REN[2], 4, 0, 12, -.25); const g = CUPS[10]; g.traverse(o => { if (o.isMesh && o.material && o.material.color && !o.userData.noOutline) {} });
+shot(58.36, 'W', null, L => { town(L, { morning: 1 }); const a = put(CR[21], -2.4, 0, 12, .35), b = put(REN[2], 2.4, 0, 12, -.35); const g = CUPS[10]; g.traverse(o => { if (o.isMesh && o.material && o.material.color && !o.userData.noOutline) {} });
   drink(a, L, L.t0 + .1, .35, { meter: true, expr: 'smug', after: 'sad', afterMouth: 'frown' }); meterOf(a).userData.set('1 Tasse', '+1 €', '#ff8a4a'); drink(b, L, L.t0 + .15, .35, { meter: true, expr: 'happy', after: 'joy' }); meterOf(b).userData.set('1 Tasse', '+24 €');
   badge('tag', '39,99 €', W * .3, H * .3, clamp(L.lt / .2), 1, .8); badge('tag', '4,99 €', W * .7, H * .3, clamp((L.lt - .2) / .2), 1, .8); if (L.lt > .8) billFall(V(4, 0, 12), L.t0 + .8, L.T, 30, 6, 4, 10);
   orbit(V(0, 5.4, 12), lerp(14, 12, L.k), 0, .1, 44); sh(V(0, 0, 12), 16); }, [[0, 'sip', .4], [.7, 'error_buzz', .4], [.8, 'money_rain', .6]]);
@@ -63,7 +63,7 @@ shot(60.08, 'Z', null, L => { tchiboS(L); crowdAt(L, TLX, 0, 5, 4, 9, 42, { mode
   cm([TLX - 3, 6.5, 6, TLX, 5.2, -13, 46], [TLX - 1.5, 6, -1, TLX, 5.4, -13, 40], L.k); sh(V(TLX, 0, -6), 20); DOF = 0; }, [[0, 'shop_bell', .6], [.4, 'whoosh_soft', .3]]);
 // 41 «Kostet wenig,»: en la caja, un abuelo paga el paquete con una moneda y la cajera sonríe: 4,99 €
 shot(61.22, 'C', null, L => { tchiboS(L); const k = put(CR[22], TLX + 10, 0, -6.4, 0); actuar(k, 0, [[0, { aRx: 1.1, aRe: .6 }]], { T: L.T }); cara(k, L.T, { expr: 'happy', mouth: 'smile' }); const c = put(REN[0], TLX + 10, 0, 0, PI); actuar(c, L.lt, [[0, { aRx: .4 }], [.1, { aRx: 1.3, aRe: .4 }, { dur: .3 }]], { T: L.T }); grin(c, L.T);
-  show(PACKS.TCHIBO[0], TLX + 9, 4.5, -3.8, .3, 1); badge('gold', '4,99 €', W / 2, H * .22, clamp(L.lt / .2), 1, 1.1); orbit(V(TLX + 10, 5, -3), lerp(12, 10.5, L.k), PI / 2 + .6, .14, 42); sh(V(TLX + 10, 0, -3), 14); }, [[0, 'register', .6], [.2, 'coins', .5]]);
+  show(PACKS.TCHIBO[0], TLX + 9, 4.5, -3.8, .3, 1); badge('gold', '4,99 €', W / 2, H * .22, clamp(L.lt / .2), 1, 1.1); CAMK = 1; orbit(V(TLX + 10, 5, -3), lerp(8.5, 7.5, L.k), PI / 2 - .3, .14, 42); sh(V(TLX + 10, 0, -3), 14); }, [[0, 'register', .6], [.2, 'coins', .5]]);
 // 42 «schmeckt wie im Café,»: en casa, el abuelo prepara la taza, la huele, cierra los ojos de gusto; al fondo se ve un café elegante como en un sueño
 shot(61.75 + .6, 'W', null, L => { cafe(L); const c = put(REN[0], CIX + 4, 0, 4, -.2); drink(c, L, L.t0 + .1, .4, { expr: 'warm', after: 'joy', steam: 1 }); confRain(V(CIX + 4, 2, 4), L.T, 20, 8, 6, 10);
   onFace(c, 5.6, .6, -1.2, 40, L.k); sh(V(CIX + 4, 0, 4), 14); }, [[0, 'sniff', .5], [.2, 'sip', .5], [.6, 'aah_old', .5]]);

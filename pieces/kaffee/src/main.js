@@ -129,7 +129,7 @@ function inside(h = 1.0, fill = 50) { MODE = 'in'; renderer.toneMappingExposure 
 function hideAll() {
   for (const c of POOL) { c.root.visible = false; c.head.visible = true; c.root.rotation.order = 'XYZ'; c.root.rotation.set(0, 0, 0); c.root.scale.setScalar(c.spec.scale || 1); applyPose(c, {}); c.setFace({}); if (c.root.parent !== scene) { c.root.parent.remove(c.root); scene.add(c.root); } c.blob.visible = true; }
   for (const p of PROPS) { p.visible = false; p.rotation.order = 'XYZ'; p.rotation.set(0, 0, 0); p.scale.setScalar(1); if (p.parent !== scene) { p.parent.remove(p); scene.add(p); } }
-  for (const k in SETS) SETS[k].visible = false; for (const m of METERS.values()) m.visible = false; TAFEL.visible = false; BEANS.visible = false; STACK.visible = false; RT.TRAM.visible = false; HUD = null; FX2D.length = 0; FACES.length = 0; ZA.LL.visible = false; resetProps();
+  for (const k in SETS) SETS[k].visible = false; for (const m of METERS.values()) m.visible = false; TAFEL.visible = false; BEANS.visible = false; STACK.visible = false; RT.TRAM.visible = false; HUD = null; FX2D.length = 0; FACES.length = 0; ZA.LL.visible = false; resetProps(); CAMK = 1.3;
   FILL.color.setRGB(1, .96, .91); sun.color.setRGB(1, .95, .86); grade.uniforms.vig.value = .4; grade.uniforms.flash.value = 0; grade.uniforms.lift.value = 0; grade.uniforms.sat.value = 1.2; grade.uniforms.sharp.value = .5; grade.uniforms.sepia.value = 0; DARK = 0; TINT = null; BIRDSON = 1; SHAKE = 0; DOF = 1; day(); }
 
 // estado de atrezo que un plano puede cambiar: se restablece en cada fotograma (render determinista en cualquier orden)
@@ -139,7 +139,8 @@ const use = (...n) => { for (const k of n) SETS[k].visible = true; };
 function put(ch, x, y, z, ry = 0) { ch.root.visible = true; ch.root.position.set(x, y, z); ch.root.rotation.set(0, ry, 0); return ch; }
 const show = (o, x, y, z, ry = 0, s = 1) => { o.visible = true; o.position.set(x, y, z); o.rotation.set(0, ry, 0); o.scale.setScalar(s); return o; };
 const attach = (obj, parent, p = [0, 0, 0], r = [0, 0, 0], s = 1) => { parent.add(obj); obj.position.set(...p); obj.rotation.set(...r); obj.scale.setScalar(s); obj.visible = true; return obj; };
-function cam(p, t, fov = 50) { CAMT.set(...t); camera.position.set(...p); camera.up.set(0, 1, 0); camera.lookAt(...t); camera.fov = fov; }
+let CAMK = 1.3; // revisión: todas las cámaras se alejan del objetivo (1 = sin cambio)
+function cam(p, t, fov = 50) { CAMT.set(...t); p = [0, 1, 2].map(i => t[i] + (p[i] - t[i]) * CAMK); camera.position.set(...p); camera.up.set(0, 1, 0); camera.lookAt(...t); camera.fov = fov; }
 function cm(a, b, k, e = easeInOut) { const q = e(clamp(k)), L = i => lerp(a[i], b[i], q); cam([L(0), L(1), L(2)], [L(3), L(4), L(5)], lerp(a[6] ?? 50, b[6] ?? 50, q)); }
 // órbita: cámara a distancia d del centro c, ángulo yaw (0 = desde +z), pitch (arriba +); el centro queda al ~42 % de la altura
 function orbit(c, d, yaw = 0, pitch = .15, fov = 44) { const t = Math.tan(fov * Math.PI / 360) * d * .16; cam([c.x + Math.sin(yaw) * Math.cos(pitch) * d, c.y + Math.sin(pitch) * d, c.z + Math.cos(yaw) * Math.cos(pitch) * d], [c.x, c.y - t, c.z], fov); }
@@ -202,7 +203,7 @@ function crowdGuy(c, x, z, L, i, o) { const T = L.T + i * .37, face = o.face || 
   else if (['drink', 'prost', 'sitdrink', 'sitprost', 'sithold'].includes(m)) crowdDrink(c, x, z, L, i, o, m);
   else { actuar(c, 0, [[0, { headX: Math.sin(L.T * 1.3 + i) * .06, headY: Math.sin(L.T * .9 + i * 2) * .2, aLx: .1 + Math.sin(L.T * 2 + i) * .08 }]], { T: L.T }); cara(c, T, { expr: o.expr || 'neutral', mouth: o.mouth }); } }
 // plano medio/entero de un personaje: cámara delante (yaw relativo a su ry), centro a la altura del pecho
-function onBody(ch, dist, yaw = 0, pitch = .12, fov = 42, k = 0, dist2 = null, yaw2 = null, dy = 3.3) { const s = ch.spec.scale || 1, p = ch.root.position, c = V(p.x, p.y + dy * s, p.z); const q = easeInOut(clamp(k)); orbit(c, lerp(dist, dist2 ?? dist * .88, q) * s, ch.root.rotation.y + lerp(yaw, yaw2 ?? yaw, q), pitch, fov); }
+function onBody(ch, dist, yaw = 0, pitch = .12, fov = 42, k = 0, dist2 = null, yaw2 = null, dy = 3.3) { const s = ch.spec.scale || 1, p = ch.root.position; if (Math.abs(p.x) > 30 && Math.abs(p.x) < 60 && Math.sin(ch.root.rotation.y + yaw) * p.x > 0) { yaw = -yaw; if (yaw2 != null) yaw2 = -yaw2; } const c = V(p.x, p.y + dy * s, p.z); const q = easeInOut(clamp(k)); orbit(c, lerp(dist, dist2 ?? dist * .88, q) * s, ch.root.rotation.y + lerp(yaw, yaw2 ?? yaw, q), pitch, fov); }
 const _hb = new THREE.Box3(); function heightTo(ch, m) { ch.root.updateMatrixWorld(true); _hb.makeEmpty(); ch.root.traverseVisible(o => { if (o.isMesh && o !== ch.blob) _hb.expandByObject(o, false); }); const t = _hb.max.y - ch.root.position.y; ch.root.scale.multiplyScalar(m * M2U / t); return ch; }
 const toCam = ch => { const p = ch.root.position; ch.root.rotation.y = Math.atan2(camera.position.x - p.x, camera.position.z - p.z); };
 // ---------- escenarios por plano ----------
@@ -250,7 +251,8 @@ function crowdDrink(c, x, z, L, i, o, m) { const T = L.T + i * .37; const seat =
     else if (m === 'sitprost') { const j = Math.abs(Math.sin(L.T * 6 + i)); prost(c, L, .7 + j * .3, { sit: true, pose: { ...sp, aLx: 2.4, aLz: .4 + j * .2, aLe: .3 } }); laughF(c, T); }
     else { holdOnly(c, L, { sit: true, pose: { ...sp, headY: Math.sin(L.T * .9 + i) * .3 } }); cara(c, T, { expr: 'happy', mouth: Math.sin(L.T * 7 + i) > .3 ? 'talk' : 'smile' }); } } }
 // terraza de un café de la plaza: gente sentada en las sillas de sus dos mesas (n ≤ 4), bebiendo
-function terrace(L, h, n = 4, mode = 'sitdrink', o = {}) { const s = Math.sign(h.x), tx = s * 40; POST.push(() => { const list = (o.list || CR).filter(c => !c.root.visible).slice(o.from || 0, (o.from || 0) + n); list.forEach((c, i) => { const tz = h.z + (i < 2 ? -3.2 : 3.2), dz = i % 2 ? 1 : -1; const z = tz + dz * 2.4; put(c, tx, 0, z, dz < 0 ? 0 : PI); crowdDrink(c, tx, z, L, i + (o.from || 0), o, typeof mode === 'function' ? mode(i) : mode); }); }); }
+function terrace(L, h, n = 4, mode = 'sitdrink', o = {}) { const s = Math.sign(h.x), tx = s * 40; POST.push(() => { const list = (o.list || CR).filter(c => !c.root.visible).slice(o.from || 0, (o.from || 0) + n); const busy = POOL.filter(c => c.root.visible); const seats = [0, 1, 2, 3].filter(i => { const z = h.z + (i < 2 ? -3.2 : 3.2) + (i % 2 ? 1 : -1) * 2.4; return !busy.some(b => Math.hypot(b.root.position.x - tx, b.root.position.z - z) < 1.8); });
+  list.slice(0, seats.length).forEach((c, j) => { const i = seats[j]; const tz = h.z + (i < 2 ? -3.2 : 3.2), dz = i % 2 ? 1 : -1; const z = tz + dz * 2.4; put(c, tx, 0, z, dz < 0 ? 0 : PI); crowdDrink(c, tx, z, L, i + (o.from || 0), o, typeof mode === 'function' ? mode(i) : mode); }); }); }
 // el café de la plaza más cercano a z
 const cafeNear = z => RT.HS.filter(h => h.name && /CAF|KAFFEE|MOKKA|ESPRESSO|RÖST/.test(h.name) && Math.abs(h.x) > 40).sort((a, b) => Math.abs(a.z - z) - Math.abs(b.z - z))[0];
 // ---------- efectos ----------
