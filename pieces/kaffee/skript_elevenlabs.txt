@@ -1,4 +1,4 @@
-[excited] In dieser Stadt macht dich Kaffee reich. Jede Tasse, die du trinkst, landet sofort als Geld auf deinem Konto. [fast] Ein Espresso? Zwölf Euro. Eine ganze Kanne? Achthundert Euro. Zwanzig Tassen? [mischievously] Dann kannst du deinem Chef noch vor dem Mittagessen kündigen.
+[excited] In dieser Stadt macht dich Kaffee reich. Jede Tasse, die du trinkst, landet sofort als Geld auf deinem Konto. [fast] Ein Espresso? Zwölf Euro. Eine ganze Kanne? Achthundert Euro. Zwanzig Tassen? [shouting] Und schon bist du Millionär!
 
 [proud] Einen Tag lang hatte ich mehr Geld als jeder andere Mensch auf der Erde. [pause] [sad] Heute würde ich alles hergeben für eine einzige Nacht Schlaf.
 
@@ -38,7 +38,7 @@
 
 [proud] Ich kaufte mir eine Villa, drei Sportwagen und gleich die ganze Tchibo-Filiale. Reicher als jeder andere auf der Welt.
 
-[pause] [nervous] Doch am nächsten Morgen kam im Fernsehen eine Eilmeldung: [serious] Weil ein Einziger so viel Geld hatte, war Kaffeegeld ab sofort nichts mehr wert. [slowly] Das neue Geld? [pause] Schlaf. Jede Stunde Schlaf: hundert Euro.
+[pause] [nervous] Doch am nächsten Morgen kam im Fernsehen eine Eilmeldung: [serious] Weil ein Einziger so viel Geld hatte, brach im ganzen Land die Wirtschaft zusammen. [dramatic] Ein Brötchen beim Bäcker kostete plötzlich eine Million, und für einen Euro bekam man nicht mal mehr einen Kaffeefilter. [serious] Also beschloss die Regierung über Nacht: Kaffeegeld zählt nicht mehr. [slowly] Das neue Geld? [pause] Schlaf. Jede Stunde Schlaf: hundert Euro.
 
 [sad] Mein Problem? Seit dieser Dose habe ich keine Minute mehr geschlafen. Keine einzige. [deadpan] Der Pfarrer auch nicht. Wir zwei sind jetzt die Ärmsten der ganzen Stadt.
 
