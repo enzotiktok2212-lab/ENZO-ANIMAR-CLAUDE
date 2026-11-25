@@ -14,5 +14,5 @@
 - [x] planos a–d escritos (revisión en curso)
 - [x] revisión de todos los planos (12 % y 60 %)
 - [x] mezcla (renders/mezcla-final.wav, −12,5 LUFS; rehacer si cambian los efectos)
-- [ ] render (lanzado: ./render.sh en segundo plano; si se corta, relanzar ./render.sh y luego ./finish.sh)
-- [ ] entrega
+- [x] render (renders/neinhals.mp4, 175,6 s, −12,6 LUFS)
+- [x] entregado al usuario
