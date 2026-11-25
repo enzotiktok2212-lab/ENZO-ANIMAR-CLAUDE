@@ -9,9 +9,9 @@ Dann rannte mein bethter Freund inth Klathenzimmer.
 [dramatic] Aber dann thtürmten vier Polizithten durch die Tür.
 [shouting] „Alle thofort die Hände hoch!“
 [amused] Thogar die Polizei klang lächerlich.
-[casual] Thpäter wollte ich beim Bäcker etwath kaufen.
-[politely] „Kann ich thieben Thalzbrezeln haben, bitte?“
-[apologetic] Die Verkäuferin thagte: „Tut mir leid, wir haben nur Kuchen.“
+[casual] Thpäter wollte ich mir im Laden GTA Thechth kaufen.
+[politely] „Kann ich GTA Thechth haben, bitte?“
+[apologetic] Der Verkäufer thagte: „Tut mir leid, wir haben nur GTA Fünf.“
 [annoyed] Ich hatte diethe Regel tho thatt.
 [suspicious] Aber dann fiel mir etwath Theltthameth auf.
 Unther Bürgermeithter war nie im Fernthehen.
@@ -30,12 +30,12 @@ Die ganze Thtadt drehte durch.
 [dramatic] Endlich kam der Bürgermeithter herauth.
 [grumpy] „Na gut. Dath S itht wieder erlaubt.“
 [cheering] Alle jubelten.
-[happy] Endlich konnte ich wieder sagen: „Sorry, so süß, sieben Salzbrezeln!“
+[happy] Endlich konnte ich wieder laut sagen: „GTA Sechs!“
 [ominous] Aber dann lächelte der Bürgermeister.
 [smugly] „Allerdings: Ab morgen sind R und L verboten.“
 [quietly] Die ganze Menge wuwde stiww.
 [shouting] Dann wief ein Powizist: „Awwe bweiben wuhig!“
-[panicked] Ein Mann schwie: „Mein Auto bwennt!“
+[panicked] Ein Mann schwie: „Mein Powsche bwennt!“
 [shouting] Und meine Wehwewin wief: „Kindew, awwe ins Kwassenzimmew!“
 [annoyed] Ich sah den Büwgewmeistew an.
 [angry] „Das ist doch nicht dein Ewnst!“
