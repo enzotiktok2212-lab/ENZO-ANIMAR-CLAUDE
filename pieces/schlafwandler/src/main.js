@@ -8,7 +8,7 @@ import { nightSky } from './sets.js';
 import { rimLight } from './roblox.js';
 import { FONT, txt } from './props.js';
 import { schule } from './nsets.js';
-import { mondtal, stollen, kinderzimmer, schlafzimmer, kueche, praxis, glowM, minerLamp, wecker } from './swelt.js';
+import { mondtal, stollen, kinderzimmer, schlafzimmer, kueche, praxis, glowM, minerLamp, wecker, reihe } from './swelt.js';
 import { makeBen, makeBenTag, makeLena, makeLenaTag, makeMama, makePapa, makeOpa, makeHuber, makeMeyer, makeArzt, makeBrandt, makeBaecker, makeKrause, makeNeuer, makeWaechter, makeSchlaefer, makeMitschueler, handLantern, shovelProp } from './svolk.js';
 import { makeExtra } from './ecast.js';
 import { loadKitFaces, kitFace, kitLips, eyesAlive, GEST, actuar, mirar, caminar, saltar, aire, bandada, camaraEnMano, shiver } from './vivo.js';
@@ -41,6 +41,7 @@ const M2U = 3.95;
 // Stollen (STX): boca en z = 0, túnel hacia -z (ancho ±13, alto 18), raíles x = ±2,2; túnel lateral (x = -13, z = -120); palas en (7, -10).
 const STX = 1400, KZX = 2400, LZX = 3000, SZX = 3600, KUX = 4200, PRX = 4800, SCX = 5600, MZX = 6400;
 const MT = mondtal(scene), ST = stollen(scene, STX), KZ = kinderzimmer(scene, KZX), LZ = kinderzimmer(scene, LZX, { lena: true }), SZ = schlafzimmer(scene, SZX), KU = kueche(scene, KUX), PR = praxis(scene, PRX), SC = schule(scene, SCX);
+const RH = reihe(MT.g, 0, 64); RH.g.visible = false;
 const MZ = schlafzimmer(scene, MZX, { wall: '#f0dcc8', wall2: '#e4ccb4', quilt: ['#1a1a22', '#f4f4f4', '#3a3a42', '#d8d8d8'], curtain: '#3a3a42' });
 const SETS = { MT: MT.g, ST: ST.g, KZ: KZ.g, LZ: LZ.g, SZ: SZ.g, KU: KU.g, PR: PR.g, SC: SC.g, MZ: MZ.g };
 for (const k in SETS) outline(SETS[k], OS);
@@ -97,6 +98,7 @@ function night(fill = 40) { MODE = 'night'; renderer.toneMappingExposure = .92; 
   scene.fog.color.setRGB(.04, .08, .18); scene.fog.density = .0022; bloom.strength = .34; bloom.threshold = .78; FILL.intensity = fill; FILL.color.setRGB(1, .86, .7); BIRDSON = 0; }
 function inside(h = 1.0, fill = 50) { MODE = 'in'; renderer.toneMappingExposure = .95; hemi.intensity = h; hemi.color.setRGB(1, .97, .92); hemi.groundColor.setRGB(.55, .48, .42); sun.intensity = 0; rim.intensity = .6; bloom.strength = .22; bloom.threshold = .86; scene.fog.density = .0002; FILL.intensity = fill; BIRDSON = 0; }
 function hideAll() {
+  RH.g.visible = false; for (const d of RH.DOORS) d.pv.rotation.y = 0;
   for (const c of POOL) { c.root.visible = false; c.head.visible = true; c.root.rotation.order = 'XYZ'; c.root.rotation.set(0, 0, 0); c.root.scale.setScalar(c.spec.scale || 1); applyPose(c, {}); c.setFace({}); if (c.root.parent !== scene) { c.root.parent.remove(c.root); scene.add(c.root); } c.blob.visible = true;
     c.lantern.visible = false; c.shovel.visible = false; c.blis.visible = false; if (c.dirt) c.dirt.visible = false; c.red.visible = false; c.gloves.visible = c === lena || c === lenaT; c.aR.sh.rotation.y = 0; c.aL.sh.rotation.y = 0; }
   for (const p of PROPS) { p.visible = false; p.rotation.order = 'XYZ'; p.rotation.set(0, 0, 0); p.scale.setScalar(1); if (p.parent !== scene) { p.parent.remove(p); scene.add(p); } }

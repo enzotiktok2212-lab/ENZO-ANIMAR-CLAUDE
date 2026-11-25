@@ -15,18 +15,22 @@ function lie(ch, x, zP, top = 4.15, L = null, pose = {}) { const s = ch.spec.sca
 function sitBed(ch, X, L, pose = {}, dz = 0) { put(ch, X - 9, sitY(ch, 3.7), -5.4 + dz, 0); ch.blob.visible = false; actuar(ch, 0, [[0, { lLx: 1.5, lRx: 1.5, lLk: 0, lRk: 0, ...pose }]], { T: L.T, weight: false }); return ch; }
 const clockAt = (txt, x, y, z, ry = 0, s = 4, col = '#ff4a3a') => { BIGCLOCK.userData.set(txt, col); show(BIGCLOCK, x, y, z, ry, s); return BIGCLOCK; };
 
-// 1 «In dieser Stadt schlafwandelt»: de frente a una casa, centrada: la puerta se abre de golpe y sale una familia en pijama (padre, madre, niño) andando hacia la cámara con los brazos estirados y los ojos como platos; detrás, todas las puertas de la calle se abren en ola. Golpe de zoom + empuje.
 const HD = MT.DOORS.filter(d => d.x < 0).sort((a, b) => Math.abs(a.z + 30) - Math.abs(b.z + 30))[0];
-shot(0, 'C', null, L => { gasse(L, { z: HD.z }); doorWave(L, .02, HD.z, .02, .2); HD.pv.rotation.y = -1.55 * easeOut(clamp(L.lt / .16)); outOfDoors(L, .1, HD.z + 60, HD.z - 60, 6, { z0: HD.z, sp: .02, max: 5 });
-  [[SL[0], 0, 0], [SL[3], -3.4, .25], [SL[9], 3.2, .4]].forEach(([c, dz, dl], i) => { const t = clamp(L.lt - .12 - dl * .5, 0, 9); put(c, HD.x + 1.4 + t * 3.4, 0, HD.z + dz * clamp(t * 1.2), PI / 2); actuar(c, 0, [[0, { ...sleepP(L.T, i), aLx: 1.45, aRx: 1.45, aLe: .05, aRe: .05 }]], { T: L.T }); sleepFace(c, L.T); });
-  cm([HD.x + 26, 6.2, HD.z, HD.x, 5.4, HD.z, 50], [HD.x + 17, 5.6, HD.z, HD.x, 5.2, HD.z, 46], L.k, easeOut); sh(V(HD.x + 6, 0, HD.z), 30); },
-  [[0, 'door_crash', .7], [.1, 'door_open', .6], [.25, 'door_crash', .5], [.4, 'steps', .6], [.9, 'creepy_ting', .5], [1.2, 'door_open', .4]]);
+// 1 «In dieser Stadt schlafwandelt»: tres casitas adosadas, centradas: las tres puertas se abren de golpe una tras otra y de cada una sale un vecino en pijama, brazos estirados y ojos como platos, andando hacia la cámara y juntándose en el centro. Golpe de zoom + empuje.
+shot(0, 'C', null, L => { use('MT'); night(26); RH.g.visible = true; const Z = RH.DOORS[1].z;
+  lp(0, -7, 9, Z + 9, 50); lp(1, 7, 9, Z + 9, 50); lp(2, 0, 7, Z + 18, 34);
+  const ORD = [[1, SL[0], 0], [0, SL[3], .14], [2, SL[9], .28]];
+  ORD.forEach(([di, c, dl], i) => { const d = RH.DOORS[di], t0 = .04 + dl; d.pv.rotation.y = -1.55 * easeOut(clamp((L.lt - t0) / .14)) + (L.lt - t0 > .14 && L.lt - t0 < .4 ? Math.sin((L.lt - t0 - .14) * 30) * .05 : 0);
+    const t = clamp(L.lt - t0 - .1, 0, 9), w = clamp(t / 1.3); put(c, d.x * lerp(1, .3, easeInOut(w)), 0, d.z - .6 + t * 3.6, -d.x * .03 * (1 - w));
+    actuar(c, 0, [[0, { ...sleepP(L.T, i), aLx: 1.45, aRx: 1.45, aLe: .05, aRe: .05 }]], { T: L.T }); sleepFace(c, L.T); });
+  cm([0, 7.4, Z + 46, 0, 2.2, Z, 56], [0, 6.6, Z + 22, 0, 1.1, Z + 3, 48], L.k, easeOut); sh(V(0, 0, Z + 4), 30); },
+  [[0, 'door_crash', .7], [.05, 'door_open', .6], [.18, 'door_crash', .6], [.32, 'door_crash', .5], [.45, 'steps', .6], [.9, 'creepy_ting', .5]]);
 // 2 «jeder um drei Uhr nachts.»: dormitorio de los vecinos: el despertador (encima del cabecero) salta de 2:59 a 3:00 y los dos se incorporan de golpe, rígidos, con los ojos como platos
 shot(1.76, 'W', 'punch', L => { elternRoom(L); const up = easeOut(clamp((L.lt - .35) / .25));
-  for (const [c, x] of [[SL[2], -3.2], [SL[7], 3.2]]) { const s = c.spec.scale || 1; lie(c, SZX + x, -6.4, 4.15, L, { aLx: .25 * up, aRx: .25 * up }); c.root.rotation.x = -PI / 2 + up * PI / 2; c.root.position.y = lerp(4.15 + .55 * s, sitY(c, 3.9), up); c.root.position.z = lerp(-6.4 + 4.6 * s, -5.2, up);
+  for (const [c, x] of [[SL[2], -2.5], [SL[7], 2.5]]) { const s = c.spec.scale || 1; lie(c, SZX + x, -6.4, 4.15, L, { aLx: .25 * up, aRx: .25 * up }); c.root.rotation.x = -PI / 2 + up * PI / 2; c.root.position.y = lerp(4.15 + .55 * s, sitY(c, 3.9), up); c.root.position.z = lerp(-6.4 + 4.6 * s, -5.2, up);
     if (up > .5) actuar(c, 0, [[0, { lLx: 1.5 * up, lRx: 1.5 * up, aLx: .3, aRx: .3 }]], { T: L.T, weight: false }); if (L.lt > .35) sleepFace(c, L.T); else c.setFace({ eyes: 'closed', mouth: 'flat' }); }
-  SZ.quilt.position.y = 4.6; clockAt(L.lt < .35 ? '2:59' : '3:00', SZX, 9.4, -8.3, 0, 1.6, L.lt < .35 ? '#ff4a3a' : '#ffd23f');
-  cm([SZX, 8.2, 5, SZX, 6.6, -5, 50], [SZX, 8, 3.6, SZX, 6.6, -5, 48], L.k); sh(V(SZX, 0, -2), 20); },
+  SZ.quilt.position.y = 4.6; clockAt(L.lt < .35 ? '2:59' : '3:00', SZX, 7.7, -7.5, 0, 1.5, L.lt < .35 ? '#ff4a3a' : '#ffd23f');
+  cm([SZX - 1.6, 7.6, 12, SZX, 5.5, -5, 46], [SZX + 1.2, 7.3, 9.6, SZX, 5.6, -5, 44], L.k); sh(V(SZX, 0, -2), 20); },
   [[.33, 'alarm', .6], [.38, 'cloth', .6], [.45, 'creepy_ting', .5]]);
 // 3 «Wenn du wach bist,»: Ben en su cama abre los ojos de golpe (cerrados → muy abiertos) y se le escapa una gota de sudor
 shot(3.57, 'C', 'punch', L => { benRoom(L); lie(ben, KZX - 9, -7.4, 4.15, L); KZ.quilt.position.y = 4.6; const o = L.lt > .18;

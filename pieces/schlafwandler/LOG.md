@@ -18,3 +18,4 @@
 
 ## 2026-11-25
 - Render completo (6684 fotogramas, 2 tandas por límite de 2 h) y finish.sh → renders/schlafwandler.mp4 (222,8 s). Entregado.
+- Arreglados planos 1 (casitas adosadas `reihe`: 3 puertas, una persona por puerta, centrados) y 2 (padres visibles, reloj más bajo); re-render solo f0–f125. Portadas (z_cover.js) y descripcion.md.

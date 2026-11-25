@@ -8,7 +8,7 @@ import { nightSky } from './sets.js';
 import { rimLight } from './roblox.js';
 import { FONT, txt } from './props.js';
 import { schule } from './nsets.js';
-import { mondtal, stollen, kinderzimmer, schlafzimmer, kueche, praxis, glowM, minerLamp, wecker } from './swelt.js';
+import { mondtal, stollen, kinderzimmer, schlafzimmer, kueche, praxis, glowM, minerLamp, wecker, reihe } from './swelt.js';
 import { makeBen, makeBenTag, makeLena, makeLenaTag, makeMama, makePapa, makeOpa, makeHuber, makeMeyer, makeArzt, makeBrandt, makeBaecker, makeKrause, makeNeuer, makeWaechter, makeSchlaefer, makeMitschueler, handLantern, shovelProp } from './svolk.js';
 import { makeExtra } from './ecast.js';
 import { loadKitFaces, kitFace, kitLips, eyesAlive, GEST, actuar, mirar, caminar, saltar, aire, bandada, camaraEnMano, shiver } from './vivo.js';
@@ -41,6 +41,7 @@ const M2U = 3.95;
 // Stollen (STX): boca en z = 0, túnel hacia -z (ancho ±13, alto 18), raíles x = ±2,2; túnel lateral (x = -13, z = -120); palas en (7, -10).
 const STX = 1400, KZX = 2400, LZX = 3000, SZX = 3600, KUX = 4200, PRX = 4800, SCX = 5600, MZX = 6400;
 const MT = mondtal(scene), ST = stollen(scene, STX), KZ = kinderzimmer(scene, KZX), LZ = kinderzimmer(scene, LZX, { lena: true }), SZ = schlafzimmer(scene, SZX), KU = kueche(scene, KUX), PR = praxis(scene, PRX), SC = schule(scene, SCX);
+const RH = reihe(MT.g, 0, 64); RH.g.visible = false;
 const MZ = schlafzimmer(scene, MZX, { wall: '#f0dcc8', wall2: '#e4ccb4', quilt: ['#1a1a22', '#f4f4f4', '#3a3a42', '#d8d8d8'], curtain: '#3a3a42' });
 const SETS = { MT: MT.g, ST: ST.g, KZ: KZ.g, LZ: LZ.g, SZ: SZ.g, KU: KU.g, PR: PR.g, SC: SC.g, MZ: MZ.g };
 for (const k in SETS) outline(SETS[k], OS);
@@ -97,6 +98,7 @@ function night(fill = 40) { MODE = 'night'; renderer.toneMappingExposure = .92; 
   scene.fog.color.setRGB(.04, .08, .18); scene.fog.density = .0022; bloom.strength = .34; bloom.threshold = .78; FILL.intensity = fill; FILL.color.setRGB(1, .86, .7); BIRDSON = 0; }
 function inside(h = 1.0, fill = 50) { MODE = 'in'; renderer.toneMappingExposure = .95; hemi.intensity = h; hemi.color.setRGB(1, .97, .92); hemi.groundColor.setRGB(.55, .48, .42); sun.intensity = 0; rim.intensity = .6; bloom.strength = .22; bloom.threshold = .86; scene.fog.density = .0002; FILL.intensity = fill; BIRDSON = 0; }
 function hideAll() {
+  RH.g.visible = false; for (const d of RH.DOORS) d.pv.rotation.y = 0;
   for (const c of POOL) { c.root.visible = false; c.head.visible = true; c.root.rotation.order = 'XYZ'; c.root.rotation.set(0, 0, 0); c.root.scale.setScalar(c.spec.scale || 1); applyPose(c, {}); c.setFace({}); if (c.root.parent !== scene) { c.root.parent.remove(c.root); scene.add(c.root); } c.blob.visible = true;
     c.lantern.visible = false; c.shovel.visible = false; c.blis.visible = false; if (c.dirt) c.dirt.visible = false; c.red.visible = false; c.gloves.visible = c === lena || c === lenaT; c.aR.sh.rotation.y = 0; c.aL.sh.rotation.y = 0; }
   for (const p of PROPS) { p.visible = false; p.rotation.order = 'XYZ'; p.rotation.set(0, 0, 0); p.scale.setScalar(1); if (p.parent !== scene) { p.parent.remove(p); scene.add(p); } }
@@ -271,18 +273,22 @@ function lie(ch, x, zP, top = 4.15, L = null, pose = {}) { const s = ch.spec.sca
 function sitBed(ch, X, L, pose = {}, dz = 0) { put(ch, X - 9, sitY(ch, 3.7), -5.4 + dz, 0); ch.blob.visible = false; actuar(ch, 0, [[0, { lLx: 1.5, lRx: 1.5, lLk: 0, lRk: 0, ...pose }]], { T: L.T, weight: false }); return ch; }
 const clockAt = (txt, x, y, z, ry = 0, s = 4, col = '#ff4a3a') => { BIGCLOCK.userData.set(txt, col); show(BIGCLOCK, x, y, z, ry, s); return BIGCLOCK; };
 
-// 1 «In dieser Stadt schlafwandelt»: de frente a una casa, centrada: la puerta se abre de golpe y sale una familia en pijama (padre, madre, niño) andando hacia la cámara con los brazos estirados y los ojos como platos; detrás, todas las puertas de la calle se abren en ola. Golpe de zoom + empuje.
 const HD = MT.DOORS.filter(d => d.x < 0).sort((a, b) => Math.abs(a.z + 30) - Math.abs(b.z + 30))[0];
-shot(0, 'C', null, L => { gasse(L, { z: HD.z }); doorWave(L, .02, HD.z, .02, .2); HD.pv.rotation.y = -1.55 * easeOut(clamp(L.lt / .16)); outOfDoors(L, .1, HD.z + 60, HD.z - 60, 6, { z0: HD.z, sp: .02, max: 5 });
-  [[SL[0], 0, 0], [SL[3], -3.4, .25], [SL[9], 3.2, .4]].forEach(([c, dz, dl], i) => { const t = clamp(L.lt - .12 - dl * .5, 0, 9); put(c, HD.x + 1.4 + t * 3.4, 0, HD.z + dz * clamp(t * 1.2), PI / 2); actuar(c, 0, [[0, { ...sleepP(L.T, i), aLx: 1.45, aRx: 1.45, aLe: .05, aRe: .05 }]], { T: L.T }); sleepFace(c, L.T); });
-  cm([HD.x + 26, 6.2, HD.z, HD.x, 5.4, HD.z, 50], [HD.x + 17, 5.6, HD.z, HD.x, 5.2, HD.z, 46], L.k, easeOut); sh(V(HD.x + 6, 0, HD.z), 30); },
-  [[0, 'door_crash', .7], [.1, 'door_open', .6], [.25, 'door_crash', .5], [.4, 'steps', .6], [.9, 'creepy_ting', .5], [1.2, 'door_open', .4]]);
+// 1 «In dieser Stadt schlafwandelt»: tres casitas adosadas, centradas: las tres puertas se abren de golpe una tras otra y de cada una sale un vecino en pijama, brazos estirados y ojos como platos, andando hacia la cámara y juntándose en el centro. Golpe de zoom + empuje.
+shot(0, 'C', null, L => { use('MT'); night(26); RH.g.visible = true; const Z = RH.DOORS[1].z;
+  lp(0, -7, 9, Z + 9, 50); lp(1, 7, 9, Z + 9, 50); lp(2, 0, 7, Z + 18, 34);
+  const ORD = [[1, SL[0], 0], [0, SL[3], .14], [2, SL[9], .28]];
+  ORD.forEach(([di, c, dl], i) => { const d = RH.DOORS[di], t0 = .04 + dl; d.pv.rotation.y = -1.55 * easeOut(clamp((L.lt - t0) / .14)) + (L.lt - t0 > .14 && L.lt - t0 < .4 ? Math.sin((L.lt - t0 - .14) * 30) * .05 : 0);
+    const t = clamp(L.lt - t0 - .1, 0, 9), w = clamp(t / 1.3); put(c, d.x * lerp(1, .3, easeInOut(w)), 0, d.z - .6 + t * 3.6, -d.x * .03 * (1 - w));
+    actuar(c, 0, [[0, { ...sleepP(L.T, i), aLx: 1.45, aRx: 1.45, aLe: .05, aRe: .05 }]], { T: L.T }); sleepFace(c, L.T); });
+  cm([0, 7.4, Z + 46, 0, 2.2, Z, 56], [0, 6.6, Z + 22, 0, 1.1, Z + 3, 48], L.k, easeOut); sh(V(0, 0, Z + 4), 30); },
+  [[0, 'door_crash', .7], [.05, 'door_open', .6], [.18, 'door_crash', .6], [.32, 'door_crash', .5], [.45, 'steps', .6], [.9, 'creepy_ting', .5]]);
 // 2 «jeder um drei Uhr nachts.»: dormitorio de los vecinos: el despertador (encima del cabecero) salta de 2:59 a 3:00 y los dos se incorporan de golpe, rígidos, con los ojos como platos
 shot(1.76, 'W', 'punch', L => { elternRoom(L); const up = easeOut(clamp((L.lt - .35) / .25));
-  for (const [c, x] of [[SL[2], -3.2], [SL[7], 3.2]]) { const s = c.spec.scale || 1; lie(c, SZX + x, -6.4, 4.15, L, { aLx: .25 * up, aRx: .25 * up }); c.root.rotation.x = -PI / 2 + up * PI / 2; c.root.position.y = lerp(4.15 + .55 * s, sitY(c, 3.9), up); c.root.position.z = lerp(-6.4 + 4.6 * s, -5.2, up);
+  for (const [c, x] of [[SL[2], -2.5], [SL[7], 2.5]]) { const s = c.spec.scale || 1; lie(c, SZX + x, -6.4, 4.15, L, { aLx: .25 * up, aRx: .25 * up }); c.root.rotation.x = -PI / 2 + up * PI / 2; c.root.position.y = lerp(4.15 + .55 * s, sitY(c, 3.9), up); c.root.position.z = lerp(-6.4 + 4.6 * s, -5.2, up);
     if (up > .5) actuar(c, 0, [[0, { lLx: 1.5 * up, lRx: 1.5 * up, aLx: .3, aRx: .3 }]], { T: L.T, weight: false }); if (L.lt > .35) sleepFace(c, L.T); else c.setFace({ eyes: 'closed', mouth: 'flat' }); }
-  SZ.quilt.position.y = 4.6; clockAt(L.lt < .35 ? '2:59' : '3:00', SZX, 9.4, -8.3, 0, 1.6, L.lt < .35 ? '#ff4a3a' : '#ffd23f');
-  cm([SZX, 8.2, 5, SZX, 6.6, -5, 50], [SZX, 8, 3.6, SZX, 6.6, -5, 48], L.k); sh(V(SZX, 0, -2), 20); },
+  SZ.quilt.position.y = 4.6; clockAt(L.lt < .35 ? '2:59' : '3:00', SZX, 7.7, -7.5, 0, 1.5, L.lt < .35 ? '#ff4a3a' : '#ffd23f');
+  cm([SZX - 1.6, 7.6, 12, SZX, 5.5, -5, 46], [SZX + 1.2, 7.3, 9.6, SZX, 5.6, -5, 44], L.k); sh(V(SZX, 0, -2), 20); },
   [[.33, 'alarm', .6], [.38, 'cloth', .6], [.45, 'creepy_ting', .5]]);
 // 3 «Wenn du wach bist,»: Ben en su cama abre los ojos de golpe (cerrados → muy abiertos) y se le escapa una gota de sudor
 shot(3.57, 'C', 'punch', L => { benRoom(L); lie(ben, KZX - 9, -7.4, 4.15, L); KZ.quilt.position.y = 4.6; const o = L.lt > .18;
@@ -951,6 +957,43 @@ shot(220.66, 'W', null, L => { tunnel(L, -236); const b = put(ben, STX + 1, 0, -
 // 221 «geblinzelt.» (zoom lento): sus ojos, enormes, con los faroles reflejados; no parpadea; final
 shot(221.32, 'F', 'slow', L => { tunnel(L, -236); const b = put(ben, STX + 1, 0, -238, 0); cara(b, L.T, { eyes: 'wide', mouth: 'flat', noBlink: true }); LANT.position.set(STX + 1, 6, -232); LANT.intensity = 70; onFace(b, 2.8, 0, 0, 32, L.k, 2.1);
   FX2D.push(c => { const p = proj(hp(b).add(V(0, .78 * .74, .5))); for (const s of [-1, 1]) for (let i = 0; i < 3; i++) { c.fillStyle = 'rgba(255,220,140,.85)'; c.beginPath(); c.arc(W / 2 + s * 120 * (1 + L.k * .5) + (i - 1) * 14, p[1] - 10 + (i % 2) * 8, 6, 0, 7); c.fill(); } }); }, [[0, 'flash', .3], [.3, 'heartbeat', .6]]);
+// ---------- portadas (fuera del vídeo; node cover.mjs) ----------
+// 1: la calle de Mondtal de noche: la marcha de sonámbulos en pijama viene hacia la cámara con los brazos estirados; Ben, delante y en el centro, el único despierto, mira de reojo y suda (círculo rojo); reloj 3:00.
+// 2: las tres casitas adosadas con las puertas abiertas: salen vecinos en pijama y Ben, en medio, finge (círculo rojo); sin reloj (el texto ya dice la hora).
+function strokeTxt(t, x, y, size, font, fill, stroke, lw, rot = 0, maxW = W * .9) { const c = octx; c.save(); c.translate(x, y); c.rotate(rot); c.font = `${size}px ${font}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.lineJoin = 'round';
+  const tw = c.measureText(t).width, k = Math.min(1, maxW / tw); c.scale(k, k); c.shadowColor = 'rgba(0,0,0,.6)'; c.shadowBlur = 26; c.shadowOffsetY = 10; c.lineWidth = lw; c.strokeStyle = stroke; c.strokeText(t, 0, 0); c.shadowColor = 'transparent';
+  if (Array.isArray(fill)) { const g = c.createLinearGradient(0, -size / 2, 0, size / 2); g.addColorStop(0, fill[0]); g.addColorStop(1, fill[1]); c.fillStyle = g; } else c.fillStyle = fill; c.fillText(t, 0, 0); c.restore(); }
+function finishCover() { grade.uniforms.sharp.value = 1.5; grade.uniforms.vig.value = .6; grade.uniforms.sat.value = 1.55; grade.uniforms.blurAmt.value = 0; grade.uniforms.flash.value = 0; bloom.strength = .14; bloom.threshold = .88; camera.updateProjectionMatrix();
+  sky.sky.position.copy(camera.position); ao.enabled = true; bokeh.enabled = false; composer.render(); ao.enabled = false; octx.fillStyle = '#000'; octx.fillRect(0, 0, W, H); octx.imageSmoothingQuality = 'high'; octx.drawImage(renderer.domElement, 0, 0, W, H); }
+function ringMark(x, y, rx, ry, col = '#ff1a2e') { const c = octx; c.save(); c.lineWidth = 18; c.strokeStyle = col; c.shadowColor = 'rgba(0,0,0,.45)'; c.shadowBlur = 14; c.beginPath(); c.ellipse(x, y, rx, ry, -.06, .25, 6.05); c.stroke(); c.restore(); }
+function sparkle(x, y, r, col = '#fff6c0') { const c = octx; c.save(); c.translate(x, y); c.fillStyle = col; c.shadowColor = col; c.shadowBlur = 20; c.beginPath(); for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4, rr = i % 2 ? r * .28 : r; c.lineTo(Math.cos(a) * rr, Math.sin(a) * rr); } c.closePath(); c.fill(); c.restore(); }
+function zTxt(x, y, s, rot = .2) { strokeTxt('Z', x, y, s, 'Lucky', ['#dff0ff', '#8ab8ff'], '#0a1a4a', s * .2, rot); }
+window.renderCover = async v => { await document.fonts.load('80px Lucky'); await document.fonts.load('80px Lilita'); out.width = 2 * W; out.height = 2 * H; octx.setTransform(2, 0, 0, 2, 0, 0); octx.imageSmoothingEnabled = true; octx.imageSmoothingQuality = 'high';
+  const T = 40.3, L = { T, lt: .8, k: 1, t0: 39.5, t1: 41, d: 1.5 }; hideAll(); BAD_.length = 0; FX2D.length = 0; DOF = 0;
+  if (v === 0) { gasse(L, { z: -20 }); doorsOpen(); lp(0, -7, 10, 4, 30); lp(1, 7, 10, 4, 30); const p = V(0, 0, -2);
+    const b = put(ben, p.x, 0, p.z, 0); actuar(b, 0, [[0, { ...sleepP(T, 0), aLx: 1.45, aRx: 1.45, aLe: .05, aRe: .05 }]], { T }); cara(b, T, { eyes: 'side_r', mouth: 'grimace', noBlink: 1 }); sweat(b, T, 1);
+    const F = [[SL[0], -4.6, -3.2], [SL[3], 4.8, -3.4], [SL[6], -8.6, -7.6], [SL[9], 8.8, -7.8], [SL[1], -2.4, -9.6], [SL[5], 2.6, -10]];
+    F.forEach(([c, dx, dz], i) => { put(c, p.x + dx, 0, p.z + dz, 0); actuar(c, 0, [[0, { ...sleepP(T, i + 1), aLx: 1.45, aRx: 1.45, aLe: .05, aRe: .05 }]], { T }); sleepFace(c, T); });
+    march({ ...L, lt: 0 }, SL.slice(12), 0, p.z - 15, 0, { cols: 4, speed: 0 });
+    cam([p.x, 6.2, p.z + 17], [p.x, 4.4, p.z - 2], 50); sh(V(p.x, 0, p.z - 4), 30); hemi.intensity *= 1.2;
+    finishCover();
+    strokeTxt('IN DIESER STADT', W / 2, H * .16, 98, 'Lucky', ['#ffffff', '#d8e4ff'], '#0a1238', 26);
+    strokeTxt('SCHLAFWANDELT', W / 2, H * .215, 118, 'Lucky', ['#fff2a0', '#f0a820'], '#3a2400', 28, -.02);
+    strokeTxt('JEDER!', W / 2, H * .28, 150, 'Lucky', ['#fff2a0', '#f0a820'], '#3a2400', 32, -.02);
+    const hd = proj(hp(b).add(V(0, .3, 0))), ft = proj(V(p.x, 0, p.z)); ringMark(hd[0], (hd[1] + ft[1]) / 2 - 20, 175, (ft[1] - hd[1]) / 2 + 110);
+    strokeTxt('NUR ICH NICHT…', W / 2, H * .8, 104, 'Lilita', ['#ffffff', '#ffd0d0'], '#4a0010', 24, -.02);
+    sparkle(W * .1, H * .14, 26); sparkle(W * .9, H * .25, 22); zTxt(W * .86, H * .36, 70); zTxt(W * .12, H * .4, 56, -.2);
+  } else { use('MT'); night(26); RH.g.visible = true; const Z = RH.DOORS[1].z; for (const d of RH.DOORS) d.pv.rotation.y = -1.55; lp(0, -7, 9, Z + 9, 50); lp(1, 7, 9, Z + 9, 50); lp(2, 0, 7, Z + 18, 30);
+    const b = put(ben, 0, 0, Z + 4.4, 0); actuar(b, 0, [[0, { ...sleepP(T, 0), aLx: 1.45, aRx: 1.45, aLe: .05, aRe: .05 }]], { T }); cara(b, T, { eyes: 'side_l', mouth: 'grimace', noBlink: 1 }); sweat(b, T, 1);
+    [[SL[0], -8.6, Z + 1.2], [SL[3], 8.6, Z + 1.4], [SL[9], 0, Z - .3], [SL[2], -4.2, Z + 2.6], [SL[7], 4.4, Z + 2.8]].forEach(([c, x, z], i) => { put(c, x, 0, z, -x * .02); actuar(c, 0, [[0, { ...sleepP(T, i + 2), aLx: 1.45, aRx: 1.45, aLe: .05, aRe: .05 }]], { T }); sleepFace(c, T); });
+    cam([0, 6.4, Z + 25], [0, 4.4, Z + 2], 50); sh(V(0, 0, Z + 4), 30);
+    finishCover();
+    strokeTxt('UM 3 UHR NACHTS', W / 2, H * .15, 104, 'Lilita', ['#ffffff', '#d8e4ff'], '#0a1238', 24);
+    strokeTxt('GEHEN ALLE', W / 2, H * .205, 118, 'Lucky', ['#fff2a0', '#f0a820'], '#3a2400', 28, -.02);
+    strokeTxt('TÜREN AUF!', W / 2, H * .265, 138, 'Lucky', ['#fff2a0', '#f0a820'], '#3a2400', 30, -.02);
+    const hd = proj(hp(b).add(V(0, .3, 0))), ft = proj(V(0, 0, Z + 4.4)); ringMark(hd[0], (hd[1] + ft[1]) / 2 - 10, 150, (ft[1] - hd[1]) / 2 + 100);
+    strokeTxt('ICH TU NUR SO…', W / 2, H * .81, 104, 'Lucky', ['#ffffff', '#ffd0d0'], '#4a0010', 24, -.02);
+    sparkle(W * .12, H * .3, 24); sparkle(W * .88, H * .13, 26); } };
 
 
 // ---------- transiciones, sonidos, render ----------

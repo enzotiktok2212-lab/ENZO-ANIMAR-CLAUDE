@@ -227,3 +227,19 @@ export function praxis(scene, X) { const g = room(scene, X, 34, 26, 16, mat(0xff
   const plant = G(g, 13, 0, 9); cyl(1, .8, 2.4, mat(0xf4f4f4), 12, plant, 0, 1.2, 0); for (let k = 0; k < 7; k++) { const l = box(.5, 4, .2, mat(0x2f8a3a), .1, plant, Math.cos(k) * .5, 4, Math.sin(k) * .5); l.rotation.set(Math.sin(k) * .4, k, Math.cos(k) * .4); }
   const cert = textPlane(4, 3, 120, 90, (c, w, h) => { c.fillStyle = '#d8b050'; c.fillRect(0, 0, w, h); c.fillStyle = '#fffbea'; c.fillRect(6, 6, w - 12, h - 12); c.fillStyle = '#3a2a1a'; c.font = `700 14px ${FONT}`; c.textAlign = 'center'; c.fillText('DR. MED.', w / 2, 34); c.fillText('KLAUSNER', w / 2, 54); }); cert.position.set(4, 11, -12.75); g.add(cert);
   return { g: shade(g), D, bed, W }; }
+// ---------- REIHE: tres casitas adosadas, cada una con su puerta (gancho). Fachadas mirando a +z; puertas en x = X - 8,6, X, X + 8,6 (z = Z + 9,5).
+export function reihe(scene, X, Z) { const g = G(scene, X, 0, Z); const wid = 8, sp = 8.6, DOORS = [];
+  const ct = cobbleTex(); ct.repeat.set(3, 3); plane(60, 40, new THREE.MeshStandardMaterial({ map: ct, roughness: .38, metalness: .15, color: 0xd8d4cc }), g, 0, .03, 28);
+  box(32, .5, 3.4, mat(0x9a948a, { roughness: .8 }), .05, g, 0, .25, 11.2);
+  [[0x2a6a4a, 0], [0x8a2a2a, 1], [0x2a4a8a, 2]].forEach(([dc, ci], k) => { const hx = (k - 1) * sp + wid * .22; const h = alpHaus(g, hx, 0, wid, 2, ci + 3, 0); const dx = -wid * .22;
+    const inner = plane(3.4, 5.2, glowM(0xffb860, .9), h, dx, 3.15, 9.33, 0); const pv = G(h, dx - 1.8, .5, 9.5);
+    box(3.6, 5.2, .35, mat(dc, { roughness: .45 }), .06, pv, 1.8, 2.6, 0); for (const yy of [1.4, 3.8]) box(2.8, 1.8, .1, mat(0x000000, { transparent: true, opacity: .16 }), .02, pv, 1.8, yy, .2); sphere(.2, mat(0xd9a531, { metalness: .8, roughness: .3 }), pv, 3.1, 2.6, .3, 8, 6);
+    const lp = sphere(.45, glowM(0xffd890, 2.2), h, dx + 2.7, 6.6, 10.1, 10, 8); lp.castShadow = false; box(.3, .9, .3, mat(0x1a1a1e), .05, h, dx + 2.7, 7.4, 9.8);
+    // número de casa y felpudo
+    const n = textPlane(1.2, 1.2, 64, 64, (c, w, hh) => { c.fillStyle = '#1a3a7a'; c.fillRect(0, 0, w, hh); c.fillStyle = '#fff'; c.font = 'bold 44px ' + FONT; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(String(k + 1), w / 2, hh / 2 + 2); }); n.position.set(dx - 2.6, 6.2, 9.4); h.add(n);
+    box(2.8, .1, 1.4, mat([0x8a5a2a, 0x3a6a3a, 0x7a2a3a][k], { roughness: 1 }), .05, h, dx, .55, 10.6);
+    const pot = G(h, dx + 3, 0, 11.4); cyl(.7, .5, 1.2, mat(0xb85a2a, { roughness: .7 }), 10, pot, 0, .6, 0); sphere(.9, mat(0x2f7a3a, { roughness: .9 }), pot, 0, 1.7, 0, 8, 6); for (let j = 0; j < 4; j++) sphere(.26, mat([0xe8202a, 0xffd23f, 0xff6ab0][j % 3]), pot, Math.cos(j * 1.6) * .7, 2.1, Math.sin(j * 1.6) * .7, 6, 4);
+    for (const wx of [0]) { const wm = plane(3.3, 4.4, new THREE.MeshStandardMaterial({ color: 0xffc070, emissive: 0xffa040, emissiveIntensity: 1.4 + k * .2, roughness: .4 }), h, wx, 7 + 4.6 - .1 + 8 * (k % 2), 9.09, 0); }
+    DOORS.push({ pv, x: X + (k - 1) * sp, z: Z + 9.5, inner, h }); });
+  for (const s of [-1, 1]) { laterne(g, s * 15, 16); pine(g, s * 22, 2, 1.3); pine(g, s * 26, -6, 1.6); }
+  shade(g); return { g, DOORS }; }
