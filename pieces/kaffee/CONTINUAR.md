@@ -49,3 +49,6 @@ python3 sheet.py review60     # hojas de 10 planos en review60/sheetN.jpg
 `./render.sh` (4 procesos, idempotente; ~5 s por fotograma y proceso → 5835 fotogramas ≈ 2 h) o `nohup ./watchdog.sh > renders/watchdog.log 2>&1 &`,
 regenerar la mezcla (arriba) y `./finish.sh` → `renders/kaffee.mp4`. Mandar **solo el vídeo** al usuario y recordarle escuchar la mezcla.
 Luego, si los pide: descripción de TikTok, comentario fijado y portadas (`src/p/z_cover.js` + `node cover.mjs`).
+
+## Estado (25-11, tarde): TERMINADO
+Revisión completa de los 163 planos, render repartido en 12 sesiones (`rango.sh`, `trozos.sh`, `juntar.sh`; ramas temporales `claude/epic-bell-yeiyfh-render-1…11`, se pueden borrar), `renders/kaffee.mp4` (194,5 s) entregado con portadas (`src/p/z_cover.js`) y descripción (`tiktok.txt`).
