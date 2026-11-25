@@ -5,3 +5,4 @@
 - Marcas buenas y baratas con efecto propio: Tchibo (cuenta doble), Jacobs Krönung (coronas), Melitta (filtro, 1908).
 - Ejemplos nuevos: peluquera, dentista, cura (en vez de vecino, profe, alcalde).
 - Segunda mitad: lata de café de la abuela en el sótano («solo una cucharada»), nunca se vacía, sin temblores; 50 tazas = la leyenda; superrapidez; nueva moneda = el sueño → yo y el cura los más pobres, la abuela la más rica; fue ella quien me mandó al sótano.
+- Recortado a ~590 palabras (≈ 3:15) a petición del usuario; gancho «Und schon bist du Millionär!»; economía hundida antes del sueño como moneda.
