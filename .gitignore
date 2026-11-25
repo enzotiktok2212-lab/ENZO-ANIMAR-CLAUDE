@@ -35,3 +35,6 @@ pieces/neinhals/rv*/
 pieces/neinhals/*.log
 pieces/schlafwandler/review/
 pieces/schlafwandler/review60/
+pieces/schlafwandler/test/
+pieces/schlafwandler/dbg/
+pieces/schlafwandler/*.log
