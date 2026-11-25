@@ -133,7 +133,7 @@ function hideAll() {
   FILL.color.setRGB(1, .96, .91); sun.color.setRGB(1, .95, .86); grade.uniforms.vig.value = .4; grade.uniforms.flash.value = 0; grade.uniforms.lift.value = 0; grade.uniforms.sat.value = 1.2; grade.uniforms.sharp.value = .5; grade.uniforms.sepia.value = 0; DARK = 0; TINT = null; BIRDSON = 1; SHAKE = 0; DOF = 1; day(); }
 
 // estado de atrezo que un plano puede cambiar: se restablece en cada fotograma (render determinista en cualquier orden)
-function resetProps() { DOSE.userData.open(0); DOSE.userData.glow(0); DOSE.userData.pow.scale.y = .32; KE.D.userData.open(0); KE.D.userData.glow(0); KE.BL.intensity = 90; SCHIFF.position.y = 0; STACK.count = 64;
+function resetProps() { DOSE.userData.open(0); DOSE.userData.glow(0); DOSE.userData.pow.scale.y = .32; KE.D.userData.open(0); KE.D.userData.glow(0); KE.BL.intensity = 90; SCHIFF.position.y = 0; STACK.count = 64; if (typeof DROP !== 'undefined') DROP.scale.setScalar(1);
   for (const p of PROPS) if (p.userData.steam) p.userData.steam(0, 0); for (const p of [KE.D, OK.OK]) p.userData.steam && p.userData.steam(0, 0); for (const e of ESP) e.userData.cup.userData.steam(0, 0); }
 const use = (...n) => { for (const k of n) SETS[k].visible = true; };
 function put(ch, x, y, z, ry = 0) { ch.root.visible = true; ch.root.position.set(x, y, z); ch.root.rotation.set(0, ry, 0); return ch; }
@@ -323,7 +323,7 @@ let DARK = 0, TINT = null, SHAKE = 0; let HUD = null; const FX2D = [];
 //@@PLANOS@@
 
 // ---------- transiciones, sonidos, render ----------
-for (let i = 0; i < S.length; i++) S[i].t1 = i + 1 < S.length ? S[i + 1].t0 : DUR;
+S.sort((a, b) => a.t0 - b.t0); for (let i = 0; i < S.length; i++) S[i].t1 = i + 1 < S.length ? S[i + 1].t0 : DUR;
 const TRW = { W: 4, Z: 4, F: 3, S: 4, R: 5, I: 6, C: 4, B: 8 };
 const CUES = [];
 const TRS = { W: ['whoosh_soft', 'swipe', 'whoosh_down'], Z: ['swoosh_up', 'zoom_in', 'whoosh_up'], F: ['flash', 'click_set', 'sparkle'], S: ['swipe', 'tape', 'whoosh_soft'], R: ['whirl', 'clock_spin', 'whoosh'], I: ['iris_pop', 'pop', 'pling'], C: ['thump', 'impact_soft', 'fist'], B: ['soft_air', 'soft_air', 'soft_air'] };
