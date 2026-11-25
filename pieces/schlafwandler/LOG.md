@@ -15,3 +15,6 @@
 - [x] revisión de todos los planos
 - [x] mezcla (renders/mezcla-final.wav, −12,8 LUFS)
 - [ ] render (lanzado; ./render.sh es idempotente, luego ./finish.sh)
+
+## 2026-11-25
+- Render completo (6684 fotogramas, 2 tandas por límite de 2 h) y finish.sh → renders/schlafwandler.mp4 (222,8 s). Entregado.
