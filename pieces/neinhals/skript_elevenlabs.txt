@@ -3,9 +3,9 @@
 [amazed] Manche Hälse sind höher als die Häuser.
 [laughing] Und andere müssen ihren Hals um das ganze Haus wickeln, nur um schlafen zu können.
 [mischievously] Und wenn dein Nein gelogen ist? [shouting] Dann gleich zehn Meter!
-[curious] Wie lang wäre dein Hals heute schon? [mischievously] Und bevor du sagst: „Nein, ich lüge nie“… zehn Meter.
-[confident] Deshalb kann hier niemand lügen.
-[mockingly] Der Typ im Biergarten schwört: „Nein, ich trinke nie.“ [laughing] Zack. Zehn Meter. Mit dem Bierkrug noch in der Hand.
+[curious] Und jeder kennt so jemanden, der zu allem Nein sagt. Hier wäre sein Kopf längst über den Wolken. Wer ist das bei dir?
+[amused] Bei mir? Ganz klar: meine Mama. „Nein, wir haben Essen zu Hause.“ „Nein, du gehst heute nicht raus.“ [mischievously] Und ihr Lieblingssatz: „Nein, ich bin nicht sauer.“ [laughing] Zack. Zehn Meter.
+[confident] Denn hier kann niemand lügen.
 [mockingly] Mein Nachbar: „Nein, ich will keinen Porsche.“ [laughing] Zehn Meter. Klar. Wer will denn bitte keinen Porsche?
 [mischievously] Aber am schlimmsten hat es Timo erwischt. Seine Freundin fragt: „Schreibst du mit einer anderen?“ [nervous] „Nein.“ Zehn Meter. [nervous] „Nein, wirklich nicht!“ [laughing] Zwanzig Meter. Jetzt weiß es die ganze Stadt.
 [proud] Aber ich? Mein Hals ist völlig normal.
@@ -31,6 +31,7 @@ Anscheinend konnte sie seit Jahren niemand reparieren.
 [curious] Doch als ich sie mir genauer anschaue, sehe ich den Grund: ein lockeres Kabel.
 [determined] Also stecke ich es wieder ein und drücke auf Start.
 [whispers] Erst passiert nichts. [excited] Dann erwacht die Maschine plötzlich zum Leben.
+[mischievously] Ich weiß sofort, wen ich als Erstes hier reinstelle. [serious] Aber zuerst brauche ich einen Test.
 [amused] Ich teste sie an einem Arbeiter mit einem lächerlich langen Hals.
 [amazed] Ein greller Laser schießt heraus, und sein Hals schrumpft sofort auf normale Größe.
 [mischievously] In diesem Moment habe ich eine Idee. Eine Idee, die alles verändert.
@@ -38,7 +39,7 @@ Anscheinend konnte sie seit Jahren niemand reparieren.
 [confident] Also hänge ich am nächsten Morgen in der ganzen Stadt Plakate auf.
 [announcer] „Hol dir deinen normalen Hals zurück. Nur 999 Euro.“
 [excited] Nach wenigen Minuten stehen dreitausend Leute vor meiner Fabrik Schlange.
-[laughing] Der Typ aus dem Biergarten. Mein Nachbar. Sogar Timo.
+[laughing] Mein Nachbar. Timo. Sogar meine Mama.
 [laughing] Und dann kommt der Bürgermeister, mit einem Hals höher als der Kirchturm.
 [excited] Am Ende der Woche habe ich Millionen verdient.
 [proud] Einen Monat später bin ich der reichste Mensch der Welt.
