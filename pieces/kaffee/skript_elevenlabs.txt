@@ -40,7 +40,7 @@
 
 [pause] [nervous] Doch am nächsten Morgen kam im Fernsehen eine Eilmeldung: [serious] Weil ein Einziger so viel Geld hatte, war Kaffeegeld ab sofort nichts mehr wert. [slowly] Das neue Geld? [pause] Schlaf. Jede Stunde Schlaf: hundert Euro.
 
-[sad] Ich dagegen habe seit dieser Dose keine Minute mehr geschlafen. Keine einzige. [deadpan] Der Pfarrer auch nicht. Wir zwei sind jetzt die Ärmsten der ganzen Stadt.
+[sad] Mein Problem? Seit dieser Dose habe ich keine Minute mehr geschlafen. Keine einzige. [deadpan] Der Pfarrer auch nicht. Wir zwei sind jetzt die Ärmsten der ganzen Stadt.
 
 [amused] Und die reichste Frau der Welt? Meine Oma. [warmly] Acht Tassen am Tag, und um neun schläft sie wie ein Baby.
 
