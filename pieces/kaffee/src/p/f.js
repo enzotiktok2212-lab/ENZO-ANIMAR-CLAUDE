@@ -1,7 +1,7 @@
 // ---------- f: planos intercalados para que la media sea ~1,2 s (cada uno con otro entorno o ángulo y su acción) ----------
 // «Geld auf deinem Konto.»: primer plano del móvil del abuelo: el saldo salta y caen monedas sobre la pantalla
 shot(4.35, 'C', 'punch', L => { town(L, { morning: 1 }); const c = sit2(REN[0], -16.6, -18, PI / 2, 2.4); actuar(c, 0, [[0, sitPose({ aLx: 1.2, aLe: 1.6, aLz: .2, headX: .3 })]], { T: L.T, weight: false }); grin(c, L.T);
-  attach(PHONE, c.aL.hand, [0, -.6, .5], [-.4, 0, 0], .9); const k = clamp(L.lt / .5); PHONE.userData.draw(c_ => drawBankApp(c_, 300, 560, euro(492 + Math.round(12 * k)), '+12 € KAFFEE', '#5aff9a'));
+  const hw = wpos(c.aL.hand); show(PHONE, hw.x + .4, hw.y + .7, hw.z + .2, 1.2, .9); PHONE.rotation.x = -.2; const k = clamp(L.lt / .5); PHONE.userData.draw(c_ => drawBankApp(c_, 300, 560, euro(492 + Math.round(12 * k)), '+12 € KAFFEE', '#5aff9a'));
   const w = wpos(PHONE); coins(w.clone().add(V(0, 1, 0)), L.t0, L.T, 10); cm([w.x + 3, w.y + 1.6, w.z + 1.2, w.x, w.y, w.z, 34], [w.x + 2.4, w.y + 1.3, w.z + 1, w.x, w.y, w.z, 32], L.k); sh(V(-16, 0, -18), 12); DOF = 1.4; }, [[0, 'notify', .6], [.2, 'coins', .5]]);
 // «Mensch auf der Erde.»: plano cenital de la plaza: toda la ciudad mirando hacia arriba, a mí, de pie en la fuente; billetes volando
 shot(14.76, 'Z', null, L => { town(L, { morning: 1 }); const c = put(ich, 0, 2.2, 4, 0); actuar(c, 0, [[0, { aLx: 2.6, aRx: 2.6, aLz: .6, aRz: .6, aLe: .3, aRe: .3 }]], { T: L.T }); laughF(c, L.T); setHUD(50, '#ffd23f');

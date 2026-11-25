@@ -16,14 +16,14 @@ function drawLegend(c, w, h, k, gold = 0) { const g = c.createLinearGradient(0, 
 
 // 1 «In dieser Stadt macht dich»: seis vecinos en fila delante de la fuente-cafetera levantan la taza a la vez, beben… y de cada taza sale una lluvia de billetes. Empuje centrado.
 shot(0, 'C', null, L => { town(L, { morning: 1 }); const RP = [[-7, 6], [-3.5, 7.5], [0, 8.4], [3.5, 7.5], [7, 6], [0, 2.4]]; const row = [CR[0], CR[1], CR[2], CR[3], CR[4], REN[1]];
-  row.forEach((c, i) => { put(c, RP[i][0], 0, RP[i][1], 0); drink(c, L, .05 + Math.abs(i - 2) * .04, .45, { meter: true, bg: i !== 2, expr: 'happy', l1: .2 }); if (L.lt > .62) cashPop(c, '+12 €', clamp((L.lt - .62 - i * .03) / .2), 'green', .75); });
+  row.forEach((c, i) => { put(c, RP[i][0], 0, RP[i][1], .7); drink(c, L, .05 + Math.abs(i - 2) * .04, .45, { meter: true, bg: i !== 2, expr: 'happy', l1: .2 }); if (L.lt > .62) cashPop(c, '+12 €', clamp((L.lt - .62 - i * .03) / .2), 'green', .75); });
   crowdAt(L, 0, 4, 8, 9, 15, 2, { mode: i => ['drink', 'cheer', 'prost'][i % 3], from: 5, gap: 1.0 }); billFall(V(0, 0, 6), L.t0 + .45, L.T, 70, 22, 8, 16); leaves(V(0, 0, 14), L.T, 16, 30, 10, 18);
-  cm([0, 7.2, 36, 0, 5.4, 4, 46], [0, 6.6, 28, 0, 5.4, 4, 44], L.k, easeOut); sh(V(0, 0, 6), 30); },
+  cm([0, 8.6, 42, 0, 5.4, 5, 46], [0, 7.8, 33, 0, 5.4, 5, 44], L.k, easeOut); sh(V(0, 0, 6), 30); },
   [[0, 'sip', .6], [.25, 'crowd_cheer', .3], [.5, 'money_rain', .7], [.7, 'cash', .6]]);
 // 2 «Kaffee reich.»: en la terraza, una vecina con abrigo da un sorbo y de su taza explotan billetes; se ríe. Plano de tres cuartos, acercándose.
 shot(1.12, 'W', 'punch', L => { town(L, { morning: 1 }); const h = cafeNear(30); const c = sit2(CR[6], h.x * .85 + 0, h.z - 5.6, 0); drink(c, L, L.t0 - .25, .4, { sit: true, pose: SITP, meter: true, expr: 'happy', after: 'joy' });
-  billBurst(hp(c).add(V(0, -.8, 0)), L.t0 + .28, L.T, 30, 1.1); cashPop(c, '+12 €', clamp((L.lt - .3) / .2), 'green', 1.1); terrace(L, h, 3, 'sitdrink', { from: 7 });
-  dcam(c, L.k, 11, -.9, 4.4, 42); sh(V(c.root.position.x, 0, c.root.position.z), 20); }, [[0, 'ahh', .5], [.28, 'money_burst', .6], [.4, 'cash_reg', .5]]);
+  billBurst(hp(c).add(V(0, -.8, 0)), L.t0 + .28, L.T, 14, 1.1); FACES.push(c); cashPop(c, '+12 €', clamp((L.lt - .3) / .2), 'green', 1.1); terrace(L, h, 3, 'sitdrink', { from: 7 });
+  dcam(c, L.k, 14, -.6, 4.4, 42); sh(V(c.root.position.x, 0, c.root.position.z), 20); }, [[0, 'ahh', .5], [.28, 'money_burst', .6], [.4, 'cash_reg', .5]]);
 // 3 «Jede Tasse, die du trinkst,»: dentro del Café Bohne, el barista desliza la taza por la barra; un cliente la coge y bebe; su Kaffeezähler pita
 shot(2.31, 'Z', null, L => { cafe(L); const b = put(barista, CIX - 2, 0, -13.2, 0); actuar(b, L.lt, [[0, { aRx: 1.2, aRe: .6, lean: .1 }], [.5, { aRx: .8, aRe: 1.0, aLx: .4 }, { dur: .4 }]], { T: L.T }); talk(b, L.T, L.t0, L.t0 + 1, 'happy');
   const cu = CUPS[0]; const slide = easeOut(clamp(L.lt / .45)); show(cu, CIX - 2 + slide * 3, 4.7, -10, 0, 1); cu.userData.level(.85); cu.userData.steam(L.T, 1);
@@ -31,30 +31,30 @@ shot(2.31, 'Z', null, L => { cafe(L); const b = put(barista, CIX - 2, 0, -13.2, 
   crowdAt(L, CIX, 4, 6, 8, 14, 3, { mode: 'drink', gap: 1.4 }); orbit(V(CIX, 5.4, -8.5), lerp(16, 13, L.k), -.55, .14, 44); sh(V(CIX, 0, -8), 20); }, [[0, 'slide', .5], [.5, 'sip', .6], [1.1, 'beep', .5]]);
 // 4 «landet sofort als Geld auf deinem Konto.»: un abuelo en un banco de la plaza bebe; en su móvil el saldo salta +12 € y le caen monedas en la mano
 shot(3.59, 'S', null, L => { town(L, { morning: 1 }); const c = sit2(REN[0], -16.6, -18, PI / 2, 2.4); drink(c, L, L.t0 - .1, .45, { sit: true, pose: { ...SITP, aLx: .9, aLe: 1.6, aLz: .2 }, meter: true, expr: 'happy' });
-  attach(PHONE, c.aL.hand, [0, -.6, .5], [-.4, 0, 0], .9); const k = clamp((L.lt - .6) / .4); PHONE.userData.draw(c_ => drawBankApp(c_, 300, 560, euro(12 * 41 + (k > .5 ? 12 : 0)), k > .5 ? '+12 € KAFFEE' : '', '#5aff9a'));
+  const hw = wpos(c.aL.hand); show(PHONE, hw.x + .4, hw.y + .7, hw.z + .2, 1.05, .9); PHONE.rotation.x = -.2; const k = clamp((L.lt - .6) / .4); PHONE.userData.draw(c_ => drawBankApp(c_, 300, 560, euro(12 * 41 + (k > .5 ? 12 : 0)), k > .5 ? '+12 € KAFFEE' : '', '#5aff9a'));
   coins(hp(c).add(V(1.5, -1, 1)), L.t0 + .7, L.T, 14); cashPop(c, '+12 €', clamp((L.lt - .75) / .2), 'green', 1); crowdAt(L, -10, -10, 6, 7, 14, 6, { mode: i => ['walk', 'drink'][i % 2], gap: 1.6 });
-  orbit(V(-16, 4.6, -18), lerp(12, 10, L.k), PI / 2 - .5, .12, 42); sh(V(-16, 0, -18), 18); }, [[0, 'whoosh_soft', .4], [.6, 'notify', .6], [.75, 'coins', .6]]);
+  orbit(V(-16, 4.6, -18), lerp(15.5, 13.5, L.k), PI / 2 - .5, .14, 42); sh(V(-16, 0, -18), 18); }, [[0, 'whoosh_soft', .4], [.6, 'notify', .6], [.75, 'coins', .6]]);
 // 5 «Ein Espresso?»: primer plano de un espresso humeante en su platito; una mano lo coge
 shot(5.64, 'C', 'punch', L => { cafe(L); const e = ESP[0]; show(e, CIX + 6, 4.6, -10, 0, 2.2); e.userData.level(.9); e.userData.cup.userData.steam(L.T, 1); setHUD(0); HUD.a = clamp(L.lt / .2);
   const c = put(CR[9], CIX + 9.2, 0, -6.6, -.7); actuar(c, L.lt, [[0, { aRx: .6, aRe: .9 }], [.2, { aRx: 1.25, aRz: .1, aRe: .7, lean: .12 }, { dur: .3 }]], { T: L.T }); cara(c, L.T, { expr: 'happy', mouth: 'o' });
-  cm([CIX + 6, 8.6, -3.8, CIX + 6, 5.6, -10, 36], [CIX + 6, 8.2, -4.8, CIX + 6, 5.5, -10, 34], L.k); sh(V(CIX + 6, 0, -9), 14); DOF = 1.4; }, [[0, 'cup_clink', .6], [.1, 'steam', .4]]);
+  cm([CIX + 6, 9.4, -1.2, CIX + 6, 5.6, -10, 38], [CIX + 6, 9, -2.6, CIX + 6, 5.5, -10, 36], L.k); sh(V(CIX + 6, 0, -9), 14); DOF = .5; }, [[0, 'cup_clink', .6], [.1, 'steam', .4]]);
 // 6 «Zwölf Euro.»: el chico de gafas se lo toma de un trago; pling: +12 € y un billete cae en su mano; el HUD marca 1 Tasse · 12 €
 shot(6.28, null, null, L => { cafe(L); const c = put(CR[9], CIX + 6, 0, -5, 0); drink(c, L, L.t0 - .15, .3, { kind: 'esp', meter: true, after: 'joy' }); meterOf(c).userData.set('1 Tasse', '12 €'); setHUD(1);
   billDrop(c, L.t0 + .2, L.T, 3, 1.4); cashPop(c, '+12 €', clamp((L.lt - .2) / .2), 'green', 1.2); crowdAt(L, CIX + 4, -2, 5, 7, 12, 9, { mode: 'drink', gap: 1.6 });
   orbit(V(CIX + 6, 5.4, -5), lerp(11.5, 10, L.k), -.25, .1, 42); sh(V(CIX + 6, 0, -5), 16); }, [[0, 'gulp', .5], [.2, 'cash_reg', .7], [.3, 'paper', .4]]);
 // 7 «Eine ganze Kanne?»: en la terraza, un señor levanta una cafetera entera y se la bebe directamente
 shot(7.37, 'W', null, L => { town(L, { morning: 1 }); const h = cafeNear(-30); const c = put(REN[2], h.x * .82, 0, h.z + 2, h.x < 0 ? PI / 2 : -PI / 2); const K = KAN[0]; K.userData.level(lerp(1, .5, clamp((L.lt - .3) / .5)));
-  drink(c, L, L.t0 + .1, .6, { kind: K, chug: true, meter: true, expr: 'determined', eyesD: 'squint' }); K.userData.steam(L.T, 1); setHUD(L.lt < .5 ? 1 : 4);
-  terrace(L, h, 4, i => ['sitprost', 'sithold', 'sitdrink', 'sitprost'][i], { from: 10 }); dcam(c, L.k, 11, -.9, 5.2, 42); sh(V(c.root.position.x, 0, c.root.position.z), 20); },
+  drink(c, L, L.t0 + .1, .6, { kind: K, chug: true, meter: true, expr: 'determined', eyesD: 'squint' }); K.scale.multiplyScalar(.6); K.userData.steam(L.T, 1); setHUD(L.lt < .5 ? 1 : 4);
+  terrace(L, h, 4, i => ['sitprost', 'sithold', 'sitdrink', 'sitprost'][i], { from: 10 }); dcam(c, L.k, 12.5, -1.2, 5.2, 42); sh(V(c.root.position.x, 0, c.root.position.z), 20); },
   [[0, 'whoosh_soft', .4], [.1, 'gulp_long', .6], [.7, 'crowd_ooh', .3]]);
 // 8 «Achthundert Euro.»: la Kanne vacía en alto, estallido de billetes, +800 €; la terraza aplaude
-shot(8.19, 'C', 'punch', L => { town(L, { morning: 1 }); const h = cafeNear(-30); const c = put(REN[2], h.x * .82, 0, h.z + 2, h.x < 0 ? PI / 2 : -PI / 2); const K = KAN[0]; K.userData.level(0); prost(c, L, 1, { kind: K, pose: { aLx: 2.6, aLz: .4 } }); laughF(c, L.T); meterOf(c).userData.set('8 Tassen', '800 €'); setHUD(8, '#f0c060');
+shot(8.19, 'C', 'punch', L => { town(L, { morning: 1 }); const h = cafeNear(-30); const c = put(REN[2], h.x * .82, 0, h.z + 2, h.x < 0 ? PI / 2 : -PI / 2); const K = KAN[0]; K.userData.level(0); prost(c, L, 1, { kind: K, pose: { aLx: 2.6, aLz: .4 } }); K.scale.multiplyScalar(.6); FACES.push(c); laughF(c, L.T); meterOf(c).userData.set('8 Tassen', '800 €'); setHUD(8, '#f0c060');
   billBurst(hp(c).add(V(0, 1, 0)), L.t0, L.T, 34, 1.3); cashPop(c, '+800 €', clamp(L.lt / .2), 'gold', 1.3); terrace(L, h, 4, 'sitcheer', { from: 10 }); crowdAt(L, h.x * .7, h.z + 8, 5, 5, 10, 11, { mode: 'clap', gap: 1.6 });
-  orbit(V(c.root.position.x, 5.6, c.root.position.z), lerp(14, 12, L.k), (h.x < 0 ? PI / 2 : -PI / 2) + .35, .12, 42); sh(V(c.root.position.x, 0, c.root.position.z), 20); }, [[0, 'cash_reg', .7], [.05, 'money_burst', .6], [.3, 'clap', .5]]);
+  orbit(V(c.root.position.x, 5.6, c.root.position.z), lerp(18, 16, L.k), (h.x < 0 ? PI / 2 : -PI / 2) + .35, .14, 42); sh(V(c.root.position.x, 0, c.root.position.z), 20); }, [[0, 'cash_reg', .7], [.05, 'money_burst', .6], [.3, 'clap', .5]]);
 // 9 «Zwanzig Tassen?» (zoom lento): una señora con abrigo rojo, detrás de una pirámide de 19 tazas vacías, se bebe la número 20
 shot(9.35, 'F', 'slow', L => { town(L, { morning: 1 }); const h = cafeNear(10); const tx = Math.sign(h.x) * 40; const c = sit2(REN[3], tx, h.z - 5.6, 0); drink(c, L, L.t0 + .05, .6, { sit: true, pose: SITP, meter: true, expr: 'determined', eyesD: 'squint' }); setHUD(L.lt < .75 ? 19 : 20, '#f0c060');
-  stack(V(tx + (h.x < 0 ? 1.4 : -1.4), 3.98, h.z - 3.2), 19, 1, 0); terrace(L, h, 2, 'sithold', { from: 14 }); crowdAt(L, tx * .85, h.z - 2, 6, 6, 12, 12, { mode: 'clap', gap: 1.8 });
-  dcam(c, L.k, 12, -.95, 4.2, 42); sh(V(tx, 0, h.z - 4), 18); }, [[0, 'gulp_long', .6], [.5, 'drumroll', .4]]);
+  stack(V(tx + (h.x < 0 ? 3.4 : -3.4), 3.98, h.z - 4.6), 19, 1, 0); terrace(L, h, 2, 'sithold', { from: 14 }); crowdAt(L, tx * .85, h.z - 2, 6, 6, 12, 12, { mode: 'clap', gap: 1.8 });
+  dcam(c, L.k, 15, (h.x < 0 ? -.5 : .5), 4.6, 42); sh(V(tx, 0, h.z - 4), 18); }, [[0, 'gulp_long', .6], [.5, 'drumroll', .4]]);
 // 10 «Und schon bist du Millionär!»: la levantan en hombros, confeti y lluvia de billetes; el HUD 20 Tassen · 1 Mio. € en dorado
 shot(10.44, 'Z', 'punch', L => { town(L, { morning: 1 }); const c = put(REN[3], 0, lerp(0, 2.4, easeOut(clamp(L.lt / .3))), 10, 0); prost(c, L, 1, { pose: { aLx: 2.8, aLz: .5 } }); laughF(c, L.T); setHUD(20, '#ffd23f'); meterOf(c).userData.set('20 Tassen', '1 Mio. €', '#ffd23f');
   const lift = [CR[11], CR[12], CR[13]]; lift.forEach((x, i) => { put(x, -1.6 + i * 1.6, 0, 9.2 - (i % 2) * .8, 0); actuar(x, 0, [[0, { aLx: 2.9, aRx: 2.9, aLz: .1, aRz: .1, aLe: .2, aRe: .2 }]], { T: L.T }); laughF(x, L.T + i); });
@@ -87,11 +87,11 @@ shot(20.47, 'W', null, L => { kuecheS(L); const o = omaSeat(oma, L, -3); actuar(
   const cu = mugOf(oma); attach(cu, o.aR.hand, [-.84, -.2, -.72], [PI / 2, 0, 0], 1); cu.userData.level(0);
   const k1 = put(JUG[0], TB.x + 2.2, 0, -1.2, -PI / 2 - .6); actuar(k1, 0, [[0, 'wave']], { T: L.T }); talk(k1, L.T, L.t0, L.t0 + .9, 'happy'); bubble(k1, 'Guten Morgen, Oma!', clamp((L.lt - .1) / .2), 2.2);
   if (L.lt > 1.0) { const q = clamp((L.lt - 1.0) / .2); badge('q', '…', W * .3, H * .3, q, 1, .9); }
-  onFace(o, 5.2, .4, -.8, 38, L.k); sh(V(TB.x - 3, 0, -4), 14); }, [[0, 'chair_creak', .4], [.2, 'hello', .3], [1.0, 'cricket', .4]]);
+  onFace(o, 6.8, .4, -.8, 40, L.k); sh(V(TB.x - 3, 0, -4), 14); }, [[0, 'chair_creak', .4], [.2, 'hello', .3], [1.0, 'cricket', .4]]);
 // 17 «Bei uns ist das meine Oma.»: Oma da el primer sorbo de su Kanne de flores… y se le ilumina la cara; etiqueta OMA GERDA
-shot(22.57, 'C', 'punch', L => { kuecheS(L); const o = omaSeat(oma, L, -3); show(OKAN, TB.x - 1.2, 4.3, -1, .4, 1); OKAN.userData.steam(L.T, 1);
+shot(22.57, 'C', 'punch', L => { kuecheS(L); const o = omaSeat(oma, L, -3); show(OKAN, TB.x - 5.4, 4.3, -2.4, .4, 1); OKAN.userData.steam(L.T, 1);
   drink(o, L, L.t0 + .15, .55, { sit: true, pose: SITP, expr: 'tired', after: 'joy', afterMouth: 'open_smile' }); if (L.lt > .95) confetti(hp(o).add(V(0, -2, 0)), L.t0 + .95, L.T, 18, .5);
-  badge('tag', 'OMA GERDA', W / 2, H * .2, clamp((L.lt - .2) / .2), 1, 1.1); onFace(o, 6.4, .6, -1.3, 40, L.k); sh(V(TB.x - 3, 0, -4), 14); }, [[0, 'sip', .6], [.9, 'sparkle', .5], [1.0, 'aah_old', .4]]);
+  badge('tag', 'OMA GERDA', W / 2, H * .2, clamp((L.lt - .2) / .2), 1, 1.1); onFace(o, 8, .6, -1.0, 40, L.k); sh(V(TB.x - 3, 0, -4), 14); }, [[0, 'sip', .6], [.9, 'sparkle', .5], [1.0, 'aah_old', .4]]);
 // 18 «Acht Tassen am Tag,»: Oma con ocho tazas vacías en fila sobre la mesa, se toma la octava; el reloj de cuco salta de hora en hora
 shot(24.58, 'S', null, L => { kuecheS(L); const o = omaSeat(oma, L, -3); drink(o, L, L.t0 + .35, .5, { sit: true, pose: SITP, meter: true, expr: 'happy' }); meterOf(o).userData.set(L.lt < .9 ? '7 Tassen' : '8 Tassen', L.lt < .9 ? '700 €' : '800 €');
   for (let i = 0; i < 7; i++) { const t = CUPS[i]; show(t, TB.x - 5 + i * 1.55, 4.3, -1.6 + (i % 2) * .7, i, .8); t.userData.level(0); } badge('num', String(Math.min(8, 1 + Math.floor(L.lt / .2))) + ' TASSEN', W / 2, H * .2, clamp(L.lt / .15), 1, 1);
@@ -101,24 +101,24 @@ shot(26.22, 'B', null, L => { kuecheS(L, { night: 1 }); const o = put(oma, OKX +
   DS1.userData.draw('21', (cc, w, h) => { cc.fillStyle = '#fbf6ee'; cc.fillRect(0, 0, w, h); cc.fillStyle = '#1a1a1a'; cc.font = `700 170px ${FONT}`; cc.textAlign = 'center'; cc.textBaseline = 'middle'; cc.fillText('21:00', w / 2, h / 2 + 8); }); show(DS1, OKX + 2, 9.5, -12.4, 0, .4);
   orbit(V(OKX + 6, 5, -5), lerp(13, 11, L.k), PI / 2 + .45, .14, 42); sh(V(OKX + 6, 0, -5), 14); }, [[0, 'snore', .6], [1.2, 'snore', .6], [.5, 'clock_tick', .3]]);
 // 20 «Und die Legende sagt:»: al atardecer, la gente se reúne alrededor de la pizarra de madera de la plaza, que se ilumina con LA LEYENDA
-shot(28.61, 'F', null, L => { town(L, { dusk: 1 }); show(TAFEL, 0, 0, -26, 0); TAFEL.userData.draw((c, w, h) => drawLegend(c, w, h, 0));
-  crowdAt(L, 0, -14, 10, 4, 9, 21, { mode: i => ['point', 'shock', 'idle'][i % 3], face: V(0, 15, -26), gap: 1.6 });
-  cm([0, 8, 22, 0, 13, -26, 48], [0, 9.5, 12, 0, 14.5, -26, 46], L.k); sh(V(0, 0, -16), 30); DOF = 0; }, [[0, 'whoosh', .4], [.1, 'mystery', .6], [.6, 'crowd_ooh', .3]]);
+shot(28.61, 'F', null, L => { town(L, { dusk: 1 }); show(TAFEL, 0, 0, 34, PI); TAFEL.userData.draw((c, w, h) => drawLegend(c, w, h, 0));
+  crowdAt(L, 0, 24, 10, 4, 9, 21, { mode: i => ['point', 'shock', 'idle'][i % 3], face: V(0, 15, 34), gap: 1.6 });
+  cm([0, 8, 4, 0, 13, 34, 48], [0, 9.5, 12, 0, 14.5, 34, 46], L.k); sh(V(0, 0, 24), 30); DOF = 0; }, [[0, 'whoosh', .4], [.1, 'mystery', .6], [.6, 'crowd_ooh', .3]]);
 // 21 «Wer an einem einzigen Tag fünfzig Tassen»: en la terraza, una pirámide gigante de 50 tazas que crece taza a taza; el número 50 sube
 shot(29.83, 'S', null, L => { town(L, { dusk: 1 }); const h = cafeNear(-60); const tx = Math.sign(h.x) * 40; stack(V(tx, 3.98, h.z - 3.2), 50, clamp(L.lt / 1.3), 0); const k = Math.min(50, Math.floor(clamp(L.lt / 1.3) * 50));
   badge('num', k + ' TASSEN', W / 2, H * .2, clamp(L.lt / .12), 1, 1.05); terrace(L, h, 3, 'sitcheer', { from: 4 });
-  orbit(V(tx, 8, h.z - 3.2), lerp(22, 18, L.k), (h.x < 0 ? PI / 2 : -PI / 2) * .6, .18, 46); sh(V(tx, 0, h.z), 20); }, [[0, 'tick', .4], [.3, 'tick', .4], [.6, 'tick', .4], [.9, 'tick', .4], [1.2, 'tick', .4]]);
+  orbit(V(tx, 7, h.z - 3.2), lerp(20, 17, L.k), (h.x < 0 ? PI / 2 : -PI / 2) * .45, .06, 48); sh(V(tx, 0, h.z), 20); }, [[0, 'tick', .4], [.3, 'tick', .4], [.6, 'tick', .4], [.9, 'tick', .4], [1.2, 'tick', .4]]);
 // 22 «schafft, wird Billionär.» (zoom lento): la pizarra en dorado: = BILLIONÄR; brillos; una corona de oro gira encima
-shot(31.39, 'Z', 'slow', L => { town(L, { dusk: 1 }); show(TAFEL, 0, 0, -26, 0); TAFEL.userData.draw((c, w, h) => drawLegend(c, w, h, clamp(L.lt / 1.5), 0)); const cr = CROWNS[0]; show(cr, 0, 25.5 + Math.sin(L.T * 3) * .3, -25, L.T * 1.5, 3);
-  confRain(V(0, 8, -24), L.T, 30, 26, 6, 20); crowdAt(L, 0, -14, 8, 4, 9, 21, { mode: 'shock', face: V(0, 15, -26), gap: 1.6 });
-  cm([0, 14, 6, 0, 16.5, -26, 44], [0, 15, -2, 0, 17, -26, 40], L.k); sh(V(0, 0, -20), 30); DOF = 0; }, [[0, 'sparkle', .5], [.6, 'choir', .4]]);
+shot(31.39, 'Z', 'slow', L => { town(L, { dusk: 1 }); show(TAFEL, 0, 0, 34, PI); TAFEL.userData.draw((c, w, h) => drawLegend(c, w, h, clamp(L.lt / 1.5), 0)); const cr = CROWNS[0]; show(cr, 0, 25.5 + Math.sin(L.T * 3) * .3, 33, L.T * 1.5, 3);
+  confRain(V(0, 8, 32), L.T, 30, 26, 6, 20); crowdAt(L, 0, 24, 8, 4, 9, 21, { mode: 'shock', face: V(0, 15, 34), gap: 1.6 });
+  cm([0, 14, 6, 0, 16.5, 34, 44], [0, 15, 13, 0, 17, 34, 40], L.k); sh(V(0, 0, 28), 30); DOF = 0; }, [[0, 'sparkle', .5], [.6, 'choir', .4]]);
 // 23 «Aber bei Tasse dreißig»: un hombre fortachón en la terraza, rodeado de 29 tazas, tiembla con los ojos desorbitados al coger la 30
 shot(33.47, 'C', null, L => { town(L, { dusk: 1 }); const h = cafeNear(30); const tx = Math.sign(h.x) * 40; const c = sit2(CR[16], tx, h.z - 5.6, 0); const T2 = L.T;
   drink(c, L, L.t0 + .4, .5, { sit: true, pose: { ...SITP, ...tremble(T2, 1.4) }, meter: true, expr: 'shock', eyesD: 'wide' }); stack(V(tx + (h.x < 0 ? 1.4 : -1.4), 3.98, h.z - 3.2), 29, 1); sweat(c, L.T, 3); setHUD(L.lt < .9 ? 29 : 30, '#ff8a4a');
-  dcam(c, L.k, 11, -.85, 4.4, 42); sh(V(tx, 0, h.z - 4), 18); }, [[0, 'heartbeat', .6], [.4, 'shiver', .5]]);
+  dcam(c, L.k, 14, -.45, 4.6, 42); sh(V(tx, 0, h.z - 4), 18); }, [[0, 'heartbeat', .6], [.4, 'shiver', .5]]);
 // 24 «gibt jeder auf.»: se cae de la silla de espaldas, la taza vuela; la gente de las otras mesas se tapa la boca
 shot(34.53, 'C', 'punch', L => { town(L, { dusk: 1 }); const h = cafeNear(30); const tx = Math.sign(h.x) * 40; const c = put(CR[16], tx, 0, h.z - 5.6, 0); const k = easeIn(clamp(L.lt / .45));
   c.root.rotation.order = 'YXZ'; c.root.rotation.x = -k * 1.5; c.root.position.z -= k * 2; c.root.position.y = 1.3 * (1 - k) + .4; actuar(c, 0, [[0, { aLx: 2.4, aRx: 2.4, aLz: .8, aRz: .8, lLx: 1.4, lRx: 1.0 }]], { T: L.T }); cara(c, L.T, { eyes: k > .9 ? 'closed' : 'scared', mouth: 'scream' });
   const cu = CUPS[3]; show(cu, tx + 1 + L.lt * 2, 6 + L.lt * 6 - L.lt * L.lt * 18, h.z - 4, L.T * 9, 1); cu.rotation.x = L.T * 7; stack(V(tx + (h.x < 0 ? 1.4 : -1.4), 3.98, h.z - 3.2), 29, 1); setHUD(30, '#ff4a4a');
   terrace(L, h, 2, 'sithold', { from: 18 }); crowdAt(L, tx * .85, h.z + 2, 5, 5, 10, 24, { mode: 'shock', gap: 1.6 }); badge('red', 'AUFGEGEBEN!', W / 2, H * .22, clamp((L.lt - .4) / .2), 1, .9);
-  orbit(V(tx, 4, h.z - 6), lerp(15, 13, L.k), (h.x < 0 ? -.6 : .6), .2, 44); sh(V(tx, 0, h.z - 5), 18); }, [[0, 'chair_fall', .6], [.35, 'thud', .7], [.5, 'cup_break', .5], [.6, 'crowd_gasp', .4]]);
+  orbit(V(tx, 4, h.z - 6), lerp(18, 16, L.k), (h.x < 0 ? -.9 : .9), .2, 44); sh(V(tx, 0, h.z - 5), 18); }, [[0, 'chair_fall', .6], [.35, 'thud', .7], [.5, 'cup_break', .5], [.6, 'crowd_gasp', .4]]);
