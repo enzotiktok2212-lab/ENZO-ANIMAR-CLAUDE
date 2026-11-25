@@ -2,11 +2,10 @@
 [amused] Siehst du den Mann da? Sein Hals ist so lang, weil er ständig Nein zu seiner Schwiegermutter sagt.
 [amazed] Manche Hälse sind höher als die Häuser.
 [laughing] Und andere müssen ihren Hals um das ganze Haus wickeln, nur um schlafen zu können.
-[mischievously] Aber das Beste ist: Hier kann niemand lügen. Denn jedes Nein sieht man sofort.
-[mockingly] Der Typ im Biergarten schwört: „Nein, ich trinke nie.“ [laughing] Zack. Drei Meter. Mit dem Bierkrug noch in der Hand.
-[amused] Seine Freundin: „Nein, ich vape nicht.“ Fünf Meter. Und ganz oben steigt eine Dampfwolke auf.
-[mischievously] Aber am schlimmsten hat es Timo erwischt. Seine Freundin fragt: „Schreibst du mit einer anderen?“ [nervous] „Nein.“ [laughing] Zwanzig Meter. Jetzt weiß es die ganze Stadt.
-[curious] Und mal ehrlich: Kennst du auch so einen? Markier ihn in den Kommentaren.
+[mischievously] Aber das Beste ist: Hier kann niemand lügen. Denn jedes Nein lässt deinen Hals einen Meter wachsen. [whispers] Aber ein gelogenes Nein? [shouting] Zehn Meter!
+[mockingly] Der Typ im Biergarten schwört: „Nein, ich trinke nie.“ [laughing] Zack. Zehn Meter. Mit dem Bierkrug noch in der Hand.
+[mockingly] Mein Nachbar: „Nein, ich war nicht an deinem neuen Sportwagen.“ [amused] Zehn Meter. Und sein Schlüssel kratzt noch am Lack.
+[mischievously] Aber am schlimmsten hat es Timo erwischt. Seine Freundin fragt: „Schreibst du mit einer anderen?“ [nervous] „Nein.“ Zehn Meter. [nervous] „Nein, wirklich nicht!“ [laughing] Zwanzig Meter. Jetzt weiß es die ganze Stadt.
 [proud] Aber ich? Mein Hals ist völlig normal.
 Denn ich habe in meinem ganzen Leben noch nie Nein gesagt. Kein einziges Mal.
 [serious] Und genau das war mein größtes Problem.
@@ -37,7 +36,7 @@ Anscheinend konnte sie seit Jahren niemand reparieren.
 [confident] Also hänge ich am nächsten Morgen in der ganzen Stadt Plakate auf.
 [announcer] „Hol dir deinen normalen Hals zurück. Nur 999 Euro.“
 [excited] Nach wenigen Minuten stehen dreitausend Leute vor meiner Fabrik Schlange.
-[laughing] Der Typ aus dem Biergarten. Seine Freundin. Sogar Timo.
+[laughing] Der Typ aus dem Biergarten. Mein Nachbar. Sogar Timo.
 [laughing] Und dann kommt der Bürgermeister, mit einem Hals höher als der Kirchturm.
 [excited] Am Ende der Woche habe ich Millionen verdient.
 [proud] Einen Monat später bin ich der reichste Mensch der Welt.
