@@ -11,7 +11,7 @@
 ## Estado
 - [x] voz y tiempos
 - [x] motor, escenarios y reparto base
-- [ ] planos a–d
+- [x] planos a–d escritos (revisión en curso)
 - [ ] revisión de todos los planos
 - [ ] mezcla
 - [ ] render

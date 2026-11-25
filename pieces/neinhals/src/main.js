@@ -59,7 +59,7 @@ POOL.forEach(c => { const b = new THREE.Mesh(new THREE.PlaneGeometry(3.6, 2.6), 
 // ---------- atrezo ----------
 const PROPS = [];
 const P_ = o => { if (!o.parent) scene.add(o); PROPS.push(o); return o; };
-const OLD = P_(oldtimer(scene)), PORSCHE = P_(sportwagen(scene, 0xd8dce4, { rim: 0xc8ccd4, plate: 'B-RH 911' })), WAGEN = Array.from({ length: 12 }, (_, i) => P_(sportwagen(scene, [0xd8202a, 0xffd21a, 0x2a6ad8, 0x1a1a1a, 0xf4f4f4, 0x3ab84a, 0xff7a1a, 0x8a3ad8, 0x2ad8e8, 0xff5aa8, 0xc8ccd4, 0x6a4a2a][i])));
+const OLD = P_(oldtimer(scene)), PORSCHE = P_(sportwagen(scene, 0xd8202a, { rim: 0xc8ccd4, plate: 'B-RH 911' })), WAGEN = Array.from({ length: 12 }, (_, i) => P_(sportwagen(scene, [0xd8202a, 0xffd21a, 0x2a6ad8, 0x1a1a1a, 0xf4f4f4, 0x3ab84a, 0xff7a1a, 0x8a3ad8, 0x2ad8e8, 0xff5aa8, 0xc8ccd4, 0x6a4a2a][i])));
 const LITF = P_(litfass(scene, (c, w, h) => { c.fillStyle = '#f4ead0'; c.fillRect(0, 0, w, h); for (let k = 0; k < 4; k++) { c.save(); c.translate(k * w / 4, 0); drawAd(c, w / 4, h); c.restore(); } }));
 const BILLB = P_(billboard(scene, 26, 13, (c, w, h) => drawAd(c, w, h)));
 const PH = P_(phoneBig(scene)); PH.traverse(o => { if (o.isMesh) o.castShadow = true; });
@@ -84,7 +84,7 @@ const FOAMP = Array.from({ length: 30 }, () => P_(sphere(1, mat(0xffffff, { roug
 const VAPOR = Array.from({ length: 14 }, () => P_(sphere(1, mat(0xf4f4f8, { roughness: 1, transparent: true, opacity: .7, depthWrite: false }), scene, 0, 0, 0, 10, 8)));
 const SPARK = Array.from({ length: 24 }, () => P_(sphere(.18, glowM(0xfff4a0, 3), scene, 0, 0, 0, 6, 4)));
 const ZZZ = Array.from({ length: 3 }, () => P_(textPlane(2, 2, 100, 100, (c, w, h) => { c.font = `700 80px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.lineWidth = 10; c.strokeStyle = '#1a2a5a'; c.strokeText('Z', 50, 54); c.fillStyle = '#ffffff'; c.fillText('Z', 50, 54); })));
-const CLOUDS = Array.from({ length: 6 }, (_, i) => P_(cloud(scene, 0, 0, 0, 1)));
+const CLOUDS = Array.from({ length: 14 }, (_, i) => P_(cloud(scene, 0, 0, 0, 1)));
 // cuello enrollado a una casa (tubo) + cabeza durmiendo en el tejado
 const SKINM = mat(0xf2c4a0, { roughness: .55 }); const WRAP = P_(new THREE.Mesh(new THREE.BufferGeometry(), SKINM)); WRAP.castShadow = true; outline(WRAP, 1.6);
 const setWrap = pts => { WRAP.geometry.dispose(); WRAP.geometry = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 160, .42, 10); };
@@ -157,7 +157,8 @@ function crowdAt(L, cx, cz, n, r0, r1, seed = 1, o = {}) { POST.push(() => { con
   const placed = o.avoid ? [...o.avoid] : [];
   list.forEach((c, i) => { let x, z, tries = 0; do { const a = arc_[0] + (i + r() * .8) / list.length * (arc_[1] - arc_[0]); const d = r0 + r() * (r1 - r0); x = cx + Math.cos(a) * d; z = cz + Math.sin(a) * d; tries++; } while (tries < 10 && placed.some(p => Math.hypot(p[0] - x, p[1] - z) < 3.6));
     placed.push([x, z]); crowdGuy(c, x, z, L, i, o); }); }); }
-function crowdGuy(c, x, z, L, i, o) { const T = L.T + i * .37, face = o.face || camera.position; let ry = o.ry ?? (Math.atan2(face.x - x, face.z - z) + Math.sin(i * 7.3) * (o.jit ?? .35));
+function crowdGuy(c, x, z, L, i, o) { crowdGuy0(c, x, z, L, i, o); if (o.neck != null) { const n = typeof o.neck === 'function' ? o.neck(i) : o.neck; if (n > .05) hals(c, n, { T: L.T, bend: ((i * 5) % 3 - 1) * .05, sway: .06 }); } }
+function crowdGuy0(c, x, z, L, i, o) { const T = L.T + i * .37, face = o.face || camera.position; let ry = o.ry ?? (Math.atan2(face.x - x, face.z - z) + Math.sin(i * 7.3) * (o.jit ?? .35));
   put(c, x, o.y ?? 0, z, ry); const m = typeof o.mode === 'function' ? o.mode(i) : o.mode;
   if (m === 'walk' || m === 'run') { const run = m === 'run', d = (o.speed ?? (run ? 9 : 2.2)) * L.lt, a = ry + (o.dir ?? 0); c.root.rotation.y = a; c.root.position.x += Math.sin(a) * d; c.root.position.z += Math.cos(a) * d; c.root.position.y = (o.y ?? 0) + Math.abs(Math.sin(L.T * (run ? 13 : 9) + i)) * (run ? .35 : .12); actuar(c, 0, [[0, run ? runP(L.T, i) : walkP(L.T, i)]], { T: L.T }); cara(c, T, { expr: o.expr || (run ? 'determined' : 'neutral'), mouth: run ? 'o' : undefined }); }
   else if (m === 'talk') { actuar(c, 0, [[0, { aRx: .9 + Math.sin(L.T * 3 + i) * .3, aRz: .2, aRe: 1.2, aLx: .3, headY: Math.sin(L.T * .8 + i) * .4 }]], { T: L.T }); cara(c, T, { expr: 'happy', mouth: Math.sin(L.T * 9 + i) > 0 ? 'talk' : 'smile' }); }
@@ -179,8 +180,8 @@ function kuecheS(L) { use('KU'); inside(1.05, 42); FILL.color.setRGB(1, .94, .84
 function klasseS(L) { use('KL'); inside(1.05, 42); }
 function kellerS(L) { use('KE'); inside(.55, 22); FILL.color.setRGB(1, .86, .62); renderer.toneMappingExposure = .9; bloom.strength = .26; }
 function barrioS(L) { use('BA'); day(); }
-function fabrikS(L) { use('FA'); day(); }
-function halleS(L, k = 0) { use('HA'); inside(1.05, 40); FILL.color.setRGB(.95, .98, 1); }
+function fabrikS(L) { use('FA'); day(); FA.GATE.children.forEach(d => { if (d.name && d.name.startsWith('door')) d.rotation.y = 0; }); }
+function halleS(L, k = 0) { use('HA'); inside(1.05, 40); FILL.color.setRGB(.95, .98, 1); HA.RINGS.forEach((r, i) => { r.rotation.y = 0; r.position.y = 5 + i * 3.4; }); HA.LASER.scale.set(1, 1, 1); HA.BTN.material.emissiveIntensity = .3; HA.BTN.position.y = 5.6; HA.SCR('ONLINE', '#2aff6a'); plugIn(1); }
 function schlossS(L) { use('SC'); day(); }
 function inselS(L) { use('IN'); day(); }
 function schuleS(L) { use('SU'); day(); }
