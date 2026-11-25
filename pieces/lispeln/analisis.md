@@ -35,4 +35,4 @@ Comedia absurda de normas sin héroe sobrenatural → **bajo** (1,5–2 $) segú
 
 ## Adaptación al alemán
 - Ceceo: toda «s» (también ß/ss) → «th», salvo en «sch». Desde que se prohíben R y L: r/l → «w».
-- Cambios para no copiar: bocadillo → **GTA 6** robado («GTA Thechth»); seis policías → **cuatro**; heladería / 6 bolas de fresa / solo chocolate → **panadería / 7 Salzbrezeln / solo Kuchen**; trabalenguas → **«Süße Sahnesoße, super starke Spaghetti, sieben saure Salatgurken»**; «my red car is broken» → **«Mein Porsche brennt!»** («Mein Powsche bwennt!»); «six sausages» → **«sieben Salzbrezeln und GTA Sechs»** (vuelve el GTA 6 del amigo).
+- Cambios para no copiar: bocadillo → **Käsebrot**; seis policías → **cuatro**; heladería / fresa / «solo chocolate» → **tienda de videojuegos / «GTA Thechth» / «nur GTA Fünf»** (no pueden decir «Sechs» porque lleva S); trabalenguas → **«Süße Sahnesoße, super starke Spaghetti, sieben saure Salatgurken»**; «my red car is broken» → **«Mein Porsche brennt!»** («Mein Powsche bwennt!»); «six sausages» → **«GTA Sechs!»** (por fin lo puede decir).
