@@ -4,8 +4,8 @@
 [laughing] Und andere müssen ihren Hals um das ganze Haus wickeln, nur um schlafen zu können.
 [mischievously] Und wenn dein Nein gelogen ist? [shouting] Dann gleich zehn Meter!
 [curious] Und jeder kennt so jemanden, der zu allem Nein sagt. Hier wäre sein Kopf längst über den Wolken. Wer ist das bei dir?
-[amused] Bei mir? Ganz klar: meine Mama. „Nein, wir haben Essen zu Hause.“ „Nein, du gehst heute nicht raus.“ [mischievously] Und ihr Lieblingssatz: „Nein, ich bin nicht sauer.“ [laughing] Zack. Zehn Meter.
-[confident] Denn hier kann niemand lügen.
+[mischievously] Lügen kann hier nämlich niemand.
+[amused] Am schwersten haben es die Mamas. „Nein, wir haben Essen zu Hause.“ „Nein, du gehst heute nicht raus.“ [mischievously] Und dann: „Nein, ich bin nicht sauer.“ [laughing] Zack. Zehn Meter.
 [mockingly] Mein Nachbar: „Nein, ich will keinen Porsche.“ [laughing] Zehn Meter. Klar. Wer will denn bitte keinen Porsche?
 [mischievously] Aber am schlimmsten hat es Timo erwischt. Seine Freundin fragt: „Schreibst du mit einer anderen?“ [nervous] „Nein.“ Zehn Meter. [nervous] „Nein, wirklich nicht!“ [laughing] Zwanzig Meter. Jetzt weiß es die ganze Stadt.
 [proud] Aber ich? Mein Hals ist völlig normal.
@@ -39,7 +39,7 @@ Anscheinend konnte sie seit Jahren niemand reparieren.
 [confident] Also hänge ich am nächsten Morgen in der ganzen Stadt Plakate auf.
 [announcer] „Hol dir deinen normalen Hals zurück. Nur 999 Euro.“
 [excited] Nach wenigen Minuten stehen dreitausend Leute vor meiner Fabrik Schlange.
-[laughing] Mein Nachbar. Timo. Sogar meine Mama.
+[laughing] Mein Nachbar. Timo. Sogar die Mamas.
 [laughing] Und dann kommt der Bürgermeister, mit einem Hals höher als der Kirchturm.
 [excited] Am Ende der Woche habe ich Millionen verdient.
 [proud] Einen Monat später bin ich der reichste Mensch der Welt.
