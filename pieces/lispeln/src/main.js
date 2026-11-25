@@ -1,6 +1,6 @@
-// SCHLUCK — «In dieser Stadt bekommst du jedes Mal Geld, wenn du ein Bier trinkst»: 1 Bier = 20 €, 5 = 600 €, 20 = Millionär, 500 = Trillionär.
-// Felix (el estómago más pequeño de la ciudad) encuentra un goldener Krug que se rellena solo… y el Schluckauf acaba siendo la nueva moneda.
-// Ciudad propia: Brauheim (pueblo alpino de entramado con Biergarten en la plaza). Planos en src/p/*.js; armar.py los une en src/index.js.
+// LISPELN — «In dieser Stadt ist der Buchstabe S verboten»: wer es sagt, kommt ins Gefängnis; alle sagen TH.
+// Jonte descubre que el alcalde Zischler cecea y por eso prohibió la S; lo graba y lo pone en todas las pantallas… y el alcalde prohíbe R y L.
+// Ciudad propia: Zischelbach (pueblo alpino). Planos en src/p/*.js; armar.py los une en src/index.js.
 import { BokehPass } from 'three/addons/postprocessing/BokehPass.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { THREE, W, H, FPS, makeRenderer, makeComposer, applyPose, V, lerp, clamp, easeOut, easeIn, easeInOut, spring, RNG, mat, box, sphere, cyl, textPlane, canvasTex, outline } from './engine.js';
@@ -8,19 +8,21 @@ import { nightSky } from './sets.js';
 import { rimLight } from './roblox.js';
 import { FONT, txt } from './props.js';
 import { makeExtra } from './ecast.js';
-import { lindenthal, sportplatz } from './nsets.js';
-import { zelle, polizei } from './gsets.js';
-import { taxi } from './gort.js';
+import { makeKidX } from './acast.js';
+import { lindenthal, schule, glowM } from './nsets.js';
+import { klasse } from './svsets.js';
+import { wohnzimmer } from './zsets.js';
+import { polizei } from './gsets.js';
 import { sportsCar } from './pech.js';
-import { mass, bottle, crate, deckel, fass, goldKrug, neckMeter, drawHUD, money, euro, nBier } from './bier.js';
-import { biergarten, bierzelt, bueroLeer, regal, kloster, sudhaus, seeVilla, amtsstube, ministerium, gericht, altBrauerei, brauKeller, zimmerF, bankBuero, flood, sign, glowM, lights } from './bwelt.js';
-import { makeFelix, makeHuber, makeResi, makeBrandl, makeKranzl, makeSchummler, makeMoench, makeBanker, makeBeamter, makeRichterin, makeTracht } from './bvolk.js';
 import { makeCop } from './gcast.js';
+import { banSign, drawBan, gantry, bigScreen, robot, robotPose, rathausPlatz, saal, spieleladen } from './lsets.js';
+import { makeJonte, makeBela, makeKessler, makeZocker, makeZischler, makePorscheMann } from './lcast.js';
 import { loadKitFaces, kitFace, kitLips, eyesAlive, GEST, actuar, mirar, caminar, saltar, aire, bandada, camaraEnMano, shiver } from './vivo.js';
 
 await document.fonts.load('700 40px Cap'); await loadKitFaces();
 const WORDS = await (await fetch('./audio/words.json')).json();
-const DUR = 168.0, U = W / 720;
+const DUR = 95.9, U = W / 720;
+
 const stage = document.getElementById('stage'); const renderer = makeRenderer(stage); renderer.domElement.style.display = 'none';
 const out = document.createElement('canvas'); out.width = W; out.height = H; stage.appendChild(out); const octx = out.getContext('2d');
 const scene = new THREE.Scene(); scene.fog = new THREE.FogExp2(0xcfe6ff, .0008);
@@ -41,98 +43,77 @@ const OLF = HQ ? 0 : 1; const OC = 3 * SS * OLF, OS = 2.2 * SS * OLF, OP = 1.8 *
 const _ol = outline; 
 const M2U = 3.95;
 // ---------- escenarios ----------
-// Brauheim (x = 0): plaza adoquinada z ∈ [-85, 65], casas a x = ±52 (fachadas en x = ±43), carretera hacia +z, iglesia z = -120, Maibaum (18,-14), fuente (-14,-26).
-// Biergarten centrado en (0, 0, 22): Ausschank en (0, -12) mirando +z, mesas en z ∈ {2, 15, 28} y x = ±14 (largo 12, bancos a z ± 2,3), castaños.
-const LT = lindenthal(scene, { name: 'BRAUHEIM', shops: { 2: 'GETRÄNKEMARKT', 5: 'GASTHOF ADLER', 9: 'BANK', 12: 'METZGEREI' } });
-const BG = biergarten(scene, 0, 22); BG.g.visible = false;
-const BZX = 1400, BUX = 2200, RGX = 3000, KLX = 3800, SUX = 4600, SVX = 5400, AMX = 6200, MIX = 7000, GEX = 7800, ABX = 8600, KEX = 9400, ZIX = 10200, BKX = 11000, SPX = 11800, ZEX = 12600;
-const BZ = bierzelt(scene, BZX), BU = bueroLeer(scene, BUX), RG = regal(scene, RGX), KL = kloster(scene, KLX), SU = sudhaus(scene, SUX), SV = seeVilla(scene, SVX), AM = amtsstube(scene, AMX), MI = ministerium(scene, MIX), GE = gericht(scene, GEX), AB = altBrauerei(scene, ABX), KE = brauKeller(scene, KEX), ZI = zimmerF(scene, ZIX), BK = bankBuero(scene, BKX), SP = sportplatz(scene, SPX), ZE = zelle(scene, ZEX);
-const SETS = { LT: LT.g, BZ: BZ.g, BU: BU.g, RG: RG.g, KL: KL.g, SU: SU.g, SV: SV.g, AM: AM.g, MI: MI.g, GE: GE.g, AB: AB.g, KE: KE.g, ZI: ZI.g, BK: BK.g, SP: SP.g, ZE: ZE.g };
-for (const k in SETS) outline(SETS[k], OS); outline(BG.g, OS);
-const GMP = LT.HS[2].position.clone(), BANKP = LT.HS[9].position.clone();   // Getränkemarkt (x = -52) y banco (x = +52)
-// cajas apiladas delante del Getränkemarkt
-const STACK = new THREE.Group(); scene.add(STACK); for (let i = 0; i < 9; i++) { const c = crate(STACK, ['WEIHENSTEPHANER', 'PAULANER'][i % 2], { bottles: i > 5 }); c.position.set((i % 3) * 3.8 - 3.8, Math.floor(i / 3) * 1.65, 0); }
-STACK.position.set(GMP.x + 12, 0, GMP.z + 11); STACK.rotation.y = Math.PI / 2;
-{ const s = sign('GETRÄNKEMARKT', 16, 2.6, '#d8202a', '#ffffff', '#ffffff', .62); s.position.set(GMP.x + 9.4, 9.6, GMP.z); s.rotation.y = Math.PI / 2; scene.add(s); }
+// Zischelbach-Dorf (x = 0, lindenthal): plaza z ∈ [-70, 50], casas a x = ±52 (fachadas en x = ±43), carretera hacia +z (x ∈ ±8), iglesia z = -120,
+// Maibaum (18,-14), fuente (-14,-26). Pórtico con la señal «S verboten» sobre la carretera en z = 70. Pantallas gigantes en la plaza.
+const LT = lindenthal(scene, { name: 'ZISCHELBACH', shops: { 2: 'BÄCKEREI', 5: 'GATHTHOF', 9: 'CAFÉ', 12: 'THUPERMARKT' } });
+const GAN = gantry(scene, 0, 70, 'S'); LT.g.add(GAN);
+const DSCR = [[-30, -20, .5], [30, -20, -.5]].map(([x, z, r]) => { const b = bigScreen(scene, 18, 10.125, 640, 360); b.position.set(x, 0, z); b.rotation.y = r; LT.g.add(b); b.visible = false; return b; });
+const SCX = 1400, KLX = 2200, ZOX = 3000, WZX = 3800, RPX = 4600, SAX = 5600;
+const SC = schule(scene, SCX), KL = klasse(scene, KLX), ZO = spieleladen(scene, ZOX), RP = rathausPlatz(scene, RPX), SA = saal(scene, SAX);
+// cartel pintado del colegio (THCHULE) delante del rótulo original
+const SCHILD = new THREE.Group(); SC.g.add(SCHILD); SCHILD.position.set(0, 26.4, -25.6);
+{ const cv = document.createElement('canvas'); cv.width = 900; cv.height = 108; const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; const m = new THREE.Mesh(new THREE.PlaneGeometry(30, 3.6), new THREE.MeshStandardMaterial({ map: t, roughness: .7 })); SCHILD.add(m); let key = null;
+  SCHILD.userData.draw = k => { const kk = Math.round(k * 20); if (kk === key) return; key = kk; const c = cv.getContext('2d'); c.fillStyle = '#ffffff'; c.fillRect(0, 0, 900, 108); txt(c, 'SCHULE AM BERG', 450, 58, 76, '#2a4a7a');
+    if (k > 0) { c.save(); c.beginPath(); c.rect(118, 0, 80 * clamp(k * 1.4), 108); c.clip(); c.fillStyle = '#ffffff'; c.fillRect(118, 6, 80, 96); c.restore(); c.save(); c.beginPath(); c.rect(110, 0, 150 * clamp(k * 1.4 - .3), 108); c.clip(); c.font = `700 76px ${FONT}`; c.fillStyle = '#d8202a'; c.textAlign = 'left'; c.textBaseline = 'middle'; c.fillText('TH', 112, 60); c.restore(); } t.needsUpdate = true; }; SCHILD.userData.draw(0); }
+// tele del salón: noticias con un atril vacío o el robot
+const TVC = document.createElement('canvas'); TVC.width = 640; TVC.height = 360; const TVT = new THREE.CanvasTexture(TVC); TVT.colorSpace = THREE.SRGBColorSpace;
+const WZ = wohnzimmer(scene, WZX, TVT);
+const SETS = { LT: LT.g, SC: SC.g, KL: KL.g, ZO: ZO.g, WZ: WZ.g, RP: RP.g, SA: SA.g };
+for (const k in SETS) outline(SETS[k], OS);
+// puerta del aula (pared izquierda, x = -19.8, z = 8): hoja que se abre hacia dentro
+const DOOR = new THREE.Group(); KL.g.add(DOOR); DOOR.position.set(-19.6, 0, 4.6); { box(.3, 11, 6.6, mat(0x8a5a2a, { roughness: .6 }), .1, DOOR, 0, 5.5, 3.3); sphere(.3, mat(0xd8b040, { metalness: .9 }), DOOR, .4, 5.4, 5.8, 8, 6); box(.6, 11.6, 7.4, mat(0xf4f0e8), .1, KL.g, -19.85, 5.8, 8); const w = box(.32, 3, 2.4, new THREE.MeshStandardMaterial({ color: 0xbfe0ff, roughness: .05, transparent: true, opacity: .6 }), .05, DOOR, 0, 8, 3.3); }
 // ---------- reparto ----------
-const felix = makeFelix(scene), huber = makeHuber(scene), resi = makeResi(scene), brandl = makeBrandl(scene), kranzl = makeKranzl(scene), schum = makeSchummler(scene), moench = makeMoench(scene), banker = makeBanker(scene), rich = makeRichterin(scene);
-const BEA = [0, 1, 2].map(i => makeBeamter(scene, i)), COPS = [0, 1].map(i => makeCop(scene, i));
-kitFace(felix, 'hero'); [huber, resi, rich].forEach(c => kitFace(c, 'girl')); [brandl, kranzl].forEach(c => kitFace(c, 'mustache')); [schum, moench, banker, ...BEA, ...COPS].forEach(c => kitFace(c, 'plain'));
-const EX = Array.from({ length: 22 }, (_, i) => makeExtra(scene, i + 40)); EX.forEach((c, i) => kitFace(c, ['girl', 'plain', 'girl', 'hero', 'girl', 'mustache'][i % 6]));
-const TR = Array.from({ length: 20 }, (_, i) => makeTracht(scene, i)); TR.forEach((c, i) => kitFace(c, i % 2 ? 'girl' : ['plain', 'mustache', 'hero'][(i / 2 | 0) % 3]));
-const CR = []; for (let i = 0; i < 22; i++) { if (TR[i]) CR.push(TR[i]); CR.push(EX[i]); }
-const MAIN = [felix, huber, resi, brandl, kranzl, schum, moench, banker, rich, ...BEA, ...COPS];
-const POOL = [...MAIN, ...EX, ...TR];
+const jonte = makeJonte(scene), bela = makeBela(scene), kess = makeKessler(scene), zock = makeZocker(scene), zisch = makeZischler(scene), pmann = makePorscheMann(scene);
+const COPS = [0, 1, 2, 3].map(i => makeCop(scene, i));
+kitFace(jonte, 'kid'); kitFace(bela, 'kid'); kitFace(kess, 'girl'); kitFace(zock, 'plain'); kitFace(zisch, 'mustache'); kitFace(pmann, 'plain'); COPS.forEach((c, i) => kitFace(c, i % 2 ? 'mustache' : 'plain'));
+const KIDS = Array.from({ length: 10 }, (_, i) => makeKidX(scene, i + 3)); KIDS.forEach((c, i) => kitFace(c, i % 3 === 1 ? 'girl' : 'kid'));
+const EX = Array.from({ length: 30 }, (_, i) => makeExtra(scene, i + 60)); EX.forEach((c, i) => kitFace(c, ['girl', 'plain', 'girl', 'hero', 'girl', 'mustache'][i % 6]));
+const CR = EX;
+const MAIN = [jonte, bela, kess, zock, zisch, pmann, ...COPS];
+const POOL = [...MAIN, ...KIDS, ...EX];
 POOL.forEach(c => outline(c.root, OC));
 const BLOBT = canvasTex(128, 128, (c, w, h) => { const g = c.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w / 2); g.addColorStop(0, 'rgba(0,0,0,.5)'); g.addColorStop(.5, 'rgba(0,0,0,.26)'); g.addColorStop(1, 'rgba(0,0,0,0)'); c.fillStyle = g; c.fillRect(0, 0, w, h); });
 POOL.forEach(c => { const b = new THREE.Mesh(new THREE.PlaneGeometry(3.6, 2.6), new THREE.MeshBasicMaterial({ map: BLOBT, transparent: true, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -4 })); b.rotation.x = -Math.PI / 2; b.position.y = .06; b.renderOrder = 1; c.root.add(b); c.blob = b; });
 // ---------- atrezo ----------
 const PROPS = [];
 const P_ = o => { if (!o.parent) scene.add(o); PROPS.push(o); return o; };
-const METERS = new Map(); const meterOf = ch => { let m = METERS.get(ch); if (!m) { m = neckMeter(ch); METERS.set(ch, m); } m.visible = true; return m; };
-const MUGS = new Map(); const mugOf = ch => { let m = MUGS.get(ch); if (!m) { m = P_(mass(scene)); MUGS.set(ch, m); } return m; };
-const GK2 = P_(goldKrug(scene)); GK2.traverse(o => { if (o.isMesh) o.castShadow = true; });
-const BW = P_(bottle(scene, 'WEIHENSTEPHANER')), BW2 = P_(bottle(scene, 'WEIHENSTEPHANER')), BP = P_(bottle(scene, 'PAULANER'));
-// Apfelschorle: botella verde clara con etiqueta de manzana; lata de cerveza barata
-const APF = P_(new THREE.Group()); { const gm = mat(0x9ad86a, { roughness: .08, transparent: true, opacity: .8 }); cyl(.38, .38, 1.6, gm, 20, APF, 0, .8, 0); cyl(.14, .38, .5, gm, 20, APF, 0, 1.85, 0); cyl(.14, .14, .5, gm, 14, APF, 0, 2.3, 0); cyl(.16, .16, .1, mat(0x2a8a2a), 14, APF, 0, 2.6, 0);
-  const lab = textPlane(.9, .8, 180, 160, (c, w, h) => { c.fillStyle = '#fff8e0'; c.fillRect(0, 0, w, h); c.fillStyle = '#d8202a'; c.beginPath(); c.arc(w / 2, 62, 34, 0, 7); c.fill(); c.fillStyle = '#3a8a2a'; c.fillRect(w / 2 - 3, 20, 6, 16); c.fillStyle = '#2a6a1a'; c.font = `700 26px ${FONT}`; c.textAlign = 'center'; c.fillText('APFEL-', w / 2, 122); c.fillText('SCHORLE', w / 2, 148); }); lab.position.set(0, .85, .39); APF.add(lab); }
-const CAN = P_(new THREE.Group()); { cyl(.42, .42, 1.3, mat(0xb8bcc4, { metalness: .9, roughness: .3 }), 20, CAN, 0, .65, 0); const lab = textPlane(.8, .7, 160, 140, (c, w, h) => { c.fillStyle = '#c8c8c0'; c.fillRect(0, 0, w, h); c.fillStyle = '#6a6a6a'; c.font = `700 30px ${FONT}`; c.textAlign = 'center'; c.fillText('BILLIG', w / 2, 60); c.fillText('BIER', w / 2, 100); }); lab.position.set(0, .65, .43); CAN.add(lab); }
-const DECK = P_(deckel(scene, { s: 1.6, text: 'PROST!' })), DECK2 = P_(deckel(scene, { s: 1.6, text: 'PROST!', col: '#c8202a' }));
-const KRUG = Array.from({ length: 12 }, () => P_(mass(scene)));   // jarras sueltas (mesas, torres, bandejas)
-const FASS = Array.from({ length: 4 }, () => P_(fass(scene, { s: .8, open: true })));
-const PADDLE = Array.from({ length: 4 }, () => { const g = P_(new THREE.Group()); scene.add(g); cyl(.1, .1, 5, mat(0x8a5a32), 6, g, 0, 0, 0); box(.9, 1.4, .12, mat(0x8a5a32), .05, g, 0, -2.6, 0); return g; });
-const CAR1 = P_(taxi(scene)), CAR2 = P_(sportsCar(scene)), POL = P_(polizei(scene));
-// pizarra de la regla en la plaza (pantalla grande con marco de madera y tejadillo)
-const TAFEL = new THREE.Group(); scene.add(TAFEL); { const wd = mat(0x6a4224, { roughness: .7 }); for (const s of [-1, 1]) cyl(.5, .6, 22, wd, 10, TAFEL, s * 11, 11, 0); box(24, 14, 1, wd, .2, TAFEL, 0, 15, 0); const rf = box(26, .8, 3, mat(0x8a2a2a), .1, TAFEL, 0, 22.6, 0); }
-const TCV = document.createElement('canvas'); TCV.width = 1024; TCV.height = 576; const TTX = new THREE.CanvasTexture(TCV); TTX.colorSpace = THREE.SRGBColorSpace; { const s = new THREE.Mesh(new THREE.PlaneGeometry(22, 12.4), new THREE.MeshBasicMaterial({ map: TTX, toneMapped: false })); s.position.set(0, 15, .55); TAFEL.add(s); }
-TAFEL.userData.draw = fn => { const c = TCV.getContext('2d'); c.clearRect(0, 0, 1024, 576); fn(c, 1024, 576); TTX.needsUpdate = true; }; TAFEL.visible = false;
-// placa de la leyenda en el Maibaum
-const PLAQ = new THREE.Group(); scene.add(PLAQ); { const p = textPlane(9, 6.2, 450, 310, (c, w, h) => { c.fillStyle = '#5a3418'; c.fillRect(0, 0, w, h); c.strokeStyle = '#d8a020'; c.lineWidth = 10; c.strokeRect(10, 10, w - 20, h - 20); c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillStyle = '#ffd860'; c.font = `700 56px ${FONT}`; c.fillText('LEGENDE', w / 2, 62);
-  c.fillStyle = '#ffffff'; c.font = `700 36px ${FONT}`; c.fillText('WER 500 BIER', w / 2, 132); c.fillText('SCHAFFT, WIRD', w / 2, 178); c.fillStyle = '#ffd860'; c.font = `700 46px ${FONT}`; c.fillText('TRILLIONÄR', w / 2, 232); c.fillStyle = '#d8b090'; c.font = `700 24px ${FONT}`; c.fillText('REKORD: —', w / 2, 278); }); p.position.z = .32; PLAQ.add(p); box(9.6, 6.8, .5, mat(0x3a2412), .1, PLAQ, 0, 0, 0); }
-PLAQ.position.set(18, 9, -12.9); PLAQ.visible = false;
-// torre de 500 jarras (instanciada) para la leyenda
-const TOWER = new THREE.Group(); scene.add(TOWER); { const n = 500; const geoB = new THREE.CylinderGeometry(.46, .44, 1.1, 14); const geoF = new THREE.CylinderGeometry(.48, .48, .3, 14);
-  const IB = new THREE.InstancedMesh(geoB, mat(0xf6a81c, { roughness: .15, emissive: 0x6a3800, emissiveIntensity: .35 }), n), IF = new THREE.InstancedMesh(geoF, mat(0xfffbf0, { roughness: .9 }), n); const o = new THREE.Object3D();
-  for (let i = 0; i < n; i++) { const lv = Math.floor(i / 6), a = (i % 6) / 6 * 6.283 + lv * .5; o.position.set(Math.cos(a) * 1.2, lv * 1.45 + .55, Math.sin(a) * 1.2); o.rotation.set(0, a, 0); o.updateMatrix(); IB.setMatrixAt(i, o.matrix); o.position.y += .7; o.updateMatrix(); IF.setMatrixAt(i, o.matrix); }
-  IB.castShadow = IF.castShadow = true; TOWER.add(IB, IF); TOWER.userData = { IB, IF, n }; } P_(TOWER);
-// montaña de oro (monedas instanciadas) con corona
-const GOLDM = new THREE.Group(); scene.add(GOLDM); { const n = 900; const IC = new THREE.InstancedMesh(new THREE.CylinderGeometry(.7, .7, .16, 16), new THREE.MeshStandardMaterial({ color: 0xffd23f, metalness: .95, roughness: .22, emissive: 0x6a4a00, emissiveIntensity: .35 }), n); const o = new THREE.Object3D(); const r = RNG(4);
-  for (let i = 0; i < n; i++) { const rr = Math.sqrt(r()) * 14, a = r() * 6.283, y = Math.max(0, (1 - rr / 14) * 11 + (r() - .5) * .6); o.position.set(Math.cos(a) * rr, y, Math.sin(a) * rr); o.rotation.set((r() - .5) * 1.2, r() * 6, (r() - .5) * 1.2); o.updateMatrix(); IC.setMatrixAt(i, o.matrix); } IC.castShadow = true; IC.receiveShadow = true; GOLDM.add(IC);
-  for (let k = 0; k < 6; k++) { const b = box(2.6, .9, 1.2, new THREE.MeshStandardMaterial({ color: 0xffc830, metalness: .95, roughness: .2, emissive: 0x6a4a00, emissiveIntensity: .3 }), .1, GOLDM, Math.cos(k) * 9, 3.5 - (k % 3), Math.sin(k * 1.3) * 9); b.rotation.y = k; } } P_(GOLDM);
-// billetes (20, 50, 100, 500) y monedas
-const BILLT = {}; for (const [d, col] of [[20, '#3a7ad8'], [50, '#f08a2a'], [100, '#3aa85a'], [500, '#8a4ad8']]) BILLT[d] = canvasTex(256, 128, (c, w, h) => { c.fillStyle = col; c.fillRect(0, 0, w, h); c.fillStyle = 'rgba(255,255,255,.35)'; c.fillRect(10, 10, w - 20, h - 20); c.fillStyle = col; c.beginPath(); c.arc(w * .7, h / 2, 40, 0, 7); c.fill(); c.fillStyle = '#ffffff'; c.font = `700 64px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(String(d), w * .3, h / 2 + 4); c.font = `700 40px ${FONT}`; c.fillText('€', w * .7, h / 2 + 3); c.strokeStyle = '#ffffff'; c.lineWidth = 5; c.strokeRect(4, 4, w - 8, h - 8); });
-const BILL = Array.from({ length: 110 }, (_, i) => { const d = [20, 50, 100, 500][i % 4]; const m = new THREE.Mesh(new THREE.PlaneGeometry(2.4, 1.2), new THREE.MeshStandardMaterial({ map: BILLT[d], side: THREE.DoubleSide, roughness: .7 })); m.castShadow = true; scene.add(m); m.userData.d = d; return P_(m); });
-const COIN = Array.from({ length: 30 }, () => { const m = cyl(.5, .5, .12, mat(0xffd23f, { metalness: .9, roughness: .2, emissive: 0x6a4a00, emissiveIntensity: .3 }), 18, scene); m.rotation.x = Math.PI / 2; return P_(m); });
+const POL = P_(polizei(scene)), POL2 = P_(polizei(scene));
+const PORSCHE = P_(sportsCar(scene)); PORSCHE.traverse(o => { if (o.isMesh && o.material.color && o.material.color.getHex() === 0xffc400) { o.material = o.material.clone(); o.material.color.setHex(0xc8ccd4); o.material.metalness = .8; o.material.roughness = .22; } });
+{ const pl = textPlane(2.6, .6, 260, 60, (c, w, h) => { c.fillStyle = '#ffffff'; c.fillRect(0, 0, w, h); c.strokeStyle = '#1a1a1a'; c.lineWidth = 4; c.strokeRect(2, 2, w - 4, h - 4); c.fillStyle = '#1a3a9a'; c.fillRect(2, 2, 26, h - 4); txt(c, 'Z-PS 911', w / 2 + 12, h / 2 + 2, 40, '#1a1a1a'); }); pl.position.set(0, 1.2, 5.55); PORSCHE.add(pl); }
+// humo y llamas
+const SMOKE = Array.from({ length: 26 }, () => P_(sphere(1, mat(0x5a5a62, { roughness: 1, transparent: true, opacity: .75, depthWrite: false }), scene, 0, 0, 0, 10, 8)));
+const FLAME = Array.from({ length: 10 }, (_, i) => P_(sphere(.7, glowM(i % 2 ? 0xff6a1a : 0xffc83a, 2.4), scene, 0, 0, 0, 8, 6)));
 // teléfono con pantalla dibujable
 const PHONE = P_(new THREE.Group()); scene.add(PHONE); { box(1.1, 2.1, .16, mat(0x1a1a22, { metalness: .6, roughness: .3 }), .12, PHONE, 0, 0, 0); }
 const PCV = document.createElement('canvas'); PCV.width = 300; PCV.height = 560; const PTX = new THREE.CanvasTexture(PCV); PTX.colorSpace = THREE.SRGBColorSpace; { const s = new THREE.Mesh(new THREE.PlaneGeometry(.98, 1.9), new THREE.MeshBasicMaterial({ map: PTX, toneMapped: false })); s.position.z = .085; PHONE.add(s); }
 PHONE.userData.draw = fn => { const c = PCV.getContext('2d'); c.fillStyle = '#0e1420'; c.fillRect(0, 0, 300, 560); fn(c, 300, 560); PTX.needsUpdate = true; };
-// carteles dinámicos (canvas)
-function dynSign(w, h, pw, ph) { const g = P_(new THREE.Group()); scene.add(g); const cv = document.createElement('canvas'); cv.width = pw; cv.height = ph; const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshStandardMaterial({ map: t, roughness: .6, transparent: true })); g.add(m); let key = null;
-  g.userData.draw = (k, fn) => { if (k === key) return; key = k; const c = cv.getContext('2d'); c.clearRect(0, 0, pw, ph); fn(c, pw, ph); t.needsUpdate = true; }; return g; }
-const DS1 = dynSign(10, 6, 500, 300), DS2 = dynSign(10, 6, 500, 300), DS3 = dynSign(14, 3, 700, 150);
-// cartera vacía con polilla
-const WALLET = P_(new THREE.Group()); scene.add(WALLET); { const l = mat(0x6a3a1a, { roughness: .6 }); const a = box(2.2, .14, 1.6, l, .06, WALLET, -1.1, 0, 0); const b = box(2.2, .14, 1.6, l, .06, WALLET, 1.1, .3, 0); b.rotation.z = -.3; box(2, .02, 1.4, mat(0x2a1a10), 0, WALLET, -1.1, .08, 0); }
-const MOTH = P_(new THREE.Group()); scene.add(MOTH); { const wm = mat(0xc8c0b0, { roughness: 1, side: THREE.DoubleSide }); for (const s of [-1, 1]) { const w = new THREE.Mesh(new THREE.CircleGeometry(.4, 8), wm); w.position.x = s * .35; w.name = 'w' + s; MOTH.add(w); } box(.12, .12, .5, mat(0x6a6050), .05, MOTH, 0, 0, 0); }
-// balanza (Euro contra Bierdeckel)
-const WAAGE = P_(new THREE.Group()); scene.add(WAAGE); { const gm = mat(0xd8a020, { metalness: .9, roughness: .25 }); cyl(1.4, 1.8, .6, gm, 20, WAAGE, 0, .3, 0); cyl(.25, .25, 8, gm, 10, WAAGE, 0, 4.3, 0); const beam = new THREE.Group(); beam.position.y = 8.3; WAAGE.add(beam); box(12, .3, .3, gm, .05, beam, 0, 0, 0);
-  for (const s of [-1, 1]) { const pan = new THREE.Group(); pan.position.x = s * 5.6; beam.add(pan); for (let k = 0; k < 3; k++) { const a = k / 3 * 6.283; const ch = cyl(.04, .04, 3.4, gm, 4, pan, Math.cos(a) * .9, -1.7, Math.sin(a) * .9); ch.rotation.set(Math.sin(a) * .25, 0, -Math.cos(a) * .25); } cyl(1.8, 1.4, .3, gm, 20, pan, 0, -3.4, 0); pan.name = 'pan' + s; }
-  WAAGE.userData = { beam, set(a) { beam.rotation.z = a; beam.children.forEach(p => { if (p.name) p.rotation.z = -a; }); } }; }
-// espuma suelta (rebose, chorro de la fuente) y gotas de hipo
-const FOAMP = Array.from({ length: 40 }, () => P_(sphere(1, mat(0xfffbf0, { roughness: .9, emissive: 0x302a20, emissiveIntensity: .2 }), scene, 0, 0, 0, 10, 8)));
-const FLOOD = flood(scene); FLOOD.visible = false;
-const CONF = Array.from({ length: 70 }, (_, i) => { const p = new THREE.Mesh(new THREE.PlaneGeometry(.3, .45), new THREE.MeshBasicMaterial({ color: [0xffd23f, 0xffffff, 0x3a7ad8, 0xff4a8a, 0x8ad84a][i % 5], side: THREE.DoubleSide })); scene.add(p); return P_(p); });
+// Käsebrot (dos rebanadas con queso y lechuga) y fiambrera vacía
+const BROT = P_(new THREE.Group()); { const b = mat(0xd8a860, { roughness: .9 }); box(1.6, .3, 1.4, b, .12, BROT, 0, 0, 0); box(1.7, .12, 1.5, mat(0xffd23f, { roughness: .6 }), .02, BROT, 0, .2, 0); box(1.7, .1, 1.5, mat(0x5ac83a), .02, BROT, 0, .3, 0); box(1.6, .3, 1.4, b, .12, BROT, 0, .48, 0); }
+const BOX = P_(new THREE.Group()); { const m = mat(0x3ab8ff, { roughness: .4 }); box(2.4, .2, 1.6, m, .05, BOX, 0, 0, 0); for (const s of [-1, 1]) { box(2.4, .9, .12, m, .03, BOX, 0, .45, s * .76); box(.12, .9, 1.6, m, .03, BOX, s * 1.15, .45, 0); } const lid = box(2.5, .12, 1.7, mat(0x2a8ad8), .05, BOX, 0, 1.0, -.9); lid.rotation.x = -1.2; }
+// caja de juego en la mano (GTA 5)
+const GAME = P_(new THREE.Group()); { const t = canvasTex(64, 90, (c, w, h) => { const s = c.createLinearGradient(0, 0, 0, h); s.addColorStop(0, '#ff8a3a'); s.addColorStop(1, '#8a2a6a'); c.fillStyle = s; c.fillRect(0, 0, w, h); c.fillStyle = '#1a1a2a'; for (let i = 0; i < 6; i++) c.fillRect(4 + i * 10, 40 - (i % 3) * 8, 8, 40); c.fillStyle = '#ffffff'; c.font = `700 22px ${FONT}`; c.textAlign = 'center'; c.lineWidth = 4; c.strokeStyle = '#1a1a2a'; c.strokeText('GTA 5', 32, 26); c.fillText('GTA 5', 32, 26); }); box(1.5, 2.1, .3, mat(0xffffff, { map: t, roughness: .4 }), .04, GAME, 0, 0, 0); }
+// carteles de protesta (palos con pancarta dibujada)
+const PROTEST = ['WIR WOLLEN DAS S!', 'S IST FREIHEIT!', 'SORRY, SAGEN!', 'GEBT UNS DAS S!', 'SSSSS!', 'S ZURÜCK!'];
+const PSIGN = PROTEST.map((t, i) => { const g = P_(new THREE.Group()); scene.add(g); cyl(.1, .1, 6, mat(0x8a5a32), 6, g, 0, -3, 0); const p = textPlane(4.4, 2.6, 260, 154, (c, w, h) => { c.fillStyle = ['#ffffff', '#ffd23f', '#9ad8ff', '#ffb8d8'][i % 4]; c.fillRect(0, 0, w, h); c.strokeStyle = '#1a1a1a'; c.lineWidth = 6; c.strokeRect(3, 3, w - 6, h - 6); c.font = `700 ${Math.min(64, 2200 / t.length)}px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; const ws = t.split(' '); const half = Math.ceil(ws.length / 2); const l1 = ws.slice(0, half).join(' '), l2 = ws.slice(half).join(' '); c.fillStyle = '#d8202a'; c.fillText(l2 ? l1 : t, w / 2, l2 ? h * .34 : h / 2); if (l2) c.fillText(l2, w / 2, h * .7); }); p.position.y = 1.2; g.add(p); const b = p.clone(); b.rotation.y = Math.PI; g.add(b); return g; });
+// megáfono
+const MEGA = P_(new THREE.Group()); { const m = new THREE.Mesh(new THREE.CylinderGeometry(.9, .3, 2, 16, 1, true), mat(0xf4f4f4, { side: THREE.DoubleSide, roughness: .4 })); m.rotation.x = Math.PI / 2; m.position.z = 1; MEGA.add(m); cyl(.32, .32, .6, mat(0xd8202a), 10, MEGA, 0, 0, -.1).rotation.x = Math.PI / 2; box(.25, .8, .3, mat(0x1a1a1a), .05, MEGA, 0, -.5, 0); }
+// esposas
+const CUFFS = P_(new THREE.Group()); scene.add(CUFFS); for (const s of [-1, 1]) { const r = new THREE.Mesh(new THREE.TorusGeometry(.32, .07, 8, 18), mat(0xd8dce4, { metalness: .9, roughness: .2 })); r.position.x = s * .45; CUFFS.add(r); } box(.5, .06, .06, mat(0xd8dce4, { metalness: .9 }), 0, CUFFS, 0, 0, 0);
+// mochila del protagonista
+const BAG = P_(new THREE.Group()); { box(1.7, 2.1, .9, mat(0xe8322a, { roughness: .8 }), .3, BAG, 0, 0, 0); box(1.3, .9, .3, mat(0xc8202a), .2, BAG, 0, -.4, .55); for (const s of [-1, 1]) box(.2, 1.8, .15, mat(0x2a2a2a), .05, BAG, s * .55, .1, -.5); }
+// escalera y brocha del pintor (THCHULE)
+const LADDER = P_(new THREE.Group()); { const w = mat(0xb88a4a, { roughness: .8 }); for (const s of [-1, 1]) box(.3, 24, .3, w, .05, LADDER, s * 1.4, 12, 0); for (let k = 0; k < 16; k++) box(2.8, .2, .25, w, .02, LADDER, 0, 1 + k * 1.45, 0); }
+const BRUSH = P_(new THREE.Group()); { cyl(.08, .08, 1.4, mat(0x8a5a32), 6, BRUSH, 0, .7, 0); box(.5, .5, .2, mat(0xd8202a), .05, BRUSH, 0, 1.6, 0); }
+const PAINT = P_(new THREE.Group()); { cyl(.5, .45, .8, mat(0xc8c8d0, { metalness: .7 }), 12, PAINT, 0, .4, 0); cyl(.46, .46, .05, mat(0xd8202a), 12, PAINT, 0, .78, 0); }
+const CONF = Array.from({ length: 80 }, (_, i) => { const p = new THREE.Mesh(new THREE.PlaneGeometry(.3, .45), new THREE.MeshBasicMaterial({ color: [0xffd23f, 0xffffff, 0x3a7ad8, 0xff4a8a, 0x8ad84a][i % 5], side: THREE.DoubleSide })); scene.add(p); return P_(p); });
 const DUST = Array.from({ length: 16 }, () => P_(sphere(1, mat(0xd8c8a8, { roughness: 1, transparent: true, opacity: .6, depthWrite: false }), scene, 0, 0, 0, 10, 8)));
 const SWEAT = Array.from({ length: 3 }, () => P_(sphere(.16, mat(0x9fd8ff, { roughness: .05, transparent: true, opacity: .85 }), scene, 0, 0, 0, 10, 8)));
 const TEAR = Array.from({ length: 4 }, () => P_(sphere(.14, mat(0x9fd8ff, { roughness: .05, transparent: true, opacity: .9 }), scene, 0, 0, 0, 10, 8)));
-const HALO = P_(new THREE.Mesh(new THREE.TorusGeometry(1.2, .12, 10, 32), glowM(0xffe08a, 2.4))); HALO.rotation.x = Math.PI / 2; scene.add(HALO);
-const CUFFS = P_(new THREE.Group()); scene.add(CUFFS); for (const s of [-1, 1]) { const r = new THREE.Mesh(new THREE.TorusGeometry(.32, .07, 8, 18), mat(0xd8dce4, { metalness: .9, roughness: .2 })); r.position.x = s * .45; CUFFS.add(r); } box(.5, .06, .06, mat(0xd8dce4, { metalness: .9 }), 0, CUFFS, 0, 0, 0);
-const KEYS = P_(new THREE.Group()); scene.add(KEYS); { const r = new THREE.Mesh(new THREE.TorusGeometry(.3, .06, 6, 16), mat(0xd8a020, { metalness: .9 })); KEYS.add(r); for (let k = 0; k < 2; k++) { const b = box(.14, .9, .06, mat(0xd8a020, { metalness: .9 }), .02, KEYS, -.2 + k * .4, -.6, 0); b.rotation.z = (k - .5) * .5; } }
-const FLASH = P_(new THREE.Group()); scene.add(FLASH); { cyl(.22, .26, 1.4, mat(0x2a2a30, { metalness: .6 }), 12, FLASH, 0, 0, 0); const lens = cyl(.3, .3, .1, glowM(0xfff4c0, 3), 14, FLASH, 0, .75, 0); }
+const SPIT = Array.from({ length: 14 }, () => P_(sphere(.09, mat(0xcfefff, { roughness: .05, transparent: true, opacity: .8 }), scene, 0, 0, 0, 8, 6)));
 const FLASHL = new THREE.SpotLight(0xfff0c8, 0, 70, .38, .5, 1.2); scene.add(FLASHL, FLASHL.target);
-const GAVEL = GE.GAV;
-const SBAN = sign('NEUER BESITZER: HERR BRANDL', 26, 3.2, '#ffd23f', '#1a3a8a', '#1a3a8a', .55); scene.add(SBAN); P_(SBAN);
+const FALLBAN = P_(banSign(scene, 'S', 4.2));   // señal que cae del pórtico al final
 
+// ---------- ambiente ----------
 // ---------- ambiente ----------
 const AIR = aire(scene, 300); const BIRDS = bandada(scene, 9);
 function setSky(top, mid, hor) { const u = sky.sky.material.uniforms; u.top.value.setRGB(...top); u.mid.value.setRGB(...mid); u.hor.value.setRGB(...hor); }
@@ -146,7 +127,8 @@ function inside(h = 1.0, fill = 50) { MODE = 'in'; renderer.toneMappingExposure 
 function hideAll() {
   for (const c of POOL) { c.root.visible = false; c.head.visible = true; c.root.rotation.order = 'XYZ'; c.root.rotation.set(0, 0, 0); c.root.scale.setScalar(c.spec.scale || 1); applyPose(c, {}); c.setFace({}); if (c.root.parent !== scene) { c.root.parent.remove(c.root); scene.add(c.root); } c.blob.visible = true; }
   for (const p of PROPS) { p.visible = false; p.rotation.order = 'XYZ'; p.rotation.set(0, 0, 0); p.scale.setScalar(1); if (p.parent !== scene) { p.parent.remove(p); scene.add(p); } }
-  for (const k in SETS) SETS[k].visible = false; for (const m of METERS.values()) m.visible = false; FLOOD.visible = false; BG.g.visible = false; TAFEL.visible = false; PLAQ.visible = false; HUD = null; FX2D.length = 0; FACES.length = 0; FLASHL.intensity = 0; RG.SPOT.intensity = 0;
+  for (const k in SETS) SETS[k].visible = false; FX2D.length = 0; FACES.length = 0; FLASHL.intensity = 0; DSCR.forEach(s => s.visible = false); RP.SCR.forEach(s => s.visible = false); RP.ROB.visible = false; RP.STG.visible = false; RP.BANS.visible = false; SA.TEL.userData.open(0);
+  GAN.visible = true; GAN.userData.sign.visible = true; GAN.userData.sign.userData.bar.visible = true; LADDER.visible = false;
   FILL.color.setRGB(1, .96, .91); sun.color.setRGB(1, .95, .86); grade.uniforms.vig.value = .4; grade.uniforms.flash.value = 0; grade.uniforms.lift.value = 0; grade.uniforms.sat.value = 1.2; grade.uniforms.sharp.value = .5; grade.uniforms.sepia.value = 0; DARK = 0; TINT = null; BIRDSON = 1; SHAKE = 0; DOF = 1; day(); }
 const use = (...n) => { for (const k of n) SETS[k].visible = true; };
 function put(ch, x, y, z, ry = 0) { ch.root.visible = true; ch.root.position.set(x, y, z); ch.root.rotation.set(0, ry, 0); return ch; }
@@ -197,6 +179,7 @@ const sitY = (c, seat) => seat + .1 - 2.05 * (c.spec.scale || 1);
 // sentado en un asiento a la altura seat
 function sit(c, x, seat, z, ry, L, pose = {}) { put(c, x, sitY(c, seat), z, ry); actuar(c, 0, [[0, sitPose(pose)]], { T: L.T, weight: false }); c.blob.visible = false; return c; }
 // ---------- gente ----------
+// ---------- gente ----------
 function crowdAt(L, cx, cz, n, r0, r1, seed = 1, o = {}) { POST.push(() => { const list = (o.list || CR).filter(c => !c.root.visible).slice(o.from || 0, (o.from || 0) + n); const r = RNG(seed); const ac = Math.atan2(camera.position.z - cz, camera.position.x - cx); const arc_ = o.full ? [0, 6.283] : [ac + (o.gap ?? 1.2), ac + 6.283 - (o.gap ?? 1.2)];
   const placed = o.avoid ? [...o.avoid] : [];
   list.forEach((c, i) => { let x, z, tries = 0; do { const a = arc_[0] + (i + r() * .8) / list.length * (arc_[1] - arc_[0]); const d = r0 + r() * (r1 - r0); x = cx + Math.cos(a) * d; z = cz + Math.sin(a) * d; tries++; } while (tries < 10 && placed.some(p => Math.hypot(p[0] - x, p[1] - z) < 3.6));
@@ -211,103 +194,28 @@ function crowdGuy(c, x, z, L, i, o) { const T = L.T + i * .37, face = o.face || 
   else if (m === 'wave') { actuar(c, 0, [[0, 'wave']], { T: L.T }); cara(c, T, { expr: 'happy', mouth: 'open_smile' }); }
   else if (m === 'clap') { const j = Math.sin(L.T * 14 + i); actuar(c, 0, [[0, { aLx: 1.3, aRx: 1.3, aLz: -.2 - j * .25, aRz: -.2 - j * .25, aLe: 1.3, aRe: 1.3 }]], { T: L.T }); cara(c, T, { expr: 'joy' }); }
   else if (m === 'sitb') { sit(c, x, o.seat ?? 2.4, z, ry, L, { aLx: .4, aRx: .4, aLe: .6, aRe: .6, headY: Math.sin(L.T * .9 + i) * .3 }); cara(c, T, { expr: o.expr || 'neutral', mouth: o.mouth }); }
+  else if (m === 'hands') { actuar(c, 0, [[0, { aLx: 2.9, aRx: 2.9, aLz: .25, aRz: .25, aLe: .2, aRe: .2, headY: Math.sin(L.T + i) * .2 }]], { T: L.T }); cara(c, T, { expr: o.expr || 'shock', mouth: 'o' }); }
+  else if (m === 'sign') { const j = Math.sin(L.T * 4 + i); actuar(c, 0, [[0, { aRx: 2.7, aRz: -.1, aRe: .3, aLx: 2.5 + j * .2, aLz: .3, aLe: .5, lean: -.04 }]], { T: L.T }); const s = PSIGN[i % PSIGN.length]; if (!s.visible) attach(s, c.aR.hand, [0, -.4, 0], [Math.PI, 0, 0], .9); cara(c, T, { expr: 'angry', mouth: Math.sin(L.T * 8 + i) > 0 ? 'talk_wide' : 'o' }); }
+  else if (m === 'laugh') { const j = Math.abs(Math.sin(L.T * 9 + i)); actuar(c, 0, [[0, { aLx: .9, aRx: .9, aLz: -.3, aRz: -.3, aLe: 1.6, aRe: 1.6, lean: .2 + j * .1, crouch: .05 }]], { T: L.T }); laughF(c, T); }
+  else if (m === 'silent') { actuar(c, 0, [[0, { aLx: .2, aRx: .2, headX: .15, headY: Math.sin(L.T * .4 + i) * .2 }]], { T: L.T }); cara(c, T, { expr: 'worried', mouth: 'flat' }); }
   else if (m === 'sitcheer') { const j = Math.abs(Math.sin(L.T * 7 + i)); sit(c, x, o.seat ?? 2.4, z, ry, L, { aLx: 2.8, aRx: 2.8, aLz: .45 + j * .2, aRz: .45 + j * .2, aLe: .3, aRe: .3 }); laughF(c, T); }
-  else if (['drink', 'prost', 'sitdrink', 'sitprost', 'sithold'].includes(m)) crowdDrink(c, x, z, L, i, o, m);
   else { actuar(c, 0, [[0, { headX: Math.sin(L.T * 1.3 + i) * .06, headY: Math.sin(L.T * .9 + i * 2) * .2, aLx: .1 + Math.sin(L.T * 2 + i) * .08 }]], { T: L.T }); cara(c, T, { expr: o.expr || 'neutral', mouth: o.mouth }); } }
 // plano medio/entero de un personaje: cámara delante (yaw relativo a su ry), centro a la altura del pecho
 function onBody(ch, dist, yaw = 0, pitch = .12, fov = 42, k = 0, dist2 = null, yaw2 = null, dy = 3.3) { const s = ch.spec.scale || 1, p = ch.root.position, c = V(p.x, p.y + dy * s, p.z); const q = easeInOut(clamp(k)); orbit(c, lerp(dist, dist2 ?? dist * .88, q) * s, ch.root.rotation.y + lerp(yaw, yaw2 ?? yaw, q), pitch, fov); }
 const _hb = new THREE.Box3(); function heightTo(ch, m) { ch.root.updateMatrixWorld(true); _hb.makeEmpty(); ch.root.traverseVisible(o => { if (o.isMesh && o !== ch.blob) _hb.expandByObject(o, false); }); const t = _hb.max.y - ch.root.position.y; ch.root.scale.multiplyScalar(m * M2U / t); return ch; }
 const toCam = ch => { const p = ch.root.position; ch.root.rotation.y = Math.atan2(camera.position.x - p.x, camera.position.z - p.z); };
-// ---------- escenarios por plano ----------
-function town(L, o = {}) { use('LT'); if (o.night) { night(30); renderer.toneMappingExposure = .9; TINT = 'rgba(10,16,60,.18)'; } else if (o.dusk) dusk(); else day(); if (o.bg !== false) BG.g.visible = true; }
-function zelt(L) { use('BZ'); inside(1.05, 45); FILL.color.setRGB(1, .9, .76); }
-function bueroS(L) { use('BU'); inside(.95, 34); }
-function regalS(L, spot = 0) { use('RG'); inside(1.0, 40); RG.SPOT.intensity = spot; }
-function klosterS(L) { use('KL'); day(); }
-function sudS(L) { use('SU'); inside(1.0, 42); FILL.color.setRGB(1, .9, .78); }
-function seeS(L) { use('SV'); day(); }
-function amtS(L) { use('AM'); inside(.95, 38); FILL.color.setRGB(1, .92, .82); }
-function minS(L) { use('MI'); inside(1.0, 40); }
-function gerS(L) { use('GE'); inside(1.0, 40); }
-function altS(L) { use('AB'); night(22); renderer.toneMappingExposure = .9; TINT = 'rgba(10,16,60,.2)'; }
-function kellerS(L, lamp = 1) { use('KE'); inside(.3, 6); FILL.color.setRGB(1, .82, .56); renderer.toneMappingExposure = .78; FLASHL.intensity = 0; bloom.strength = .3; }
-function zimmerS(L, o = {}) { use('ZI'); if (o.night) { inside(.6, 22); ZI.WP.material.color.setRGB(.06, .08, .22); FILL.color.setRGB(1, .86, .66); } else { inside(.95, 36); ZI.WP.material.color.setRGB(.55, .8, 1); } }
-function bankS(L) { use('BK'); inside(1.0, 40); }
-function sportS(L) { use('SP'); day(); }
-function zelleS(L) { use('ZE'); inside(.85, 30); renderer.toneMappingExposure = .85; }
-// ---------- beber ----------
-// poses del brazo derecho (ajustadas con lab/fit.js: el borde de la jarra toca la boca, la mano no entra en la cabeza)
-const HOLD = { aRx: .35, aRz: .42, aRe: 1.22 }, HOLDY = .5, CHUG = { aRx: 2.83, aRz: -.323, aRe: .414 }, CHUGY = -.581, SIPP = { aRx: 2.3, aRz: -.38, aRe: .407 }, SIPY = -.362, PRO = { aRx: 2.6, aRz: .25, aRe: .35 };
-function holdMug(ch, kind = 'mass') { if (kind === 'none') return null; if (kind === 'gold') { attach(GK2, ch.aR.hand, [-.86, -.2, -.66], [PI / 2, 0, 0], .78); return GK2; } const m = mugOf(ch); attach(m, ch.aR.hand, [-.84, -.2, -.72], [PI / 2, 0, 0], 1); return m; }
-// un trago: sube la jarra (up), bebe (dur) con la cabeza hacia atrás, la baja (dn) y queda satisfecho
-function drink(ch, L, t0, dur, o = {}) { const lt = L.T - t0, up = o.up ?? .3, dn = o.dn ?? .3; let k = 0, ph = 'pre';
-  if (lt < 0) ph = 'pre'; else if (lt < up) { k = easeInOut(lt / up); ph = 'up'; } else if (lt < up + dur) { k = 1; ph = 'drink'; } else if (lt < up + dur + dn) { k = 1 - easeInOut((lt - up - dur) / dn); ph = 'down'; } else ph = 'after';
-  const A = o.sip ? SIPP : CHUG, AY = o.sip ? SIPY : CHUGY, hx = o.sip ? -.22 : -.42; const bob = ph === 'drink' ? Math.sin(L.T * 10 + ch.seed) * .025 : 0; const b = o.pose || {};
-  const pose = { ...b, aRx: lerp(HOLD.aRx, A.aRx, k) + bob, aRz: lerp(HOLD.aRz, A.aRz, k), aRe: lerp(HOLD.aRe, A.aRe, k), headX: (b.headX || 0) + hx * k + bob, lean: (b.lean || 0) - .06 * k };
-  actuar(ch, 0, [[0, pose]], { T: L.T, weight: !o.sit }); ch.aR.sh.rotation.y = lerp(HOLDY, AY, k);
-  const m = holdMug(ch, o.kind); const l0 = o.l0 ?? 1, l1 = o.l1 ?? .12;
-  if (m && m.userData.level) m.userData.level(ph === 'pre' || ph === 'up' ? l0 : ph === 'drink' ? lerp(l0, l1, clamp((lt - up) / dur)) : l1, L.T);
-  if (o.meter) meterOf(ch);
-  const ex = o.expr || 'neutral'; if (ph === 'drink') cara(ch, L.T, { expr: ex, eyes: o.eyesD || 'closed', mouth: 'o' }); else if (ph === 'after' || (ph === 'down' && k < .5)) cara(ch, L.T, { expr: o.after || 'joy', mouth: o.afterMouth || 'open_smile' }); else cara(ch, L.T, { expr: ex, mouth: o.mouth });
-  if (!o.bg) FACES.push(ch); return { ph, k, lt, up, dur, dn, end: up + dur }; }
-// bebe en bucle (gente de fondo), desfasado por personaje
-function drinkLoop(ch, L, i = 0, o = {}) { const per = o.per ?? 3.4, d = o.d ?? (1 + (i % 3) * .3), off = (i * 1.37) % per; const t0 = Math.floor((L.T + off) / per) * per - off; return drink(ch, L, t0, d, { bg: true, l0: .95, l1: .35, up: .3, dn: .3, expr: 'happy', ...o }); }
-// jarra en alto (brindis) o sujeta (k = 0)
-function prost(ch, L, k = 1, o = {}) { const b = o.pose || {}; const pose = { ...b, aRx: lerp(HOLD.aRx, PRO.aRx, k), aRz: lerp(HOLD.aRz, PRO.aRz, k), aRe: lerp(HOLD.aRe, PRO.aRe, k) }; actuar(ch, 0, [[0, pose]], { T: L.T, weight: !o.sit }); ch.aR.sh.rotation.y = lerp(HOLDY, 0, k);
-  const m = holdMug(ch, o.kind); if (m) { m.rotation.x = PI - (pose.aRx + pose.aRe); if (m.userData.level) m.userData.level(o.level ?? .9, L.T); } if (o.meter) meterOf(ch); return m; }
-const holdOnly = (ch, L, o = {}) => prost(ch, L, 0, o);
-// modos extra de la multitud (crowdAt): drink, prost, sitdrink, sitprost, sithold
-function crowdDrink(c, x, z, L, i, o, m) { const T = L.T + i * .37; const seat = o.seat ?? 2.7;
-  if (m === 'drink') drinkLoop(c, L, i, { meter: o.meter });
-  else if (m === 'prost') { const j = Math.abs(Math.sin(L.T * 6 + i)); prost(c, L, .75 + j * .25, { pose: { aLx: .4 + j * .3, aLz: .3, aLe: .4, crouch: j * .05 }, meter: o.meter }); laughF(c, T); }
-  else { c.root.position.y = sitY(c, seat); c.blob.visible = false; const sp = sitPose({ aLx: .5, aLe: 1.2, aLz: -.1 });
-    if (m === 'sitdrink') drinkLoop(c, L, i, { sit: true, pose: sp, meter: o.meter });
-    else if (m === 'sitprost') { const j = Math.abs(Math.sin(L.T * 6 + i)); prost(c, L, .7 + j * .3, { sit: true, pose: { ...sp, aLx: 2.4, aLz: .4 + j * .2, aLe: .3 } }); laughF(c, T); }
-    else { holdOnly(c, L, { sit: true, pose: { ...sp, headY: Math.sin(L.T * .9 + i) * .3 } }); cara(c, T, { expr: 'happy', mouth: Math.sin(L.T * 7 + i) > .3 ? 'talk' : 'smile' }); } } }
-// gente sentada en las mesas del Biergarten: mesa t (0..5) lado s (-1 delante, +1 detrás), n personas
-function tableFolk(L, t, s, n, mode = 'sitdrink', from = 0, o = {}) { const T_ = [[-14, 2], [14, 2], [-14, 15], [14, 15], [-14, 28], [14, 28]][t]; const cx = T_[0], cz = T_[1] + 22;
-  POST.push(() => { const list = (o.list || CR).filter(c => !c.root.visible).slice(from, from + n); list.forEach((c, i) => { const x = cx - (n - 1) * 1.6 + i * 3.2 + (o.dx || 0); const z = cz + s * 2.3; put(c, x, 0, z, s < 0 ? 0 : PI); crowdDrink(c, x, z, L, i + t * 3, o, typeof mode === 'function' ? mode(i) : mode); }); }); }
-// jarras sobre las mesas (llenas o vacías)
-function tableMugs(t, n = 4, lvl = .9) { const T_ = [[-14, 2], [14, 2], [-14, 15], [14, 15], [-14, 28], [14, 28]][t]; for (let i = 0; i < n; i++) { const m = KRUG[(t * 2 + i) % KRUG.length]; if (m.visible) continue; show(m, T_[0] - 4 + i * 2.7, 4.15, T_[1] + 22 + (i % 2 ? .6 : -.6), i, 1); m.userData.level(lvl, 0); } }
-// ---------- dinero ----------
 const FACES = [];
 const faceDir = ch => V(Math.sin(ch.root.rotation.y), 0, Math.cos(ch.root.rotation.y));
-function billRain(c, T, n = 60, sx = 16, sz = 10, h = 16, clear = 4) { BILL.forEach((f, i) => { if (i >= n) return; const r = RNG(i * 17 + 5); f.visible = true; const y = h - ((T * (2.2 + r() * 1.6) + r() * h) % h); f.position.set(c.x + (r() - .5) * sx + Math.sin(T * 2.4 + i) * .8, c.y + y, c.z + (r() - .5) * sz); f.rotation.set(Math.sin(T * 3 + i) * .9, T * 2 + i, Math.cos(T * 2.6 + i) * .6);
-  const cx = camera.position.x - c.x, cz = camera.position.z - c.z, L2 = Math.hypot(cx, cz) || 1, px = f.position.x - c.x, pz = f.position.z - c.z, along = (px * cx + pz * cz) / L2, perp = (px * -cz + pz * cx) / L2; if (along > 0 && Math.abs(perp) < clear) { const sg = perp < 0 ? -1 : 1; f.position.x += (-cz / L2) * sg * (clear - Math.abs(perp)); f.position.z += (cx / L2) * sg * (clear - Math.abs(perp)); } }); }
-// lluvia que empieza en T0 (cae desde arriba, no aparece de golpe)
-function billFall(c, T0, T, n = 40, sx = 14, sz = 8, h = 14, from = 0) { BILL.forEach((f, i) => { if (i < from || i >= from + n) return; const r = RNG(i * 23 + 7), t = T - T0 - r() * .5; if (t < 0) return; f.visible = true; const y = Math.max(.05, h + r() * 6 - t * (5 + r() * 3)); f.position.set(c.x + (r() - .5) * sx + Math.sin(t * 3 + i) * .7, c.y + y, c.z + (r() - .5) * sz); if (y > .06) f.rotation.set(Math.sin(t * 4 + i) * .8, t * 2 + i, Math.cos(t * 3 + i) * .6); else f.rotation.set(-PI / 2, i, 0); }); }
-function billBurst(c, T0, T, n = 24, sp = 1, from = 60) { const ca = Math.atan2(camera.position.z - c.z, camera.position.x - c.x); BILL.forEach((f, i) => { if (i < from || i >= from + n) return; const r = RNG(i * 29 + 11), t = T - T0; if (t < 0) return; f.visible = true; const a = ca + PI * .5 + r() * PI, v = (2.5 + r() * 3) * sp; f.position.set(c.x + Math.cos(a) * v * t, c.y + (6 + r() * 3) * t - 5 * t * t, c.z + Math.sin(a) * v * t); f.rotation.set(T * 5 + i, T * 3 + i, 0); }); }
-// billetes que caen sobre alguien y el primero acaba en su mano libre (izquierda)
-function billDrop(ch, T0, T, n = 1, spread = 1.4, from = 90) { const h = hp(ch); BILL.forEach((f, i) => { if (i < from || i >= from + n) return; const j = i - from, r = RNG(i * 41), t = T - T0 - j * .08; if (t < 0) return; f.visible = true;
-  const y0 = h.y + 5 + r() * 2, yEnd = j === 0 ? h.y - 2.6 : .05, y = Math.max(yEnd, y0 - t * (9 + r() * 2) * Math.max(.35, 1 - t * .8)); const sway = Math.sin(t * 5 + j) * (y > yEnd + .01 ? .7 : 0);
-  const fd = faceDir(ch); f.position.set(h.x + (j ? (r() - .5) * 2 * spread : fd.x * 1.6) + sway, y, h.z + (j ? (r() - .5) * 2 * spread : fd.z * 1.6));
-  if (y > yEnd + .01) f.rotation.set(Math.sin(t * 4 + j) * .7, t * 1.5 + j, Math.cos(t * 3 + j) * .5); else if (j === 0) { f.lookAt(camera.position); } else f.rotation.set(-PI / 2, j, 0); }); }
-const cashPop = (ch, text, k, kind = 'green', sc = 1, dy = 2.8) => badge3(kind, text, hp(ch).add(V(0, dy * (ch.spec.scale || 1), 0)), k, sc);
-function coins(c, T0, T, n = 20) { COIN.forEach((m, i) => { if (i >= n) return; const r = RNG(i * 5 + 1), t = T - T0; if (t < 0) return; m.visible = true; m.position.set(c.x + (r() - .5) * 6, c.y + 7 - ((t * (6 + r() * 4) + r() * 7) % 9), c.z + (r() - .5) * 4); m.rotation.set(PI / 2, T * 6 + i, 0); }); }
-const setHUD = (n, col, a = 1) => { n = Math.floor(n + 1e-6); HUD = { n: nBier(n) + ' Bier', e: euro(money(n)), col: col || '#7aff9a', a }; };
-// nada tapa la cara de un protagonista: billetes y espuma delante de la cara se apartan
+// nada tapa la cara de un protagonista: confeti y humo delante de la cara se apartan
 function clearFaces() { if (!FACES.length) return; camera.updateMatrixWorld(); camera.updateProjectionMatrix();
   const F = FACES.filter(c => c.root.visible).map(c => { const h = hp(c).add(V(0, .65 * (c.spec.scale || 1), 0)); const p = h.clone().project(camera); const d = camera.position.distanceTo(h); const r = 1.25 * (c.spec.scale || 1) / (d * Math.tan(camera.fov * PI / 360)); return { p, d, r }; });
-  for (const b of [...BILL, ...FOAMP]) { if (!b.visible) continue; const q = b.position.clone().project(camera); const dc = camera.position.distanceTo(b.position); for (const f of F) { if (dc > f.d + .5) continue; if (Math.hypot((q.x - f.p.x) * W / H, q.y - f.p.y) < f.r * 1.15) { b.visible = false; break; } } } }
-// ---------- hipo, espuma, fuente ----------
-// burbuja de cómic «HICKS!» junto a la cabeza
-function hicks(ch, k, sc = 1, side = 1) { if (k <= 0) return; FX2D.push(c => { const [x, y, z] = proj(hp(ch).add(V(0, 1.6 * (ch.spec.scale || 1), 0))); if (z >= 1) return; const s = spring(clamp(k) * 1.4) * sc * U; c.save(); c.translate(clamp(x + side * 150 * U, 160, W - 160), clamp(y - 60, 140, H * .62)); c.scale(s, s); c.rotate(side * -.12);
-  c.beginPath(); for (let i = 0; i < 22; i++) { const a = i / 22 * 6.283, rr = i % 2 ? 96 : 130; c.lineTo(Math.cos(a) * rr * 1.25, Math.sin(a) * rr * .8); } c.closePath(); c.fillStyle = '#ffd23f'; c.fill(); c.lineWidth = 9; c.strokeStyle = '#1a1a1a'; c.stroke();
-  c.font = `700 64px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.lineWidth = 14; c.strokeStyle = '#1a1a1a'; c.strokeText('HICKS!', 0, 4); c.fillStyle = '#ff3a3a'; c.fillText('HICKS!', 0, 4); c.restore(); }); }
-// sacudida del hipo: hombros arriba, cabeza atrás, pequeño salto, en los instantes ts (tiempos absolutos)
-function hipPose(T, ts) { let j = 0; for (const t of ts) { const d = T - t; if (d >= 0 && d < .35) j = Math.max(j, Math.sin(d / .35 * PI)); } return j; }
-// espuma que rebosa y cae alrededor de c (radio r)
-function foamOver(c, T, n = 24, r = 1, h = 2) { FOAMP.forEach((s, i) => { if (i >= n) return; const rr = RNG(i * 13 + 3), t = (T * (.5 + rr() * .5) + rr()) % 1, a = rr() * 6.283; s.visible = true; s.position.set(c.x + Math.cos(a) * r * (1 + t * .6), c.y + h * (1 - t * t) + t * .3, c.z + Math.sin(a) * r * (1 + t * .6)); s.scale.setScalar((.25 + rr() * .3) * (1 - t * .4) * r); }); }
-// chorro de cerveza de la fuente: bolas de espuma y cerveza en parábolas
-function jet(c, T, n = 36, h = 14, spread = 5) { FOAMP.forEach((s, i) => { if (i >= n) return; const rr = RNG(i * 7 + 1), t = (T * .9 + rr()) % 1, a = rr() * 6.283; s.visible = true; s.position.set(c.x + Math.cos(a) * spread * t, c.y + h * 4 * t * (1 - t) + 2, c.z + Math.sin(a) * spread * t); s.scale.setScalar(.5 + rr() * .6); }); }
-// polvo de luz en un haz (sótano)
-function beam(L, c, T) { DUST.forEach((d, i) => { const r = RNG(i * 9 + 2); d.visible = true; d.position.set(c.x + (r() - .5) * 3 + Math.sin(T * .4 + i) * .3, c.y + ((T * .15 + r()) % 1) * 10, c.z + (r() - .5) * 3); d.scale.setScalar(.06 + r() * .06); d.material.opacity = .6; }); }
-// pantallas
-function drawBankApp(c, w, h, amount, sub = '', col = '#5aff9a') { c.fillStyle = '#0e1420'; c.fillRect(0, 0, w, h); c.fillStyle = '#1a2a4a'; c.fillRect(0, 0, w, 90); c.fillStyle = '#ffffff'; c.font = `700 30px ${FONT}`; c.textAlign = 'center'; c.fillText('MEIN KONTO', w / 2, 58);
-  c.fillStyle = '#9aa4c0'; c.font = `700 22px ${FONT}`; c.fillText('KONTOSTAND', w / 2, 170); c.fillStyle = col; let f = 54; c.font = `700 ${f}px ${FONT}`; while (c.measureText(amount).width > w - 30) { f -= 2; c.font = `700 ${f}px ${FONT}`; } c.fillText(amount, w / 2, 236);
-  if (sub) { c.fillStyle = '#ffffff'; c.font = `700 26px ${FONT}`; c.fillText(sub, w / 2, 300); } c.strokeStyle = col; c.lineWidth = 5; c.beginPath(); for (let i = 0; i <= 20; i++) c.lineTo(20 + i * (w - 40) / 20, 470 - Math.pow(i / 20, 2.2) * 120 - Math.sin(i) * 6); c.stroke(); }
-function drawCall(c, w, h, name, sub, col = '#3ad86a') { const g = c.createLinearGradient(0, 0, 0, h); g.addColorStop(0, '#1a2a4a'); g.addColorStop(1, '#0a0e18'); c.fillStyle = g; c.fillRect(0, 0, w, h); c.fillStyle = '#ffffff'; c.textAlign = 'center'; c.font = `700 26px ${FONT}`; c.fillText(sub, w / 2, 90); c.font = `700 42px ${FONT}`; c.fillText(name, w / 2, 150);
-  c.fillStyle = '#3a4a6a'; c.beginPath(); c.arc(w / 2, 270, 70, 0, 7); c.fill(); c.fillStyle = '#ffffff'; c.font = `700 70px ${FONT}`; c.fillText(name[0], w / 2, 296); for (const [x, cc] of [[80, '#e8323a'], [220, col]]) { c.fillStyle = cc; c.beginPath(); c.arc(x, 470, 38, 0, 7); c.fill(); } }
+  for (const b of [...CONF, ...SMOKE, ...SPIT]) { if (!b.visible) continue; const q = b.position.clone().project(camera); const dc = camera.position.distanceTo(b.position); for (const f of F) { if (dc > f.d + .5) continue; if (Math.hypot((q.x - f.p.x) * W / H, q.y - f.p.y) < f.r * 1.15) { b.visible = false; break; } } } }
+const hero = (...c) => FACES.push(...c);
+// humo (y llamas) saliendo de c
+function smoke(c, T, n = 26, fire = true) { SMOKE.forEach((s, i) => { if (i >= n) return; const r = RNG(i * 11 + 3), t = (T * (.35 + r() * .2) + r()) % 1; s.visible = true; s.position.set(c.x + (r() - .5) * 3 + Math.sin(T + i) * t * 2, c.y + t * 14, c.z + (r() - .5) * 3 + t * 2); s.scale.setScalar(.8 + t * 3.2); s.material.opacity = .7 * (1 - t); });
+  if (fire) FLAME.forEach((f, i) => { const r = RNG(i * 7 + 1), t = (T * 1.6 + r()) % 1; f.visible = true; f.position.set(c.x + (r() - .5) * 3, c.y + t * 2.6, c.z + (r() - .5) * 2.4); f.scale.setScalar((1 - t) * (.8 + r() * .6)); }); }
+// saliva del ceceo delante de la boca
+function spit(ch, T, t0, n = 8) { const h = hp(ch), a = ch.root.rotation.y, fx = Math.sin(a), fz = Math.cos(a), s = ch.spec.scale || 1; SPIT.forEach((p, i) => { if (i >= n) return; const r = RNG(i * 5 + 2), t = ((T - t0) * 1.6 + r()) % 1; p.visible = true; p.position.set(h.x + fx * (.9 + t * 2.6) * s + (r() - .5) * .8 * t, h.y + (.45 + t * .6 - t * t * 1.4) * s, h.z + fz * (.9 + t * 2.6) * s + (r() - .5) * .8 * t); }); }
 
 // ---------- capa 2D ----------
 const BAD_ = []; const badge = (kind, text, x, y, k, a = 1, sc = 1) => BAD_.push({ kind, text, x, y, s: spring(clamp(k) * 1.6) * sc, a, on: k > 0 });
@@ -324,7 +232,7 @@ function drawBadge(b) {
   else if (b.kind === 'q') { c.font = `700 120px ${FONT}`; c.lineWidth = 18; c.strokeStyle = '#0e1226'; c.strokeText(b.text || '?', 0, 0); c.fillStyle = '#ffd23f'; c.fillText(b.text || '?', 0, 0); }
   else if (b.kind === 'heart') { c.fillStyle = '#ff3a5a'; c.strokeStyle = '#4a0010'; c.lineWidth = 10; c.beginPath(); c.moveTo(0, 40); c.bezierCurveTo(-90, -20, -50, -90, 0, -40); c.bezierCurveTo(50, -90, 90, -20, 0, 40); c.fill(); c.stroke(); }
   c.restore(); }
-const KEY = /^(Stadt|Geld|Bier|Euro|Millionär|Glückwunsch|Legende|500|Trillionär|nie|verdient|Beruf|Büros|leer|Biergarten|Konto|zählt|echtes|gutes|allerbeste|Weihenstephaner|ältesten|Brauerei|1040|doppelt|Schlange|Oktoberfest|Villa|Geheimtipp|Paulaner|süffig|reich|Sportlehrer|Fußballverein|Bürgermeister|12|Wasser|halbe|Vorsicht|Regierung|Bierzähler|Gefängnis|Apfelschorle|30|ich|Cent|Magen|Maß|einziges|20|Schluckauf|Keller|Spinnweben|goldenen|Krug|Warnung|Niemals|Rand|leer|nichts|warm|rattern|5|600|aufhören|100|200|300|Schaum|Stadt|Autos|Brunnen|Fässern|stieg|Tränen|Ruhe|Zähler|reichste|Welt|Telefon|Bank|zusammengebrochen|Bierdeckel|Zahlungsmittel|Ununterbrochen|Moment|wieder)$/;
+const KEY = /^(Thtadt|S|verboten|Gefängnith|T-H|Schule|Lehrerin|thtill|Käthebrot|lachen|vier|Polizithten|hoch|lächerlich|GTA|Thechth|Fünf|Regel|Theltthameth|Fernthehen|Roboter|Rathauth|unglaublich|Vorhang|Thüthe|Thahnethothe|Thuper|Thpaghetti|Thieben|Thalatgurken|auththprechen|verboten|Handy|Riethenbildschirm|durch|Verbot|erlaubt|jubelten|Sechs|lächelte|R|L|stiww|Powizist|wuhig|Powsche|bwennt|Kwassenzimmew|Ewnst|wächewte|witzig)$/;
 const CAPS = WORDS.map(w => { const t = w[2].replace(/[„“"”.,:…–?!]/g, '').replace(/^-|-$/g, '').trim(); return { t: w[0], txt: t, key: KEY.test(t) }; }).filter(w => w.txt);
 function caption(T) { let cur = null; for (const w of CAPS) { if (w.t <= T) cur = w; else break; } if (!cur) return;
   const f = (T - cur.t) * FPS, s = f < 1 ? .2 : f < 2 ? 1.12 : 1, size = H * .046 * (cur.key ? 1.35 : 1), c = octx;
@@ -335,7 +243,7 @@ function caption(T) { let cur = null; for (const w of CAPS) { if (w.t <= T) cur 
 // ---------- planos ----------
 const POST = []; const S = []; const shot = (t0, tr, zoom, fn, sfx = []) => S.push({ t0, tr, zoom, fn, sfx });
 const PI = Math.PI;
-let DARK = 0, TINT = null, SHAKE = 0; let HUD = null; const FX2D = [];
+let DARK = 0, TINT = null, SHAKE = 0; const FX2D = [];
 //@@PLANOS@@
 
 // ---------- transiciones, sonidos, render ----------
@@ -390,9 +298,9 @@ function renderAt(T) {
   if (tr === 'B') { octx.fillStyle = `rgba(0,0,0,${a.toFixed(3)})`; octx.fillRect(0, 0, W, H); }   // fundido a negro suave (momentos tristes)
   if (TINT) { octx.fillStyle = TINT; octx.fillRect(0, 0, W, H); }
   if (DARK > 0) { octx.fillStyle = `rgba(0,0,0,${DARK})`; octx.fillRect(0, 0, W, H); }
-  for (const f of FX2D) f(octx); for (const b of BAD_) drawBadge(b); if (HUD) drawHUD(octx, W / 2, H * .085, 1.05, HUD.n, HUD.e, HUD.col, HUD.a ?? 1); caption(T);
+  for (const f of FX2D) f(octx); for (const b of BAD_) drawBadge(b); caption(T);
 }
 window.renderAt = renderAt; window.DUR = DUR; window.FPS = FPS; window.CUES = CUES; window.SHOTS = S.map(s => [s.t0, s.t1, s.tr, s.zoom]); window.__ready = true;
-window.DBG = { applyPose, hp, felix, renderer, composer, bloom, sun, grade, scene, camera };
+window.DBG = { applyPose, hp, jonte, renderer, composer, bloom, sun, grade, scene, camera };
 // ---------- portadas (1080×1920; lo importante entre y = 240 y 1680) ----------
 //@@COVER@@
