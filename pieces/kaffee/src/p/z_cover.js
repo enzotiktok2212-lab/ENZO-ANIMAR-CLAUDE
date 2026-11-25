@@ -29,20 +29,26 @@ function moneyBag(x, y, s, rot) { const c = octx; c.save(); c.translate(x, y); c
 function priceTag(x, y, s, rot, a, b, col = '#ffd23f') { const c = octx; c.save(); c.translate(x, y); c.rotate(rot); c.scale(s, s); c.shadowColor = 'rgba(0,0,0,.5)'; c.shadowBlur = 20; c.shadowOffsetY = 8;
   c.fillStyle = '#1a1208'; c.beginPath(); c.roundRect(-200, -70, 400, 140, 26); c.fill(); c.shadowColor = 'transparent'; c.strokeStyle = col; c.lineWidth = 8; c.stroke();
   c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillStyle = '#ffffff'; c.font = '50px Lilita'; c.fillText(a, 0, -24); c.fillStyle = col; c.font = '64px Lilita'; c.fillText(b, 0, 36); c.restore(); }
+// taza de cristal: se ve el café marrón oscuro por dentro (solo portadas)
+function glassCup(cu, k = .85) { const glass = new THREE.MeshPhysicalMaterial({ color: 0xe4f6ff, transparent: true, opacity: .42, roughness: .05, metalness: 0, depthWrite: false, side: THREE.DoubleSide });
+  const ud = cu.userData.cup ? cu.userData.cup.userData : cu.userData; const root = cu.userData.cup || cu; const dark = mat(0x2a1206, { roughness: .25 });
+  root.children.forEach(m => { if (!m.isMesh) return; if (m === ud.cof) { m.material = dark; return; } if (m.material && m.material.side === THREE.BackSide) { m.visible = false; return; } if (m.geometry && m.geometry.type === 'TorusGeometry') return; m.material = glass; m.renderOrder = 2; });
+  if (!root.userData.__liq) { const L = new THREE.Mesh(new THREE.CylinderGeometry(ud.R * .9, ud.R * .82, 1, 24), dark); L.userData.noOutline = true; root.add(L); root.userData.__liq = L; }
+  const h = (ud.H - .26) * k; const L = root.userData.__liq; L.visible = true; L.scale.y = h; L.position.y = .14 + h / 2; ud.level(k); }
 window.renderCover = async v => { await document.fonts.load('80px Lucky'); await document.fonts.load('80px Lilita'); out.width = 2 * W; out.height = 2 * H; octx.setTransform(2, 0, 0, 2, 0, 0); octx.imageSmoothingEnabled = true; octx.imageSmoothingQuality = 'high';
   const T = 12.3, L = { T, lt: 1, k: 1, t0: 12, t1: 13 }; hideAll(); BAD_.length = 0; BIRDSON = 0; DOF = 0; CAMK = 1;
   if (v === 0) { // plaza de Röstheim: mesa larga llena de tazas de café y Kannes detrás; el vecino del centro levanta su taza llena y ríe; vecinos a los lados con sus tazas
     town(L, { morning: 1 }); const p = V(0, 0, 14);
-    if (!window.__covT) { const g = new THREE.Group(); scene.add(g); const wd = mat(0x8a5a32, { roughness: .6 }); box(12, .4, 3.4, mat(0xffffff, { map: null, color: 0xf4ead8, roughness: .5 }), .1, g, 0, 3.8, 0); box(12.2, .2, 3.6, wd, .05, g, 0, 3.5, 0);
-      for (const sx of [-5.6, 5.6]) for (const sz of [-1.4, 1.4]) box(.35, 3.5, .35, wd, .05, g, sx, 1.75, sz); window.__covT = g; }
+    if (!window.__covT) { const g = new THREE.Group(); scene.add(g); const wd = mat(0x8a5a32, { roughness: .6 }); box(17, .4, 3.4, mat(0xf4ead8, { roughness: .5 }), .1, g, 0, 3.8, 0); box(17.2, .2, 3.6, wd, .05, g, 0, 3.5, 0);
+      for (const sx of [-8, 8, 0]) for (const sz of [-1.4, 1.4]) box(.35, 3.5, .35, wd, .05, g, sx, 1.75, sz); window.__covT = g; }
     const TBL = window.__covT; TBL.visible = true; TBL.position.set(p.x, 0, p.z - 4.2);
-    for (let i = 0; i < 12; i++) { const t = CUPS[i + 4]; const row = i % 2; show(t, p.x - 5 + (i >> 1) * 2 + row * .9, 4, p.z - 4.9 + row * 1.3, i * .7, .95); t.userData.level(.88); t.userData.steam(T, 0); }
-    [[KAN[1], -2.2], [KAN[2], 2.4]].forEach(([k, dx]) => { show(k, p.x + dx, 4, p.z - 5.2, .3, 1.05); k.userData.level(.8); k.userData.steam(T, 0); });
-    show(PACKS.TCHIBO[0], p.x - 4.4, 4, p.z - 5.6, .3, 1.1); show(PACKS.JACOBS[0], p.x, 4, p.z - 5.7, 0, 1.1); show(PACKS.MELITTA[0], p.x + 4.6, 4, p.z - 5.6, -.3, 1.1);
-    const c = put(REN[2], p.x, 0, p.z, 0); drink(c, L, T + 5, .5, { meter: true, l0: .9, pose: { aLx: 2.6, aLz: .5, aLe: .3 } }); const MG = mugOf(REN[2]); MG.scale.multiplyScalar(1.35); MG.userData.level(.9); MG.userData.steam(T, 0); laughF(c, T); cara(c, T, { expr: 'joy', eyes: 'happy', mouth: 'laugh', noBlink: 1 }); FACES.push(c);
+    // mesa: billetes | café | billetes | café (en los huecos entre los personajes)
+    let bi = 24; [-6.6, 2.4].forEach(x0 => { for (let k = 0; k < 14; k++) { const b = BILL[bi++]; b.visible = true; b.position.set(p.x + x0 + Math.sin(k * 2.3) * .7, 4.05 + k * .07, p.z - 4.2 + Math.cos(k * 1.7) * .6); b.rotation.set(-PI / 2, 0, k * .8); } });
+    let ci = 4; [-2.4, 6.6].forEach(x0 => { for (let k = 0; k < 6; k++) { const t = CUPS[ci++]; show(t, p.x + x0 + (k % 3 - 1) * 1.25, 4, p.z - 4.8 + (k / 3 | 0) * 1.3, k * .7, .95); glassCup(t, .88); t.userData.steam(T, 0); } });
+    const c = put(REN[2], p.x, 0, p.z, 0); drink(c, L, T + 5, .5, { meter: true, l0: .9, pose: { aLx: 2.6, aLz: .5, aLe: .3 } }); const MG = mugOf(REN[2]); MG.scale.multiplyScalar(1.35); glassCup(MG, .9); MG.userData.steam(T, 0); laughF(c, T); cara(c, T, { expr: 'joy', eyes: 'happy', mouth: 'laugh', noBlink: 1 }); FACES.push(c);
     [[CR[0], -4.6, -.6, .35], [CR[1], 4.7, -.7, -.35]].forEach(([x, dx, dz, ry], i) => { put(x, p.x + dx, 0, p.z + dz, ry);
-      drink(x, L, T + 5, .8, { l0: .9, expr: 'happy', pose: { aLx: .3, aLz: i ? -.2 : .2, aLe: .3 } }); const m = mugOf(x); m.scale.multiplyScalar(1.15); m.userData.level(.88); m.userData.steam(T, 0); cara(x, T + i, { expr: 'joy', eyes: 'happy', mouth: i ? 'laugh' : 'open_smile', noBlink: 1 }); FACES.push(x); });
-    cam([p.x, 7.2, p.z + 23], [p.x, 4.4, p.z - 2], 50); billRain(V(p.x, 0, p.z - 7), T, 10, 18, 4, 16, 7);
+      drink(x, L, T + 5, .8, { l0: .9, expr: 'happy', pose: { aLx: .3, aLz: i ? -.2 : .2, aLe: .3 } }); const m = mugOf(x); m.scale.multiplyScalar(1.15); glassCup(m, .88); m.userData.steam(T, 0); cara(x, T + i, { expr: 'joy', eyes: 'happy', mouth: i ? 'laugh' : 'open_smile', noBlink: 1 }); FACES.push(x); });
+    cam([p.x, 9.6, p.z + 22], [p.x, 4.2, p.z - 2.5], 50); billRain(V(p.x, 0, p.z - 7), T, 10, 18, 4, 16, 7);
     [[-7.2, 2.2], [7.4, 1.8], [-3.2, 5.2], [3.6, 5.6]].forEach(([dx, dz], j) => { for (let k = 0; k < 9; k++) { const b = BILL[100 - j * 10 - k]; b.visible = true; b.position.set(p.x + dx + Math.sin(k * 2.3) * .5, .06 + k * .07, p.z + dz + Math.cos(k * 1.7) * .35); b.rotation.set(-PI / 2, 0, k * .9 + j); } }); clearFaces(); sh(V(p.x, 0, p.z - 2), 30);
     finishCover();
     strokeTxt('IN DIESER STADT', W / 2, H * .205, 96, 'Lucky', ['#ffffff', '#ffe2b8'], '#2a1408', 26);
