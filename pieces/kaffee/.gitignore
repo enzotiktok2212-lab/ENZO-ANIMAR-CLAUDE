@@ -1,0 +1,10 @@
+review/
+review60/
+review12/
+renders/
+rv/
+*.log
+audio/voz.wav
+lab/
+audio/musica-larga.wav
+node_modules/
