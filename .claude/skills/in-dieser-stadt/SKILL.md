@@ -32,6 +32,9 @@ Documentos del repo que siguen siendo la referencia detallada (léelos al empeza
    - cada número del guion se verá en pantalla;
    - si hay onomatopeyas o gritos (p. ej. «HUSS!»), escribe el guion de ElevenLabs con **etiquetas solo en esas partes**: `[excited][shouting][very fast]` delante, y repite `[very fast]` cada dos repeticiones. Las etiquetas requieren **Eleven v3**.
    - Entrega el guion **en un bloque para copiar**.
+   - **Llamada a la acción en los primeros ~20 s**, nunca al final, y nunca como orden («comenta», «marca a alguien»): una **mini pregunta al espectador que forme parte de la historia** y le dé un motivo para responder (p. ej. `neinhals`: «Wie lang wäre dein Hals heute schon? Und bevor du sagst: „Nein, ich lüge nie“… zehn Meter.»).
+   - **Marcas reales sí**, pero siempre **hablando bien de ellas** (le da valor comercial al vídeo), p. ej. «Wer will denn bitte keinen Porsche?».
+   - Ejemplos en serie: **máximo tres**, de menos a más, coherentes entre sí, y que vuelvan más tarde en la historia (callback).
 3. **Voz** (`audio/voz-original.mp3`; el contenedor se reinicia si la sesión queda inactiva: lanza los procesos largos con `run_in_background` y deja una comprobación con `send_later`; `render.sh` es idempotente):
    - si hay partes a acelerar, pásalas con `atempo` sin cambiar tono (`huss/acelerar_huss.py`) y manda **una prueba** antes de seguir;
    - transcribe (`raw_words.json`), recorta silencios con `prep_audio.py voz raw skript.txt audio .055` (margen 55 ms: dinámico sin atropellar);
