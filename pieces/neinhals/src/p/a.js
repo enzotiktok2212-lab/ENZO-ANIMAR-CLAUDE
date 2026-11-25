@@ -59,12 +59,12 @@ shot(1.16, 'W', 'punch', L => { town(L); const c = put(CR[3], 6, 0, -14, -.2); c
 shot(2.4, 'S', null, L => { town(L); const c = put(CR[5], -20, 0, 2, -Math.PI / 2 + .9); c.root.scale.setScalar(.8); const o = put(CR[8], -27, 0, 4, Math.PI / 2 - .5); const t = .35; const g = grow(L.lt, t, 1, 11, .45); neck(c, g, L.T); shake(c, L.T, clamp(1 - Math.abs(L.lt - t) * 3));
   attach(PLATE, o.aR.hand, [0, -.7, .5], [0, 0, 0], .8); actuar(o, L.lt, [[0, { aRx: 1.2, aRe: .3 }]], { T: L.T }); cara(o, L.T, { expr: L.lt < t ? 'happy' : 'shock', mouth: L.lt < t ? 'open_smile' : 'o' }); neck(o, 3, L.T);
   actuar(c, L.lt, [[0, { aLx: .6, aLe: 1.4, aRx: .6, aRe: 1.4, aLz: -.4, aRz: -.4 }], [t, 'shock', { dur: .2 }]], { T: L.T }); cara(c, L.T, { expr: L.lt < t ? 'angry' : 'shock', mouth: 'o' }); neinB(c, (L.lt - .25) * 5, 'NEIN!', 1.4);
-    cm([-23.5, 6.5, 21, -23.5, 4.5 + g * .3, 3, 50], [-23.5, 7, 18.5, -23.5, 5 + g * .35, 3, 50], L.k); sh(V(-23, 0, 2), 30); }, [[0, 'swipe', .4], [.3, 'shout', .5], [.38, 'stretch', .7], [.45, 'pop', .5]]);
+    cm([-23.5, 8, 27, -23.5, 5 + g * .3, 3, 52], [-23.5, 8.5, 25, -23.5, 5.5 + g * .35, 3, 52], L.k); sh(V(-23, 0, 2), 30); }, [[0, 'swipe', .4], [.3, 'shout', .5], [.38, 'stretch', .7], [.45, 'pop', .5]]);
 // 4 «Siehst du den Mann da?»: por encima del hombro de alguien que señala, al fondo un hombre con el cuello por encima de los tejados
 shot(3.6, 'Z', null, L => { town(L); const p = put(CR[10], -.4, 0, 19.5, Math.PI + .3); actuar(p, L.lt, [[0, 'point']], { T: L.T }); cara(p, L.T, { expr: 'shock', mouth: 'o' }); neck(p, 2, L.T);
   const m = put(mann, 10, 0, -40, .2); neck(m, 52, L.T, { bend: .05, sway: .04 }); cara(m, L.T, { expr: 'tired' }); actuar(m, L.lt, [[0, 'idle']], { T: L.T });
   crowdAt(L, 6, -30, 10, 8, 22, 11, { mode: 'idle', from: 12, neck: i => [4, 12, 26, 8, 18, 3, 30, 10, 6, 15][i] });
-  const q = easeInOut(L.k); cm([-2.6, 8, 28.5, 8, lerp(10, 30, q), -36, 50], [-2.4, 8.3, 27.5, 9, lerp(14, 38, q), -38, 48], q); sh(V(4, 0, -10), 60); }, [[0, 'zoom_in', .5], [.2, 'hey', .4]]);
+  DOF = 0; const q = easeInOut(L.k); cm([-2.6, 8, 28.5, 8, lerp(10, 30, q), -36, 50], [-2.4, 8.3, 27.5, 9, lerp(14, 38, q), -38, 48], q); sh(V(4, 0, -10), 60); }, [[0, 'zoom_in', .5], [.2, 'hey', .4]]);
 // 5 «Sein Hals ist so lang, weil er ständig»: el hombre de la camisa de cuadros: la cámara sube desde los pies por todo el cuello hasta la cabeza, por encima de los tejados
 shot(4.54, 'C', 'punch', L => { town(L); const m = put(mann, 0, 0, -16, 0); neck(m, 52, L.T, { bend: .04, sway: .04 }); cara(m, L.T, { expr: 'tired', eyes: 'half' }); actuar(m, L.lt, [[0, 'idle']], { T: L.T });
   crowdAt(L, 0, -16, 8, 8, 20, 13, { mode: 'shock', from: 0, neck: i => [3, 8, 12, 2, 16, 6, 10, 4][i], face: V(0, 40, -16) });
@@ -158,7 +158,7 @@ shot(37.47, 'C', 'punch', L => { barrioS(L); const v = put(vogt, 3800, 0, 4, .5)
 shot(38.35, 'F', null, L => { barrioS(L); const v = put(vogt, 3800, 0, 4, .5); neck(v, 26, L.T, { bend: .3 }); actuar(v, L.lt, [[0, 'shrug']], { T: L.T }); cara(v, L.T, { expr: 'happy', mouth: 'grimace' }); show(PORSCHE, 3800 + 12, 0, -4, -.6);
   const h = hp(v); cm([h.x + 10, h.y + 2, h.z + 12, h.x, h.y, h.z, 44], [h.x + 9, h.y + 2, h.z + 10.5, h.x, h.y, h.z, 44], L.k); sh(V(3804, 0, 0), 30); }, [[0, 'flash', .3], [.1, 'chuckle_m', .5]]);
 // 28 «Wer will denn bitte keinen Porsche?»: el Porsche plateado, de cerca y en contrapicado, brilla; «PORSCHE»
-shot(38.97, 'Z', null, L => { barrioS(L); show(PORSCHE, 3800 + 12, 0, -4, -.6); const v = put(vogt, 3800, 0, 4, .5); neck(v, 26, L.T, { bend: .6 }); cara(v, L.T, { expr: 'happy', eyes: 'happy', mouth: 'open_smile' }); actuar(v, L.lt, [[0, 'hold']], { T: L.T });
+shot(38.97, 'Z', null, L => { barrioS(L); show(PORSCHE, 3800 + 12, 0, -4, -.6); const v = put(vogt, 3794, 0, 12, .5); neck(v, 26, L.T, { bend: .6 }); cara(v, L.T, { expr: 'happy', eyes: 'happy', mouth: 'open_smile' }); actuar(v, L.lt, [[0, 'hold']], { T: L.T });
   SPARK.forEach((s, i) => { if (i > 5) return; const k = (L.T * 1.4 + i / 6) % 1; s.visible = true; s.position.set(3800 + 12 + [-3, 2, 4, -1, 1.5, -2.5][i], [2.6, 3.2, 2.0, 2.9, 1.6, 2.2][i], -4 + [3, -2, 4, -4, 5, 0][i]); s.scale.setScalar(Math.sin(k * Math.PI) * 2); });
   const a = lerp(-.9, -.3, easeInOut(L.k)); cam([3812 + Math.sin(a) * 15, 3.4, -4 + Math.cos(a) * 15], [3812, 2.6, -4], 44); badge('gold', 'PORSCHE', W / 2, H * .22, (L.lt - .3) * 4, 1, 1.1); sh(V(3812, 0, -4), 20); }, [[0, 'zoom_in', .4], [.1, 'engine', .5], [.4, 'sparkle', .5]]);
 // 29 «Aber am schlimmsten hat es Timo erwischt.»: atardecer en la plaza: Timo en un banco junto a Jana, nervioso con el móvil

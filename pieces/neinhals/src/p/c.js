@@ -49,9 +49,9 @@ shot(111.19, null, 'slow', L => { halleS(L); HA.on(1, L.T); plugIn(1); const c =
 shot(113.84, 'W', null, L => { halleS(L); HA.on(1, L.T); plugIn(1); HA.SCR('TEST?', '#ffd23f'); const c = put(luca, MX + 9, 0, 4, -.4); actuar(c, L.lt, [[0, 'think']], { T: L.T }); cara(c, L.T, { expr: 'confused', mouth: 'flat' });
   const p = panelP(); cm([p.x - 4, 9, p.z + 20, p.x - 1.5, 6, p.z + 2, 46], [p.x - 3.5, 9, p.z + 18, p.x - 1.5, 6, p.z + 2, 44], L.k); sh(V(MX + 9, 0, 2), 25); }, [[0, 'swipe', .4], [.3, 'hmm', .5], [.7, 'beep', .4]]);
 // 82 «Ich teste sie an einem Arbeiter»: entra un obrero con casco cuyo cuello larguísimo va doblado bajo el techo
-shot(115.75, 'S', null, L => { halleS(L); HA.on(1, L.T); const a = put(ARB[0], MX + 4, 0, lerp(34, 14, easeOut(clamp(L.lt / 1.3))), PI + .2); neck(a, 34, L.T, { bend: 1.55, sway: .02 }); actuar(a, L.lt, [[0, walkP(L.T, 1)]], { T: L.T }); cara(a, L.T, { expr: 'happy', mouth: 'smile' });
+shot(115.75, 'S', null, L => { halleS(L); HA.on(1, L.T); const a = put(ARB[0], MX + 4, 0, lerp(26, 12, easeOut(clamp(L.lt / 1.3))), PI + .2); neck(a, 34, L.T, { bend: 1.55, sway: .02 }); actuar(a, L.lt, [[0, walkP(L.T, 1)]], { T: L.T }); cara(a, L.T, { expr: 'happy', mouth: 'smile' });
   const c = put(luca, MX + 10, 0, 6, -.9); actuar(c, L.lt, [[0, 'wave']], { T: L.T }); cara(c, L.T, { expr: 'happy', mouth: 'open_smile' });
-  cm([MX + 22, 8, 34, MX + 4, 10, 18, 58], [MX + 20, 8.5, 30, MX + 4, 10.5, 16, 58], L.k); sh(V(MX + 4, 0, 18), 40); }, [[0, 'door_open', .4], [.2, 'steps_heavy', .5], [.8, 'laugh_m', .4]]);
+  cm([MX + 18, 8, 40, MX + 4, 10, 16, 56], [MX + 17, 8.5, 37, MX + 4, 10.5, 14, 56], L.k); sh(V(MX + 4, 0, 18), 40); }, [[0, 'door_open', .4], [.2, 'steps_heavy', .5], [.8, 'laugh_m', .4]]);
 // 83 «mit einem lächerlich langen Hals.»: el obrero sobre la plataforma: la cámara sube por su cuello, que atraviesa todos los anillos hasta la cúpula
 shot(117.25, 'Z', null, L => { halleS(L); HA.on(1, L.T); const a = put(ARB[0], MX, 2.3, MZ, .2); neck(a, 25, L.T, { sway: .02 }); actuar(a, L.lt, [[0, 'idle']], { T: L.T }); cara(a, L.T, { expr: 'happy', mouth: 'smile' });
   const q = easeInOut(L.k); cam([MX + 6, lerp(6, 28, q), MZ + 20], [MX, lerp(8, 30, q), MZ], 46); badge('red', 'LÄCHERLICH LANG', W / 2, H * .16, (L.lt - .4) * 4, 1, .75); sh(V(MX, 0, MZ), 30); }, [[0, 'whoosh_up', .5], [.4, 'stretch_creak', .5], [.8, 'laugh_kid', .3]]);
@@ -101,7 +101,7 @@ shot(138.19, 'F', null, L => { fabrikS(L); FA.GATE.children.forEach(d => { if (d
 function queue(L, n, from = 0, o = {}) { POST.push(() => { const list = CR.filter(c => !c.root.visible).slice(from, from + n); list.forEach((c, i) => { const row = Math.floor(i / 6), j = i % 6, dir = row % 2 ? -1 : 1; const x = FAX_ + dir * (j - 2.5) * 4.4 + (row % 2 ? 2 : 0), z = 14 + row * 6.5;
   put(c, x, 0, z, PI + (j % 2 ? .2 : -.2)); neck(c, 8 + (i * 11) % 30, L.T, { bend: ((i % 3) - 1) * .1 }); actuar(c, L.lt, [[0, 'idle']], { T: L.T + i }); cara(c, L.T + i, { expr: ['sad', 'neutral', 'happy'][i % 3] }); }); }); }
 // 96 «Mein Nachbar.»: Herr Vogt en la cola, con su cuello de diez metros, sonríe avergonzado
-shot(140.82, 'C', null, L => { fabrikS(L); const v = put(vogt, FAX_ - 2, 0, 20, .4); neck(v, 26, L.T, { bend: .15 }); actuar(v, L.lt, [[0, 'shrug']], { T: L.T }); cara(v, L.T, { expr: 'happy', mouth: 'grimace' }); queue(L, 18, 0);
+shot(140.82, 'C', null, L => { fabrikS(L); const v = put(vogt, FAX_ - 14, 0, 22, .5); neck(v, 26, L.T, { bend: .15 }); actuar(v, L.lt, [[0, 'shrug']], { T: L.T }); cara(v, L.T, { expr: 'happy', mouth: 'grimace' }); queue(L, 18, 0);
   const hv = hp(v); cm([hv.x - 6, hv.y + 1.5, hv.z + 14, hv.x, hv.y - .5, hv.z, 44], [hv.x - 5.5, hv.y + 1.5, hv.z + 12.5, hv.x, hv.y - .5, hv.z, 44], L.k); sh(V(FAX_, 0, 20), 30); }, [[0, 'thump', .4], [.2, 'chuckle_m', .4]]);
 // 97 «Timo.»: Timo, con su cuello de veinte metros, saluda desde lo alto
 shot(141.88, 'W', null, L => { fabrikS(L); const t = put(timo, FAX_ + 2, 0, 26, .3); neck(t, 60, L.T, { bend: .05 }); actuar(t, L.lt, [[0, 'wave']], { T: L.T }); cara(t, L.T, { expr: 'sad', mouth: 'grimace' }); queue(L, 18, 0);

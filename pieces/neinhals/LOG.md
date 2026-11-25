@@ -12,7 +12,7 @@
 - [x] voz y tiempos
 - [x] motor, escenarios y reparto base
 - [x] planos a–d escritos (revisión en curso)
-- [ ] revisión de todos los planos
+- [x] revisión de todos los planos (12 % y 60 %)
 - [x] mezcla (renders/mezcla-final.wav, −12,5 LUFS; rehacer si cambian los efectos)
-- [ ] render
+- [ ] render (lanzado: ./render.sh en segundo plano; si se corta, relanzar ./render.sh y luego ./finish.sh)
 - [ ] entrega
