@@ -1,39 +1,43 @@
-[excited] In dieser Stadt bekommst du jedes Mal Geld, wenn du einen Kaffee trinkst. Und je mehr Kaffee du trinkst, desto mehr bekommst du. [fast] Eine Tasse? Fünfzehn Euro. Fünf Tassen? Fünfhundert Euro. Fünfzehn Tassen? [shouting] Glückwunsch! Du bist Millionär!
+[excited] In dieser Stadt macht dich Kaffee reich. Jede Tasse, die du trinkst, landet sofort als Geld auf deinem Konto. [fast] Ein Espresso? Zwölf Euro. Eine ganze Kanne? Achthundert Euro. Zwanzig Tassen? [shouting] Herzlichen Glückwunsch! Du bist Millionär!
 
-[amused] Und jeder kennt so jemanden, der morgens ohne Kaffee nicht mal Hallo sagt. Hier wäre der längst Millionär. [curious] Wer ist das bei dir? [mischievously] Bei mir? Ganz klar: mein Papa.
+[proud] Heute bin ich der reichste Mensch der Welt. [pause] [sad] Aber ich kann keine einzige Tasse mehr in der Hand halten.
 
-[mysterious] Und man erzählt sich: Wer an einem einzigen Tag hundert Tassen schafft, wird Billionär. [whispers] Bis heute hat das niemand geschafft.
+[amused] Und jeder kennt so jemanden, der schon vor dem Zähneputzen die erste Tasse trinkt. Hier hätte der vor dem Frühstück schon ein neues Auto. [curious] Wer ist das bei dir? [mischievously] Bei mir? Ganz klar: meine Oma. [laughing] Acht Tassen am Tag, und um neun schläft sie trotzdem wie ein Baby.
 
-[curious] Rechne mal kurz nach, wie reich du heute schon wärst. [deadpan] Siehst du? [confident] Darum ist Kaffeetrinken hier ein Vollzeitjob. Ins Büro geht keiner mehr. Alle sitzen im Café, rühren in ihren Tassen und sehen zu, wie ihr Konto wächst.
+[mysterious] Und man erzählt sich: Wer an einem einzigen Tag zweihundert Tassen schafft, wird Billionär. [whispers] Bis heute hat das niemand geschafft.
 
-[serious] Aber nicht jeder Kaffee zählt gleich. Der Zähler erkennt nur richtig guten Kaffee. [proud] Und der König von allen? Dallmayr. Aus dem berühmten Feinkosthaus in München. [excited] Eine Tasse Dallmayr zählt doppelt. Deshalb ist er in jedem Supermarkt schon um acht Uhr morgens ausverkauft.
+[curious] Rechne mal kurz nach, wie reich du heute schon wärst. [deadpan] Siehst du? [confident] Deshalb ist Kaffeetrinken hier ein Vollzeitjob. Ins Büro geht keiner mehr. Alle sitzen im Café, rühren in ihren Tassen und sehen zu, wie ihr Konto wächst.
 
-[amused] Meine Nachbarin hat sich nach einem einzigen Sonntagsfrühstück ein Haus am Meer gekauft. Ihr Trick? Tchibo. [confident] So mild und aromatisch, dass du gar nicht merkst, dass du schon bei der zehnten Tasse bist. Und genau das macht dich reich.
+[serious] Aber nicht jeder Kaffee zählt gleich. Der Zähler erkennt nur richtig guten Kaffee. [mischievously] Und das Verrückte: Der beste ist nicht der teuerste. [excited] Tchibo zum Beispiel. Kostet wenig, schmeckt wie im Café, und jede Tasse zählt doppelt. Deshalb ist um acht Uhr morgens jede Tchibo-Filiale voll.
 
-[amused] Mein Mathelehrer hat in der großen Pause drei Espresso getrunken und sich aus Versehen ein Kreuzfahrtschiff gekauft. [mischievously] Und der Bürgermeister? Der hat seit fünfzehn Jahren nicht mehr geschlafen. Ihm gehört die halbe Stadt.
+[amused] Meine Nachbarin trinkt nur Jacobs Krönung. Und der Name ist kein Zufall. [excited] Denn bei jeder zehnten Tasse Jacobs schenkt dir der Zähler eine goldene Krone, tausend Euro wert. Sie hat schon sieben. [proud] Letzte Woche hat sie sich davon ein Haus am See gekauft.
 
-[serious] Aber Achtung. Die Regierung kennt da keine Gnade. Jeder trägt einen Kaffeezähler am Handgelenk, und wer schummelt, kommt sofort ins Gefängnis. Letzte Woche hat einer heimlich Kakao in seine Kaffeetasse gefüllt. [dramatic] Fünfundzwanzig Jahre.
+[confident] Mein Mathelehrer brüht seinen Kaffee nur mit Melitta. [curious] Wusstest du, dass Melitta den Kaffeefilter erfunden hat? Neunzehnhundertacht in Dresden, mit Papier aus dem Schulheft ihres Sohnes. [excited] Deshalb zählt der Zähler bei Melitta sogar den letzten Tropfen. [laughing] Mein Lehrer hat in der großen Pause eine Kanne getrunken und sich aus Versehen ein Kreuzfahrtschiff gekauft.
 
-[mischievously] Und ehrlich? Ich wüsste sofort, wer bei uns als Erster im Gefängnis sitzen würde.
+[mischievously] Und der Bürgermeister? Der hat seit elf Jahren kein Auge mehr zugemacht. Ihm gehört die halbe Stadt.
 
-[sad] Und ich? Ich war völlig pleite. Denn ich vertrage kein Koffein. Nicht mal ein bisschen. Während die anderen eine Kanne nach der anderen leerten, schaffte ich einen halben Espresso. Sieben Euro fünfzig. [sighs] Dann fing ich an zu zittern.
+[serious] Aber Vorsicht. Mit Kaffee macht hier niemand Witze. Jeder trägt einen Kaffeezähler am Handgelenk, und wer schummelt, landet sofort hinter Gittern. Letzte Woche hat einer braunes Wasser in seine Tasse gefüllt. [dramatic] Zweiundzwanzig Jahre.
 
-[whispers] Bis ich eines Morgens etwas entdeckte. Auf dem Dachboden eines alten, geschlossenen Cafés, hinter einer verstaubten Kaffeemühle: eine goldene Tasse. [slowly] Am Boden war eingraviert: „Warnung: Niemals mehr als ein Schluck."
+[mischievously] Und ehrlich? Ich wüsste sofort, wer bei uns als Erster da drin sitzen würde.
 
-[mischievously] Also trank ich sie natürlich in einem Zug leer. Mit Dallmayr, versteht sich.
+[sad] Und ich? Ich hatte keinen Cent. Denn ich vertrage kein Koffein. Nicht mal ein bisschen. Während die anderen eine Kanne nach der anderen leerten, schaffte ich einen halben Espresso. Sechs Euro. [sighs] Dann fingen meine Hände an zu zittern.
 
-[building tension] Zuerst: gar nichts. Dann wurde die Tasse heiß, und sie füllte sich ganz von allein wieder. Mein Zähler fing an zu piepen. [fast] Eine Tasse. Fünfzehn Euro. Fünf Tassen. Fünfhundert Euro. Fünfzehn Tassen. Millionär. [tense] Aber ich konnte nicht mehr aufhören. Die Tasse füllte sich immer wieder. [fast] Dreißig Tassen. Sechzig Tassen. [shouting] Neunzig Tassen!
+[whispers] Bis ich eines Morgens etwas fand. Auf dem Dachboden eines alten, geschlossenen Cafés, hinter einer verstaubten Kaffeemühle: eine goldene Tasse. [slowly] Am Boden stand eingraviert: „Warnung: Niemals mehr als ein Schluck."
+
+[mischievously] Also füllte ich sie natürlich bis zum Rand. Mit Tchibo, versteht sich, denn der zählt doppelt. Und trank sie in einem Zug leer.
+
+[building tension] Zuerst: gar nichts. Dann wurde die Tasse heiß, und sie füllte sich ganz von allein wieder. Mein Zähler fing an zu piepen. [fast] Ein Espresso. Zwölf Euro. Eine Kanne. Achthundert Euro. Zwanzig Tassen. Millionär. [tense] Aber ich konnte nicht mehr aufhören. Die Tasse füllte sich immer wieder. [fast] Fünfzig Tassen. Hundert Tassen. [shouting] Hundertfünfzig Tassen!
 
 [excited] [fast] Mein Herz raste so schnell, dass ich die Straßenbahn überholte. In einer Minute putzte ich jedes Fenster der Stadt, mähte jeden Rasen und strich das Rathaus neu. Die Leute sahen mich nur noch als Blitz. [excited] Und mein Konto? Es stieg und stieg.
 
 [amazed] Sogar der Bürgermeister hat mich angerufen. Mit Tränen in den Augen. Er sagte, ich sei jetzt reicher als ganz Deutschland.
 
-[whispers] Und dann, ganz plötzlich: Stille. Die Tasse blieb leer. Ich schaute auf meinen Zähler. [slowly] Hundert Tassen. [pause] [shouting] Ich war Billionär!
+[whispers] Und dann, ganz plötzlich: Stille. Die Tasse blieb leer. Ich schaute auf meinen Zähler. [slowly] Zweihundert Tassen. [pause] [shouting] Ich war Billionär!
 
 [proud] Der reichste Mensch der Welt. [pause] [nervous] Bis mein Handy summte. Meine Bank. [serious] Durch mein ganzes Geld war die Wirtschaft zusammengebrochen. Ein Euro war jetzt weniger wert als ein Zuckertütchen.
 
 [deadpan] Also brauchte das Land eine neue Währung. Und rate mal, wofür sie sich entschieden haben? [pause] Zittern.
 
-[sighs] Und ich? Seit dieser goldenen Tasse höre ich nicht mehr auf zu zittern.
+[sighs] Und ich? Seit dieser goldenen Tasse zittern meine Hände so sehr, dass ich keine einzige Tasse mehr halten kann.
 
 [whispers] Moment. [tense] Warum piept mein Zähler schon wieder?
