@@ -8,11 +8,15 @@
 
 [curious] Rechne mal kurz nach, wie reich du heute schon wärst. [deadpan] Siehst du? [confident] Deshalb ist Kaffeetrinken hier ein Vollzeitjob. Ins Büro geht keiner mehr. Alle sitzen im Café, rühren in ihren Tassen und sehen zu, wie ihr Konto wächst.
 
+[warmly] Und das Beste daran? Seit hier jeder Kaffee trinkt, ist niemand mehr müde. Die Leute sind wacher, lachen mehr, [amused] und sogar der Busfahrer sagt morgens freundlich Guten Morgen.
+
+[mischievously] Am reichsten sind übrigens nicht die Jungen, sondern die über Fünfundfünfzig. [confident] Denn die trinken seit vierzig Jahren jeden Morgen ihre Tasse, und um drei gibt's Kaffee und Kuchen. [laughing] Deshalb fahren hier die Rentner Sportwagen, und die Jugendlichen fahren Fahrrad.
+
 [serious] Aber nicht jeder Kaffee zählt gleich. Der Zähler erkennt nur richtig guten Kaffee. [mischievously] Und das Verrückte: Der beste ist nicht der teuerste. [excited] Tchibo zum Beispiel. Kostet wenig, schmeckt wie im Café, und jede Tasse zählt doppelt. Deshalb ist um acht Uhr morgens jede Tchibo-Filiale voll.
 
 [amused] Meine Nachbarin trinkt nur Jacobs Krönung. Und der Name ist kein Zufall. [excited] Denn bei jeder zehnten Tasse Jacobs schenkt dir der Zähler eine goldene Krone, tausend Euro wert. Sie hat schon sieben. [proud] Letzte Woche hat sie sich davon ein Haus am See gekauft.
 
-[confident] Mein Mathelehrer brüht seinen Kaffee nur mit Melitta. [curious] Wusstest du, dass Melitta den Kaffeefilter erfunden hat? Neunzehnhundertacht in Dresden, mit Papier aus dem Schulheft ihres Sohnes. [excited] Deshalb zählt der Zähler bei Melitta sogar den letzten Tropfen. [laughing] Mein Lehrer hat in der großen Pause eine Kanne getrunken und sich aus Versehen ein Kreuzfahrtschiff gekauft.
+[confident] Mein Mathelehrer brüht seinen Kaffee nur mit Melitta. [curious] Wusstest du, dass Melitta den Kaffeefilter erfunden hat? Neunzehnhundertacht in Dresden, mit Papier aus dem Schulheft ihres Sohnes. [excited] Deshalb zählt der Zähler bei Melitta sogar den letzten Tropfen. [warmly] Und seitdem ist er der beste Lehrer der Schule: hellwach und immer gut gelaunt. [laughing] Mein Lehrer hat in der großen Pause eine Kanne getrunken und sich aus Versehen ein Kreuzfahrtschiff gekauft.
 
 [mischievously] Und der Bürgermeister? Der hat seit elf Jahren kein Auge mehr zugemacht. Ihm gehört die halbe Stadt.
 
@@ -20,9 +24,9 @@
 
 [mischievously] Und ehrlich? Ich wüsste sofort, wer bei uns als Erster da drin sitzen würde.
 
-[sad] Und ich? Ich hatte keinen Cent. Denn ich vertrage kein Koffein. Nicht mal ein bisschen. Während die anderen eine Kanne nach der anderen leerten, schaffte ich einen halben Espresso. Sechs Euro. [sighs] Dann fingen meine Hände an zu zittern.
+[sad] Und ich? Ich hatte keinen Cent. Denn ich vertrage kein Koffein. Nicht mal ein bisschen. Während die anderen eine Kanne nach der anderen leerten, schaffte ich einen halben Espresso. Sechs Euro. [sighs] Dann fingen meine Hände an zu zittern. [sad] Ich war der Einzige, der in der ersten Stunde einschlief. Der Einzige, der morgens schlecht gelaunt war.
 
-[whispers] Bis ich eines Morgens etwas fand. Auf dem Dachboden eines alten, geschlossenen Cafés, hinter einer verstaubten Kaffeemühle: eine goldene Tasse. [slowly] Am Boden stand eingraviert: „Warnung: Niemals mehr als ein Schluck."
+[whispers] Bis ich eines Morgens etwas fand. Auf dem Dachboden eines alten, geschlossenen Cafés, hinter einer verstaubten Kaffeemühle: eine goldene Tasse. [mysterious] Sie roch nach frisch geröstetem Kaffee, obwohl sie leer war. [slowly] Am Boden stand eingraviert: „Warnung: Niemals mehr als ein Schluck."
 
 [mischievously] Also füllte ich sie natürlich bis zum Rand. Mit Tchibo, versteht sich, denn der zählt doppelt. Und trank sie in einem Zug leer.
 
