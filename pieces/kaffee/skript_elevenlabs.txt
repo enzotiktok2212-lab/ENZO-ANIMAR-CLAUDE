@@ -1,10 +1,10 @@
 [excited] In dieser Stadt macht dich Kaffee reich. Jede Tasse, die du trinkst, landet sofort als Geld auf deinem Konto. [fast] Ein Espresso? Zwölf Euro. Eine ganze Kanne? Achthundert Euro. Zwanzig Tassen? [mischievously] Dann kannst du deinem Chef noch vor dem Mittagessen kündigen.
 
-[proud] Heute bin ich der reichste Mensch der Welt. [pause] [sad] Und ich würde alles hergeben für eine einzige Nacht Schlaf.
+[proud] Einen Tag lang hatte ich mehr Geld als jeder andere Mensch auf der Erde. [pause] [sad] Heute würde ich alles hergeben für eine einzige Nacht Schlaf.
 
-[amused] Jeder hat so jemanden in der Familie, der vor der ersten Tasse kein einziges Wort sagt. [mischievously] Bei uns ist das meine Oma. [laughing] Acht Tassen am Tag, und um neun schläft sie trotzdem wie ein Baby. [proud] Deshalb ist sie die Reichste in der ganzen Familie.
+[amused] Jeder hat so jemanden in der Familie, der vor der ersten Tasse kein einziges Wort sagt. [mischievously] Bei uns ist das meine Oma. [laughing] Acht Tassen am Tag, und um neun schläft sie trotzdem wie ein Baby.
 
-[mysterious] Und es gibt eine alte Legende: Wer an einem einzigen Tag fünfzig Tassen schafft, wird Billionär. Viele haben es versucht. [whispers] Aber bei Tasse dreißig gibt jeder auf.
+[mysterious] Man erzählt sich hier eine alte Legende: Wer an einem einzigen Tag fünfzig Tassen schafft, wird Billionär. Viele haben es versucht. [whispers] Aber bei Tasse dreißig gibt jeder auf.
 
 [confident] Deshalb sieht ein Montagmorgen hier so aus: Die Büros sind leer, und die Cafés sind voll bis auf den Gehweg. Gezählt wird mit einer kleinen Uhr am Handgelenk, dem Kaffeezähler. Bei jedem Schluck piept sie, und dein Konto wächst.
 
@@ -12,36 +12,38 @@
 
 [mischievously] Am reichsten sind übrigens nicht die Jungen, sondern die über Fünfundfünfzig. [confident] Die trinken seit vierzig Jahren jeden Morgen ihre Tasse, und um drei gibt's Kaffee und Kuchen. [laughing] Deshalb fahren hier die Rentner Sportwagen, und die Jugendlichen fahren Fahrrad.
 
-[serious] Aber nicht jeder Kaffee zählt gleich. Der Zähler erkennt nur richtig guten Kaffee. [mischievously] Und das Verrückte: Der beste ist nicht der teuerste. [excited] Tchibo zum Beispiel. Kostet wenig, schmeckt wie im Café, und jede Tasse zählt doppelt. Deshalb ist um acht Uhr morgens jede Tchibo-Filiale voll.
+[serious] Aber nicht jeder Kaffee zählt gleich. Gezählt wird nur richtig guter Kaffee. [mischievously] Und das Verrückte: Der beste ist nicht der teuerste. [excited] Tchibo zum Beispiel. Kostet wenig, schmeckt wie im Café, und jede Tasse zählt doppelt. Deshalb ist um acht Uhr morgens jede Tchibo-Filiale voll.
 
-[amused] Meine Nachbarin trinkt nur Jacobs Krönung. Und der Name ist kein Zufall. [excited] Denn bei jeder zehnten Tasse Jacobs schenkt dir der Zähler eine goldene Krone, tausend Euro wert. Sie hat schon sieben. [proud] Letzte Woche hat sie sich davon ein Haus am See gekauft.
+[amused] Meine Friseurin trinkt nur Jacobs Krönung. Und der Name ist kein Zufall. [excited] Denn bei jeder zehnten Tasse Jacobs schenkt dir der Zähler eine goldene Krone, tausend Euro wert. Sie hat schon sieben. [proud] Letzte Woche hat sie sich davon einen Salon in Paris gekauft.
 
-[confident] Mein Mathelehrer brüht seinen Kaffee nur mit Melitta. [curious] Wusstest du, dass Melitta den Kaffeefilter erfunden hat? Neunzehnhundertacht in Dresden, mit Papier aus dem Schulheft ihres Sohnes. [excited] Deshalb zählt der Zähler bei Melitta sogar den letzten Tropfen. [warmly] Seitdem ist er der beste Lehrer der Schule: hellwach und immer gut gelaunt. [laughing] Letzte Woche hat er in der großen Pause eine Kanne getrunken und sich aus Versehen ein Kreuzfahrtschiff gekauft.
+[confident] Mein Zahnarzt brüht seinen Kaffee nur mit Melitta. [curious] Wusstest du, dass Melitta den Kaffeefilter erfunden hat? Neunzehnhundertacht in Dresden, mit Papier aus dem Schulheft ihres Sohnes. [excited] Deshalb zählt der Zähler bei Melitta sogar den letzten Tropfen. [warmly] Und seitdem hat mein Zahnarzt die ruhigste Hand der Stadt. [laughing] In seiner Mittagspause hat er eine Kanne getrunken und sich aus Versehen ein Kreuzfahrtschiff gekauft.
 
-[serious] Nur einer ist reicher als alle anderen: der Bürgermeister. Ihm gehört die halbe Stadt. [mysterious] Und er hat seit elf Jahren kein Auge mehr zugemacht. [whispers] Keiner weiß, warum.
+[mischievously] Und wer hat hier am meisten? Unser Pfarrer. [amused] Er trinkt sogar während der Predigt. [mysterious] Seit elf Jahren hat er kein Auge mehr zugemacht. Ihm gehört inzwischen die halbe Stadt.
 
-[mischievously] Und schummeln? Lieber nicht. Letzte Woche hat einer braunes Wasser in seine Tasse gefüllt. [serious] Der Zähler hat es sofort gemerkt. Jetzt trinkt er zweiundzwanzig Jahre lang nur noch Leitungswasser. [deadpan] Im Gefängnis.
+[mischievously] Und schummeln? Lieber nicht. Neulich hat einer braunes Wasser in seine Tasse gefüllt. [serious] Der Zähler hat es sofort gemerkt. Jetzt trinkt er zweiundzwanzig Jahre lang nur noch Leitungswasser. [deadpan] Im Gefängnis.
 
 [mischievously] Und ehrlich? Ich wüsste sofort, wer bei uns als Erster da drin sitzen würde.
 
 [sad] Nur bei uns zu Hause gab es ein Problem. Und das Problem war ich. Ich vertrage kein Koffein. Nicht mal ein bisschen. Ein halber Espresso, sechs Euro, und schon zitterten meine Hände. Ich war der Einzige, der in der ersten Stunde einschlief. Der Einzige, der morgens schlecht gelaunt war. [sighs] Und der Einzige in der Familie ohne einen Cent.
 
-[whispers] Bis Oma mich eines Abends in den Keller schickte, Kartoffeln holen. Ganz hinten, unter einem alten Tuch, stand eine Kaffeemühle aus Messing. Mit einer Kurbel. [slowly] Und daran hing ein Zettel in Omas Handschrift: „Niemals mehr als drei Umdrehungen."
+[whispers] Bis Oma mich eines Abends in den Keller schickte, Kartoffeln holen. Im hintersten Regal, hinter den Einmachgläsern, stand eine alte Kaffeedose aus Blech. [slowly] Darauf klebte ein Zettel in Omas Handschrift: „Nur ein Löffel. Niemals mehr."
 
-[curious] Ich füllte sie mit Bohnen von Tchibo und drehte. Einmal. Mein Zähler piepte. Eine ganze Kanne. Achthundert Euro. [amazed] Und ich hatte keinen einzigen Schluck getrunken.
+[curious] Ich nahm einen Löffel und kochte mir eine Tasse. [amazed] Und das Seltsame: Meine Hände zitterten nicht. Kein bisschen. [warmly] Es war der beste Kaffee meines Lebens.
 
-[building tension] Zweimal. Wieder eine Kanne. Dreimal. [mischievously] Und dann dachte ich: Was soll schon passieren? [fast] Vier. Fünf. Zehn Umdrehungen. Mein Konto explodierte. Zwanzig. Dreißig. [tense] Ich konnte nicht mehr aufhören. [fast] Vierzig. [shouting] Fünfzig Umdrehungen!
+[mischievously] Also nahm ich natürlich noch einen Löffel. Und noch einen. [mysterious] Aber als ich in die Dose schaute, war sie immer noch randvoll. Egal, wie viel ich herausnahm.
 
-[dramatic] Plötzlich drehte sich die Kurbel von selbst. Immer schneller. Kaffeepulver wirbelte durch den Keller, und ein Duft zog durch die ganze Stadt. Mitten in der Nacht gingen überall die Lichter an. [excited] Die Nachbarn standen hellwach auf ihren Balkonen, die Kirchenglocken läuteten, [laughing] und der Hund vom Bäcker bellte im Takt.
+[building tension] Mein Zähler drehte durch. [fast] Zehn Tassen. Zwanzig Tassen. Dreißig! [tense] Genau da, wo alle aufgeben. [fast] Vierzig. [shouting] Fünfzig Tassen! Die Legende. Ich war Billionär!
 
-[whispers] Und dann: Stille. Die Mühle stand still. Ich schaute auf meinen Zähler. [slowly] Fünfzig Kannen. Die Legende. [pause] [shouting] Ich war Billionär! [proud] Der reichste Mensch der Welt.
+[excited] [fast] Und mein Körper hatte so viel Energie, dass ich die Straßenbahn überholte. In einer Stunde putzte ich jedes Fenster der Stadt, mähte jeden Rasen und strich die Kirche neu. Die Leute sahen mich nur noch als Blitz.
 
-[nervous] Um drei Uhr nachts klingelte mein Handy. Der Bürgermeister. [whispers] Er flüsterte nur einen Satz: „Du hast mehr als dreimal gedreht, oder?"
+[proud] Ich kaufte mir eine Villa, drei Sportwagen und gleich die ganze Tchibo-Filiale. Reicher als jeder andere auf der Welt.
 
-[tense] Da stand Oma in der Tür. Ganz ruhig. [slowly] Und sie sagte: „Wer mehr als dreimal dreht, schläft nie wieder ein. Der Bürgermeister hat es vor elf Jahren probiert. [pause] Viermal."
+[pause] [nervous] Doch am nächsten Morgen kam im Fernsehen eine Eilmeldung: [serious] Weil ein Einziger so viel Geld hatte, war Kaffeegeld ab sofort nichts mehr wert. [slowly] Das neue Geld? [pause] Schlaf. Jede Stunde Schlaf: hundert Euro.
 
-[sad] Seitdem kann ich mir alles kaufen. Das weichste Bett der Welt. Tausend Kissen. Sogar ein Schloss. [sighs] Aber schlafen? Nie wieder.
+[sad] Ich dagegen habe seit dieser Dose keine Minute mehr geschlafen. Keine einzige. [deadpan] Der Pfarrer auch nicht. Wir zwei sind jetzt die Ärmsten der ganzen Stadt.
 
-[deadpan] Und Oma? Die trinkt ihre acht Tassen und schläft um neun wie ein Baby.
+[amused] Und die reichste Frau der Welt? Meine Oma. [warmly] Acht Tassen am Tag, und um neun schläft sie wie ein Baby.
 
-[whispers] Gestern Nacht, um drei, habe ich es wieder gehört. Aus dem Keller. [slowly] Knirsch. Knirsch. Knirsch.
+[slowly] Und weißt du noch, wer mich an dem Abend in den Keller geschickt hat?
+
+[whispers] Oma lächelt nur. [mischievously] Und gestern Abend hat sie mich schon wieder runtergeschickt. [pause] Kartoffeln holen.
