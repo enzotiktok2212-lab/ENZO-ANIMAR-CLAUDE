@@ -3,13 +3,13 @@ const cardText = (lines, col = '#1a1a6a') => (c, w, h) => lines.forEach((t, i) =
 function rehearse(L, lines, key, pose) { saalS(L); SA.TEL.userData.open(.9); const m = put(zisch, SAX, 0, -8.6, 0); actuar(m, 0, [[0, pose]], { T: L.T }); attach(SA.CARD, m.aR.hand, [0, -.7, .5], [-1.0, 0, 0], .9); SA.CARD.userData.draw(key, cardText(lines)); hero(m); return m; }
 // 38 «„Thüthe Thahnethothe.»: primer plano del alcalde ceceando con orgullo; salen gotitas de saliva
 shot(46.1, 'C', 'punch', L => { const m = rehearse(L, ['SÜSSE SAHNESOSSE'], 'b1', { aRx: 1.1, aRe: 1.2, aLx: 1.2, aLz: -.3, aLe: 1.3, headX: -.05, lean: -.04 }); talk(m, L.T, 46.1, 47.35, 'smug'); spit(m, L.T, 46.1, 12);
-  onFace(m, 5.6, .2, .7, 40, L.k, 4.8); sh(SW(0, 0, -8), 12); }, [[0, 'impact_soft', .4], [.2, 'spit', .5], [.7, 'spit', .4]]);
+  onFace(m, 5.6, 1.5, .7, 40, L.k, 4.8); sh(SW(0, 0, -8), 12); }, [[0, 'impact_soft', .4], [.2, 'spit', .5], [.7, 'spit', .4]]);
 // 39 «Thuper thtarke Thpaghetti.»: saca músculo con el brazo libre (bíceps) mientras lee la ficha
 shot(47.35, 'S', null, L => { const j = Math.abs(Math.sin(L.T * 6)); const m = rehearse(L, ['SUPER STARKE', 'SPAGHETTI'], 'b2', { aRx: 1.1, aRe: 1.2, aLx: 1.6, aLz: .9, aLe: 2.2 + j * .2, lean: -.06 }); talk(m, L.T, 47.35, 48.79, 'smug'); spit(m, L.T, 47.35, 10);
   onBody(m, 12, -.5, .08, 40, L.k, 10.5, -.4, 5.6); sh(SW(0, 0, -8), 12); }, [[0, 'whoosh_soft', .3], [.2, 'flex', .5], [.8, 'spit', .4]]);
 // 40 «Thieben thaure Thalatgurken.“»: muy de cerca, con un «7» que salta y una lluvia de saliva
 shot(48.79, 'Z', null, L => { const m = rehearse(L, ['SIEBEN SAURE', 'SALATGURKEN'], 'b3', { aRx: 1.1, aRe: 1.2, aLx: .8, aLz: -.6, aLe: 1.0, headX: -.08 }); talk(m, L.T, 48.79, 50.31, 'smug'); spit(m, L.T, 48.79, 14);
-  badge3('gold', '7', hp(m).add(V(-3, 3.2, 0)), (L.lt - .1) / .2, 1.3); onFace(m, 5, .2, -.6, 38, L.k, 4.3); sh(SW(0, 0, -8), 12); }, [[0, 'spit', .5], [.1, 'pop', .5], [.7, 'spit', .5]]);
+  badge3('gold', '7', hp(m).add(V(-3, 3.2, 0)), (L.lt - .1) / .2, 1.3); onFace(m, 5, 1.5, -.6, 38, L.k, 4.3); sh(SW(0, 0, -8), 12); }, [[0, 'spit', .5], [.1, 'pop', .5], [.7, 'spit', .5]]);
 // 41 «Er konnte dath S nicht auththprechen.»: Jonte detrás del telón se tapa la boca para no reírse; zoom lento
 shot(50.31, 'I', 'slow', L => { saalS(L); SA.TEL.userData.open(.9); const c = put(jonte, SAX - 10.6, 0, 6, 2.5); actuar(c, 0, [[0, { aRx: 2.1, aRz: -.5, aRe: 2.0, aLx: .6, aLe: 1.4, lean: .08 }]], { T: L.T }); cara(c, L.T, { expr: 'shock', eyes: 'wide', mouth: 'o' }); holdBag(c); hero(c);
   FLASHL.intensity = 220; FLASHL.position.copy(SW(-4, 12, -4)); FLASHL.target.position.copy(SW(-10, 5, 6)); onFace(c, 6.6, 0, .4, 40, L.k, 5); sh(SW(-10, 0, 6), 12); }, [[0, 'gasp', .5], [.5, 'heartbeat', .4]]);

@@ -110,7 +110,7 @@ const CONF = Array.from({ length: 80 }, (_, i) => { const p = new THREE.Mesh(new
 const DUST = Array.from({ length: 16 }, () => P_(sphere(1, mat(0xd8c8a8, { roughness: 1, transparent: true, opacity: .6, depthWrite: false }), scene, 0, 0, 0, 10, 8)));
 const SWEAT = Array.from({ length: 3 }, () => P_(sphere(.16, mat(0x9fd8ff, { roughness: .05, transparent: true, opacity: .85 }), scene, 0, 0, 0, 10, 8)));
 const TEAR = Array.from({ length: 4 }, () => P_(sphere(.14, mat(0x9fd8ff, { roughness: .05, transparent: true, opacity: .9 }), scene, 0, 0, 0, 10, 8)));
-const SPIT = Array.from({ length: 14 }, () => P_(sphere(.09, mat(0xcfefff, { roughness: .05, transparent: true, opacity: .8 }), scene, 0, 0, 0, 8, 6)));
+const SPIT = Array.from({ length: 14 }, () => P_(sphere(.055, mat(0xcfefff, { roughness: .05, transparent: true, opacity: .8 }), scene, 0, 0, 0, 8, 6)));
 const FLASHL = new THREE.SpotLight(0xfff0c8, 0, 70, .38, .5, 1.2); scene.add(FLASHL, FLASHL.target);
 const FALLBAN = P_(banSign(scene, 'S', 4.2));   // señal que cae del pórtico al final
 

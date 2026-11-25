@@ -9,9 +9,6 @@ El usuario duerme: seguir solo, sin preguntar, hasta mandar el vídeo final (sol
 - Copiados scripts y motor de schluck; `src/lcast.js` (reparto) y `src/lsets.js` (escenarios nuevos).
 
 ## Pendiente (en orden)
-1. `src/main.js` (montaje en el scratchpad: head.js + sets.js + partes genéricas de schluck/src/main.js) y planos en `src/p/a.js…d.js` (≈75 planos, lista en este archivo más abajo).
-2. `python3 armar.py`; revisión `node mids.mjs http://pieza/index.html review all .12` y `review60 all .6`, `python3 sheet.py review`; corregir.
-3. DUR = 95.9 en `render.sh`, `watchdog.sh`, `mezclar.sh` (D=), `sfx.py` (DUR =); campanitas en `marca.py` (0 s y ≤10 s al empezar frase).
-4. Audio: `node cues.mjs` → `python3 sfx.py audio/cues.json audio/voz-sin-silencios.wav audio/musica-fondo.wav renders/mezcla.wav` (ver cómo lo hizo schluck) → `marca.py` → `renders/mezcla-final.wav`.
-5. Render: `nohup ./watchdog.sh > renders/watchdog.log 2>&1 &` (relanza solo y ejecuta finish.sh). Vídeo: `renders/lispeln.mp4`.
-6. Commit + push (nunca renders/, review/). Mandar solo el vídeo.
+- Hecho: planos (72) revisados al 12 % y 85 %, mezcla `renders/mezcla-final.wav` (−12,5 LUFS, campanitas, fundido) — NO está en git (renders/ ignorado): si se perdió, rehacer con `node cues.mjs`, `python3 sfx.py audio/cues.json audio/voz-sin-silencios.wav audio/musica-fondo.wav renders/mezcla.wav`, `python3 marca.py renders/mezcla.wav audio/campanita-recortada.wav renders/mezcla-final.wav` y fundido de 1 s al final (afade st=94.9).
+- Render lanzado con `nohup ./watchdog.sh > renders/watchdog.log 2>&1 &` (2877 fotogramas). Si el contenedor se reinició: `python3 armar.py`, rehacer la mezcla si falta y relanzar el vigilante. Al terminar ejecuta finish.sh → `renders/lispeln.mp4`.
+- Después: comprobar duración (95,9 s) y mandar SOLO el vídeo (SendUserFile attach) recordando escuchar la mezcla.
