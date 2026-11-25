@@ -59,13 +59,12 @@ shot(1.16, 'W', 'punch', L => { town(L); const c = put(CR[3], 6, 0, -14, -.2); c
 shot(2.4, 'S', null, L => { town(L); const c = put(CR[5], -20, 0, 2, -Math.PI / 2 + .9); c.root.scale.setScalar(.8); const o = put(CR[8], -27, 0, 4, Math.PI / 2 - .5); const t = .35; const g = grow(L.lt, t, 1, 11, .45); neck(c, g, L.T); shake(c, L.T, clamp(1 - Math.abs(L.lt - t) * 3));
   attach(PLATE, o.aR.hand, [0, -.7, .5], [0, 0, 0], .8); actuar(o, L.lt, [[0, { aRx: 1.2, aRe: .3 }]], { T: L.T }); cara(o, L.T, { expr: L.lt < t ? 'happy' : 'shock', mouth: L.lt < t ? 'open_smile' : 'o' }); neck(o, 3, L.T);
   actuar(c, L.lt, [[0, { aLx: .6, aLe: 1.4, aRx: .6, aRe: 1.4, aLz: -.4, aRz: -.4 }], [t, 'shock', { dur: .2 }]], { T: L.T }); cara(c, L.T, { expr: L.lt < t ? 'angry' : 'shock', mouth: 'o' }); neinB(c, (L.lt - .25) * 5, 'NEIN!', 1.4);
-  crowdAt(L, -26, -8, 4, 6, 12, 9, { mode: 'talk', from: 10, neck: i => [6, 14, 3, 20][i], gap: 2.2 });
-  cm([-23.5, 6.5, 21, -23.5, 4.5 + g * .3, 3, 50], [-23.5, 7, 18.5, -23.5, 5 + g * .35, 3, 50], L.k); sh(V(-23, 0, 2), 30); }, [[0, 'swipe', .4], [.3, 'shout', .5], [.38, 'stretch', .7], [.45, 'pop', .5]]);
+    cm([-23.5, 6.5, 21, -23.5, 4.5 + g * .3, 3, 50], [-23.5, 7, 18.5, -23.5, 5 + g * .35, 3, 50], L.k); sh(V(-23, 0, 2), 30); }, [[0, 'swipe', .4], [.3, 'shout', .5], [.38, 'stretch', .7], [.45, 'pop', .5]]);
 // 4 «Siehst du den Mann da?»: por encima del hombro de alguien que señala, al fondo un hombre con el cuello por encima de los tejados
-shot(3.6, 'Z', null, L => { town(L); const p = put(CR[10], -3.2, 0, 17, Math.PI + .35); actuar(p, L.lt, [[0, 'point']], { T: L.T }); cara(p, L.T, { expr: 'shock', mouth: 'o' }); neck(p, 2, L.T);
+shot(3.6, 'Z', null, L => { town(L); const p = put(CR[10], -.4, 0, 19.5, Math.PI + .3); actuar(p, L.lt, [[0, 'point']], { T: L.T }); cara(p, L.T, { expr: 'shock', mouth: 'o' }); neck(p, 2, L.T);
   const m = put(mann, 10, 0, -40, .2); neck(m, 52, L.T, { bend: .05, sway: .04 }); cara(m, L.T, { expr: 'tired' }); actuar(m, L.lt, [[0, 'idle']], { T: L.T });
   crowdAt(L, 6, -30, 10, 8, 22, 11, { mode: 'idle', from: 12, neck: i => [4, 12, 26, 8, 18, 3, 30, 10, 6, 15][i] });
-  const q = easeInOut(L.k); cm([-7.5, 9, 31, 6, lerp(10, 30, q), -36, 50], [-7, 9.5, 29.5, 8, lerp(14, 38, q), -38, 48], q); sh(V(4, 0, -10), 60); }, [[0, 'zoom_in', .5], [.2, 'hey', .4]]);
+  const q = easeInOut(L.k); cm([-2.6, 8, 28.5, 8, lerp(10, 30, q), -36, 50], [-2.4, 8.3, 27.5, 9, lerp(14, 38, q), -38, 48], q); sh(V(4, 0, -10), 60); }, [[0, 'zoom_in', .5], [.2, 'hey', .4]]);
 // 5 «Sein Hals ist so lang, weil er ständig»: el hombre de la camisa de cuadros: la cámara sube desde los pies por todo el cuello hasta la cabeza, por encima de los tejados
 shot(4.54, 'C', 'punch', L => { town(L); const m = put(mann, 0, 0, -16, 0); neck(m, 52, L.T, { bend: .04, sway: .04 }); cara(m, L.T, { expr: 'tired', eyes: 'half' }); actuar(m, L.lt, [[0, 'idle']], { T: L.T });
   crowdAt(L, 0, -16, 8, 8, 20, 13, { mode: 'shock', from: 0, neck: i => [3, 8, 12, 2, 16, 6, 10, 4][i], face: V(0, 40, -16) });
@@ -182,14 +181,14 @@ shot(45.15, 'C', 'punch', L => { town(L, { dusk: true }); sit(timo, 20, 2.4, 6, 
 // 34 «„Nein, wirklich nicht!“»: Timo, desde lo alto, se inclina hacia Jana gritando; ella, brazos cruzados
 shot(45.86, 'W', null, L => { town(L, { dusk: true }); sit(timo, 20, 2.4, 6, -Math.PI / 2, L, { aRx: 1.2, aLx: 1.2, aLz: -.4, aRz: -.4 }); neck(timo, 26, L.T, { bend: .9 }); shake(timo, L.T, .8, 18); talk(timo, L.T, L.t0, L.t1, 'shout');
   sit(jana, 20, 2.4, 10.4, -Math.PI / 2, L, { aLx: .4 }); neck(jana, 2, L.T); actuar(jana, L.lt, [[0, sitPose({ aLx: 1.2, aRx: 1.2, aLz: -.6, aRz: -.6, aLe: 1.6, aRe: 1.6 })]], { T: L.T, weight: false }); jana.head.rotation.x = -.5; cara(jana, L.T, { expr: 'angry', mouth: 'flat' }); neinB(timo, (L.lt - .05) * 5, 'NEIN!!', 1.4);
-  orbit(V(19, 10, 8), lerp(27, 24, L.k), -.35, .05, 50); sh(V(19, 0, 8), 30); }, [[0, 'whoosh_soft', .4], [.05, 'shout_m', .5]]);
+  orbit(V(19.5, 8, 8), lerp(21, 19, L.k), -.4, .05, 50); sh(V(19, 0, 8), 30); }, [[0, 'whoosh_soft', .4], [.05, 'shout_m', .5]]);
 // 35 «Zwanzig Meter.»: otro tirón: la cabeza de Timo atraviesa las nubes; «20 METER»
 shot(47.74, 'C', 'punch', L => { town(L, { dusk: true }); sit(timo, 20, 2.4, 6, -Math.PI / 2, L, { aRx: .4, aLx: .4 }); const g = grow(L.lt, .05, 26, 60, .5); neck(timo, g, L.T, { bend: .05 }); cara(timo, L.T, { expr: 'shock', mouth: 'o' });
   meters('20 METER', (L.lt - .3) * 4, .2, 'red', 1.3); const h = hp(timo), q = easeOut(clamp(L.lt / .55)); cam([-14, lerp(14, h.y - 10, q), 14], [20, lerp(18, h.y - 4, q), 6], 54); sh(V(20, 0, 6), 50); }, [[0, 'impact', .6], [.05, 'stretch', .9], [.3, 'pop_big', .5]]);
 // 36 «Jetzt weiß es die ganze Stadt.»: plano general al atardecer: toda la plaza mira hacia arriba y señala el cuello de Timo; móviles grabando
 shot(48.74, 'F', null, L => { town(L, { dusk: true }); sit(timo, 20, 2.4, 6, -Math.PI / 2, L, { aRx: .4, aLx: .4, aLz: -.3, aRz: -.3, aLe: 1.8, aRe: 1.8 }); neck(timo, 60, L.T, { bend: .05 }); cara(timo, L.T, { expr: 'sad', mouth: 'flat' });
-  crowdAt(L, -6, 16, 18, 4, 16, 31, { mode: i => ['point', 'cheer', 'shock'][i % 3], from: 0, face: V(20, 40, 6), neck: i => [2, 6, 3, 10, 4, 14, 2, 8, 5, 3, 12, 6, 2, 9, 4, 7, 3, 11][i], gap: 1.3 });
-  cm([-30, 5, 34, 16, 26, 4, 60], [-27, 6, 31, 16, 28, 4, 60], L.k); sh(V(0, 0, 14), 60); }, [[0, 'flash', .4], [.1, 'laugh_m', .5], [.3, 'crowd_cheer', .4], [.6, 'camera_shutter', .4]]);
+  crowdAt(L, -2, 20, 18, 3, 13, 31, { mode: i => ['point', 'cheer', 'shock'][i % 3], from: 0, face: V(20, 40, 6), neck: i => [2, 6, 3, 10, 4, 14, 2, 8, 5, 3, 12, 6, 2, 9, 4, 7, 3, 11][i], gap: 1.3 });
+  cm([-12, 3.5, 32, 17, 22, 5, 62], [-10, 4, 30, 17, 24, 5, 62], L.k); sh(V(0, 0, 14), 60); }, [[0, 'flash', .4], [.1, 'laugh_m', .5], [.3, 'crowd_cheer', .4], [.6, 'camera_shutter', .4]]);
 // 37 «Aber ich?»: Luca, de cerca, se señala a sí mismo con una sonrisa
 shot(50.38, 'C', 'punch', L => { town(L); put(luca, 0, 0, 6, 0); actuar(luca, L.lt, [[0, { aRx: 1.1, aRz: -.4, aRe: 1.8, aLx: .2 }]], { T: L.T }); cara(luca, L.T, { expr: 'happy', mouth: 'grin' });
   crowdAt(L, 0, 0, 8, 8, 18, 37, { mode: 'talk', from: 0, neck: i => [14, 24, 8, 30, 18, 10, 26, 6][i] });

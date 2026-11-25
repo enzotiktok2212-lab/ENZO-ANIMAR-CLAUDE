@@ -16,7 +16,7 @@ shot(94.67, 'F', null, L => { halleS(L); broken(); const c = put(luca, MX, 0, 18
 shot(96.39, 'C', 'punch', L => { halleS(L); broken(); for (let i = 0; i < 4; i++) { const s = SPARK[i + 1], k = (L.T * 2.2 + i / 4) % 1; s.visible = k < .3; s.position.set(MX + 5.6 + k * 2, 11 + i * 2 - k * 4, MZ + 4 + i); s.scale.setScalar(1 - k * 3); }
   cm([MX + 10, 10, MZ + 22, MX, 13, MZ, 46], [MX + 9, 10.4, MZ + 19, MX, 13.4, MZ, 44], L.k); sh(V(MX, 0, MZ), 30); }, [[0, 'impact', .4], [.1, 'sparks', .5], [.6, 'metal_creak', .4]]);
 // 71 «Auf dem Schild steht: Hals-Schrumpf-Maschine.» (zoom lento): la cámara sube hasta el cartel amarillo
-shot(97.54, 'S', 'slow', L => { halleS(L); broken(); const q = easeInOut(clamp(L.lt / .8)); cm([MX, lerp(18, 31, q), MZ + 26, MX, lerp(22, 33, q), MZ + 7.8, 48], [MX, 31.5, MZ + 19, MX, 33, MZ + 7.8, 44], easeIn(L.k) * .3 + q * .7); sh(V(MX, 0, MZ), 40); }, [[0, 'whoosh_up', .4], [.6, 'ding_reveal', .5]]);
+shot(97.54, 'S', 'slow', L => { halleS(L); broken(); const q = easeInOut(clamp(L.lt / .8)); cm([MX, lerp(18, 31, q), MZ + 30, MX, lerp(22, 33, q), MZ + 7.8, 48], [MX, 31.5, MZ + 26, MX, 33, MZ + 7.8, 44], easeIn(L.k) * .3 + q * .7); sh(V(MX, 0, MZ), 40); }, [[0, 'whoosh_up', .4], [.6, 'ding_reveal', .5]]);
 // 72 «Anscheinend konnte sie seit Jahren niemand reparieren.»: el panel apagado «OFFLINE»; Luca se rasca la cabeza
 shot(99.77, 'W', null, L => { halleS(L); broken(); HA.SCR('OFFLINE', '#ff4a4a'); plugAt(V(MX + 14.5, .5, 1.5)); const c = put(luca, MX + 9, 0, 4.6, 2.8); actuar(c, L.lt, [[0, { aRx: 2.6, aRe: 1.8, aRz: -.3 }]], { T: L.T }); cara(c, L.T, { expr: 'confused', mouth: 'flat' });
   const p = panelP(); cm([p.x + 2, 9, p.z + 16, p.x - 1, 6, p.z, 44], [p.x + 1.5, 9, p.z + 14, p.x - 1, 6, p.z, 42], L.k); sh(V(MX + 10, 0, 0), 25); }, [[0, 'swipe', .4], [.2, 'hum_low', .3], [.8, 'hmm', .5]]);
@@ -32,7 +32,7 @@ const ring2Dp = (p, k, r = 120) => FX2D.push(cx => { if (k <= 0) return; const [
 // 76 «Also stecke ich es wieder ein»: Luca enchufa el cable en la toma: ¡chispas!
 shot(105.77, 'S', null, L => { halleS(L); broken(); const k = clamp((L.lt - .2) / .7); plugIn(k); const c = put(luca, MX + 15.2, 0, 4.4, -2.4); actuar(c, L.lt, [[0, { crouch: .45, aRx: 1.3, aRe: .3, aRz: .3 }]], { T: L.T }); cara(c, L.T, { expr: 'determined' });
   if (k >= 1) { const s = wpos(HA.SOCK); for (let i = 0; i < 6; i++) { const sp = SPARK[i], t = (L.lt - .9) * 3 + i * .1; sp.visible = t < 1; sp.position.copy(s).add(V(Math.cos(i) * t * 2, Math.sin(i * 2) * t * 1.5 + 1, Math.sin(i) * t * 2)); sp.scale.setScalar(Math.max(0, 1 - t)); } HA.SCR('BOOT…', '#ffd23f'); }
-  const s = wpos(HA.SOCK); cm([s.x + 4, s.y + 3, s.z + 8, s.x - .5, s.y - .3, s.z, 42], [s.x + 3.4, s.y + 2.6, s.z + 7, s.x - .5, s.y - .3, s.z, 40], L.k); sh(s.clone().setY(0), 15); }, [[0, 'swipe', .4], [.75, 'click_metal', .6], [.8, 'sparks', .6], [.85, 'zap', .5]]);
+  const s = wpos(HA.SOCK); cm([s.x - 3, s.y + 3.4, s.z + 8, s.x + .6, s.y - .4, s.z, 46], [s.x - 2.6, s.y + 3, s.z + 7, s.x + .6, s.y - .4, s.z, 44], L.k); sh(s.clone().setY(0), 15); }, [[0, 'swipe', .4], [.75, 'click_metal', .6], [.8, 'sparks', .6], [.85, 'zap', .5]]);
 // 77 «und drücke auf Start.»: el dedo pulsa el gran botón rojo de START
 shot(107.13, 'C', 'punch', L => { halleS(L); broken(); plugIn(1); HA.SCR('START', '#2aff6a'); const c = put(luca, MX + 13.6, 0, 1.8, -2.1); const pr = clamp((L.lt - .15) / .2); actuar(c, L.lt, [[0, { aRx: lerp(1.0, 1.5, pr), aRe: lerp(1.0, .3, pr), aRz: .1 }]], { T: L.T }); cara(c, L.T, { expr: 'determined' });
   HA.BTN.material.emissiveIntensity = L.lt > .3 ? 2.4 : .3; HA.BTN.position.y = 5.6 - (L.lt > .3 && L.lt < .55 ? .2 : 0); const b = wpos(HA.BTN); cm([b.x + 3.2, b.y + 3.2, b.z + 2.4, b.x, b.y, b.z, 40], [b.x + 2.8, b.y + 2.8, b.z + 2, b.x, b.y, b.z, 38], L.k); sh(b.clone().setY(0), 12); }, [[0, 'thump', .4], [.3, 'button_click', .7], [.35, 'beep', .5]]);
@@ -47,11 +47,11 @@ shot(111.19, null, 'slow', L => { halleS(L); HA.on(1, L.T); plugIn(1); const c =
   onFace(c, lerp(10, 6.5, easeIn(L.k)), .4, -1.4, 42); sh(V(MX + 4, 0, 6), 25); }, [[0, 'hum_glow', .4], [.6, 'chuckle', .5]]);
 // 81 «Aber zuerst brauche ich einen Test.»: Luca se gira hacia la puerta pensativo; en la pantalla: «TEST?»
 shot(113.84, 'W', null, L => { halleS(L); HA.on(1, L.T); plugIn(1); HA.SCR('TEST?', '#ffd23f'); const c = put(luca, MX + 9, 0, 4, -.4); actuar(c, L.lt, [[0, 'think']], { T: L.T }); cara(c, L.T, { expr: 'confused', mouth: 'flat' });
-  const p = panelP(); cm([p.x - 6, 8, p.z + 16, p.x - 2, 6.5, p.z + 1, 46], [p.x - 5, 8, p.z + 14, p.x - 2, 6.5, p.z + 1, 44], L.k); sh(V(MX + 9, 0, 2), 25); }, [[0, 'swipe', .4], [.3, 'hmm', .5], [.7, 'beep', .4]]);
+  const p = panelP(); cm([p.x - 4, 9, p.z + 20, p.x - 1.5, 6, p.z + 2, 46], [p.x - 3.5, 9, p.z + 18, p.x - 1.5, 6, p.z + 2, 44], L.k); sh(V(MX + 9, 0, 2), 25); }, [[0, 'swipe', .4], [.3, 'hmm', .5], [.7, 'beep', .4]]);
 // 82 «Ich teste sie an einem Arbeiter»: entra un obrero con casco cuyo cuello larguísimo va doblado bajo el techo
 shot(115.75, 'S', null, L => { halleS(L); HA.on(1, L.T); const a = put(ARB[0], MX + 4, 0, lerp(34, 14, easeOut(clamp(L.lt / 1.3))), PI + .2); neck(a, 34, L.T, { bend: 1.55, sway: .02 }); actuar(a, L.lt, [[0, walkP(L.T, 1)]], { T: L.T }); cara(a, L.T, { expr: 'happy', mouth: 'smile' });
   const c = put(luca, MX + 10, 0, 6, -.9); actuar(c, L.lt, [[0, 'wave']], { T: L.T }); cara(c, L.T, { expr: 'happy', mouth: 'open_smile' });
-  cm([MX + 22, 12, 30, MX + 4, 16, 14, 56], [MX + 20, 13, 26, MX + 4, 17, 12, 56], L.k); sh(V(MX + 4, 0, 18), 40); }, [[0, 'door_open', .4], [.2, 'steps_heavy', .5], [.8, 'laugh_m', .4]]);
+  cm([MX + 22, 8, 34, MX + 4, 10, 18, 58], [MX + 20, 8.5, 30, MX + 4, 10.5, 16, 58], L.k); sh(V(MX + 4, 0, 18), 40); }, [[0, 'door_open', .4], [.2, 'steps_heavy', .5], [.8, 'laugh_m', .4]]);
 // 83 «mit einem lächerlich langen Hals.»: el obrero sobre la plataforma: la cámara sube por su cuello, que atraviesa todos los anillos hasta la cúpula
 shot(117.25, 'Z', null, L => { halleS(L); HA.on(1, L.T); const a = put(ARB[0], MX, 2.3, MZ, .2); neck(a, 25, L.T, { sway: .02 }); actuar(a, L.lt, [[0, 'idle']], { T: L.T }); cara(a, L.T, { expr: 'happy', mouth: 'smile' });
   const q = easeInOut(L.k); cam([MX + 6, lerp(6, 28, q), MZ + 20], [MX, lerp(8, 30, q), MZ], 46); badge('red', 'LÄCHERLICH LANG', W / 2, H * .16, (L.lt - .4) * 4, 1, .75); sh(V(MX, 0, MZ), 30); }, [[0, 'whoosh_up', .5], [.4, 'stretch_creak', .5], [.8, 'laugh_kid', .3]]);
@@ -76,7 +76,7 @@ shot(126.67, 'F', null, L => { town(L); crowdAt(L, 0, -10, 22, 5, 30, 88, { mode
 // 89 «Und jeder will seinen Hals zurück.»: dos cuellos enredados, gente triste suspirando con el cuello doblado
 shot(128.6, 'S', null, L => { town(L); [[-3, 0, 1.1, 1.2], [3, 0, -1.1, 1.2]].forEach(([x, z, r, b], i) => { const c = put(CR[30 + i], x, 0, z, r); neck(c, 16, L.T, { bend: b, sway: .02 }); cara(c, L.T, { expr: 'sad', mouth: 'flat' }); actuar(c, L.lt, [[0, 'slump']], { T: L.T }); });
   crowdAt(L, 0, -6, 8, 8, 18, 89, { mode: 'idle', expr: 'sad', from: 0, neck: i => [20, 30, 14, 26, 18, 34, 22, 12][i] });
-  cm([0, 9, 24, 0, 10, 0, 50], [0, 9.5, 21, 0, 10.5, 0, 48], L.k); sh(V(0, 0, 0), 30); }, [[0, 'swipe', .4], [.2, 'sigh', .5], [.8, 'groan', .4]]);
+  cm([0, 11, 32, 0, 12, 0, 52], [0, 11.5, 29, 0, 12.5, 0, 50], L.k); sh(V(0, 0, 0), 30); }, [[0, 'swipe', .4], [.2, 'sigh', .5], [.8, 'groan', .4]]);
 // 90 «Also hänge ich am nächsten Morgen in der ganzen Stadt»: por la mañana, Luca pega su cartel en la columna de anuncios con una brocha
 shot(130.26, 'W', null, L => { town(L); show(LITF, 6, 0, -4, -.6); const c = put(luca, 2.6, 0, 1, 2.4); attach(BROOM, c.aR.hand, [0, -.4, .3], [1.2 + Math.sin(L.T * 10) * .3, 0, 0], .5); actuar(c, L.lt, [[0, { aRx: 2.0 + Math.sin(L.T * 10) * .3, aRe: .4, aLx: 1.4, aLe: .3 }]], { T: L.T }); cara(c, L.T, { expr: 'happy', mouth: 'smile' });
   crowdAt(L, 0, -4, 5, 10, 18, 90, { mode: 'walk', from: 0, neck: i => [12, 20, 8, 26, 16][i], speed: 1.5 });
@@ -86,10 +86,10 @@ shot(132.44, 'R', null, L => { town(L); POSTERS.forEach((p, i) => { show(p, i % 
   crowdAt(L, 0, -10, 8, 6, 22, 91, { mode: 'point', from: 0, neck: i => [10, 18, 6, 24, 14, 28, 9, 20][i], face: V(-42, 6, -16) });
   const a = lerp(-.6, .6, easeInOut(L.k)); cam([0, 8, 20], [Math.sin(a) * 40, 7, 20 - Math.cos(a) * 40], 50); sh(V(0, 0, -10), 50); }, [[0, 'whirl', .4], [.2, 'paper_slap', .5], [.5, 'paper_slap', .5]]);
 // 92 «„Hol dir deinen normalen Hals zurück.“»: la gran valla publicitaria en la plaza; los vecinos de cuello largo la leen
-shot(133.38, 'Z', null, L => { town(L); show(BILLB, 0, 0, -28, 0); crowdAt(L, 0, -12, 8, 6, 14, 92, { mode: i => i % 2 ? 'point' : 'shock', from: 0, face: V(0, 14, -28), neck: i => [16, 24, 10, 30, 20, 14, 26, 8][i], gap: 1.2 });
+shot(133.38, 'Z', null, L => { town(L); show(BILLB, 0, 0, -28, 0); crowdAt(L, 0, -12, 8, 6, 14, 92, { mode: i => i % 2 ? 'point' : 'shock', from: 0, face: V(0, 14, -28), neck: i => [3, 6, 2, 8, 4, 2, 5, 3][i], gap: 1.2 });
   cm([0, 10, 18, 0, 15, -28, 50], [0, 11, 12, 0, 15.6, -28, 48], L.k); sh(V(0, 0, -20), 40); DOF = 0; }, [[0, 'zoom_in', .4], [.2, 'crowd_murmur', .4]]);
 // 93 «Nur 999 Euro.»: ¡pum! el precio salta de la valla: «999 €»; lluvia de monedas
-shot(135.24, 'C', 'punch', L => { town(L); show(BILLB, 0, 0, -28, 0); crowdAt(L, 0, -12, 8, 6, 14, 92, { mode: 'cheer', from: 0, face: V(0, 14, -28), neck: i => [16, 24, 10, 30, 20, 14, 26, 8][i], gap: 1.2 }); coins(V(0, 12, -18), L.t0, L.T, 24);
+shot(135.24, 'C', 'punch', L => { town(L); show(BILLB, 0, 0, -28, 0); crowdAt(L, 0, -12, 8, 6, 14, 92, { mode: 'cheer', from: 0, face: V(0, 14, -28), neck: i => [3, 6, 2, 8, 4, 2, 5, 3][i], gap: 1.2 }); coins(V(0, 12, -18), L.t0, L.T, 24);
   badge('gold', 'NUR 999 €', W / 2, H * .3, L.lt * 5, 1, 1.4); cm([0, 13, 4, 0, 16, -28, 46], [0, 13, 2, 0, 16, -28, 44], L.k); sh(V(0, 0, -20), 40); DOF = 0; }, [[0, 'cash_reg', .7], [.1, 'coins', .5], [.3, 'crowd_cheer', .4]]);
 // 94 «Nach wenigen Minuten»: la gente corre hacia la fábrica; cronómetro «5 MIN»
 shot(136.8, 'W', null, L => { fabrikS(L); FA.GATE.children.forEach(d => { if (d.name === 'door-1') d.rotation.y = -1.3; if (d.name === 'door1') d.rotation.y = 1.3; }); crowdAt(L, FAX_, 30, 16, 4, 24, 94, { mode: 'run', from: 0, ry: PI, jit: .15, neck: i => 8 + (i * 7) % 26, speed: 6 });
@@ -101,15 +101,15 @@ shot(138.19, 'F', null, L => { fabrikS(L); FA.GATE.children.forEach(d => { if (d
 function queue(L, n, from = 0, o = {}) { POST.push(() => { const list = CR.filter(c => !c.root.visible).slice(from, from + n); list.forEach((c, i) => { const row = Math.floor(i / 6), j = i % 6, dir = row % 2 ? -1 : 1; const x = FAX_ + dir * (j - 2.5) * 4.4 + (row % 2 ? 2 : 0), z = 14 + row * 6.5;
   put(c, x, 0, z, PI + (j % 2 ? .2 : -.2)); neck(c, 8 + (i * 11) % 30, L.T, { bend: ((i % 3) - 1) * .1 }); actuar(c, L.lt, [[0, 'idle']], { T: L.T + i }); cara(c, L.T + i, { expr: ['sad', 'neutral', 'happy'][i % 3] }); }); }); }
 // 96 «Mein Nachbar.»: Herr Vogt en la cola, con su cuello de diez metros, sonríe avergonzado
-shot(140.82, 'C', null, L => { fabrikS(L); const v = put(vogt, FAX_ - 2, 0, 20, PI - .4); neck(v, 26, L.T, { bend: .15 }); actuar(v, L.lt, [[0, 'shrug']], { T: L.T }); cara(v, L.T, { expr: 'happy', mouth: 'grimace' }); queue(L, 18, 0);
-  tall(v, 34, -.5, .08, 52, .62); sh(V(FAX_, 0, 20), 30); }, [[0, 'thump', .4], [.2, 'chuckle_m', .4]]);
+shot(140.82, 'C', null, L => { fabrikS(L); const v = put(vogt, FAX_ - 2, 0, 20, .4); neck(v, 26, L.T, { bend: .15 }); actuar(v, L.lt, [[0, 'shrug']], { T: L.T }); cara(v, L.T, { expr: 'happy', mouth: 'grimace' }); queue(L, 18, 0);
+  const hv = hp(v); cm([hv.x - 6, hv.y + 1.5, hv.z + 14, hv.x, hv.y - .5, hv.z, 44], [hv.x - 5.5, hv.y + 1.5, hv.z + 12.5, hv.x, hv.y - .5, hv.z, 44], L.k); sh(V(FAX_, 0, 20), 30); }, [[0, 'thump', .4], [.2, 'chuckle_m', .4]]);
 // 97 «Timo.»: Timo, con su cuello de veinte metros, saluda desde lo alto
-shot(141.88, 'W', null, L => { fabrikS(L); const t = put(timo, FAX_ + 2, 0, 26, PI + .3); neck(t, 60, L.T, { bend: .05 }); actuar(t, L.lt, [[0, 'wave']], { T: L.T }); cara(t, L.T, { expr: 'sad', mouth: 'grimace' }); queue(L, 18, 0);
+shot(141.88, 'W', null, L => { fabrikS(L); const t = put(timo, FAX_ + 2, 0, 26, .3); neck(t, 60, L.T, { bend: .05 }); actuar(t, L.lt, [[0, 'wave']], { T: L.T }); cara(t, L.T, { expr: 'sad', mouth: 'grimace' }); queue(L, 18, 0);
   const h = hp(t); cm([FAX_ - 14, h.y - 6, 48, FAX_ + 2, h.y - 4, 26, 48], [FAX_ - 13, h.y - 5, 46, FAX_ + 2, h.y - 3.4, 26, 48], L.k); sh(V(FAX_, 0, 26), 30); }, [[0, 'whoosh', .4]]);
 // 98 «Sogar die Mamas.»: tres mamás con los brazos cruzados y cuellos dobladísimos, en la cola
-shot(142.45, 'S', null, L => { fabrikS(L); const m = put(mama, FAX_, 0, 22, PI); neck(m, 30, L.T, { bend: .45 }); actuar(m, L.lt, [[0, 'cross']], { T: L.T }); cara(m, L.T, { expr: 'angry', mouth: 'flat' });
-  [[-5, 24], [5, 23]].forEach(([x, z], i) => { const c = put(CR[2 + i * 2], FAX_ + x, 0, z, PI + (i ? -.3 : .3)); neck(c, [24, 34][i], L.T, { bend: [.6, .3][i] }); actuar(c, L.lt, [[0, 'cross']], { T: L.T }); cara(c, L.T, { expr: 'angry' }); });
-  cm([FAX_, 12, 52, FAX_, 18, 22, 54], [FAX_, 12.5, 48, FAX_, 18.5, 22, 54], L.k); sh(V(FAX_, 0, 22), 35); }, [[0, 'swipe', .4], [.2, 'tsk', .5]]);
+shot(142.45, 'S', null, L => { fabrikS(L); const m = put(mama, FAX_, 0, 22, .2); neck(m, 30, L.T, { bend: .45 }); actuar(m, L.lt, [[0, 'cross']], { T: L.T }); cara(m, L.T, { expr: 'angry', mouth: 'flat' });
+  [[-5, 24], [5, 23]].forEach(([x, z], i) => { const c = put(CR[2 + i * 2], FAX_ + x, 0, z, (i ? -.3 : .3)); neck(c, [24, 34][i], L.T, { bend: [.6, .3][i] }); actuar(c, L.lt, [[0, 'cross']], { T: L.T }); cara(c, L.T, { expr: 'angry' }); });
+  const hm = hp(m); cm([hm.x + 3, hm.y + 1, hm.z + 22, hm.x, hm.y - 3, hm.z, 50], [hm.x + 3, hm.y + 1, hm.z + 19, hm.x, hm.y - 3, hm.z, 50], L.k); sh(V(FAX_, 0, 22), 35); }, [[0, 'swipe', .4], [.2, 'tsk', .5]]);
 // 99 «Und dann kommt der Bürgermeister,»: en la plaza, la gente se aparta: llega el alcalde con chistera y cadena dorada; su cuello sube fuera de cuadro
 shot(143.81, 'W', null, L => { town(L); const b = put(bm, 0, 0, lerp(0, 6, L.k), 0); actuar(b, L.lt, [[0, walkP(L.T * .7, 0)]], { T: L.T }); cara(b, L.T, { expr: 'smug', mouth: 'smile' }); neck(b, 80, L.T, { sway: .02 });
   crowdAt(L, 0, 4, 10, 8, 18, 99, { mode: i => i % 2 ? 'clap' : 'shock', from: 0, face: V(0, 6, 4), neck: i => [10, 18, 6, 24, 14, 8, 20, 12, 16, 22][i] });

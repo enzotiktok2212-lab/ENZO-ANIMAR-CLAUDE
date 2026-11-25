@@ -529,6 +529,7 @@ for _a, _b in [('cash_reg', 'cash'), ('money_rain', 'coins'), ('money_burst', 'c
 
 if __name__ == '__main__':
     cues_f, voice_f, music_f, out_f = sys.argv[1:5]
+    for _a, _b in [('book_drop', 'box_drop'), ('grab', 'catch'), ('laser', 'xray'), ('marker', 'pen'), ('message', 'notif')]: LIB[_a] = LIB[_b]
     cues = json.load(open(cues_f)); DUR = 175.6
     cues = fill_gaps(cues, DUR); print(len(cues), 'efectos; hueco máximo', max(np.diff(sorted([0] + [c['t'] for c in cues] + [DUR]))).round(2))
     TEN = {'riser', 'braam', 'riser_short', 'braam_short'}

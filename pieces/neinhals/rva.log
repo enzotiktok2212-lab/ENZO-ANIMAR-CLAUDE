@@ -1,1 +1,11 @@
 shots 100
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+page.evaluate: Target page, context or browser has been closed
+    at /home/user/ENZO-ANIMAR-CLAUDE/pieces/neinhals/mids.mjs:12:91 {
+  log: []
+}
+
+Node.js v22.23.5

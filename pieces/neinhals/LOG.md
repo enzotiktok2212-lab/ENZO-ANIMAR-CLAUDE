@@ -13,6 +13,6 @@
 - [x] motor, escenarios y reparto base
 - [x] planos a–d escritos (revisión en curso)
 - [ ] revisión de todos los planos
-- [ ] mezcla
+- [x] mezcla (renders/mezcla-final.wav, −12,5 LUFS; rehacer si cambian los efectos)
 - [ ] render
 - [ ] entrega
