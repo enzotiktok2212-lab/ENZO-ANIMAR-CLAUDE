@@ -81,12 +81,12 @@ shot(17.79, 'S', null, L => { benRoom(L, { dawn: true }); lie(ben, KZX - 9, -4.4
   const f = V(KZX - 9, 4.6, .2); cm([f.x + 2.4, f.y + 2.4, f.z + 5, f.x, f.y, f.z, 40], [f.x + 2, f.y + 2, f.z + 4, f.x, f.y, f.z, 38], L.k); }, [[0, 'swipe', .4], [.2, 'sprinkle', .5], [.5, 'rubble', .3]]);
 // 15 «Blasen an den Händen.»: Papa en la cocina se mira las palmas llenas de ampollas y sopla, con cara de dolor
 shot(18.93, 'C', 'punch', L => { kitchen(L); const c = put(papa, KUX + 9, 0, 4, PI / 2 + .3); c.blis.visible = true; actuar(c, 0, [[0, { aLx: .9, aRx: .9, aLe: .9, aRe: .9, aLz: -.2, aRz: -.2, headX: .45 }]], { T: L.T }); cara(c, L.T, { expr: 'worried', mouth: L.lt > .5 ? 'o' : 'grimace' });
-  onBody(c, 7, 0, .45, 40, L.k, 6.2, 0, 3.4); }, [[0, 'impact', .4], [.3, 'hiss', .4], [.6, 'breath', .5]]);
+  onBody(c, 7, 0, .45, 40, L.k, 6.2, 0, 3.4); }, [[0, 'impact', .4], [.3, 'breath', .4], [.6, 'breath', .5]]);
 // 16 «Keiner weiß, wo wir waren.»: desayuno: Mama y Papa se miran y se encogen de hombros; tierra en el suelo de la cocina
 shot(19.98, 'W', null, L => { kitchen(L); const m = sit(mama, KUX + 3.4, 2.8, -5.6, 0, L, { aLx: .4, aRx: .4 }); const p = sit(papa, KUX - 3.4, 2.8, -5.6, 0, L, { aLx: .4, aRx: .4 });
   const s = Math.sin(clamp(L.lt / .5) * PI); actuar(m, 0, [[0, { ...sitPose(), aLz: .6 * s + .1, aRz: .6 * s + .1, aLe: 1.4, aRe: 1.4, headZ: .12 }]], { T: L.T, weight: false }); actuar(p, 0, [[0, { ...sitPose(), aLz: .5 * s + .1, aRz: .5 * s + .1, aLe: 1.3, aRe: 1.3, headZ: -.12 }]], { T: L.T, weight: false });
   cara(m, L.T, { expr: 'confused' }); cara(p, L.T, { expr: 'confused' }); show(PLATE[0], KUX + 3, 4.75, -2.4); show(PLATE[1], KUX - 3, 4.75, -2.4);
-  cm([KUX, 9, 16, KUX, 5.4, 0, 50], [KUX, 9, 15, KUX, 5.4, 0, 48], L.k); }, [[0, 'whoosh', .4], [.15, 'shrug', .4], [.5, 'spoon', .4]]);
+  cm([KUX, 9, 16, KUX, 5.4, 0, 50], [KUX, 9, 15, KUX, 5.4, 0, 48], L.k); }, [[0, 'whoosh', .4], [.15, 'cloth', .4], [.5, 'spoon', .4]]);
 // 17 «Frau Huber schläft in Skischuhen.»: Frau Huber ronca en su cama; asoman dos botas de esquí rojas enormes; la cámara va de las botas a la cara
 shot(21.28, 'F', null, L => { elternRoom(L, { dawn: true }); const c = lie(huber, SZX - 3.4, -6.4, 4.15, L); SZ.quilt.position.y = 4.6; SZ.quilt.scale.z = .45; SZ.quilt.position.z = -2; c.setFace({ eyes: 'closed', mouth: Math.sin(L.T * 4) > 0 ? 'o' : 'wavy' }); zzz(c, L.T);
   cm([SZX - 3.4, 8, 9, SZX - 3.4, 4.6, 1.2, 42], [SZX - 3.4, 8.6, 1, SZX - 3.4, 4.6, -6.4, 42], L.k); }, [[0, 'flash', .3], [.1, 'snore', .6], [.8, 'snore', .5]]);

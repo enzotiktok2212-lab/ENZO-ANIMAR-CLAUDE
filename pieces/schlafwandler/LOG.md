@@ -12,6 +12,6 @@
 - [x] análisis, guion, voz y tiempos
 - [x] motor, escenarios y reparto
 - [x] planos a–d escritos
-- [ ] revisión de todos los planos
+- [ ] revisión de todos los planos (hecha la pasada completa en review/; arreglados a y b hasta la hoja 2; pendiente: revisar hojas 3–22 —sobre todo c y d— y corregir)
 - [ ] mezcla
 - [ ] render
