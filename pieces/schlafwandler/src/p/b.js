@@ -5,8 +5,10 @@ function withScale(ch, s, fn) { const o = ch.spec.scale; ch.spec.scale = s; ch.r
 // fila de cavadores en el túnel: n personas a partir de z0 hacia -z, en columnas x (lista)
 function diggers(L, list, z0, xs = [-6, -2, 2, 6], o = {}) { list.forEach((c, i) => { if (c.root.visible) return; const x = xs[i % xs.length], z = z0 - Math.floor(i / xs.length) * (o.dz ?? 6) - (i % 2) * 1.2; if (o.avoid && o.avoid.some(p => Math.hypot(p[0] - x, p[1] - z) < 3)) return; put(c, STX + x, 0, z, PI + (i % 3 - 1) * .25); dig(c, L, i, { sp: c.kid ? 1.7 : 1 }); }); }
 const sepia = () => { grade.uniforms.sepia.value = .85; TINT = 'rgba(80,50,10,.12)'; grade.uniforms.vig.value = .7; };
+// cara a la altura de la cara (personajes sentados a la mesa)
+function faceAt(ch, L, d = 5, d2 = null, side = 0, fov = 38) { const s = ch.spec.scale || 1; const h = hp(ch).add(V(0, .62 * s, 0)), a = ch.root.rotation.y, fx = Math.sin(a), fz = Math.cos(a); const dd = lerp(d, d2 ?? d * .88, easeInOut(L.k)); cam([h.x + fx * dd + fz * side, h.y + 1.0, h.z + fz * dd - fx * side], [h.x, h.y - .2, h.z], fov); }
 // Lena y Ben frente a frente en la mesa (anstarren): k = tensión 0..1
-function stareTable(L, o = {}) { kitchen(L, { night: o.night ?? true }); const b = sit(benT, KUX + 3.4, 2.8, -5.6, 0, L, { aLx: .5, aRx: .5, aLe: .8, aRe: .8, lean: .25 }); const l = sit(lenaT, KUX + 3.4, 2.8, 5.6, PI, L, { aLx: .5, aRx: .5, aLe: .8, aRe: .8, lean: .25 }); return [b, l]; }
+function stareTable(L, o = {}) { kitchen(L, { night: o.night ?? true }); const b = sit(benT, KUX + 3.4, 4.0, -5.6, 0, L, { aLx: .9, aRx: .9, aLe: 1.0, aRe: 1.0, lean: .25 }); const l = sit(lenaT, KUX + 3.4, 3.4, 5.6, PI, L, { aLx: .9, aRx: .9, aLe: 1.0, aRe: 1.0, lean: .25 }); return [b, l]; }
 
 // 37 «Dann fällt mir der Reim ein,»: en la cama, Ben levanta el dedo: ¡se acuerda! — «!» encima
 shot(47.15, 'C', 'punch', L => { benRoom(L); sitBed(ben, KZX, L, { aRx: 2.6, aRe: .3, aRz: -.2, aLx: .3, headX: -.1 }); KZ.quilt.position.y = 4.6; cara(ben, L.T, { expr: 'lookup', eyes: 'up', mouth: 'o' }); badge('q', '!', W / 2 + 120, H * .26, clamp((L.lt - .3) / .2), 1, 1.2);
@@ -20,13 +22,12 @@ shot(48.47, 'W', null, L => { gasse(L, { day: true }); const a = put(MEY[2], -4.
 // 39 «Bist du wach um drei,»: la rima pintada con tiza en el suelo, de arriba: la cámara se desliza sobre «BIST DU WACH UM DREI»
 shot(49.85, 'S', null, L => { gasse(L, { day: true }); MT.RHYME.visible = true; cm([-2, 15, 33, 0, 0, 26.6, 42], [2, 15, 31, 0, 0, 25.8, 42], L.k); DOF = 0; }, [[0, 'swipe', .4], [.1, 'chalk', .6]]);
 // 40 «tu als ob»: zoom a «TU ALS OB» (amarillo) y una niña salta a la pata coja por encima
-shot(51.04, 'C', 'punch', L => { gasse(L, { day: true }); MT.RHYME.visible = true; const j = put(DX[2], lerp(-6, 6, L.k), 0, 33.5, PI / 2); j.root.scale.setScalar(.72); j.root.position.y = Math.abs(Math.sin(L.T * 9)) * 1.1; actuar(j, 0, [[0, { lLx: .3, lLk: 1.2, aLx: .4, aRx: .4, aLz: .5, aRz: .5 }]], { T: L.T }); laughF(j, L.T);
-  cm([0, 11, 38, 0, 0, 31.6, 40], [0, 9, 37, 0, 0, 31.8, 38], L.k); DOF = 0; }, [[0, 'impact', .4], [.2, 'jump_small', .5], [.6, 'jump_small', .5]]);
+shot(51.04, 'C', 'punch', L => { gasse(L, { day: true }); MT.RHYME.visible = true; cm([0, 11, 38, 0, 0, 31.6, 40], [0, 9, 37, 0, 0, 31.8, 38], L.k); DOF = 0; }, [[0, 'impact', .4], [.2, 'chalk', .5]]);
 // 41 «und lauf dabei.»: los niños cantan la rima en corro mientras la comba gira (de frente, centrados)
 shot(51.97, 'F', null, L => { gasse(L, { day: true }); const K = [benT, kumpel, MEY[2], DX[5]]; K.forEach((c, i) => { const a = i / 4 * 6.283 + L.T * .8; const x = Math.cos(a) * 4, z = 30 + Math.sin(a) * 4; put(c, x, 0, z, a + PI / 2); if (c === DX[5]) c.root.scale.setScalar(.72); actuar(c, 0, [[0, walkP(L.T, i)]], { T: L.T }); talk(c, L.T, 51.9, 52.6, 'happy'); });
-  orbit(V(0, 3, 30), 15, 0, .25, 44); sh(V(0, 0, 30), 20); }, [[0, 'flash', .3], [.1, 'kids_laugh', .5]]);
+  orbit(V(0, 3, 30), lerp(12, 10.5, L.k), 0, .2, 46); sh(V(0, 0, 30), 20); }, [[0, 'flash', .3], [.1, 'kids_laugh', .5]]);
 // 42 «Meine Schwester Lena»: de noche, Lena (sudadera, guantes) apoyada en el marco de la puerta del cuarto de Ben, brazos cruzados
-shot(52.57, 'W', null, L => { benRoom(L); KZ.DOOR.rotation.y = -1.3; const l = put(lenaT, KZX + 13.6, 0, 2, -PI / 2 + .35); actuar(l, 0, [[0, { ...(GEST.cross || { aLx: 1.2, aRx: 1.2, aLe: 1.9, aRe: 1.9, aLz: -.5, aRz: -.5 }), lean: -.05, headZ: .1 }]], { T: L.T }); cara(l, L.T, { expr: 'smug' });
+shot(52.57, 'W', null, L => { benRoom(L); KZ.DOOR.rotation.y = -2.9; const l = put(lenaT, KZX + 13.6, 0, 2, -PI / 2 + .35); actuar(l, 0, [[0, { ...(CROSS), lean: -.05, headZ: .1 }]], { T: L.T }); cara(l, L.T, { expr: 'smug' });
   onBody(l, 13, -.15, .08, 42, L.k, 11.5); badge('tag', 'LENA', W / 2, H * .2, clamp((L.lt - .5) / .2)); }, [[0, 'whoosh', .4], [.2, 'wood_creak', .4], [.5, 'pop', .4]]);
 // 43 «lässt ihn mich jeden Abend»: Lena sentada al pie de la cama, el dedo índice levantado, le hace recitar
 shot(53.56, 'S', null, L => { benRoom(L); sitBed(ben, KZX, L, { aLx: .3, aRx: .3 }); KZ.quilt.position.y = 4.6; const l = put(lenaT, KZX - 5.2, sitY(lenaT, 4.3), 3.4, -PI / 2 - .5); actuar(l, 0, [[0, { ...sitPose(), aRx: 2.3, aRe: .5, aRz: -.1, aLx: .4 }]], { T: L.T, weight: false }); talk(l, L.T, 53.5, 54.7, 'determined');
@@ -37,7 +38,7 @@ shot(54.78, 'C', 'punch', L => { benRoom(L); sitBed(ben, KZX, L, { aLx: .3, aRx:
 // 45 «Seit ich vier bin.»: recuerdo en sepia: Ben pequeño (4) en la cama y Lena niña le enseña la rima con el dedo; «4»
 shot(55.57, 'B', null, L => { benRoom(L); sepia(); withScale(ben, .5, () => { sitBed(ben, KZX, L, { aLx: .3, aRx: .3 }); talk(ben, L.T, 55.5, 56.6, 'happy'); }); KZ.quilt.position.y = 3.9;
   withScale(lenaT, .66, () => { const l = put(lenaT, KZX - 5.4, 0, -2, -PI / 2 - .2); actuar(l, 0, [[0, { aRx: 2.3, aRe: .5, aRz: -.1 }]], { T: L.T }); talk(l, L.T, 55.5, 56.6, 'happy'); });
-  cm([KZX + 1, 7.4, 6, KZX - 7.4, 3.6, -3, 44], [KZX, 7.2, 5, KZX - 7.4, 3.6, -3, 42], L.k); bigNum('4', clamp((L.lt - .4) / .2), 'gold', .22, 1.2); }, [[0, 'soft_air', .4], [.2, 'film_roll', .4], [.45, 'pling', .4]]);
+  cm([KZX - 2.6, 5.6, 4, KZX - 7.4, 3.6, -3, 44], [KZX - 3, 5.4, 3, KZX - 7.4, 3.6, -3, 42], L.k); bigNum('4', clamp((L.lt - .4) / .2), 'gold', .22, 1.2); }, [[0, 'soft_air', .4], [.2, 'film_roll', .4], [.45, 'pling', .4]]);
 // 46 «Also reiße ich die Augen auf»: en la calle de noche, primerísimo plano: Ben abre los ojos de golpe (golpe de zoom)
 shot(56.66, 'C', 'punch', L => { gasse(L, { z: 10 }); doorsOpen(); const b = sleepWalk(ben, L, 0, 10, PI, .6, 0, { face: false }); cara(ben, L.T, L.lt < .25 ? { eyes: 'half', mouth: 'flat' } : { eyes: 'wide', mouth: 'flat' });
   march(L, SL, 0, 15, PI, { cols: 3, speed: .6 }); onFace(b, 3.6, 0, 0, 38, L.k, 3); sh(V(0, 0, 10), 18); }, [[0, 'impact', .5], [.25, 'gasp', .5]]);
@@ -76,50 +77,50 @@ shot(69.01, 'F', null, L => { schulS(L); const b = put(benT, SCX, 0, 0, 0); cons
   crowdAt(L, SCX, 0, 7, 6, 10, 5, { list: DX, mode: i => ['cheer', 'clap'][i % 2] }); POST.push(() => DX.forEach(c => { if (c.root.visible) c.root.scale.setScalar(.72); })); confetti(V(SCX, 2, 0), L.t0, L.T, 40);
   onBody(b, 13, 0, .1, 44, L.k, 11, 0, 3.4); sh(V(SCX, 0, 0), 20); }, [[0, 'flash', .3], [.1, 'cheer', .5], [.2, 'confetti', .5]]);
 // 58 «Nur Lena schlägt mich.»: en la mesa de la cena, Ben y Lena se miran; a Ben se le llenan los ojos de lágrimas, parpadea; Lena sonríe
-shot(70.2, 'W', null, L => { const [b, l] = stareTable(L); cara(b, L.T, L.lt > .8 ? { eyes: 'closed', mouth: 'grimace' } : { eyes: 'wide', mouth: 'grimace', noBlink: true }); if (L.lt > .5 && L.lt < .8) tears(b, L.T); if (L.lt > .8) blinkFX(b, (L.lt - .8) / .3);
+shot(70.2, 'W', null, L => { const [b, l] = stareTable(L); KU.CH[1].visible = false; cara(b, L.T, L.lt > .8 ? { eyes: 'closed', mouth: 'grimace' } : { eyes: 'wide', mouth: 'grimace', noBlink: true }); if (L.lt > .5 && L.lt < .8) tears(b, L.T); if (L.lt > .8) blinkFX(b, (L.lt - .8) / .3);
   cara(l, L.T, L.lt > .9 ? { expr: 'smug' } : { eyes: 'wide', mouth: 'smirk', noBlink: true }); cm([KUX + 5.2, 7.6, 11, KUX + 3.4, 5.8, -5.6, 40], [KUX + 5, 7.4, 10, KUX + 3.4, 5.8, -5.6, 38], L.k); }, [[0, 'whoosh', .4], [.6, 'tick', .4], [.8, 'blink', .6], [.95, 'laugh_deep', .3]]);
 // 59 «Sie ist fünfzehn»: primer plano de Lena, aburrida, auriculares fuera; «15»
-shot(71.58, 'C', 'punch', L => { const [b, l] = stareTable(L); cara(l, L.T, { expr: 'bored' }); onFace(l, 5, 0, 0, 40, L.k, 4.4); bigNum('15', clamp((L.lt - .2) / .2), 'gold', .22, 1.2); }, [[0, 'impact', .4], [.2, 'pling', .4]]);
+shot(71.58, 'C', 'punch', L => { const [b, l] = stareTable(L); cara(l, L.T, { expr: 'bored' }); faceAt(l, L, 6.5, 5.7, 0, 40); bigNum('15', clamp((L.lt - .2) / .2), 'gold', .22, 1.2); }, [[0, 'impact', .4], [.2, 'pling', .4]]);
 // 60 «und hasst mich.»: Lena pone los ojos en blanco, se cruza de brazos y gira la cara; Ben baja la mirada
 shot(72.58, 'S', null, L => { const [b, l] = stareTable(L); const k = clamp(L.lt / .4); actuar(l, 0, [[0, { ...sitPose(), aLx: 1.2, aRx: 1.2, aLe: 1.9, aRe: 1.9, aLz: -.5, aRz: -.5, headY: .7 * k }]], { T: L.T, weight: false }); cara(l, L.T, { expr: 'bored', eyes: L.lt < .4 ? 'up' : 'half' }); cara(b, L.T, { expr: 'sad' });
-  onFace(l, 6.4, 0, 1, 42, L.k, 5.6); }, [[0, 'swipe', .4], [.2, 'sigh', .5]]);
+  faceAt(l, L, 8.3, 7.3, 1, 42); }, [[0, 'swipe', .4], [.2, 'sigh', .5]]);
 // 61 «Sie klaut meine Fanta.»: Lena le quita la Fanta de la mano a Ben, da un trago y se va; Ben estira el brazo
-shot(73.5, 'W', null, L => { kitchen(L); const b = put(benT, KUX + 2, 0, 3, -PI / 2 + .3); const k = clamp(L.lt / .35); const l = put(lenaT, KUX - 1 - k * 1.5 + clamp(L.lt - .5) * -3, 0, 3.4, PI / 2 - .2);
-  const f = attach(FANTA[0], k < .5 ? b.aR.hand : l.aR.hand, [0, -.5, .45], [PI / 2, 0, 0], .6); actuar(b, 0, [[0, { aRx: 1.5, aRe: .2 }]], { T: L.T }); cara(b, L.T, { expr: k > .5 ? 'angry' : 'happy', mouth: k > .5 ? 'o' : 'smile' });
-  actuar(l, 0, [[0, { aRx: k > .5 ? 2.4 : 1.5, aRe: k > .5 ? .5 : .2, aRz: -.3 }]], { T: L.T }); cara(l, L.T, { expr: 'smug' });
-  cm([KUX + .5, 7, 15, KUX + .5, 5, 3, 42], [KUX + .5, 7, 13.5, KUX + .5, 5, 3, 40], L.k); }, [[0, 'whoosh', .4], [.15, 'swipe', .5], [.5, 'gulp', .5]]);
+shot(73.5, 'W', null, L => { kitchen(L); noChairs(); const b = put(benT, KUX + 3, 0, -10.4, -PI / 2); const k = clamp(L.lt / .35); const l = put(lenaT, KUX - 1 - clamp(L.lt - .5) * 3, 0, -10.6, PI / 2 - (L.lt > .5 ? PI : 0));
+  attach(FANTA[0], k < .5 ? b.aR.hand : l.aR.hand, [0, -.5, .45], [PI / 2, 0, 0], .6); actuar(b, 0, [[0, { aRx: 1.5, aRe: .2 }]], { T: L.T }); cara(b, L.T, { expr: k > .5 ? 'angry' : 'happy', mouth: k > .5 ? 'o' : 'smile' });
+  actuar(l, 0, [[0, { ...(L.lt > .5 ? walkP(L.T, 0) : {}), aRx: k > .5 ? 2.4 : 1.5, aRe: k > .5 ? .5 : .2, aRz: -.3 }]], { T: L.T }); cara(l, L.T, { expr: 'smug' });
+  cm([KUX + 1, 5.8, -2, KUX + 1, 3.8, -10.5, 46], [KUX + 1, 5.6, -2.6, KUX + 1, 3.8, -10.5, 44], L.k); }, [[0, 'whoosh', .4], [.15, 'swipe', .5], [.5, 'gulp', .5]]);
 // 62 «Sie trägt immer Handschuhe,»: primer plano de las manos de Lena con guantes de punto verdes, sujetando una cuchara
-shot(74.76, 'C', 'punch', L => { kitchen(L); const l = sit(lenaT, KUX + 3.4, 2.8, 5.6, PI, L, {}); actuar(l, 0, [[0, { ...sitPose(), aLx: 1.2, aRx: 1.2, aLe: .9, aRe: .9, aLz: -.1, aRz: -.1, lean: .2 }]], { T: L.T, weight: false }); cara(l, L.T, { expr: 'bored' });
-  l.root.updateMatrixWorld(true); const h = l.aR.hand.getWorldPosition(V(0, 0, 0)); cm([h.x + 3, h.y + 2.6, h.z - 5, h.x - .8, h.y - .2, h.z, 40], [h.x + 2.6, h.y + 2.2, h.z - 4.2, h.x - .8, h.y - .2, h.z, 38], L.k); }, [[0, 'impact', .4], [.2, 'cloth', .5]]);
+shot(74.76, 'C', 'punch', L => { kitchen(L); const l = sit(lenaT, KUX + 3.4, 2.8, 5.6, PI, L, {}); actuar(l, 0, [[0, { ...sitPose(), aLx: 1.3, aRx: 1.3, aLe: 1.0, aRe: 1.0, aLz: -.1, aRz: -.1, lean: .2 }]], { T: L.T, weight: false }); cara(l, L.T, { expr: 'bored' });
+  l.root.updateMatrixWorld(true); const h = l.aR.hand.getWorldPosition(V(0, 0, 0)); cm([h.x + 1.6, h.y + 1.4, h.z - 3.6, h.x - .8, h.y, h.z, 40], [h.x + 1.4, h.y + 1.2, h.z - 3.1, h.x - .8, h.y, h.z, 38], L.k); }, [[0, 'impact', .4], [.2, 'cloth', .5]]);
 // 63 «sogar beim Frühstück.»: desayuno: todos comen; Lena con los guantes puestos come cereales
 shot(76.06, 'W', null, L => { kitchen(L); const l = sit(lenaT, KUX + 3.4, 2.8, 5.6, PI, L, {}); const sp = Math.sin(L.T * 5); actuar(l, 0, [[0, { ...sitPose(), aRx: 1.3 + sp * .4, aRe: 1.2 + sp * .5, aLx: .6, aLe: .9, lean: .15 }]], { T: L.T, weight: false }); cara(l, L.T, { expr: 'bored' });
   const m = sit(mama, KUX - 3.4, 2.8, -5.6, 0, L, { aRx: .9, aRe: 1.2 }); cara(m, L.T, { expr: 'happy' }); const p = sit(papa, KUX - 3.4, 2.8, 5.6, PI, L, { aRx: .9, aRe: 1.2 }); cara(p, L.T, { expr: 'neutral' });
   const b = sit(benT, KUX + 3.4, 2.8, -5.6, 0, L, { aRx: .9, aRe: 1.2 }); cara(b, L.T, { expr: 'happy' }); for (let i = 0; i < 4; i++) show(PLATE[i], KUX + [3.4, -3.4, -3.4, 3.4][i], 4.75, [2.4, -2.4, 2.4, -2.4][i]);
-  cm([KUX, 15.6, 6, KUX, 3, 0, 64], [KUX, 15.4, 5.4, KUX, 3, 0, 62], L.k); }, [[0, 'swipe', .4], [.1, 'spoon', .5], [.5, 'chew', .4]]);
+  KU.LMP.visible = false; cm([KUX, 15.6, 6, KUX, 3, 0, 64], [KUX, 15.4, 5.4, KUX, 3, 0, 62], L.k); }, [[0, 'swipe', .4], [.1, 'spoon', .5], [.5, 'chew', .4]]);
 // 64 «Und für Guten Morgen»: Mama la saluda con la mano: «GUTEN MORGEN!»
 shot(77.27, 'C', 'punch', L => { kitchen(L); const m = sit(mama, KUX - 3.4, 2.8, -5.6, 0, L, {}); actuar(m, 0, [[0, { ...sitPose(), aRx: 2.6, aRz: Math.sin(L.T * 12) * .3 + .2, aRe: .3 }]], { T: L.T, weight: false }); talk(m, L.T, 77.2, 78, 'happy'); bubble(m, 'GUTEN MORGEN!', clamp(L.lt / .2));
-  onFace(m, 6, 0, 0, 40, L.k, 5.2); }, [[0, 'impact', .4], [.1, 'pop', .4]]);
+  faceAt(m, L, 7.8, 6.8, 0, 40); }, [[0, 'impact', .4], [.1, 'pop', .4]]);
 // 65 «ist sie zu müde.»: Lena deja caer la cabeza sobre la mesa, bosteza, ojos medio cerrados
 shot(78.01, 'S', null, L => { kitchen(L); const l = sit(lenaT, KUX + 3.4, 2.8, 5.6, PI, L, {}); const k = easeIn(clamp(L.lt / .5)); actuar(l, 0, [[0, { ...sitPose(), lean: .7 * k, headX: .3 * k, aLx: .9, aRx: .9, aLe: 1.6, aRe: 1.6, aLz: -.3, aRz: -.3 }]], { T: L.T, weight: false });
-  cara(l, L.T, k < 1 ? { expr: 'yawn', eyes: 'closed', mouth: 'yawn' } : { expr: 'tired', eyes: 'half' }); onFace(l, 6.4, 1.4, 1.2, 42, L.k, 5.6); }, [[0, 'swipe', .4], [.1, 'yawn_f', .6], [.6, 'thud', .4]]);
+  cara(l, L.T, k < 1 ? { expr: 'yawn', eyes: 'closed', mouth: 'yawn' } : { expr: 'tired', eyes: 'half' }); faceAt(l, L, 8.3, 7.3, 1.2, 42); }, [[0, 'swipe', .4], [.1, 'yawn_f', .6], [.6, 'thud', .4]]);
 // 66 «Mit mir macht sie nur eins:»: por la noche, Lena se señala los ojos con dos dedos y luego a Ben: «te vigilo»
 shot(79.01, 'W', null, L => { const [b, l] = stareTable(L); const k = clamp(L.lt / .45); actuar(l, 0, [[0, { ...sitPose(), aRx: 2.0 + (k < 1 ? .4 : 0), aRe: k < 1 ? 1.8 : .3, aRz: -.2, lean: .2 }]], { T: L.T, weight: false }); cara(l, L.T, { expr: 'sus' }); cara(b, L.T, { expr: 'gasp' });
-  onFace(l, 6, 0, .8, 40, L.k, 5.4); }, [[0, 'whoosh', .4], [.4, 'swipe', .4]]);
+  faceAt(l, L, 7.8, 7.0, .8, 40); }, [[0, 'whoosh', .4], [.4, 'swipe', .4]]);
 // 67 «nur eins:» → Ben traga saliva y se prepara, se frota las manos
 shot(79.95, 'C', null, L => { const [b, l] = stareTable(L); const r = Math.sin(L.T * 14) * .15; actuar(b, 0, [[0, { ...sitPose(), aLx: 1.3, aRx: 1.3, aLe: 1.4, aRe: 1.4, aLz: -.3 + r, aRz: -.3 - r, lean: .2 }]], { T: L.T, weight: false }); cara(b, L.T, { expr: 'determined' });
-  onFace(b, 5.4, 0, -.6, 40, L.k, 4.8); }, [[0, 'gulp', .6], [.3, 'cloth', .5]]);
+  faceAt(b, L, 7.0, 6.2, -.6, 40); }, [[0, 'gulp', .6], [.3, 'cloth', .5]]);
 // 68 «Anstarren.»: plano partido: los ojos de Lena y los de Ben, enormes (golpe de zoom)
 shot(80.91, 'C', 'punch', L => { const [b, l] = stareTable(L); cara(l, L.T, { eyes: 'wide', mouth: 'flat', noBlink: true }); cara(b, L.T, { eyes: 'wide', mouth: 'flat', noBlink: true });
-  onFace(l, 3.4, 0, 0, 34, L.k, 2.8); }, [[0, 'impact', .5], [.1, 'braam_short', .5]]);
+  faceAt(l, L, 4.4, 3.6, 0, 34); }, [[0, 'impact', .5], [.1, 'braam_short', .5]]);
 // 69 «Jeden Abend.»: la mesa entera desde arriba: los padres comen tranquilos y los dos hermanos se miran fijamente
 shot(81.64, 'W', null, L => { const [b, l] = stareTable(L); cara(l, L.T, { eyes: 'wide', mouth: 'flat', noBlink: true }); cara(b, L.T, { eyes: 'wide', mouth: 'flat', noBlink: true });
   const m = sit(mama, KUX - 3.4, 2.8, -5.6, 0, L, { aRx: .9 + Math.sin(L.T * 5) * .3, aRe: 1.2 }); cara(m, L.T, { expr: 'happy' }); const p = sit(papa, KUX - 3.4, 2.8, 5.6, PI, L, { aRx: .9, aRe: 1.2 }); cara(p, L.T, { expr: 'neutral' });
-  for (let i = 0; i < 4; i++) show(PLATE[i], KUX + [3.4, -3.4, -3.4, 3.4][i], 4.75, [2.4, -2.4, 2.4, -2.4][i]); cm([KUX, 15.6, 7, KUX, 3, 0, 64], [KUX, 15.4, 6.4, KUX, 3, 0, 62], L.k); }, [[0, 'whoosh', .4], [.2, 'clock_tick', .4]]);
+  for (let i = 0; i < 4; i++) show(PLATE[i], KUX + [3.4, -3.4, -3.4, 3.4][i], 4.75, [2.4, -2.4, 2.4, -2.4][i]); KU.LMP.visible = false; cm([KUX, 15.6, 7, KUX, 3, 0, 64], [KUX, 15.4, 6.4, KUX, 3, 0, 62], L.k); }, [[0, 'whoosh', .4], [.2, 'clock_tick', .4]]);
 // 70 «Der Verlierer»: Ben parpadea (pierde); Lena levanta el puño
-shot(82.62, 'C', 'punch', L => { const [b, l] = stareTable(L); cara(b, L.T, L.lt > .2 ? { eyes: 'closed', mouth: 'grimace' } : { eyes: 'wide', mouth: 'grimace' }); blinkFX(b, (L.lt - .2) / .3);
-  actuar(l, 0, [[0, { ...sitPose(), aRx: 2.8, aRe: 1.8, aRz: -.2 }]], { T: L.T, weight: false }); cara(l, L.T, { expr: 'joy' }); cm([KUX + 5.4, 7.8, 11, KUX + 3.4, 5.8, -5.6, 42], [KUX + 5.2, 7.6, 10, KUX + 3.4, 5.8, -5.6, 40], L.k); }, [[0, 'blink', .6], [.25, 'cheer', .3]]);
+shot(82.62, 'C', 'punch', L => { const [b, l] = stareTable(L); KU.CH[1].visible = false; cara(b, L.T, L.lt > .2 ? { eyes: 'closed', mouth: 'grimace' } : { eyes: 'wide', mouth: 'grimace' }); blinkFX(b, (L.lt - .2) / .3);
+  actuar(l, 0, [[0, { ...sitPose(), aRx: 2.8, aRe: 1.8, aRz: -.2 }]], { T: L.T, weight: false }); cara(l, L.T, { expr: 'joy' }); cm([KUX + 4.6, 7.4, 9.4, KUX + 3.4, 6.2, -5.6, 34], [KUX + 4.5, 7.3, 9, KUX + 3.4, 6.2, -5.6, 32], L.k); }, [[0, 'blink', .6], [.25, 'cheer', .3]]);
 // 71 «bringt den Müll raus.»: Lena señala el cubo de basura; Ben suspira
-shot(83.38, 'S', null, L => { kitchen(L, { night: true }); const l = put(lenaT, KUX - 6, 0, 5.4, -PI / 2 - .2); actuar(l, 0, [[0, { aRx: 1.6, aRz: .1, aRe: .1 }]], { T: L.T }); cara(l, L.T, { expr: 'smug' });
+shot(83.38, 'S', null, L => { kitchen(L, { night: true }); noChairs(); const l = put(lenaT, KUX - 6, 0, 5.4, -PI / 2 - .2); actuar(l, 0, [[0, { aRx: 1.6, aRz: .1, aRe: .1 }]], { T: L.T }); cara(l, L.T, { expr: 'smug' });
   const b = put(benT, KUX - 8, 0, 8.5, PI - .5); actuar(b, 0, [[0, { lean: .15, headX: .3, aLz: .1, aRz: .1 }]], { T: L.T }); cara(b, L.T, { expr: 'sad', mouth: 'wavy' });
   cm([KUX + 4, 7.5, 3, KUX - 8, 4.5, 6, 46], [KUX + 3, 7.4, 3.4, KUX - 8, 4.5, 6, 44], L.k); }, [[0, 'swipe', .4], [.3, 'sigh', .5]]);
 // 72 «Ich bringe ihn raus,»: Ben arrastra una bolsa de basura enorme por la calle al anochecer hasta los cubos
@@ -127,7 +128,7 @@ shot(84.38, 'W', null, L => { gasse(L, { dawn: true }); const b0 = MT.BINS[0].po
   cm([b0.x - 16, 6.4, b0.z + 9, b0.x - 4, 4, b0.z + 3, 44], [b0.x - 15, 6.2, b0.z + 8, b0.x - 3, 4, b0.z + 3, 42], L.k); sh(V(b0.x - 4, 0, b0.z), 20); }, [[0, 'whoosh', .4], [.1, 'cloth', .5], [.5, 'steps', .4]]);
 // 73 «seit ich vier bin.»: tira la bolsa al cubo (¡pum!) y suspira; «4»
 shot(85.48, 'C', 'punch', L => { gasse(L, { dawn: true }); const b0 = MT.BINS[0].position; const b = put(benT, b0.x - 3, 0, b0.z + 1, PI / 2 - .2); const k = clamp(L.lt / .4); show(BAG, lerp(b0.x - 1.8, b0.x, k), lerp(3, 4.2, k) + Math.sin(k * PI) * 2, b0.z, 0, .8);
-  actuar(b, 0, [[0, { aRx: lerp(.5, 2.4, k), aLx: lerp(.5, 2.2, k), aRe: .4, aLe: .4 }]], { T: L.T }); cara(b, L.T, { expr: 'tired', mouth: 'wavy' }); bigNum('4', clamp((L.lt - .4) / .2), 'gold', .22, 1.2);
+  actuar(b, 0, [[0, { aRx: lerp(.5, 2.4, k), aLx: lerp(.5, 2.2, k), aRe: .4, aLe: .4 }]], { T: L.T }); cara(b, L.T, { expr: 'tired', mouth: 'wavy' }); bigNum('4', clamp((L.lt - .4) / .2), 'gold', .15, 1.2);
   cm([b0.x - 12, 6.4, b0.z + 7, b0.x - 2, 4, b0.z + 1, 44], [b0.x - 11, 6.2, b0.z + 6.4, b0.x - 2, 4, b0.z + 1, 42], L.k); sh(V(b0.x, 0, b0.z), 20); }, [[.35, 'trash_hit', .6], [.5, 'sigh', .5], [.45, 'pling', .3]]);
 // 74 «Dann, letzten Monat,» (zoom lento): el túnel, todos cavando en silencio; la cámara avanza despacio
 shot(86.57, 'B', 'slow', L => { tunnel(L, -100); diggers(L, SL, -92, [-6, -2, 2, 6], { avoid: [[0, -106]] }); put(brandt, STX, 0, -106, PI); dig(brandt, L, 3); put(ben, STX + 1, 0, -100, PI); dig(ben, L, 1, { face: false }); cara(ben, L.T, { eyes: 'wide', mouth: 'flat' });

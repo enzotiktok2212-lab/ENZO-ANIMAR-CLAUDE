@@ -12,6 +12,6 @@
 - [x] análisis, guion, voz y tiempos
 - [x] motor, escenarios y reparto
 - [x] planos a–d escritos
-- [ ] revisión de todos los planos (hecha la pasada completa en review/; arreglados a y b hasta la hoja 2; pendiente: revisar hojas 3–22 —sobre todo c y d— y corregir)
-- [ ] mezcla
-- [ ] render
+- [x] revisión de todos los planos
+- [x] mezcla (renders/mezcla-final.wav, −12,8 LUFS)
+- [ ] render (lanzado; ./render.sh es idempotente, luego ./finish.sh)

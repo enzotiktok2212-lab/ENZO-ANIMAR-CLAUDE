@@ -2,6 +2,8 @@
 // Mondtal: calle z ∈ [60, -300] entre x = ±15; puertas en MT.DOORS (x = ±15, z); los sonámbulos marchan hacia -z (ry = PI), hacia el Berg.
 // Cuartos (KZ/LZ): cama en (X - 9, -2), almohada z = -7,4; puerta del pasillo en x = X + 15, z ∈ [-1, 5]; pasillo x ∈ [X + 15, X + 29].
 // helpers de esta pieza
+const CROSS = { aLx: .15, aRx: .15, aLe: 1.55, aRe: 1.55, aLz: -.35, aRz: -.35 }, PALMS = { aLx: .3, aRx: .3, aLe: 1.45, aRe: 1.45, aLz: -.12, aRz: -.12, headX: .35 };
+const noChairs = () => { for (const c of KU.CH) c.visible = false; };
 function doorWave(L, t0, z0 = 0, sp = .03, dur = .3) { for (const d of MT.DOORS) { const k = clamp((L.T - t0 - Math.abs(d.z - z0) * sp) / dur); d.pv.rotation.y = -1.55 * easeOut(k) + (k > .6 && k < 1 ? Math.sin((k - .6) * 20) * .06 : 0); } }
 function doorsOpen() { for (const d of MT.DOORS) d.pv.rotation.y = -1.55; }
 // sonámbulos que salen por las puertas de z ∈ [zB, zA] hacia el centro de la calle
@@ -80,7 +82,7 @@ shot(16.95, 'S', null, L => { elternRoom(L, { dawn: true }); put(mama, SZX - 3.4
 shot(17.79, 'S', null, L => { benRoom(L, { dawn: true }); lie(ben, KZX - 9, -4.4, 4.15, L, { lLx: -.05 + Math.sin(L.T * 3) * .05, lRx: .05 }); KZ.quilt.position.y = 4.6; KZ.quilt.position.z = -1.2; KZ.quilt.scale.z = .3; ben.dirt.visible = true;
   const f = V(KZX - 9, 4.6, .2); cm([f.x + 2.4, f.y + 2.4, f.z + 5, f.x, f.y, f.z, 40], [f.x + 2, f.y + 2, f.z + 4, f.x, f.y, f.z, 38], L.k); }, [[0, 'swipe', .4], [.2, 'sprinkle', .5], [.5, 'rubble', .3]]);
 // 15 «Blasen an den Händen.»: Papa en la cocina se mira las palmas llenas de ampollas y sopla, con cara de dolor
-shot(18.93, 'C', 'punch', L => { kitchen(L); const c = put(papa, KUX + 9, 0, 4, PI / 2 + .3); c.blis.visible = true; actuar(c, 0, [[0, { aLx: .9, aRx: .9, aLe: .9, aRe: .9, aLz: -.2, aRz: -.2, headX: .45 }]], { T: L.T }); cara(c, L.T, { expr: 'worried', mouth: L.lt > .5 ? 'o' : 'grimace' });
+shot(18.93, 'C', 'punch', L => { kitchen(L); const c = put(papa, KUX + 9, 0, 4, PI / 2 + .3); c.blis.visible = true; actuar(c, 0, [[0, PALMS]], { T: L.T }); cara(c, L.T, { expr: 'worried', mouth: L.lt > .5 ? 'o' : 'grimace' });
   onBody(c, 7, 0, .45, 40, L.k, 6.2, 0, 3.4); }, [[0, 'impact', .4], [.3, 'breath', .4], [.6, 'breath', .5]]);
 // 16 «Keiner weiß, wo wir waren.»: desayuno: Mama y Papa se miran y se encogen de hombros; tierra en el suelo de la cocina
 shot(19.98, 'W', null, L => { kitchen(L); const m = sit(mama, KUX + 3.4, 2.8, -5.6, 0, L, { aLx: .4, aRx: .4 }); const p = sit(papa, KUX - 3.4, 2.8, -5.6, 0, L, { aLx: .4, aRx: .4 });
@@ -105,7 +107,7 @@ shot(24.96, 'W', null, L => { gasse(L, { day: true }); const c = put(DX[1], -10,
   onBody(c, 15, .2, .1, 44, L.k, 13); sh(V(-10, 0, 20), 24); }, [[0, 'whoosh', .4], [.1, 'city_amb', .4], [.3, 'snore', .5]]);
 // 21 «der überall einschläft.»: en la cocina, otro se duerme sentado y la cabeza cae en el plato
 shot(26.0, 'S', null, L => { kitchen(L); const c = sit(DX[4], KUX + 3.4, 2.8, -5.6, 0, L, {}); const k = easeIn(clamp((L.lt - .25) / .4)); actuar(c, 0, [[0, { ...sitPose(), lean: .9 * k, headX: .4 * k, aLx: .6, aRx: .6, aLe: .5, aRe: .5 }]], { T: L.T, weight: false }); c.setFace({ eyes: k > .3 ? 'closed' : 'half', mouth: 'o' }); if (k >= 1) zzz(c, L.T);
-  show(PLATE[0], KUX + 3.4, 4.75, -2.6); cm([KUX + 13, 8, 3, KUX + 3, 5.4, -4, 44], [KUX + 12, 7.6, 2, KUX + 3, 5.2, -4, 42], L.k); }, [[0, 'swipe', .4], [.6, 'splash', .5], [.75, 'snore', .5]]);
+  show(PLATE[0], KUX + 3.4, 4.75, -2.6); cm([KUX + 3.4, 8.6, 5, KUX + 3.4, 5, -4.4, 44], [KUX + 3.4, 8.2, 4, KUX + 3.4, 5, -4.4, 42], L.k); }, [[0, 'swipe', .4], [.6, 'splash', .5], [.75, 'snore', .5]]);
 // 22 «Hier würde der ganz vorne laufen.»: de noche, la marcha: a la cabeza, adelantado a todos, un sonámbulo con los brazos estirados guía la fila (travelling hacia atrás)
 shot(27.1, 'Z', null, L => { gasse(L, { z: -30 }); doorsOpen(); const c = sleepWalk(opa, L, 0, -28, PI, 2.2, 0, { pose: { aLx: 1.5, aRx: 1.5, aLe: .1, aRe: .1 } }); march(L, SL, 0, -22, PI, { cols: 4, speed: 2.2, t0: 0 });
   const p = c.root.position; orbit(V(p.x, 4.2, p.z), lerp(16, 13, L.k), PI - .25, .1, 44); sh(V(0, 0, p.z - 4), 26); }, [[0, 'zoom_in', .4], [.1, 'steps', .6], [1.2, 'whoosh_up', .3]]);
@@ -113,7 +115,7 @@ shot(27.1, 'Z', null, L => { gasse(L, { z: -30 }); doorsOpen(); const c = sleepW
 shot(28.14, 'C', 'punch', L => { gasse(L, { z: -40 }); doorsOpen(); const c = sleepWalk(opa, L, 0, -40, PI, 2.2, 0, { t0: 2, pose: { aLx: 1.5, aRx: 1.5, aLe: .1, aRe: .1 } }); march(L, SL, 0, -35, PI, { cols: 4, speed: 2.2, t0: 2 });
   onBody(c, 12, 0, .06, 42, L.k, 10, 0, 3.8); sh(V(0, 0, c.root.position.z), 26); }, [[0, 'impact', .4], [.1, 'steps', .6]]);
 // 23 «Bei mir?»: Ben (de día) en la cocina, se lleva el dedo a la barbilla, pensando
-shot(29.23, 'C', 'punch', L => { kitchen(L); const c = put(benT, KUX - 2, 0, 9.4, PI + .3); actuar(c, 0, [[0, GEST.think || { aRx: 1.6, aRe: 2.2, aRz: -.2, headZ: .15 }]], { T: L.T }); talk(c, L.T, 29.2, 29.9, 'confused');
+shot(29.23, 'C', 'punch', L => { kitchen(L); const c = put(benT, KUX + 10, 0, 6, -PI / 2 - .4); actuar(c, 0, [[0, GEST.think || { aRx: 1.6, aRe: 2.2, aRz: -.2, headZ: .15 }]], { T: L.T }); talk(c, L.T, 29.2, 29.9, 'confused');
   onFace(c, 4.4, 0, .8, 40, L.k, 3.8); }, [[0, 'impact', .4], [.15, 'pop', .4]]);
 // 24 «Klar: mein Opa.»: el Opa dormido en la mesa con el tenedor en la mano, ronca; Ben lo señala riéndose
 shot(30.21, 'W', null, L => { kitchen(L); const o = sit(opa, KUX - 3.4, 2.8, -5.6, 0, L, {}); actuar(o, 0, [[0, { ...sitPose(), lean: .2, headX: .5, headZ: .25, aRx: .9, aRe: 1.6, aLx: .4, aLe: .6 }]], { T: L.T, weight: false }); o.setFace({ eyes: 'closed', mouth: Math.sin(L.T * 5) > 0 ? 'o' : 'wavy' }); zzz(o, L.T);
@@ -129,18 +131,18 @@ shot(32.7, 'F', null, L => { praxisS(L); const d = sit(arzt, PRX, 3.25, -10, 0, 
 // 27 «Ich bin Ben, zehn.»: Ben (de día) en la cocina saluda a cámara con una sonrisa; «BEN · 10»
 shot(33.95, 'C', 'punch', L => { kitchen(L); const c = put(benT, KUX, 0, 8, PI); actuar(c, 0, [[0, 'wave']], { T: L.T }); talk(c, L.T, 33.9, 35.3, 'happy');
   onFace(c, 6, 0, 0, 40, L.k, 5); badge('tag', 'BEN', W / 2, H * .2, clamp((L.lt - .2) / .2)); bigNum('10', clamp((L.lt - .85) / .2), 'gold', .28, 1.1); }, [[0, 'impact', .4], [.25, 'pop', .4], [.85, 'pling', .4]]);
-// 28 «Unser Wasser schmeckt nach Rost,»: llena un vaso en el grifo: sale agua marrón; da un sorbo y pone cara de asco
-shot(35.36, 'W', null, L => { kitchen(L); const c = put(benT, KUX - 12.2, 0, -8, -PI / 2); const g = attach(GLASS, c.aR.hand, [0, -.6, .3], [0, 0, 0], .8); const k = clamp((L.lt - .6) / .25);
-  actuar(c, 0, [[0, { aRx: lerp(1.0, 2.3, k), aRe: lerp(.9, .5, k), aRz: lerp(0, -.3, k), headX: lerp(0, -.2, k) }]], { T: L.T }); cara(c, L.T, k > .7 ? { expr: 'disgust', eyes: 'squint', mouth: 'wavy' } : { expr: 'neutral' });
-  onBody(c, 8, 1.25, .1, 42, L.k, 7, 1.15, 3.4); }, [[0, 'whoosh', .4], [.05, 'pour', .6], [.7, 'sip', .5], [.95, 'cough', .5]]);
+// 28 «Unser Wasser schmeckt nach Rost,»: Ben, junto a la mesa, da un sorbo a un vaso de agua marrón y pone cara de asco
+shot(35.36, 'W', null, L => { kitchen(L); noChairs(); const c = put(benT, KUX + 9.6, 0, 1, -PI / 2 + .4); attach(GLASS, c.aR.hand, [0, -.6, .3], [0, 0, 0], .8); const k = clamp((L.lt - .5) / .25);
+  actuar(c, 0, [[0, { aRx: lerp(1.0, 2.3, k), aRe: lerp(.9, .5, k), aRz: lerp(0, -.3, k), headX: lerp(0, -.2, k) }]], { T: L.T }); cara(c, L.T, k > .7 ? { eyes: 'squint', mouth: 'wavy' } : { expr: 'neutral' });
+  onBody(c, 11, -.5, .1, 42, L.k, 10, -.4, 3.6); }, [[0, 'whoosh', .4], [.05, 'pour', .5], [.6, 'sip', .5], [.85, 'cough', .5]]);
 // 29 «deshalb trinke ich nur Fanta.»: abre una Fanta (¡pssst!) y bebe feliz
 shot(36.78, 'S', null, L => { kitchen(L); const c = put(benT, KUX - 6, 0, 2, PI / 2 + .3); const f = attach(FANTA[0], c.aR.hand, [0, -.5, .45], [PI / 2, 0, 0], .6); const k = clamp((L.lt - .45) / .25);
   actuar(c, 0, [[0, { aRx: lerp(1.0, 2.6, k), aRe: lerp(1.0, .4, k), aRz: lerp(0, -.35, k), headX: lerp(0, -.25, k), aLx: .3 }]], { T: L.T }); f.rotation.x = PI / 2 + lerp(0, -1.9, k); cara(c, L.T, k > .5 ? { eyes: 'closed', mouth: 'o' } : { expr: 'happy' });
-  onBody(c, 9, .9, .08, 42, L.k, 8, .8); }, [[0, 'swipe', .4], [.1, 'steam', .5], [.5, 'gulp', .6]]);
-// 30 «Die schmeckt eh am besten.»: Ben, detrás de la mesa con cinco Fantas, levanta una y pone el pulgar arriba; destellos
-shot(38.27, 'C', 'punch', L => { kitchen(L); const c = put(benT, KUX + 1, 0, -8.6, 0); const f = attach(FANTA[0], c.aL.hand, [0, -.5, .45], [PI / 2, 0, 0], .6); actuar(c, 0, [[0, { aLx: 2.3, aLe: .4, aLz: .2, aRx: 1.6, aRe: 1.8, aRz: -.3 }]], { T: L.T }); grin(c, L.T);
-  for (let i = 1; i < 6; i++) show(FANTA[i], KUX - 3 + i * 1.3, 4.75, -2.2 + (i % 2) * .8, 0, .62);
-  cm([KUX + 1, 7.4, 6, KUX + 1, 5.6, -6, 44], [KUX + 1, 7.2, 5, KUX + 1, 5.6, -6, 42], L.k); }, [[0, 'impact', .4], [.1, 'sparkle', .5], [.3, 'ding_soft', .5]]);
+  onBody(c, 12, -.8, .08, 42, L.k, 11, -.7, 3.6); }, [[0, 'swipe', .4], [.1, 'steam', .5], [.5, 'gulp', .6]]);
+// 30 «Die schmeckt eh am besten.»: Ben levanta su Fanta y pone el pulgar arriba; detrás, la mesa llena de Fantas; destellos
+shot(38.27, 'C', 'punch', L => { kitchen(L); noChairs(); const c = put(benT, KUX + 1, 0, 6.6, 0); attach(FANTA[0], c.aL.hand, [0, -.5, .45], [PI / 2, 0, 0], .6); actuar(c, 0, [[0, { aLx: 2.3, aLe: .4, aLz: .2, aRx: 1.6, aRe: 1.8, aRz: -.3 }]], { T: L.T }); grin(c, L.T);
+  for (let i = 1; i < 6; i++) show(FANTA[i], KUX - 2.2 + i * 1.2, 4.75, 2.4 + (i % 2) * .7, 0, .62);
+  onBody(c, 11.4, 0, .12, 42, L.k, 10.4, 0, 3.6); }, [[0, 'impact', .4], [.1, 'sparkle', .5], [.3, 'ding_soft', .5]]);
 // 31 «Und seit einem Jahr»: de noche, Ben en la cama mira el techo con los ojos abiertos; el despertador marca 3:00; «1 JAHR»
 shot(39.58, 'B', null, L => { benRoom(L); lie(ben, KZX - 9, -7.4, 4.15, L); KZ.quilt.position.y = 4.6; cara(ben, L.T, { eyes: 'wide', mouth: 'flat' }); KZ.CLOCK.userData.set('3:00');
   cm([KZX - 2, 13, 2, KZX - 8, 3.6, -5, 46], [KZX - 3, 12, 0, KZX - 8, 3.6, -5.6, 44], L.k); bigNum('1 JAHR', clamp((L.lt - .4) / .2), 'gold', .2, .9); }, [[0, 'clock_tick', .5], [.4, 'pling', .4]]);
@@ -151,16 +153,16 @@ shot(40.6, 'F', 'slow', L => { gasse(L, { z: -20 }); doorsOpen(); march(L, SL, 0
 shot(41.18, 'C', 'punch', L => { gasse(L, { z: -20 }); doorsOpen(); march(L, SL, 0, -10, PI, { cols: 4, speed: 1.6, avoid: [[0, -24]] }); const b = sleepWalk(ben, L, 0, -18, PI, 1.6, 0, { t0: 1.2, face: false });
   const bl = (L.lt % .7) < .1; cara(ben, L.T, { eyes: bl ? 'closed' : Math.sin(L.T * 3) > 0 ? 'side_l' : 'side_r', mouth: 'grimace' }); onFace(b, 5.4, 0, 0, 40, L.k, 4.6); sh(V(0, 0, b.root.position.z), 20); }, [[0, 'impact', .4], [.2, 'gulp', .5]]);
 // 33 «Beim ersten Mal»: noche: Ben se incorpora en la cama al oír pasos, con los ojos abiertos
-shot(42.25, 'C', 'punch', L => { benRoom(L); sitBed(ben, KZX, L, { aLx: .4, aRx: .4, aLz: .3, aRz: .3, headY: .5 }); KZ.quilt.position.y = 4.6; cara(ben, L.T, { eyes: 'wide', mouth: 'o' }); KZ.DOOR.rotation.y = -1.3;
+shot(42.25, 'C', 'punch', L => { benRoom(L); sitBed(ben, KZX, L, { aLx: .4, aRx: .4, aLz: .3, aRz: .3, headY: .5 }); KZ.quilt.position.y = 4.6; cara(ben, L.T, { eyes: 'wide', mouth: 'o' }); KZ.DOOR.rotation.y = -2.9;
   onFace(ben, 5, 0, 1.2, 40, L.k, 4.4); }, [[0, 'impact', .4], [.1, 'steps', .5], [.4, 'wood_creak', .5]]);
 // 34 «laufen Mama und Papa an meiner Tür vorbei.»: desde la cama, por la puerta abierta: Mama y Papa pasan por el pasillo rígidos, sin parpadear
-shot(43.15, 'W', null, L => { benRoom(L); KZ.DOOR.rotation.y = -1.3; sleepWalk(mama, L, KZX + 20, 3.2, PI, 3.0, 0); sleepWalk(papa, L, KZX + 21.4, 7.2, PI, 3.0, 1);
-  cm([KZX + 4, 7.6, 7, KZX + 20, 5.2, 2, 42], [KZX + 5, 7.4, 6, KZX + 20, 5.2, 2, 40], L.k); }, [[0, 'whoosh', .4], [.1, 'steps', .6], [.9, 'wood_creak', .5]]);
+shot(43.15, 'W', null, L => { benRoom(L); KZ.DOOR.rotation.y = -2.9; sleepWalk(mama, L, KZX + 20, 7.4, PI, 3.0, 0); sleepWalk(papa, L, KZX + 21.4, 11.4, PI, 3.0, 1);
+  cm([KZX + 12, 7, -2.4, KZX + 20.5, 5, 5, 44], [KZX + 12.4, 7, -2, KZX + 20.5, 5, 5, 42], L.k); }, [[0, 'whoosh', .4], [.1, 'steps', .6], [.9, 'wood_creak', .5]]);
 // 34b «Tür vorbei.»: desde el pasillo, de frente: Mama pasa por delante de la puerta del cuarto, rígida, y sigue
-shot(44.09, 'S', null, L => { benRoom(L); KZ.DOOR.rotation.y = -1.3; sleepWalk(mama, L, KZX + 20.5, 6, PI, 2.6, 0); sleepWalk(papa, L, KZX + 21, 12, PI, 2.6, 1);
+shot(44.09, 'S', null, L => { benRoom(L); KZ.DOOR.rotation.y = -2.9; sleepWalk(mama, L, KZX + 20.5, 6, PI, 2.6, 0); sleepWalk(papa, L, KZX + 21, 12, PI, 2.6, 1);
   cm([KZX + 21, 7, -10, KZX + 20.5, 4.8, 4, 42], [KZX + 21, 7, -9, KZX + 20.5, 4.8, 4, 42], L.k); }, [[0, 'swipe', .4], [.1, 'steps', .6]]);
 // 35 «Ohne zu blinzeln.» (zoom lento): Papa en el pasillo se gira y mira hacia el cuarto, ojos abiertos, luz de la lámpara del pasillo
-shot(44.92, 'F', 'slow', L => { benRoom(L); KZ.DOOR.rotation.y = -1.3; const p = put(papa, KZX + 19, 0, 2, -PI / 2 + .2); actuar(p, 0, [[0, sleepP(0, 0)]], { T: L.T }); sleepFace(p, L.T);
+shot(44.92, 'F', 'slow', L => { benRoom(L); KZ.DOOR.rotation.y = -2.9; const p = put(papa, KZX + 19, 0, 2, -PI / 2 + .2); actuar(p, 0, [[0, sleepP(0, 0)]], { T: L.T }); sleepFace(p, L.T);
   onFace(p, 5.4, 0, 0, 38, L.k, 4); }, [[0, 'flash', .3], [.1, 'creepy_ting', .5]]);
 // 36 «Fast hätte ich geschrien.»: Ben se tapa la boca con las dos manos, temblando, sudando
 shot(45.92, 'C', 'punch', L => { benRoom(L); sitBed(ben, KZX, L, { aLx: 2.1, aRx: 2.1, aLe: 1.9, aRe: 1.9, aLz: -.25, aRz: -.25, ...shiver(L.T, 1.6) }); KZ.quilt.position.y = 4.6; cara(ben, L.T, { expr: 'terror', eyes: 'terror', mouth: 'grimace' }); sweat(ben, L.T, 2);

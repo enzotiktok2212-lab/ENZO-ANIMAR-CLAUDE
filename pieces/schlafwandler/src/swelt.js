@@ -57,7 +57,7 @@ export function mondtal(scene) { const g = G(scene); const r = RNG(21);
       const dx = -wid * .22, inner = plane(3.4, 5.2, glowM(0xffb860, .9), h, dx, 3.15, 9.33, 0); inner.visible = true;
       const pv = G(h, dx - 1.8, .5, 9.5); const dc = [0x2a6a4a, 0x8a2a2a, 0x2a4a8a, 0x6a3a8a, 0xd8a020, 0x3a8a8a][(ci * 5 + (side > 0 ? 1 : 0)) % 6];
       box(3.6, 5.2, .35, mat(dc, { roughness: .45 }), .06, pv, 1.8, 2.6, 0); for (const yy of [1.4, 3.8]) box(2.8, 1.8, .1, mat(0x000000, { transparent: true, opacity: .16 }), .02, pv, 1.8, yy, .2); sphere(.2, mat(0xd9a531, { metalness: .8, roughness: .3 }), pv, 3.1, 2.6, .3, 8, 6);
-      DOORS.push({ pv, side, z: zc + side * 0 + (side < 0 ? -dx : dx), x: side * 15, h });
+      DOORS.push({ pv, side, z: zc + side * 0 + (side < 0 ? -dx : dx), x: side * 15, h, inner });
       // farol de porche y buzón
       const lp = sphere(.5, glowM(0xffd890, 2.2), h, dx + 3, 6.4, 10.1, 10, 8); lp.castShadow = false; box(.3, .9, .3, mat(0x1a1a1e), .05, h, dx + 3, 7.2, 9.8); PORCH.push(lp);
       box(1.2, 1.6, .9, mat([0xd8202a, 0x2a5ab8, 0x2a8a4a][ci % 3], { roughness: .5 }), .2, h, dx + 6.2, 4.2, 9.9);
@@ -101,7 +101,7 @@ export function stollen(scene, X) { const g = G(scene, X); const r = RNG(33);
     for (let z = -1.5; z > -262 && n < NR - 6; z -= 3.2) { for (const s of [-1, 1]) { if (s < 0 && z < -110 && z > -130) continue; for (let y = 0; y < 22 && n < NR - 6; y += 4.4) { const sc = 2.6 + r() * 1.6; o.position.set(s * (14.5 + r() * 1.4) - s * Math.max(0, y - 14) * .25, y + r() * 1.2, z + r() * 1.5); o.rotation.set(r() * 3, r() * 3, r() * 3); o.scale.set(sc, sc * (.8 + r() * .5), sc); o.updateMatrix(); RI.setMatrixAt(n++, o.matrix); } }
       for (let x = -11; x <= 11 && n < NR - 6; x += 5.5) { const sc = 3 + r() * 1.4; o.position.set(x + r(), 20.5 + r() * 1.2, z + r()); o.rotation.set(r() * 3, r() * 3, r() * 3); o.scale.set(sc, sc * .7, sc); o.updateMatrix(); RI.setMatrixAt(n++, o.matrix); } }
     RI.count = n; RI.castShadow = true; RI.receiveShadow = true; g.add(RI); }
-  box(40, 30, 2, mat(0x2a1a10), 0, g, 0, 12, -266);
+  box(40, 34, 3, mat(0xffffff, { map: rep(rockT(), 6, 5), roughness: 1 }), 0, g, 0, 12, -258); minerLamp(g, -6, 16, -254, 2); minerLamp(g, 6, 16, -254, 2);
   // cuadros de madera (postes, viga, tornapuntas) y faroles colgados
   const wd = mat(0xffffff, { map: woodT(), roughness: .85 }); const LAMPS = [];
   for (let z = -4; z > -258; z -= 10) { for (const s of [-1, 1]) { if (s < 0 && z < -108 && z > -132) continue; box(1.4, 18, 1.4, wd, .12, g, s * 11.2, 9, z); const br = box(.8, 5, .8, wd, .08, g, s * 9.6, 15.6, z); br.rotation.z = s * .7; } box(25, 1.5, 1.7, wd, .12, g, 0, 18, z); box(25, .6, 1.2, wd, .05, g, 0, 18.9, z - 5);
@@ -119,7 +119,7 @@ export function stollen(scene, X) { const g = G(scene, X); const r = RNG(33);
   // vagonetas y cubos
   for (const z of [-60, -170]) { const v = G(g, 0, 0, z); box(5.4, 3, 7, mat(0x5a5e66, { metalness: .6, roughness: .5 }), .2, v, 0, 2.6, 0); box(5, 1.4, 6.6, mat(0xffffff, { map: rep(dirtT('#6a4020'), 1, 1), roughness: 1 }), .1, v, 0, 3.8, 0); for (const s of [-1, 1]) for (const zz of [-2.4, 2.4]) { const wh = cyl(.8, .8, .4, mat(0x2a2a2e, { metalness: .7 }), 12, v, s * 2.2, .8, zz); wh.rotation.z = Math.PI / 2; } }
   // campana enterrada al fondo (solo asoma el borde)
-  const BELL = G(g, 0, 0, -246); { const bm = mat(0xc89a3a, { metalness: .9, roughness: .28, emissive: 0x3a2400, emissiveIntensity: .3 }); const pr = []; for (let i = 0; i <= 12; i++) { const t = i / 12; pr.push(new THREE.Vector2(2 + 3.4 * Math.pow(t, 1.6), 8 - t * 8)); } const b = new THREE.Mesh(new THREE.LatheGeometry(pr, 28), bm); b.position.y = -5.2; BELL.add(b); const t_ = new THREE.Mesh(new THREE.TorusGeometry(5.5, .45, 8, 30), bm); t_.rotation.x = Math.PI / 2; t_.position.y = -5.0; BELL.add(t_); BELL.rotation.z = .25; }
+  const BELL = G(g, 0, 0, -246); { const bm = mat(0xc89a3a, { metalness: .9, roughness: .28, emissive: 0x3a2400, emissiveIntensity: .3 }); const pr = []; for (let i = 0; i <= 12; i++) { const t = i / 12; pr.push(new THREE.Vector2(2 + 3.4 * Math.pow(t, 1.6), 8 - t * 8)); } bm.side = THREE.DoubleSide; const b = new THREE.Mesh(new THREE.LatheGeometry(pr, 28), bm); cyl(2, 2, .3, bm, 24, BELL, 0, 2.8, 0); const cr = new THREE.Mesh(new THREE.TorusGeometry(.9, .32, 8, 20), bm); cr.position.y = 3.6; BELL.add(cr); b.position.y = -5.2; BELL.add(b); const t_ = new THREE.Mesh(new THREE.TorusGeometry(5.5, .45, 8, 30), bm); t_.rotation.x = Math.PI / 2; t_.position.y = -5.0; BELL.add(t_); BELL.rotation.z = .25; }
   const bellPile = new THREE.Mesh(new THREE.ConeGeometry(9, 6, 10, 2), pileM); bellPile.position.set(0, 1.5, -252); g.add(bellPile);
   // FUERA: ladera, boca de la mina, camino y pinos
   const out = G(g); plane(600, 400, mat(0xffffff, { map: rep(grassT('#2e5a2a'), 40, 30), roughness: 1 }), out, 0, -.03, 200);
