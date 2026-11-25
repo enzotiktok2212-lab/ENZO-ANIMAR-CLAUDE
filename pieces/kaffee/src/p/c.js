@@ -33,7 +33,7 @@ shot(75.57, 'F', null, L => { salonS(L, 1); const j = put(jacky, SPX + 6, 0, 2, 
 // 52 «Mein Zahnarzt brüht nur mit Melitta.»: en la consulta, el Dr. Brenner vierte agua caliente en el filtro rojo de Melitta sobre la cafetera; vapor
 shot(77.30, 'W', null, L => { zahnS(L); const d = put(brenner, ZAX - 4, 0, -2, .3); actuar(d, 0, [[0, { aRx: 1.5, aRz: .1, aRe: 1.0, aLx: .9, aLe: 1.2, lean: .05 }]], { T: L.T }); cara(d, L.T, { expr: 'happy', mouth: 'smile' });
   const K = KAN[1]; show(K, ZAX - 3.4, 3.6, 1.2, 0, 1); K.userData.level(clamp(.2 + L.lt * .3)); K.userData.steam(L.T, 1); show(FILT, ZAX - 3.4, 6.1, 1.2, 0, 1); show(PACKS.MELITTA[0], ZAX - 6, 3.6, 1.6, .3, 1.1);
-  const cu = CUPS[11]; attach(cu, d.aR.hand, [-.84, -.2, -.72], [PI / 2 + .7, 0, 0], .9); cu.userData.level(0); CAMK = 1; orbit(V(ZAX - 3.6, 5.4, 0), lerp(12, 10.5, L.k), .1, .14, 42); sh(V(ZAX - 3, 0, 0), 16); }, [[0, 'pour', .6], [.6, 'drip', .5], [1.2, 'steam', .4]]);
+  const cu = CUPS[11]; attach(cu, d.aR.hand, [-.84, -.2, -.72], [PI / 2 + .7, 0, 0], .9); cu.userData.level(0); CAMK = 1; orbit(V(ZAX - 3.6, 5.4, 0), lerp(12, 10.5, L.k), -.6, .14, 42); sh(V(ZAX - 3, 0, 0), 16); }, [[0, 'pour', .6], [.6, 'drip', .5], [1.2, 'steam', .4]]);
 // 53 «Wusstest du,»: el dentista mira a cámara con el dedo índice levantado, como contando un secreto
 shot(79.52, 'C', 'punch', L => { zahnS(L); const d = put(brenner, ZAX, 0, 2, 0); actuar(d, L.lt, [[0, {}], [.05, { aRx: 2.0, aRz: -.1, aRe: 1.8, lean: .06 }, { dur: .25 }]], { T: L.T }); talk(d, L.T, L.t0, L.t1, 'smug');
   onFace(d, 5.4, .3, .5, 38, L.k); sh(V(ZAX, 0, 2), 12); }, [[0, 'ding_reveal', .5]]);

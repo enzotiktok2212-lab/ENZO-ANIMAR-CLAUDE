@@ -26,7 +26,7 @@ shot(160.78, 'C', 'punch', L => { studioS(L); ST.SCR.draw((c, w, h) => drawNews(
 shot(162.51, 'S', 'punch', L => { minS(L); const k = clamp(L.lt / 1.2); MI.scr.userData.draw((c, w, h) => drawNews(c, w, h, L.lt, 0));
   [CR[24], CR[25], CR[26], REN[2]].forEach((x, i) => { put(x, MIX - 6 + i * 4, 0, -2 + (i % 2) * 2, 0); actuar(x, 0, [[0, i % 2 ? 'hands_head' : 'shock']], { T: L.T + i }); cara(x, L.T, { expr: 'shock', mouth: 'scream' }); });
   billRain(V(MIX, 0, -2), L.T, 40, 22, 10, 16); badge('red', 'CRASH!', W / 2, H * .2, clamp((L.lt - .3) / .2), 1, 1.3); SHAKE = .5 * (1 - k);
-  CAMK = 1; orbit(V(MIX, 6, -2), lerp(24, 20, L.k), 0, .14, 46); sh(V(MIX, 0, -2), 24); }, [[0, 'alarm', .6], [.4, 'crash_down', .6], [1.2, 'crowd_gasp', .5]]);
+  CAMK = 1; orbit(V(MIX, 6, -2), lerp(24, 20, L.k), .5, .22, 46); sh(V(MIX, 0, -2), 24); }, [[0, 'alarm', .6], [.4, 'crash_down', .6], [1.2, 'crowd_gasp', .5]]);
 // 112 «Ein Brötchen kostete plötzlich eine Million.»: en la panadería, el panadero pone la etiqueta «1.000.000 €» a un Brötchen; el cliente se desmaya
 shot(165.15, 'W', null, L => { town(L, { morning: 1 }); const h = HSN('BÄCKEREI') || RT.HS[2]; const bx = h.x * .86, bz = h.z; const b = put(baecker, bx, 0, bz, h.x < 0 ? PI / 2 : -PI / 2); actuar(b, 0, [[0, { aRx: 1.4, aRe: .6, aLx: 1.0, aLe: 1.0 }]], { T: L.T }); cara(b, L.T, { expr: 'smug', mouth: 'smirk' });
   show(BROT, bx + (h.x < 0 ? 3 : -3), 3.4, bz, h.x < 0 ? PI / 2 : -PI / 2, 1.2); const c = put(CR[27], bx + (h.x < 0 ? 7 : -7), 0, bz + 1, h.x < 0 ? -PI / 2 : PI / 2); const k = clamp((L.lt - 1.0) / .4);
@@ -41,7 +41,7 @@ shot(168.76, 'W', 'punch', L => { town(L, { morning: 1 }); const c = put(CR[0], 
   badge('red', 'X  KAFFEEGELD', W / 2, H * .2, clamp(L.lt / .2), 1, 1); dcam(c, L.k, 11, -.6, 5, 42); sh(V(0, 0, 12), 18); }, [[0, 'error_buzz', .6], [.9, 'cup_break', .6]]);
 // 115 «Das neue Geld?»: la presentadora levanta una ceja; la pantalla se pone azul noche
 shot(170.50, 'C', null, L => { studioS(L); ST.SCR.draw((c, w, h) => drawNews(c, w, h, L.lt, 1)); const s = put(sprech, STX, 0, -5, 0); talk(s, L.T, L.t0, L.t1, 'smug'); actuar(s, 0, [[0, { aRx: 1.6, aRe: 1.2, aLx: .9, aLe: 1.4 }]], { T: L.T });
-  CAMK = 1; onFace(s, 7, 1.4, -.4, 40, L.k); sh(V(STX, 0, -4), 14); }, [[0, 'whoosh_soft', .4], [.3, 'question', .4]]);
+  CAMK = 1; onFace(s, 7, 3, -.4, 40, L.k); sh(V(STX, 0, -4), 14); }, [[0, 'whoosh_soft', .4], [.3, 'question', .4]]);
 // 116 «Schlaf.» (zoom lento): la pantalla gigante: SCHLAF, con nubes y estrellas
 shot(171.51, 'F', 'slow', L => { studioS(L); ST.SCR.draw((c, w, h) => drawNews(c, w, h, L.lt, 1)); cm([STX, 10, 14, STX, 10, -14.7, 44], [STX, 10, 6, STX, 10, -14.7, 40], L.k); sh(V(STX, 0, -8), 20); DOF = 0; }, [[0, 'lullaby', .6]]);
 // 117 «Jede Stunde Schlaf: hundert Euro.»: una vecina duerme a pierna suelta y por cada «Z» le cae un billete de 100 en la cama
@@ -89,4 +89,4 @@ shot(190.25, 'W', null, L => { kuecheS(L, { night: 1 }); const o = put(oma, TB.x
 // 129 «Kartoffeln holen.»: final: desde el fondo del sótano oscuro, la lata brilla y su tapa se abre sola; yo bajo despacio la escalera
 shot(192.78, 'B', 'slow', L => { kellerS(L); KE.BL.intensity = 20; const D = KE.D; D.userData.open(clamp(L.lt / 1.2) * .6); D.userData.glow(.8); D.userData.steam(L.T, 1);
   const c = put(ich, KEX - 10, lerp(9.8, 8.4, clamp(L.lt / 1.6)), lerp(-4, -2.4, clamp(L.lt / 1.6)), 0); c.blob.visible = false; actuar(c, 0, [[0, { ...walkP(L.T * .5, 1), aRx: .8, aRe: 1.0 }]], { T: L.T }); cara(c, L.T, { expr: 'worried', eyes: 'wide' });
-  CAMK = 1; cm([KEX - 11, 7, 14, KEX - 10, 8.6, -2, 46], [KEX - 11, 7.6, 11, KEX - 9.6, 8.6, -2.4, 44], L.k); sh(V(KEX - 4, 0, -4), 16); }, [[0, 'stairs_creak', .6], [.6, 'magic_shimmer', .5], [1.2, 'tin_open', .5]]);
+  CAMK = 1; cm([KEX - 11, 14, 14, KEX - 10, 8.6, -2, 46], [KEX - 11, 13, 11, KEX - 9.6, 8.6, -2.4, 44], L.k); sh(V(KEX - 4, 0, -4), 16); }, [[0, 'stairs_creak', .6], [.6, 'magic_shimmer', .5], [1.2, 'tin_open', .5]]);
