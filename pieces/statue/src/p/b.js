@@ -80,18 +80,18 @@ shot(78.09, 'C', 'punch', L => { school(L); const t = put(lehrerin, KLX - 1, 0, 
 shot(79.16, 'C', 'punch', L => { miaRoom(L); const d = show(DOG, MZX - 4 + L.lt * 3, 0, 2, PI / 2); DOG.userData.slipper.visible = false; DOG.userData.pose(L.T, 1, 1);
   cm([MZX + 2, 4.6, 12, MZX - 2 + L.lt * 2, 2, 2, 42], [MZX + 3, 4.2, 10, MZX - 1 + L.lt * 2.4, 2, 2, 40], L.k); badge('tag', 'BREZEL', W / 2, H * .2, clamp((L.lt - .3) / .2)); }, [[0, 'impact', .4], [.1, 'dog_bark', .6], [.6, 'paws', .4]]);
 // 66 «ihrem Hund, der ihre Hausschuhe fraß.»: Brezel mordisquea una zapatilla rosa y Mia tira de ella riéndose
-shot(80.38, 'W', null, L => { miaRoom(L); const d = show(DOG, MZX + 4, 0, 3, -PI / 2 + .3); DOG.userData.pose(L.T, 1, 0); d.rotation.z = Math.sin(L.T * 12) * .04;
-  const m = put(mia, MZX - 1.6, 0, 3.6, PI / 2 - .2); if (m.pack) m.pack.visible = false; actuar(m, 0, [[0, { aLx: 1.3, aRx: 1.3, aLe: .3, aRe: .3, lean: -.2 + Math.sin(L.T * 12) * .05, lLx: -.3, lRx: .3 }]], { T: L.T }); laughF(m, L.T);
+shot(80.38, 'W', null, L => { miaRoom(L); const d = show(DOG, MZX + 2.4, 0, 3, -PI / 2 + .3); DOG.userData.pose(L.T, 1, 0); d.rotation.z = Math.sin(L.T * 12) * .04;
+  const m = put(mia, MZX - .8, 0, 3.6, PI / 2 - .2); if (m.pack) m.pack.visible = false; actuar(m, 0, [[0, { aLx: 1.3, aRx: 1.3, aLe: .3, aRe: .3, lean: -.2 + Math.sin(L.T * 12) * .05, lLx: -.3, lRx: .3 }]], { T: L.T }); laughF(m, L.T);
   cm([MZX + 1.2, 5.6, 15, MZX + 1.2, 3.4, 3, 44], [MZX + 1.2, 5.4, 13.5, MZX + 1.2, 3.4, 3, 42], L.k); }, [[0, 'whoosh', .4], [.1, 'dog_growl', .6], [.6, 'girls_laugh', .4]]);
 // 67 «Und dass sie Angst vor»: centro comercial: Mia, al pie de la escalera mecánica, se agarra a la mochila
 shot(82.08, 'S', null, L => { mallS(L); const m = put(mia, MLX + .4, 0, 7, PI - .9); actuar(m, 0, [[0, { aLx: .9, aRx: .9, aLe: 1.6, aRe: 1.6, headY: -.5, ...shiver(L.T, 1) }]], { T: L.T }); cara(m, L.T, { expr: 'worried', mouth: 'grimace' }); sweat(m, L.T, 1);
   extras(L, EXS.slice(12, 15), [[MLX - 18, 12, PI / 2], [MLX + 16, 4, -PI / 2], [MLX - 10, -12, 0]]);
-  cm([MLX + 12, 6.6, 18, MLX - 1, 5.4, 1, 46], [MLX + 11, 6.4, 16.5, MLX - 1, 5.6, 1, 44], L.k); sh(V(MLX, 0, 0), 30); }, [[0, 'swipe', .4], [.1, 'mall_amb', .5], [.3, 'escalator', .4]]);
+  onBody(m, 12, .55, .1, 44, L.k, 10.5, .5); sh(V(MLX, 0, 0), 30); }, [[0, 'swipe', .4], [.1, 'mall_amb', .5], [.3, 'escalator', .4]]);
 // 68 «Rolltreppen hatte.»: primer plano de Mia temblando mirando los escalones que suben; «ROLLTREPPE»
 shot(82.95, 'C', 'punch', L => { mallS(L); const m = put(mia, MLX + .4, 0, 7, -.5); actuar(m, 0, [[0, { aLx: 1.8, aRx: 1.8, aLe: 2.0, aRe: 2.0, aLz: -.3, aRz: -.3, headY: -.6, ...shiver(L.T, 2) }]], { T: L.T }); cara(m, L.T, { expr: 'shock', eyes: 'scared', mouth: 'grimace' });
   onFace(m, 5.2, 0, -.6, 40, L.k, 4.4); badge('tag', 'ROLLTREPPE', W / 2, H * .2, clamp((L.lt - .2) / .2)); }, [[0, 'impact', .4], [.1, 'escalator', .5], [.3, 'gulp', .5]]);
 // 69 «Manchmal las sie mir laut aus einem Buch vor.»: Mia en el banco, con un libro abierto, lee en voz alta gesticulando
-shot(83.91, 'F', null, L => { platz(L, { dusk: true }); miaBench(L, { aLx: .8, aRx: .8, aLe: 1.2, aRe: 1.2, aLz: -.1, aRz: -.1, headX: .3 }); { const hh = wpos(mia.aR.hand).add(wpos(mia.aL.hand)).multiplyScalar(.5); show(BOOK, hh.x, hh.y - .2, hh.z - .4, PI, 1.2); BOOK.rotation.x = -.5; } talk(mia, L.T, 83.9, 85.8, 'happy');
+shot(83.91, 'F', null, L => { platz(L, { dusk: true }); miaBench(L, { aLx: .8, aRx: .8, aLe: 1.2, aRe: 1.2, aLz: -.1, aRz: -.1, headX: .3 }); { const hh = wpos(mia.aR.hand).add(wpos(mia.aL.hand)).multiplyScalar(.5); show(BOOK, hh.x, hh.y - .4, hh.z - .5, PI, .8); BOOK.rotation.x = -.5; } talk(mia, L.T, 83.9, 85.8, 'happy');
   onBody(mia, 9, -.3, .14, 42, L.k, 8, -.2, 4.0); }, [[0, 'flash', .3], [.2, 'pages', .6]]);
 // 70 «Manchmal saß sie einfach still da»: Mia en silencio, abrazada a las rodillas, con el sol bajando detrás
 shot(85.85, 'W', null, L => { platz(L, { dusk: true }); miaBench(L, { lLx: 2.2, rLx: 2.2, lLk: 2.4, lRk: 2.4, aLx: 1.2, aRx: 1.2, aLe: 1.8, aRe: 1.8, aLz: -.3, aRz: -.3, headX: .1 }); cara(mia, L.T, { expr: 'warm', eyes: 'half' });

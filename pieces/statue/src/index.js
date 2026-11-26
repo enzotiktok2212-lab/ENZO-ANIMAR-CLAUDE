@@ -177,7 +177,7 @@ function crowdGuy(c, x, z, L, i, o) { const T = L.T + i * .37, face = o.face || 
   else if (m === 'sitcheer') { const j = Math.abs(Math.sin(L.T * 7 + i)); sit(c, x, o.seat ?? 2.4, z, ry, L, { aLx: 2.8, aRx: 2.8, aLz: .45 + j * .2, aRz: .45 + j * .2, aLe: .3, aRe: .3 }); laughF(c, T); }
   else { actuar(c, 0, [[0, { headX: Math.sin(L.T * 1.3 + i) * .06, headY: Math.sin(L.T * .9 + i * 2) * .2, aLx: .1 + Math.sin(L.T * 2 + i) * .08 }]], { T: L.T }); cara(c, T, { expr: o.expr || 'neutral', mouth: o.mouth }); } }
 // plano medio/entero de un personaje: cámara delante (yaw relativo a su ry), centro a la altura del pecho
-function onBody(ch, dist, yaw = 0, pitch = .12, fov = 42, k = 0, dist2 = null, yaw2 = null, dy = 3.3) { const s = ch.spec.scale || 1, p = ch.root.position, q = easeInOut(clamp(k)), d = lerp(dist, dist2 ?? dist * .88, q); const hy = hp(ch).y, mid = (p.y + hy) / 2 + .6 * s; const c = V(p.x, lerp(mid, hy - .2 * s, clamp((13 - d) / 7)), p.z); orbit(c, d * s, ch.root.rotation.y + lerp(yaw, yaw2 ?? yaw, q), pitch, fov); }
+function onBody(ch, dist, yaw = 0, pitch = .12, fov = 42, k = 0, dist2 = null, yaw2 = null, dy = 3.3) { const s = ch.spec.scale || 1, p = ch.root.position, q = easeInOut(clamp(k)), d = lerp(dist, dist2 ?? dist * .88, q); const hy = hp(ch).y, mid = (p.y + hy) / 2 + .6 * s; const c = V(p.x, lerp(mid, hy + .45 * s, clamp((13 - d) / 7)), p.z); orbit(c, d * s, ch.root.rotation.y + lerp(yaw, yaw2 ?? yaw, q), pitch, fov); }
 const _hb = new THREE.Box3(); function heightTo(ch, m) { ch.root.updateMatrixWorld(true); _hb.makeEmpty(); ch.root.traverseVisible(o => { if (o.isMesh && o !== ch.blob) _hb.expandByObject(o, false); }); const t = _hb.max.y - ch.root.position.y; ch.root.scale.multiplyScalar(m * M2U / t); return ch; }
 const toCam = ch => { const p = ch.root.position; ch.root.rotation.y = Math.atan2(camera.position.x - p.x, camera.position.z - p.z); };
 // ---------- escenarios por plano ----------
@@ -349,7 +349,7 @@ shot(34.29, 'C', 'punch', L => { platz(L, { night: true }); const c = sit(finn, 
 shot(35.28, 'W', null, L => { platz(L, { dawn: true }); const s = sit(finn, P.x, 2.4, BZ - .3, PI, L, { aLx: .6, aRx: .6, aLe: 1.2, aRe: 1.2, headX: .15 }); stone(s, 1.1); cara(s, L.T, { expr: 'sad', noBlink: true });
   const m = put(mayor, P.x - 6, 0, BZ - 7, .5); actuar(m, 0, [[0, { aRx: 1.6, aRz: .05, aRe: .1, aLx: .3, lean: -.05 }]], { T: L.T }); talk(m, L.T, 35.2, 36.6, 'smug');
   walk(EXS[7], L, P.x + 9, BZ - 12, -PI * .6, 1.6, 0, { expr: 'neutral' }); walk(EXS[9], L, P.x + 12, BZ - 10, -PI * .6, 1.6, 1, { expr: 'neutral' });
-  cm([P.x + 8, 6.6, BZ - 24, P.x - 3, 4.4, BZ - 3.5, 46], [P.x + 7, 6.4, BZ - 21, P.x - 3, 4.4, BZ - 3.5, 44], L.k); sh(V(P.x, 0, BZ - 4), 26); }, [[0, 'whoosh', .4], [.1, 'birds', .4], [.5, 'steps', .4]]);
+  cm([P.x - 10, 6.6, BZ - 24, P.x - 3, 4.4, BZ - 3.5, 46], [P.x - 9, 6.4, BZ - 21, P.x - 3, 4.4, BZ - 3.5, 44], L.k); sh(V(P.x, 0, BZ - 4), 26); }, [[0, 'whoosh', .4], [.1, 'birds', .4], [.5, 'steps', .4]]);
 // 30 «auf einen Sockel stellen,»: los operarios suben mi estatua al pedestal con una grúa pequeña; el alcalde da palmadas
 shot(36.65, 'C', 'punch', L => { platz(L, { dawn: true }); statues(L, { finn: false }); const u = easeOut(clamp(L.lt / .9)); const f = put(finn, P.x + SPX, lerp(TOP + 3, TOP, u), P.z + lerp(3, 0, u), 0); actuar(f, 0, [[0, STF]], { T: L.T, weight: false }); f.blob.visible = false; stone(f, 1.1); cara(f, L.T, { expr: 'sad', noBlink: true });
   [[P.x + 7.4, P.z + 6, -.9], [P.x + 9.6, P.z + 3, -1.2]].forEach(([x, z, ry], i) => { const w = put(EXS[7 + i * 2], x, 0, z, ry); actuar(w, 0, [[0, { aLx: 2.5, aRx: 2.5, aLe: .3, aRe: .3, lean: -.12 }]], { T: L.T }); cara(w, L.T, { expr: 'determined', mouth: 'grimace' }); });
@@ -461,18 +461,18 @@ shot(78.09, 'C', 'punch', L => { school(L); const t = put(lehrerin, KLX - 1, 0, 
 shot(79.16, 'C', 'punch', L => { miaRoom(L); const d = show(DOG, MZX - 4 + L.lt * 3, 0, 2, PI / 2); DOG.userData.slipper.visible = false; DOG.userData.pose(L.T, 1, 1);
   cm([MZX + 2, 4.6, 12, MZX - 2 + L.lt * 2, 2, 2, 42], [MZX + 3, 4.2, 10, MZX - 1 + L.lt * 2.4, 2, 2, 40], L.k); badge('tag', 'BREZEL', W / 2, H * .2, clamp((L.lt - .3) / .2)); }, [[0, 'impact', .4], [.1, 'dog_bark', .6], [.6, 'paws', .4]]);
 // 66 «ihrem Hund, der ihre Hausschuhe fraß.»: Brezel mordisquea una zapatilla rosa y Mia tira de ella riéndose
-shot(80.38, 'W', null, L => { miaRoom(L); const d = show(DOG, MZX + 4, 0, 3, -PI / 2 + .3); DOG.userData.pose(L.T, 1, 0); d.rotation.z = Math.sin(L.T * 12) * .04;
-  const m = put(mia, MZX - 1.6, 0, 3.6, PI / 2 - .2); if (m.pack) m.pack.visible = false; actuar(m, 0, [[0, { aLx: 1.3, aRx: 1.3, aLe: .3, aRe: .3, lean: -.2 + Math.sin(L.T * 12) * .05, lLx: -.3, lRx: .3 }]], { T: L.T }); laughF(m, L.T);
+shot(80.38, 'W', null, L => { miaRoom(L); const d = show(DOG, MZX + 2.4, 0, 3, -PI / 2 + .3); DOG.userData.pose(L.T, 1, 0); d.rotation.z = Math.sin(L.T * 12) * .04;
+  const m = put(mia, MZX - .8, 0, 3.6, PI / 2 - .2); if (m.pack) m.pack.visible = false; actuar(m, 0, [[0, { aLx: 1.3, aRx: 1.3, aLe: .3, aRe: .3, lean: -.2 + Math.sin(L.T * 12) * .05, lLx: -.3, lRx: .3 }]], { T: L.T }); laughF(m, L.T);
   cm([MZX + 1.2, 5.6, 15, MZX + 1.2, 3.4, 3, 44], [MZX + 1.2, 5.4, 13.5, MZX + 1.2, 3.4, 3, 42], L.k); }, [[0, 'whoosh', .4], [.1, 'dog_growl', .6], [.6, 'girls_laugh', .4]]);
 // 67 «Und dass sie Angst vor»: centro comercial: Mia, al pie de la escalera mecánica, se agarra a la mochila
 shot(82.08, 'S', null, L => { mallS(L); const m = put(mia, MLX + .4, 0, 7, PI - .9); actuar(m, 0, [[0, { aLx: .9, aRx: .9, aLe: 1.6, aRe: 1.6, headY: -.5, ...shiver(L.T, 1) }]], { T: L.T }); cara(m, L.T, { expr: 'worried', mouth: 'grimace' }); sweat(m, L.T, 1);
   extras(L, EXS.slice(12, 15), [[MLX - 18, 12, PI / 2], [MLX + 16, 4, -PI / 2], [MLX - 10, -12, 0]]);
-  cm([MLX + 12, 6.6, 18, MLX - 1, 5.4, 1, 46], [MLX + 11, 6.4, 16.5, MLX - 1, 5.6, 1, 44], L.k); sh(V(MLX, 0, 0), 30); }, [[0, 'swipe', .4], [.1, 'mall_amb', .5], [.3, 'escalator', .4]]);
+  onBody(m, 12, .55, .1, 44, L.k, 10.5, .5); sh(V(MLX, 0, 0), 30); }, [[0, 'swipe', .4], [.1, 'mall_amb', .5], [.3, 'escalator', .4]]);
 // 68 «Rolltreppen hatte.»: primer plano de Mia temblando mirando los escalones que suben; «ROLLTREPPE»
 shot(82.95, 'C', 'punch', L => { mallS(L); const m = put(mia, MLX + .4, 0, 7, -.5); actuar(m, 0, [[0, { aLx: 1.8, aRx: 1.8, aLe: 2.0, aRe: 2.0, aLz: -.3, aRz: -.3, headY: -.6, ...shiver(L.T, 2) }]], { T: L.T }); cara(m, L.T, { expr: 'shock', eyes: 'scared', mouth: 'grimace' });
   onFace(m, 5.2, 0, -.6, 40, L.k, 4.4); badge('tag', 'ROLLTREPPE', W / 2, H * .2, clamp((L.lt - .2) / .2)); }, [[0, 'impact', .4], [.1, 'escalator', .5], [.3, 'gulp', .5]]);
 // 69 «Manchmal las sie mir laut aus einem Buch vor.»: Mia en el banco, con un libro abierto, lee en voz alta gesticulando
-shot(83.91, 'F', null, L => { platz(L, { dusk: true }); miaBench(L, { aLx: .8, aRx: .8, aLe: 1.2, aRe: 1.2, aLz: -.1, aRz: -.1, headX: .3 }); { const hh = wpos(mia.aR.hand).add(wpos(mia.aL.hand)).multiplyScalar(.5); show(BOOK, hh.x, hh.y - .2, hh.z - .4, PI, 1.2); BOOK.rotation.x = -.5; } talk(mia, L.T, 83.9, 85.8, 'happy');
+shot(83.91, 'F', null, L => { platz(L, { dusk: true }); miaBench(L, { aLx: .8, aRx: .8, aLe: 1.2, aRe: 1.2, aLz: -.1, aRz: -.1, headX: .3 }); { const hh = wpos(mia.aR.hand).add(wpos(mia.aL.hand)).multiplyScalar(.5); show(BOOK, hh.x, hh.y - .4, hh.z - .5, PI, .8); BOOK.rotation.x = -.5; } talk(mia, L.T, 83.9, 85.8, 'happy');
   onBody(mia, 9, -.3, .14, 42, L.k, 8, -.2, 4.0); }, [[0, 'flash', .3], [.2, 'pages', .6]]);
 // 70 «Manchmal saß sie einfach still da»: Mia en silencio, abrazada a las rodillas, con el sol bajando detrás
 shot(85.85, 'W', null, L => { platz(L, { dusk: true }); miaBench(L, { lLx: 2.2, rLx: 2.2, lLk: 2.4, lRk: 2.4, aLx: 1.2, aRx: 1.2, aLe: 1.8, aRe: 1.8, aLz: -.3, aRz: -.3, headX: .1 }); cara(mia, L.T, { expr: 'warm', eyes: 'half' });
@@ -552,7 +552,7 @@ shot(117.95, 'W', null, L => { const n = L.lt > .9; platz(L, n ? { night: true }
   cm([P.x + 16, 12, BZ + 18, P.x, 5, (BZ + P.z) / 2, 48], [P.x + 14, 11, BZ + 16, P.x, 5, (BZ + P.z) / 2, 46], L.k); sh(V(P.x, 0, (BZ + P.z) / 2), 34); }, [[0, 'whoosh', .4], [.9, 'lamp_on', .5], [1.1, 'crickets', .4]]);
 // 95 «Bevor sie ging, legte sie ihre Hand auf den Sockel.»: primer plano: la mano de Mia sobre el mármol, junto a la placa «FINN»
 shot(119.71, 'S', null, L => { platz(L, { night: true }); const m = put(mia, P.x + SPX, 0, P.z + 6.2, PI); const u = easeOut(clamp((L.lt - .2) / .5)); actuar(m, 0, [[0, { aRx: lerp(.2, 1.4, u), aRe: .2, aRz: .1, headX: .25 }]], { T: L.T }); cara(m, L.T, { expr: 'warm', eyes: 'closed', mouth: 'smile' });
-  cm([P.x + SPX + 8, 4.6, P.z + 6, P.x + SPX, 3.4, P.z + 5, 42], [P.x + SPX + 7, 4.4, P.z + 6, P.x + SPX, 3.4, P.z + 5, 40], L.k); }, [[0, 'swipe', .4], [.5, 'stone_tap', .5], [.7, 'heartbeat', .5]]);
+  cm([P.x + SPX + 7, 5.2, P.z + 10, P.x + SPX - .4, 3.8, P.z + 5.6, 44], [P.x + SPX + 6, 5, P.z + 9.4, P.x + SPX - .4, 3.8, P.z + 5.6, 42], L.k); }, [[0, 'swipe', .4], [.5, 'stone_tap', .5], [.7, 'heartbeat', .5]]);
 // 96 «„Ich werde mutig sein.“»: Mia aprieta el puño, decidida, mirando arriba
 shot(122.08, 'C', 'punch', L => { platz(L, { night: true }); const m = put(mia, P.x + SPX, 0, P.z + 6.2, PI); actuar(m, 0, [[0, { aRx: 1.6, aRe: 2.0, aRz: -.3, aLx: .2, headX: -.25 }]], { T: L.T }); talk(m, L.T, 122.0, 123.4, 'determined');
   statues(L, { fe: { eyes: 'down', mouth: 'o', noBlink: true } }); m.root.rotation.y = PI; actuar(m, 0, [[0, { aRx: 1.6, aRe: 2.0, aRz: -.3, aLx: .2, headX: -.45 }]], { T: L.T }); cm([P.x + SPX, TOP + 7, P.z + 1.4, P.x + SPX, 4.6, P.z + 6.2, 44], [P.x + SPX, TOP + 6.6, P.z + 2.2, P.x + SPX, 4.6, P.z + 6.2, 42], L.k); }, [[0, 'impact', .4], [.5, 'fist', .4]]);
@@ -607,8 +607,8 @@ shot(142.02, 'C', 'punch', L => { platz(L, { dawn: true }); statues(L, { jonas: 
   stoneDust(V(P.x - SPX, TOP + 2, P.z + 1), L.t0 + .3, L.T, 18, 1.2); cm([P.x - 1, TOP + 5, P.z + 14, P.x - SPX, TOP + 3, P.z, 44], [P.x - 1.4, TOP + 4.6, P.z + 12.4, P.x - SPX, TOP + 3, P.z, 42], L.k); sh(V(P.x, 0, P.z), 20); }, [[0, 'impact', .5], [.3, 'stone_thud', .7], [.4, 'rubble', .5]]);
 // 114 «und hustete Staub.»: Jonas de rodillas tose nubes de polvo gris; Mia a su lado, le pone la mano en la espalda
 shot(143.16, 'S', null, L => { platz(L, { dawn: true }); statues(L, { jonas: false, fe: { eyes: 'side_l', mouth: 'flat', noBlink: true } }); const c = Math.abs(Math.sin(L.T * 9)); const j = put(jonas, P.x - SPX, TOP - 1.6, P.z + .8, .3); j.blob.visible = false; actuar(j, 0, [[0, { lLx: -.3, lRx: -.3, lLk: 1.6, lRk: 1.6, lean: .4 + c * .15, aRx: 1.6, aRe: 2.0, aRz: -.4, aLx: .9, headX: .2 + c * .2 }]], { T: L.T, weight: false }); cara(j, L.T, { eyes: 'closed', mouth: c > .5 ? 'o' : 'grimace' });
-  const m = put(miaK, P.x - SPX + 2.6, TOP, P.z + 1.6, -PI / 2 - .2); m.blob.visible = false; actuar(m, 0, [[0, { lean: .2, aRx: 1.1, aRe: .3, crouch: .2 }]], { T: L.T }); cara(m, L.T, { expr: 'worried' }); dust(hp(j).add(V(0, -.2, 1.4)), L.t0 + .1, L.T, 10, .5);
-  onBody(j, 9, .5, .12, 42, L.k, 8, .4, 1.6); }, [[0, 'swipe', .4], [.1, 'cough', .6], [.5, 'cough', .5]]);
+  const m = put(miaK, P.x - SPX + 3.4, TOP, P.z - .6, -PI / 2 - .5); m.blob.visible = false; actuar(m, 0, [[0, { lean: .2, aRx: 1.1, aRe: .3, crouch: .2 }]], { T: L.T }); cara(m, L.T, { expr: 'worried' }); dust(hp(j).add(V(0, -.2, 1.4)), L.t0 + .1, L.T, 10, .5);
+  cm([P.x - SPX - 2, TOP + 3.2, P.z + 11, P.x - SPX + .6, TOP + 1.4, P.z + .8, 44], [P.x - SPX - 1.6, TOP + 3, P.z + 10, P.x - SPX + .6, TOP + 1.4, P.z + .8, 42], L.k); }, [[0, 'swipe', .4], [.1, 'cough', .6], [.5, 'cough', .5]]);
 // 115 «„Ich bin jeden Tag hier vorbeigelaufen.»: (recuerdo, sepia) Mia pasa cada día junto a Jonas, que mira el móvil y ni la ve
 shot(144.18, 'R', null, L => { platz(L); const j = put(jonas, P.x + 1.6, 0, P.z + 30, -.3); actuar(j, 0, [[0, { aRx: 1.2, aRe: 1.4, headX: .35 }]], { T: L.T }); attach(PHONE, j.aR.hand, [0, -.55, .5], [-.4, 0, 0], .9); cara(j, L.T, { eyes: 'down', mouth: 'flat' });
   walk(mia, L, P.x - 3, P.z + 32, PI / 2 + .2, 2.2, 0, { pose: { headY: -.6 }, f: { expr: 'warm', eyes: 'side_r', mouth: 'smile' } }); grade.uniforms.sepia.value = .55;
@@ -658,6 +658,36 @@ shot(162.68, 'B', null, L => { platz(L, { dusk: true }); statues(L, { jonas: fal
 // 130 «dass nichts davon für mich war.»: grúa que se aleja: el pedestal «1 JAHR SINGLE» conmigo solo, la plaza vacía al atardecer; fundido
 shot(163.8, 'B', null, L => { platz(L, { dusk: true }); statues(L, { jonas: false, fe: { eyes: 'down', mouth: 'wavy', noBlink: true } }); for (let i = 0; i < 2; i++) dove(i, P.x - 3 + i * 2, TOP + .1, P.z + .6, i, L.T);
   cm([P.x + 2, 9, P.z + 16, P.x + 2, 7.4, P.z, 42], [P.x + 2, 26, P.z + 52, P.x, 6, P.z, 48], L.k, easeOut); DARK = clamp((L.lt - 1.3) / .5) * .85; sh(V(P.x, 0, P.z + 10), 40); }, [[0, 'wind_soft', .5], [.4, 'pigeon_coo', .3]]);
+// ---------- portadas (fuera del vídeo; node cover.mjs) ----------
+// 1: Finn de piedra llorando en el pedestal «1 JAHR SINGLE», paloma en la cabeza, la gente pasando sin mirar (círculo rojo en Finn).
+// 2: el gancho: el chico del ramo convirtiéndose en piedra desde los pies, la gente señalando (círculo rojo).
+function strokeTxt(t, x, y, size, font, fill, stroke, lw, rot = 0, maxW = W * .9) { const c = octx; c.save(); c.translate(x, y); c.rotate(rot); c.font = `${size}px ${font}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.lineJoin = 'round';
+  const tw = c.measureText(t).width, k = Math.min(1, maxW / tw); c.scale(k, k); c.shadowColor = 'rgba(0,0,0,.6)'; c.shadowBlur = 26; c.shadowOffsetY = 10; c.lineWidth = lw; c.strokeStyle = stroke; c.strokeText(t, 0, 0); c.shadowColor = 'transparent';
+  if (Array.isArray(fill)) { const g = c.createLinearGradient(0, -size / 2, 0, size / 2); g.addColorStop(0, fill[0]); g.addColorStop(1, fill[1]); c.fillStyle = g; } else c.fillStyle = fill; c.fillText(t, 0, 0); c.restore(); }
+function finishCover() { grade.uniforms.sharp.value = 1.5; grade.uniforms.vig.value = .6; grade.uniforms.sat.value = 1.55; grade.uniforms.blurAmt.value = 0; grade.uniforms.flash.value = 0; bloom.strength = .14; bloom.threshold = .88; camera.updateProjectionMatrix();
+  sky.sky.position.copy(camera.position); ao.enabled = true; bokeh.enabled = false; composer.render(); ao.enabled = false; octx.fillStyle = '#000'; octx.fillRect(0, 0, W, H); octx.imageSmoothingQuality = 'high'; octx.drawImage(renderer.domElement, 0, 0, W, H); }
+function ringMark(x, y, rx, ry, col = '#ff1a2e') { const c = octx; c.save(); c.lineWidth = 18; c.strokeStyle = col; c.shadowColor = 'rgba(0,0,0,.45)'; c.shadowBlur = 14; c.beginPath(); c.ellipse(x, y, rx, ry, -.06, .25, 6.05); c.stroke(); c.restore(); }
+function sparkle(x, y, r, col = '#fff6c0') { const c = octx; c.save(); c.translate(x, y); c.fillStyle = col; c.shadowColor = col; c.shadowBlur = 20; c.beginPath(); for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4, rr = i % 2 ? r * .28 : r; c.lineTo(Math.cos(a) * rr, Math.sin(a) * rr); } c.closePath(); c.fill(); c.restore(); }
+function zTxt(x, y, s, rot = .2) { strokeTxt('Z', x, y, s, 'Lucky', ['#dff0ff', '#8ab8ff'], '#0a1a4a', s * .2, rot); }
+window.renderCover = async v => { await document.fonts.load('80px Lucky'); await document.fonts.load('80px Lilita'); out.width = 2 * W; out.height = 2 * H; octx.setTransform(2, 0, 0, 2, 0, 0); octx.imageSmoothingEnabled = true; octx.imageSmoothingQuality = 'high';
+  const T = 40.3, L = { T, lt: .8, k: 1, t0: 39.5, t1: 41, d: 1.5 }; hideAll(); BAD_.length = 0; FX2D.length = 0; DOF = 0;
+  if (v === 0) { platz(L, { dusk: true }); sun.intensity = 2.8; statues(L, { fe: { eyes: 'cry', mouth: 'wavy', noBlink: true }, je: { eyes: 'half', mouth: 'flat', noBlink: true } }); tears(finn, T); const h = hp(finn); dove(0, h.x - .3, h.y + 1.2, h.z, .5, T);
+    [[EXS[0], P.x - 9, P.z + 12, .3, 'talk'], [EXS[2], P.x + 10, P.z + 14, -.4, 'talk'], [EXS[5], P.x - 4, P.z + 16, .8, 'walk']].forEach(([c, x, z, ry, m], i) => crowdGuy(c, x, z, { ...L, lt: 0 }, i, { mode: m, ry }));
+    cam([P.x + 3.4, 9.6, P.z + 22], [P.x + 2.4, 7.6, P.z], 46); sh(V(P.x, 0, P.z + 6), 30); finishCover();
+    strokeTxt('IN DIESER STADT', W / 2, H * .17, 96, 'Lucky', ['#ffffff', '#d8e4ff'], '#0a1238', 26);
+    strokeTxt('WIRST DU ZUR', W / 2, H * .225, 104, 'Lucky', ['#fff2a0', '#f0a820'], '#3a2400', 26, -.02);
+    strokeTxt('STATUE!', W / 2, H * .295, 170, 'Lucky', ['#e8e8ee', '#9a9aa4'], '#1a1a22', 34, -.03);
+    const hd = proj(h.clone().add(V(0, .3, 0))), ft = proj(V(h.x, TOP, h.z)); ringMark(hd[0], (hd[1] + ft[1]) / 2, 150, (ft[1] - hd[1]) / 2 + 90);
+    strokeTxt('1 JAHR SINGLE = STEIN…', W / 2, H * .8, 90, 'Lilita', ['#ffffff', '#ffd0d8'], '#4a0010', 22, -.02);
+    sparkle(W * .1, H * .15, 26); sparkle(W * .9, H * .27, 22);
+  } else { platz(L); statues(L); const c = put(sucher, P.x, 0, P.z + 30, -.15); c.flowers.visible = true; actuar(c, 0, [[0, { aRx: 1.1, aRe: .9, aRz: -.1, aLx: .2, aLz: .15, headY: .4, lean: -.03 }]], { T }); stone(c, .55); cara(c, T, { eyes: 'wide', mouth: 'o', noBlink: true }); stoneDust(hp(c).add(V(0, -3, 0)), T - .3, T, 12, .8);
+    [[EXS[3], P.x - 5, P.z + 33, .6], [EXS[0], P.x + 5.4, P.z + 33.4, -.7], [EXS[4], P.x - 3, P.z + 25, .9], [EXS[1], P.x + 4, P.z + 25.6, -.9]].forEach(([e, x, z, ry], i) => crowdGuy(e, x, z, { ...L, lt: 0 }, i, { mode: i % 2 ? 'shock' : 'point', ry }));
+    cam([P.x, 6.6, P.z + 48], [P.x, 4.2, P.z + 29], 46); sh(V(P.x, 0, P.z + 28), 30); finishCover();
+    strokeTxt('EIN JAHR', W / 2, H * .16, 120, 'Lucky', ['#ffffff', '#d8e4ff'], '#0a1238', 28);
+    strokeTxt('OHNE FREUNDIN?', W / 2, H * .225, 112, 'Lucky', ['#fff2a0', '#f0a820'], '#3a2400', 28, -.02);
+    const hd = proj(hp(c).add(V(0, .3, 0))), ft = proj(c.root.position.clone()); ringMark(hd[0], (hd[1] + ft[1]) / 2, 170, (ft[1] - hd[1]) / 2 + 100);
+    strokeTxt('…DANN WIRST DU ZU STEIN!', W / 2, H * .8, 84, 'Lilita', ['#e8e8ee', '#b0b0ba'], '#1a1a22', 22, -.02);
+    sparkle(W * .12, H * .3, 24); sparkle(W * .88, H * .14, 26); } };
 
 
 // ---------- transiciones, sonidos, render ----------
