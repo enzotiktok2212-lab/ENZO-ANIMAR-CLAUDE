@@ -12,6 +12,9 @@
 - [x] motor, mundo y reparto
 - [x] planos a–d escritos (131) y revisados
 - [x] mezcla (renders/mezcla-final.wav, −12,6 LUFS; regenerar con los comandos de arriba si el contenedor es nuevo: alias 'crack' ya en sfx.py, campanitas en marca.py)
-- [ ] render (./render.sh en segundo plano, idempotente) → ./finish.sh → renders/schutzengel.mp4
+- [ ] render REPARTIDO (≈6 s/fotograma, 4872 fotogramas): aquí `./rango.sh 0 406 4` (idempotente; relanzar si se corta);
+  11 sesiones hijas renderizan 406-812 … 4466-4872 y suben `partes-render/p*.mp4` a las ramas `claude/schutzengel-render-1…11`.
+  Si una sesión falla (límite de uso), reenviarle el mensaje. Al terminar: `git fetch origin claude/schutzengel-render-N`, `git checkout origin/claude/schutzengel-render-N -- pieces/schutzengel/partes-render` (o `git archive`), `./juntar.sh partes-render`,
+  comprobar 4872 fotogramas, regenerar la mezcla si falta (ver arriba) y `./finish.sh` → renders/schutzengel.mp4
 - [ ] entrega: vídeo + portada (src/p/z_cover.js + node cover.mjs) + descripción de TikTok
 - Entrega final: vídeo + portada + descripción de TikTok (lo pidió el usuario).
