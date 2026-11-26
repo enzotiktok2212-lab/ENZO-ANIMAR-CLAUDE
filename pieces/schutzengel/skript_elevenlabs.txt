@@ -1,41 +1,39 @@
 [mysterious] In dieser Welt wird jeder mit zwei Schutzengeln geboren. [dramatic] Und sie sind immer Gegenteile.
-[amused] Meine Mama hat Frieden und Krieg. Frieden macht ihr Nutella-Pfannkuchen. [cheerful] Wer liebt die bitte nicht? [mockingly] Krieg regelt den Parkplatz.
-[amused] Herr Vogel von nebenan hat Oben und Unten. In achtzig Jahren ist er nicht ein Mal die Treppe runtergefallen.
+[amused] Meine Mama zum Beispiel hat Frieden und Krieg. Frieden macht ihr morgens Nutella-Pfannkuchen. [mockingly] Und Krieg regelt den Parkplatz.
+[amused] Herr Vogel von nebenan hat Oben und Unten. Deshalb ist er in achtzig Jahren nicht ein einziges Mal die Treppe runtergefallen.
 [serious] Zwei Engel, jedes Baby. Ohne Ausnahme.
 [sad] Außer mir.
-[calm] Bei meiner Geburt schaute der Arzt hinter meine linke Schulter. Dann hinter die rechte.
-[sad] Nichts. Ab da nannte mich die ganze Stadt: das leere Kind.
-[warmly] Aber ich war nicht allein.
-[curious] Jeder hat so einen Freund, der immer auftaucht, wenn's brennt. Wer ist das bei dir? [laughing] Bei mir? Gleich zwei: Elias und Mira.
-[calm] Geboren am selben Tag wie ich. Im selben Krankenhaus. Um dieselbe Uhrzeit: drei Uhr siebzehn.
-[mischievously] Und das Lustige: Ihre Engel hat auch nie jemand gesehen.
-[amused] Elias sagte, seine sind schüchtern. Mira sagte, ihre sind im Urlaub.
-[serious] Jedes Mal, wenn mich jemand fertigmachte, waren sie da.
-[tense] Als Kevins Kriegsengel mich gegen den Spind knallte, bog Elias um die Ecke. [whispers] Und im ganzen Flur ging das Licht aus.
-[mysterious] Als es wieder anging, lag Kevin am Boden. Keiner hatte was gesehen.
-[tense] Als die Zwillinge Lukas und Leon mich von der obersten Reihe der Tribüne schubsten, kam ich nie unten an.
-[softly] Mira fing mich auf. Ihre Hände waren warm. [whispers] Viel zu warm.
-[serious] Ich habe nie Fragen gestellt. [sighs] Hätte ich mal.
-[thoughtful] Manche Freunde kennt man eben nie ganz.
+[calm] Als ich geboren wurde, schaute der Arzt hinter meine linke Schulter. Dann hinter die rechte.
+[sad] Nichts. Und seitdem nannte mich die ganze Stadt nur noch: das leere Kind.
+[warmly] Aber ich war nicht allein. Denn ich hatte Elias und Mira, meine besten Freunde.
+[calm] Geboren am selben Tag wie ich. Im selben Krankenhaus. Sogar in derselben Minute: drei Uhr siebzehn.
+[mischievously] Und das Komische daran: Ihre Engel hat auch nie jemand gesehen.
+[amused] Elias meinte, seine sind schüchtern. Mira meinte, ihre sind im Urlaub.
+[serious] Aber jedes Mal, wenn mich jemand fertigmachte, waren die beiden plötzlich da.
+[tense] Als Kevins Kriegsengel mich gegen den Spind knallte, bog Elias um die Ecke. [whispers] Und genau in dem Moment ging im ganzen Flur das Licht aus.
+[mysterious] Als es wieder anging, lag Kevin am Boden. Und keiner hatte gesehen, was passiert war.
+[tense] Als mich die Zwillinge Lukas und Leon von der obersten Reihe der Tribüne schubsten, kam ich nie unten an.
+[softly] Denn Mira fing mich auf. Ihre Hände waren warm. [whispers] Viel zu warm.
+[serious] Ich habe nie Fragen gestellt. [sighs] Hätte ich aber besser.
 [dramatic] Denn dann kam das Gründerfest. Die ganze Stadt auf dem Marktplatz.
-[serious] Und auf der Bühne: Bürgermeister Graf. Mit den stärksten Schutzengeln der Welt.
+[serious] Und oben auf der Bühne: Bürgermeister Graf. Mit den stärksten Schutzengeln der ganzen Welt.
 [dramatic] Leben und Tod.
-[tense] Der Bürgermeister zeigte auf mich. [angry] Dieser Junge hat keine Engel. Er bringt der Stadt nur Pech.
+[tense] Plötzlich zeigte der Bürgermeister auf mich. [angry] Dieser Junge hat keine Engel. Er bringt unserer Stadt nur Pech.
 [coldly] Tod, erledige das.
-[scared] Der Tod hob seine Sense.
-[whispers] Ich schloss die Augen. [mysterious] Und dann hörte ich Elias lachen.
-[menacing] Fünfzehn Jahre, sagte er. Fünfzehn Jahre warte ich darauf, dass es einer versucht.
+[scared] Und der Tod hob seine Sense.
+[whispers] Ich schloss die Augen. [mysterious] Doch dann hörte ich Elias lachen.
+[menacing] Fünfzehn Jahre, sagte er. Fünfzehn Jahre warte ich schon darauf, dass es endlich einer versucht.
 [dramatic] Als ich die Augen öffnete, rissen schwarze Flügel aus seinem Rücken.
-[awed] Sein Schatten verschluckte den halben Platz. Und Mira brannte.
-[awed] Acht Flügel aus reinem, weißem Licht. Ihr Heiligenschein in Flammen.
+[awed] Sein Schatten verschluckte den halben Platz. Und Mira? Mira brannte.
+[awed] Acht Flügel aus reinem, weißem Licht. Und ihr Heiligenschein stand in Flammen.
 [dramatic] Der Tod erstarrte. [slowly] Nachtiel. Der Engel der absoluten Dunkelheit.
 [dramatic] Das Leben wich zurück. [slowly] Und Lumiel. Der Dämon des absoluten Lichts.
-[tense] Der Tod schlug zuerst zu.
-[excited] Nachtiel fing die Sense mit einer Hand. Und brach sie in zwei Teile.
-[tense] Das Leben schoss einen Strahl, der den ganzen Platz in einen Dschungel verwandelte.
-[excited] Lumiel schlug einfach mitten durch.
-[dramatic] Dann nahmen sie sich an den Händen. Dunkelheit und Licht. Zu einem einzigen Strahl verdreht.
-[awed] Drei Sekunden lang war der ganze Himmel schwarz und weiß.
+[tense] Trotzdem schlug der Tod zuerst zu.
+[excited] Aber Nachtiel fing die Sense mit nur einer Hand. Und brach sie einfach in zwei Teile.
+[tense] Dann schoss das Leben einen Strahl, der den ganzen Platz in einen Dschungel verwandelte.
+[excited] Doch Lumiel schlug einfach mitten durch.
+[dramatic] Und dann nahmen sich die beiden an den Händen. Dunkelheit und Licht. Zu einem einzigen Strahl verdreht.
+[awed] Drei Sekunden lang war der ganze Himmel nur noch schwarz und weiß.
 [calm] Als er wieder klar wurde, waren Leben und Tod verschwunden. [mockingly] Und der Bürgermeister versteckte sich hinter seinem Rednerpult.
 [warmly] Meine besten Freunde falteten ihre Flügel zusammen und drehten sich um, als wäre nichts passiert.
 [softly] Du warst nie leer, sagte Mira.
