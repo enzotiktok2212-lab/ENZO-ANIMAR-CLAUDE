@@ -86,7 +86,7 @@ const APPLES = Array.from({ length: 4 }, (_, i) => P_(sphere(.38, mat([0xd8202a,
 const BOOKS = Array.from({ length: 4 }, (_, i) => P_(box(1.6, .35, 2.2, mat([0x2a6ad8, 0xd8202a, 0xffd23f, 0x3ab86a][i], { roughness: .7 }), .05)));
 const STETH = P_(new THREE.Group()); { cyl(.08, .08, 1.4, mat(0x2a2a30), 6, STETH, 0, .7, 0); cyl(.3, .3, .14, mat(0xd8d8e0, { metalness: .8 }), 14, STETH, 0, 0, 0).rotation.x = PI / 2; }
 const TOD = makeTod(scene), LEBEN = makeLeben(scene); outline(TOD.root, OC); outline(LEBEN.root, OC);
-const WE = bigWings({ col: 0x100e16, col2: 0x1e1a2a, em: 0x3a0a6a, glow: .35, size: 1.05, metal: .3 }), WM = bigWings({ pairs: 4, col: 0xffffff, col2: 0xfff4d8, em: 0xfff0c0, glow: .45, size: .78, rough: .4, metal: 0 });
+const WE = bigWings({ col: 0x100e16, col2: 0x1e1a2a, em: 0x3a0a6a, glow: .35, size: 1.05, metal: .3 }), WM = bigWings({ pairs: 4, col: 0xffffff, col2: 0xfff4d8, em: 0xfff0c0, glow: .28, size: .78, rough: .4, metal: 0 });
 elias.spine.add(WE); WE.position.set(0, 1.5, -.7); mira.spine.add(WM); WM.position.set(0, 1.5, -.7); WE.visible = WM.visible = false;
 const HALO = bigHalo(0xfff2b0, true); mira.head.add(HALO); HALO.position.set(0, 2.2, -.1); HALO.rotation.x = -.25; HALO.visible = false;
 const REDEYE = []; for (const s of [-1, 1]) { const e = box(.34, .16, .06, glowM(0xff1a2a, 5), .03, elias.head, s * .32, .08, .7); e.userData.noOutline = true; e.visible = false; REDEYE.push(e); }

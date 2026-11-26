@@ -527,6 +527,9 @@ for _a, _b in [('cash_reg', 'cash'), ('money_rain', 'coins'), ('money_burst', 'c
   ('crickets', 'crickets'), ('steps', 'steps'), ('drip', 'tick_hollow'), ('birds', 'chirps'), ('gong', 'bell_far'), ('steam', 'steam'), ('bubbling', 'steam'), ('shimmer', 'sparkle'), ('slowmo', 'whoosh'), ('heartbeat', 'heartbeat')]:
     if _a not in LIB and _b in LIB: LIB[_a] = LIB[_b]
 
+# --- SCHUTZENGEL: alias ---
+LIB['crack'] = LIB['back_crack']
+
 if __name__ == '__main__':
     cues_f, voice_f, music_f, out_f = sys.argv[1:5]
     cues = json.load(open(cues_f)); DUR = 162.4

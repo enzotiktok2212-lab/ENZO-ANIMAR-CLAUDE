@@ -86,7 +86,7 @@ const APPLES = Array.from({ length: 4 }, (_, i) => P_(sphere(.38, mat([0xd8202a,
 const BOOKS = Array.from({ length: 4 }, (_, i) => P_(box(1.6, .35, 2.2, mat([0x2a6ad8, 0xd8202a, 0xffd23f, 0x3ab86a][i], { roughness: .7 }), .05)));
 const STETH = P_(new THREE.Group()); { cyl(.08, .08, 1.4, mat(0x2a2a30), 6, STETH, 0, .7, 0); cyl(.3, .3, .14, mat(0xd8d8e0, { metalness: .8 }), 14, STETH, 0, 0, 0).rotation.x = PI / 2; }
 const TOD = makeTod(scene), LEBEN = makeLeben(scene); outline(TOD.root, OC); outline(LEBEN.root, OC);
-const WE = bigWings({ col: 0x100e16, col2: 0x1e1a2a, em: 0x3a0a6a, glow: .35, size: 1.05, metal: .3 }), WM = bigWings({ pairs: 4, col: 0xffffff, col2: 0xfff4d8, em: 0xfff0c0, glow: .45, size: .78, rough: .4, metal: 0 });
+const WE = bigWings({ col: 0x100e16, col2: 0x1e1a2a, em: 0x3a0a6a, glow: .35, size: 1.05, metal: .3 }), WM = bigWings({ pairs: 4, col: 0xffffff, col2: 0xfff4d8, em: 0xfff0c0, glow: .28, size: .78, rough: .4, metal: 0 });
 elias.spine.add(WE); WE.position.set(0, 1.5, -.7); mira.spine.add(WM); WM.position.set(0, 1.5, -.7); WE.visible = WM.visible = false;
 const HALO = bigHalo(0xfff2b0, true); mira.head.add(HALO); HALO.position.set(0, 2.2, -.1); HALO.rotation.x = -.25; HALO.visible = false;
 const REDEYE = []; for (const s of [-1, 1]) { const e = box(.34, .16, .06, glowM(0xff1a2a, 5), .03, elias.head, s * .32, .08, .7); e.userData.noOutline = true; e.visible = false; REDEYE.push(e); }
@@ -383,7 +383,7 @@ shot(30.70, 'C', null, L => { town(L); walk(jonas, L, 0, -6, 0, 2.4, 0, { expr: 
 // ---------- b: mismo minuto, nadie vio sus ángeles, el pasillo, la tribuna, manos calientes (31,93 – 70,28 s) ----------
 // Flur: pasillo x ∈ ±11 (taquillas a x = ±9,8, frente a ±8,3), techo 16, suelo z ∈ [20, -80]. Tribuna: escalón r (0–3) en x = SPX - 28 - 3r, altura 1,6 + 1,6r.
 function carry(j, m, L, pose = {}) { m.root.updateMatrixWorld(true); const a = wpos(m.aL.hand), b = wpos(m.aR.hand), c = a.add(b).multiplyScalar(.5); const ry = m.root.rotation.y, rx = Math.cos(ry), rz = -Math.sin(ry);
-  put(j, c.x - rx * 2.6 + Math.sin(m.root.rotation.y) * .6, c.y - .2, c.z - rz * 2.6 + Math.cos(m.root.rotation.y) * .6, ry); j.root.rotation.z = -1.45; actuar(j, 0, [[0, { lLx: .9, lRx: .9, lLk: 1.1, lRk: 1.1, aLx: .6, aRx: .3, ...pose }]], { T: L.T, weight: false }); j.blob.visible = false; return j; }
+  put(j, c.x - rx * 2.6 + Math.sin(m.root.rotation.y) * .9, c.y - 1.0, c.z - rz * 2.6 + Math.cos(m.root.rotation.y) * .6, ry); j.root.rotation.z = -1.45; actuar(j, 0, [[0, { lLx: .9, lRx: .9, lLk: 1.1, lRk: 1.1, aLx: .6, aRx: .3, ...pose }]], { T: L.T, weight: false }); j.blob.visible = false; return j; }
 const FX = FLX, TRX = r => SPX - 28 - 3 * r, TRY = r => 1.6 + 1.6 * r;
 function kidsFlur(L, list, z0, o = {}) { list.forEach((c, i) => { const s = i % 2 ? 1 : -1, z = z0 - Math.floor(i / 2) * 6 - (i % 3); pose(c, FX + s * (3.6 + (i % 3) * .4), 0, z, s > 0 ? -PI / 2 + .5 : PI / 2 - .5, L, o.pose || { aLx: .2, aRx: .2, headY: Math.sin(L.T + i) * .3 }, o.expr || 'neutral', o.ex || {}); if (o.angels !== false) engel(c, ...NP[(i + 3) % 8], L.T, { s: .7 }); }); }
 
@@ -437,9 +437,9 @@ shot(44.82, 'W', null, L => { flurS(L); const j = pose(jonas, FX - 7.2, 0, -20, 
 shot(46.18, 'F', null, L => { flurS(L); walk(elias, L, FX - 2.6, -54, 0, 4.2, 0, { expr: 'determined' }); walk(mira, L, FX + 2.6, -54.6, 0, 4.2, 1.4, { expr: 'determined' });
   cm([FX, 3, -32, FX, 4, -54, 44], [FX, 3.4, -38, FX, 4, -52, 40], L.k); sh(V(FX, 0, -48), 22); }, [[0, 'flash', .4], [.05, 'wind', .5], [.2, 'steps', .6], [.6, 'braam_short', .4]]);
 // 46 «Als Kevins Kriegsengel»: Kevin, enorme, con su ángel Krieg encima del hombro; el ángel se crece (escala) y se arremanga
-shot(47.78, 'C', 'punch', L => { flurS(L); const k = pose(kevin, FX - 1, 0, -20, -PI / 2 + .4, L, { aLx: .3, aRx: .3, aLz: -.4, aRz: -.4, aLe: 1.6, aRe: 1.6, lean: .05 }, 'angry', { mouth: 'grin' });
+shot(47.78, 'C', 'punch', L => { flurS(L); const k = pose(kevin, FX - 1, 0, -20, PI - .35, L, { aLx: .3, aRx: .3, aLz: -.4, aRz: -.4, aLe: 1.6, aRe: 1.6, lean: .05 }, 'angry', { mouth: 'grin' });
   const A = engel(k, 'frieden', 'krieg', L.T, { s: 1, up: 1.4, spread: 3 }); if (A[1]) A[1].scale.setScalar(lerp(1, 1.5, easeOut(clamp(L.lt / .6))));
-  cm([FX + 6, 7, -3, FX - 1, 5.4, -20, 46], [FX + 5, 6.4, -7, FX - 1, 5.6, -20, 44], L.k); sh(V(FX, 0, -20), 18); }, [[0, 'impact', .5], [.1, 'growl', .5], [.4, 'whoosh_up', .4]]);
+  cm([FX + 3, 6.5, -36, FX - 1, 5.6, -20, 46], [FX + 1, 6.2, -31, FX - 1, 5.8, -20, 44], L.k); sh(V(FX, 0, -20), 18); }, [[0, 'impact', .5], [.1, 'growl', .5], [.4, 'whoosh_up', .4]]);
 // 47 «mich gegen den Spind knallte,»: el Kriegsengel empuja a Jonas con las dos manos y ¡BAM! contra la taquilla, que se abolla; sacudida
 shot(48.90, 'C', null, L => { flurS(L); const hit = clamp((L.lt - .25) / .12); const j = put(jonas, FX - lerp(4.5, 7.1, hit), 0, -20, PI / 2); actuar(j, 0, [[0, { aLx: .9 * hit, aRx: .9 * hit, aLz: .6, aRz: .6, lean: -.4 * hit, headX: -.3 * hit }]], { T: L.T }); cara(j, L.T, hit > .5 ? { expr: 'shock', eyes: 'squint', mouth: 'grimace_wide' } : { expr: 'worried' });
   const a = angel('krieg', FX - lerp(2, 4.6, hit), 6.2, -20, -PI / 2, L.T, 1.8, 4); a.userData.body.rotation.z = -.3 * hit; if (hit > 0 && hit < 1) SHAKE = 1; if (L.lt > .25 && L.lt < .55) SHAKE = 1 - (L.lt - .25) / .3;
@@ -493,7 +493,7 @@ shot(62.85, 'R', 'slow', L => { sportS(L); const k = L.k; const p = V(TRX(1) + 2
 // 60 «Denn Mira fing mich auf.»: ¡Mira aparece debajo y lo coge en brazos sin esfuerzo! Polvo, sus pies apenas se hunden
 shot(64.10, 'F', null, L => { sportS(L); const mx = TRX(0) + 6, mz = 0; const k = clamp(L.lt / .18); const m = pose(mira, mx, 0, mz, PI / 2 - .3, L, { ...CATCH, crouch: .25 - k * .1 }, 'happy', { mouth: 'grin' });
   const j = carry(jonas, m, L); j.root.position.y += lerp(5, 0, easeOut(k)); cara(j, L.T, { expr: 'shock', mouth: 'o' });
-  dust(V(mx, 0, mz), L.t0 + .15, L.T, 10, .8); onBody(m, 20, .1, .1, 44, L.k, 14, -.2); sh(V(mx, 0, mz), 18); }, [[0, 'flash', .4], [.15, 'land', .7], [.2, 'hug', .4], [.4, 'gasp', .4]]);
+  dust(V(mx, 0, mz), L.t0 + .15, L.T, 10, .8); onBody(m, 26, .25, .3, 44, L.k, 19, -.1); sh(V(mx, 0, mz), 18); }, [[0, 'flash', .4], [.15, 'land', .7], [.2, 'hug', .4], [.4, 'gasp', .4]]);
 // 61 «Ihre Hände waren warm.»: primer plano de las manos de Mira bajo la espalda de Jonas: brillan naranja
 shot(65.36, 'Z', null, L => { sportS(L); const mx = TRX(0) + 6, mz = 0; const m = pose(mira, mx, 0, mz, PI / 2 - .3, L, { ...CATCH, crouch: .15 }, 'happy'); const j = carry(jonas, m, L, { aLx: 1.6, lLx: .8, lRx: .8, lLk: .9, lRk: .9 }); cara(j, L.T, { expr: 'confused' });
   HANDG.forEach(g => { g.visible = true; g.scale.setScalar(.8 + Math.sin(L.T * 9) * .15 + L.k * .4); }); EMB.rise(wpos(mira.aR.hand), L.T, 0xffa030, 2, 4, 14);
@@ -501,14 +501,255 @@ shot(65.36, 'Z', null, L => { sportS(L); const mx = TRX(0) + 6, mz = 0; const m 
 // 62 «Viel zu warm.»: a Jonas le sale vapor de la chaqueta, suda; mira a Mira; los ojos de ella relampaguean dorados un instante
 shot(66.62, 'C', 'punch', L => { sportS(L); const mx = TRX(0) + 6, mz = 0; const m = pose(mira, mx, 0, mz, PI / 2 - .3, L, { ...CATCH, crouch: .15 }, 'happy', { mouth: 'smile' }); GOLDEYE.forEach(e => e.visible = L.lt > .35 && L.lt < .6); const j = carry(jonas, m, L, { aLx: 1.6, lLx: .8, lRx: .8, lLk: .9, lRk: .9, headY: -.6 }); cara(j, L.T, { expr: 'shock', eyes: 'wide', mouth: 'grimace' }); sweat(j, L.T, 2);
   HANDG.forEach(g => { g.visible = true; g.scale.setScalar(1.2); }); EMB.rise(hp(j).add(V(0, -1, 0)), L.T, 0xffffff, 3, 6, 20);
-  const p = hp(j).lerp(hp(m), .5); orb(L.k, p, null, [13, 1.25, .1, 42], [10, .9, .1, 40]); sh(p, 14); }, [[0, 'impact', .4], [.1, 'steam', .6], [.35, 'magic_hit', .4], [.5, 'gulp', .5]]);
+  const p = hp(j).lerp(hp(m), .5); orb(L.k, p.clone().add(V(0, 1, 0)), null, [17, 1.6, .35, 42], [13, 1.2, .3, 40]); sh(p, 14); }, [[0, 'impact', .4], [.1, 'steam', .6], [.35, 'magic_hit', .4], [.5, 'gulp', .5]]);
 // 63 «Ich habe nie Fragen gestellt.»: atardecer: los tres caminan por la calle; Jonas se encoge de hombros, sonriendo
 shot(67.50, 'W', null, L => { town(L, { dusk: true }); walk(jonas, L, 30, -2, PI, 2, 0, { expr: 'happy', pose: { aLz: -.3, aRz: -.3, aLe: 1.2, aRe: 1.2, aLx: .3, aRx: .3 } }); walk(elias, L, 26.6, -1.4, PI, 2, 1.2, { expr: 'smug' }); walk(mira, L, 33.4, -1.6, PI, 2, 2.2, { expr: 'happy' });
   orb(L.k, V(30, 4, -2 - L.lt * 2), null, [-18, 0, .1, 46], [-14, -.45, .14, 44]); POST.push(() => { for (const c of [jonas, elias, mira]) c.root.rotation.y = PI; }); sh(V(30, 0, -4), 22); }, [[0, 'swipe', .4], [.1, 'steps', .5], [.4, 'birds', .3]]);
 // 64 «Hätte ich aber besser.»: zoom lento: en la pared de la casa, sus sombras alargadas… las de Elias y Mira tienen ALAS
-shot(68.99, 'C', 'slow', L => { town(L, { dusk: true }); sun.intensity = 3.2; const z0 = -4; for (const [c, z, i] of [[jonas, z0, 0], [elias, z0 - 3.4, 1], [mira, z0 + 3.4, 2]]) walk(c, L, 40, z, PI, 1.2, i, { expr: i ? 'smug' : 'happy' });
-  WE.visible = true; WE.userData.spread(1, L.T); WE.userData.ghost(true); WM.visible = true; WM.userData.spread(1, L.T); WM.userData.ghost(true);
-  sh(V(46, 0, z0), 22); sun.position.copy(V(46, 0, z0)).add(V(-90, 40, 10)); cm([22, 8, z0 + 4, 52, 8, z0 - 2, 50], [26, 8, z0 + 2, 52, 9, z0 - 2, 44], L.k); }, [[0, 'impact', .3], [.4, 'creepy_ting', .5], [.8, 'whoosh_magic', .4]]);
+shot(68.99, 'C', 'slow', L => { town(L, { dusk: true }); for (const [c, x, i] of [[elias, -3.2, 1], [jonas, 0, 0], [mira, 3.2, 2]]) walk(c, L, x, 10, PI, 1.4, i, { expr: i ? 'smug' : 'happy' });
+  WE.visible = true; WE.userData.spread(1, L.T); WE.userData.ghost(true); WM.visible = true; WM.userData.spread(1, L.T); WM.userData.ghost(true); hemi.intensity = .35; FILL.intensity = 8; sun.intensity = 3.6;
+  sh(V(0, 0, 0), 30); sun.position.set(0, 12, 40); sun.target.position.set(0, 0, -10); cm([3, 18, 22, 0, 0, 0, 48], [-2, 22, 20, 0, 0, -2, 52], L.k); }, [[0, 'impact', .3], [.4, 'creepy_ting', .5], [.8, 'whoosh_magic', .4]]);
+// ---------- c: el Gründerfest, Graf con Leben y Tod, la guadaña, Elias ríe, las alas, Mira arde, los nombres (70,28 – 118,79 s) ----------
+// Plaza: escenario z = -64 (tablado y = 4.25), atril (0, 4.25, -60); Graf detrás del atril en (0, 4.25, -62.4) mirando +z; Leben (x = -9) y Tod (x = 9) en el escenario.
+// Jonas (0, 0, -34) mirando al escenario (ry = PI), Elias (-3.4, 0, -33.4), Mira (3.4, 0, -33.4).
+const SY = 4.25, JZ = -34;
+function trio(L, o = {}) { const j = pose(jonas, 0, 0, JZ, PI, L, o.j || {}, o.je || 'worried'); const e = pose(elias, -3.4, 0, JZ + .6, PI + .15, L, o.e || { aLx: -.2, aRx: -.2, aLe: .5, aRe: .5 }, o.ee || 'smug'); const m = pose(mira, 3.4, 0, JZ + .6, PI - .15, L, o.m || {}, o.me || 'happy'); return [j, e, m]; }
+function crowdF(L, n = 16, o = {}) { crowdAt(L, o.x ?? 0, o.z ?? -30, n, o.r0 ?? 8, o.r1 ?? 20, o.seed ?? 5, { mode: o.mode || 'cheer', expr: o.expr, gap: o.gap ?? 1.1, face: o.face, avoid: [[0, JZ], [-3.4, JZ + .6], [3.4, JZ + .6]] }); POST.push(() => DX.forEach((c, i) => { if (c.root.visible) engel(c, ...NP[i % 8], L.T, { s: .75 }); })); }
+function grafAt(L, p = {}, expr = 'happy', ex = {}) { return pose(graf, 0, SY, -62.4, 0, L, p, expr, ex); }
+function todOn(x, y, z, ry, L, p = {}, s = 1) { TOD.root.visible = true; TOD.root.position.set(x, y, z); TOD.root.rotation.y = ry; TOD.root.scale.setScalar(s); TOD.pose(L.T, p); return TOD; }
+function lebenOn(x, y, z, ry, L, p = {}, s = 1) { LEBEN.root.visible = true; LEBEN.root.position.set(x, y, z); LEBEN.root.rotation.y = ry; LEBEN.root.scale.setScalar(s); LEBEN.pose(L.T, p); return LEBEN; }
+function title(name, sub, k, col) { badge(col, name, W / 2, H * .17, k, 1, 1.25); if (sub) badge('tag', sub, W / 2, H * .255, clamp(k * 1.4 - .3), 1, .9); }
+
+// 65 «Denn dann kam das Gründerfest.»: atardecer: fuegos artificiales sobre la plaza, la pancarta GRÜNDERFEST se ilumina; grúa bajando hacia la fiesta
+shot(70.28, 'Z', 'punch', L => { festS(L); crowdF(L, 18, { mode: 'cheer' }); confetti(V(0, 14, -40), L.t0 + .2, L.T, 40, 1.4);
+  EMB.burst(V(-14, 34, -70), L.t0 + .15, L.T, 0xff4a8a, 22, 14); EMB.L2 = 0;
+  cm([0, 40, 30, 0, 16, -60, 52], [0, 16, 14, 0, 10, -60, 50], L.k, easeOut); sh(V(0, 0, -40), 50); }, [[0, 'impact', .4], [.1, 'firework', .7], [.35, 'cheer', .5], [.6, 'party_horn', .4]]);
+// 66 «Die ganze Stadt»: la multitud bailando con sus ángeles revoloteando por encima: lluvia de confeti, guirnaldas
+shot(71.99, 'W', null, L => { festS(L); crowdF(L, 22, { mode: i => ['cheer', 'clap', 'wave', 'talk'][i % 4], r0: 4, r1: 22, z: -24 }); confRain(V(0, 0, -24), L.T, 40, 40, 30, 18);
+  cm([-18, 14, 4, 0, 4, -26, 50], [18, 12, 6, 0, 4, -26, 50], L.k); sh(V(0, 0, -24), 44); }, [[0, 'swipe', .4], [.1, 'crowd_run', .3], [.3, 'cheer', .5], [.6, 'clap', .4]]);
+// 67 «auf dem Marktplatz.»: picado general de la plaza con el escenario al fondo, la fuente y los puestos encendidos
+shot(73.05, 'F', null, L => { festS(L); crowdF(L, 22, { mode: 'cheer', r0: 6, r1: 26, z: -26 });
+  cm([30, 34, 26, 0, 4, -40, 50], [22, 26, 16, 0, 4, -42, 50], L.k); sh(V(0, 0, -36), 60); }, [[0, 'flash', .3], [.1, 'bells', .4], [.5, 'cheer', .4]]);
+// 68 «Und oben auf der Bühne:»: travelling ascendente por la escalera del escenario hasta el atril vacío con el micrófono; foco que se enciende
+shot(73.78, 'S', null, L => { festS(L); lp(3, 0, 16, -52, 160, 0xfff0d0, 40); cm([-9, 2, -48, 0, 5, -60, 46], [-4, 8, -50, 0, 7, -60, 44], L.k); sh(V(0, 4, -60), 20); }, [[0, 'swipe', .4], [.2, 'switch', .5], [.4, 'drone', .3]]);
+// 69 «Bürgermeister Graf.»: Graf (levita, cadena dorada, monóculo, sombrero tirolés) llega al atril, saluda con la mano a la multitud, sonrisa de político
+shot(75.00, 'C', 'punch', L => { festS(L); lp(3, 0, 16, -52, 140, 0xfff0d0, 40); const g = grafAt(L, { aRx: 2.7, aRz: .4 + Math.sin(L.T * 8) * .25, aRe: .3, aLx: .4 }, 'happy', { mouth: 'grin' });
+  badge('tag', 'BÜRGERMEISTER GRAF', W / 2, H * .2, clamp((L.lt - .2) / .25)); onBody(g, 20, .3, .05, 42, L.k, 14, -.1, 4); sh(V(0, 4, -62), 20); }, [[0, 'impact', .5], [.1, 'cheer', .5], [.3, 'clap', .5]]);
+// 70 «Mit den stärksten Schutzengeln»: zoom lento: detrás de Graf se elevan dos sombras gigantes desde el suelo del escenario; la multitud se calla
+shot(76.02, 'Z', 'slow', L => { festS(L); grafAt(L, { aLx: 1.0, aRx: 1.0, aLe: .3, aRe: .3, aLz: .5, aRz: .5 }, 'smug', { mouth: 'grin' }); const up = easeOut(clamp(L.lt / 1.2));
+  lebenOn(-9, SY - 13 + up * 13, -65, .15, L, { eyes: up * 4 }); todOn(9, SY - 13 + up * 13, -65, -.15, L, { eyes: up * 4 });
+  EMB.rise(V(0, SY, -65), L.T, 0xfff0c0, 24, 10, 30); orb(L.k, V(0, 12, -63), null, [44, 0, .05, 50], [34, 0, .02, 48]); sh(V(0, 4, -62), 30); }, [[0, 'zoom_in', .3], [.1, 'rubble', .5], [.4, 'choir', .5], [.8, 'hum_low', .5]]);
+// 71 «der ganzen Welt.»: plano bajo desde la multitud: los tres sobre el escenario: Graf en el centro y los dos colosos detrás, ojos encendidos
+shot(77.51, 'F', null, L => { festS(L); grafAt(L, { aLx: 2.6, aRx: 2.6, aLz: .5, aRz: .5, aLe: .3, aRe: .3 }, 'smug', { mouth: 'grin' }); lebenOn(-9, SY, -65, .2, L); todOn(9, SY, -65, -.2, L);
+  crowdF(L, 10, { mode: 'shock', r0: 10, r1: 16, z: -30, gap: 2.2 }); cm([-6, 3, -24, 0, 12, -64, 52], [4, 3, -26, 0, 12, -64, 52], L.k); sh(V(0, 4, -62), 30); }, [[0, 'flash', .4], [.1, 'braam_short', .6], [.4, 'gasp', .5]]);
+// 72 «Leben»: primer plano del Leben: ojos verdes que se encienden, flores que brotan de su corona
+shot(78.62, 'C', 'punch', L => { festS(L); const l = lebenOn(-9, SY, -65, .2, L, { eyes: 2 + L.k * 4, orb: 4 }); EMB.rise(V(-9, 14, -64), L.T, 0x8aff6a, 6, 6, 16);
+  const h = l.head.getWorldPosition(V(0, 0, 0)); cm([h.x + 2, h.y, h.z + 12, h.x, h.y - 1, h.z, 40], [h.x + 1, h.y - .4, h.z + 8, h.x, h.y - 1, h.z, 38], L.k); sh(V(-9, 4, -65), 16); }, [[0, 'impact', .4], [.1, 'leaves', .6], [.3, 'hum_glow', .5]]);
+// 73 «und Tod.»: primer plano del Tod: la calavera bajo la capucha, ojos azules que se encienden
+shot(79.32, 'Z', null, L => { festS(L); const t = todOn(9, SY, -65, -.2, L, { eyes: 2 + L.k * 5 }); TINT = 'rgba(10,20,60,.2)';
+  const h = t.head.getWorldPosition(V(0, 0, 0)); cm([h.x - 2, h.y - 1, h.z + 11, h.x, h.y - .6, h.z, 40], [h.x - 1, h.y - .4, h.z + 7.5, h.x, h.y - .6, h.z, 38], L.k); sh(V(9, 4, -65), 16); }, [[0, 'zoom_in', .4], [.1, 'creepy_ting', .7], [.3, 'wind', .5]]);
+// 74 «Plötzlich zeigte»: Graf se inclina sobre el atril y señala con el dedo hacia la multitud
+shot(79.94, 'W', null, L => { festS(L); const g = grafAt(L, { ...POINT, lean: .25, aRx: 1.4 }, 'angry', { mouth: 'grimace' }); lebenOn(-9, SY, -65, .2, L); todOn(9, SY, -65, -.2, L);
+  cm([3, 9, -48, 0, 8, -62, 44], [1.5, 8.6, -51, 0, 8, -62, 42], L.k); sh(V(0, 4, -62), 24); }, [[0, 'swipe', .4], [.15, 'gasp', .5], [.4, 'tick', .4]]);
+// 75 «der Bürgermeister auf mich.»: contraplano: la multitud se gira hacia Jonas, que se señala a sí mismo («¿yo?»), con Elias y Mira a los lados
+shot(80.68, 'C', null, L => { festS(L); trio(L, { j: { aRx: 1.4, aRe: 1.9, aRz: -.3 } }); cara(jonas, L.T, { expr: 'shock', mouth: 'o' }); crowdF(L, 12, { mode: 'point', expr: 'sus', x: 0, z: JZ, r0: 7, r1: 14, gap: 1.3 });
+  orb(L.k, V(0, 4.5, JZ), null, [22, PI + .4, .1, 46], [15, PI + .1, .08, 44]); sh(V(0, 0, JZ), 24); }, [[0, 'impact', .4], [.1, 'whisper', .5], [.5, 'heartbeat', .5]]);
+// 76 «Dieser Junge hat keine Engel.»: Graf gritando al micrófono, con la cara roja; el micro silba
+shot(81.93, 'R', null, L => { festS(L); const g = grafAt(L, { ...POINT, lean: .2 }, 'angry', { mouth: Math.sin(L.T * 14) > 0 ? 'scream' : 'talk_wide' }); talk(g, L.T, 81.93, 83.5, 'angry');
+  onFace(g, 8, .2, -1, 40, L.k, 6); sh(V(0, 4, -62), 16); }, [[0, 'whirl', .4], [.05, 'shout_m', .5], [.2, 'radio', .3]]);
+// 77 «Er bringt unserer Stadt nur Pech.»: la gente se aparta de Jonas formando un círculo vacío a su alrededor; sólo Elias y Mira se quedan
+shot(83.52, 'S', null, L => { festS(L); trio(L); const k = easeOut(clamp(L.lt / 1)); crowdF(L, 16, { mode: 'walk', expr: 'sus', x: 0, z: JZ, r0: 6 + k * 8, r1: 10 + k * 10, gap: .2 }); POST.push(() => DX.forEach(c => { if (c.root.visible) { const p = c.root.position; c.root.rotation.y = Math.atan2(p.x, p.z - JZ); } }));
+  orb(L.k, V(0, 3, JZ), null, [26, PI, 1.0, 50], [30, PI + .5, 1.1, 50]); sh(V(0, 0, JZ), 34); }, [[0, 'swipe', .4], [.1, 'crowd_run', .5], [.5, 'sad_tone', .4]]);
+// 78 «Tod, erledige das.»: Graf chasquea los dedos sin mirar atrás; el Tod gira la cabeza y sus ojos se encienden al máximo
+shot(85.19, 'C', 'punch', L => { festS(L); grafAt(L, { aRx: 1.6, aRz: .5, aRe: .8, headY: .3 }, 'smug', { mouth: 'smirk' }); const t = todOn(9, SY, -65, lerp(-.2, -.7, easeOut(clamp(L.lt / .4))), L, { eyes: 7 }); lebenOn(-9, SY, -65, .2, L);
+  cm([-6, 10, -46, 4, 11, -64, 46], [-4, 9.5, -50, 5, 11, -64, 44], L.k); sh(V(0, 4, -62), 24); }, [[0, 'impact', .5], [.05, 'clack', .6], [.2, 'creepy_ting', .6], [.4, 'evil_laugh', .3]]);
+// 79 «Und der Tod hob seine Sense.»: zoom lento en contrapicado: el Tod baja flotando del escenario hasta Jonas y alza la guadaña por encima de su cabeza
+shot(86.66, 'Z', 'slow', L => { festS(L); trio(L, { j: { aLx: 1.4, aRx: 1.4, aLe: 1.9, aRe: 1.9, lean: -.25, headX: -.3 } }); cara(jonas, L.T, { expr: 'shock', eyes: 'terror', mouth: 'scream' }); sweat(jonas, L.T, 2);
+  const k = easeInOut(clamp(L.lt / 1.2)); todOn(lerp(9, 0, k), lerp(SY, 0, k), lerp(-65, JZ - 9, k), 0, L, { rx: lerp(-.3, -2.8, clamp((L.lt - .8) / .6)), sx: lerp(1.5, .4, clamp((L.lt - .8) / .6)), eyes: 7 }); TINT = 'rgba(10,10,50,.18)';
+  cm([3, 1.4, JZ + 9, 0, 9, JZ - 6, 54], [2, 1.2, JZ + 6, 0, 10, JZ - 6, 50], L.k); sh(V(0, 0, JZ), 24); }, [[0, 'zoom_in', .3], [.1, 'wind', .6], [.9, 'metal_rip', .5], [1.3, 'heartbeat', .6]]);
+// 80 «Ich schloss die Augen.»: primer plano de Jonas: aprieta los ojos, se encoge; la sombra de la guadaña le cruza la cara
+shot(88.48, 'F', null, L => { festS(L); const [j] = trio(L, { j: { aLx: 1.6, aRx: 1.6, aLe: 2, aRe: 2, crouch: .2, headX: .2 } }); cara(j, L.T, { eyes: 'closed', mouth: 'grimace_wide' }); todOn(0, 0, JZ - 9, 0, L, { rx: -2.8, sx: .4, eyes: 6 }); DARK = .15;
+  const h = hp(j); cm([h.x + 3.5, h.y + 2.6, h.z - 6.5, h.x, h.y - .3, h.z, 42], [h.x + 2.6, h.y + 2, h.z - 5, h.x, h.y - .3, h.z, 40], L.k); sh(V(0, 0, JZ), 16); }, [[0, 'flash', .3], [.1, 'gasp', .6], [.5, 'heartbeat', .6]]);
+// 81 «Doch dann hörte ich Elias lachen.»: casi a oscuras: Elias, con la cabeza gacha, empieza a reírse, los hombros le tiemblan
+shot(89.63, 'B', null, L => { festS(L); const e = pose(elias, -3.4, 0, JZ + .6, PI + .3, L, { headX: lerp(.4, -.2, L.k), lean: .1 + Math.sin(L.T * 18) * .03, aLx: -.2, aRx: -.2, aLe: .5, aRe: .5 }, 'smug'); laughF(e, L.T); DARK = .3; TINT = 'rgba(30,0,40,.25)';
+  pose(jonas, 0, 0, JZ, PI, L, { crouch: .2 }, 'worried'); onFace(e, 9, .4, 1.4, 40, L.k, 6.5); sh(V(0, 0, JZ), 16); }, [[0, 'evil_laugh', .6], [.5, 'laugh_deep', .5]]);
+// 82 «Fünfzehn Jahre, sagte er.»: Elias levanta la cabeza, sonrisa ladeada; un «15» morado gira a su lado
+shot(91.37, 'C', 'punch', L => { festS(L); const e = pose(elias, -3.4, 0, JZ + .6, PI + .3, L, { aLx: -.2, aRx: -.2, aLe: .5, aRe: .5, headX: -.1 }, 'smug'); talk(e, L.T, 91.37, 93.2, 'smug'); TINT = 'rgba(30,0,40,.15)';
+  badge('big', '15 JAHRE', W / 2, H * .2, clamp(L.lt / .2)); onFace(e, 8, .3, -1, 40, L.k, 6); sh(V(-3, 0, JZ), 16); }, [[0, 'impact', .5], [.1, 'magic_hit', .4]]);
+// 83 «Fünfzehn Jahre warte ich schon darauf,»: Elias camina despacio hacia el Tod, haciendo crujir los nudillos
+shot(93.43, 'W', null, L => { festS(L); const e = walk(elias, L, -3.4, JZ - .4, PI + .3, 1.2, 0, { expr: 'smug', pose: { aLx: 1.0, aRx: 1.0, aLe: 1.6, aRe: 1.6, aLz: -.5, aRz: -.5 } }); talk(e, L.T, 93.43, 95.5, 'smug'); todOn(0, 0, JZ - 9, 0, L, { rx: -2.8, sx: .4, eyes: 6 }); pose(jonas, 0, 0, JZ, PI, L, { crouch: .2 }, 'worried'); pose(mira, 3.4, 0, JZ + .6, PI - .15, L, {}, 'smug');
+  cm([-10, 4, JZ - 12, -2, 5, JZ, 46], [-8, 4.4, JZ - 8, -2.5, 5, JZ, 44], L.k); sh(V(0, 0, JZ), 22); }, [[0, 'swipe', .4], [.2, 'crack', .5], [.4, 'back_crack', .6], [.7, 'steps', .4]]);
+// 84 «dass es endlich einer versucht.»: los ojos de Elias se vuelven rojos y brillantes; zoom rápido
+shot(95.53, 'Z', 'slow', L => { festS(L); const e = pose(elias, -2.6, 0, JZ - 2.4, PI + .3, L, { aLx: -.2, aRx: -.2, aLe: .5, aRe: .5 }, 'angry', { mouth: 'smirk' }); REDEYE.forEach(r => r.visible = L.lt > .4); TINT = 'rgba(40,0,10,.15)';
+  onFace(e, 8.5, .1, 0, 40, L.k, 4.4); sh(V(-3, 0, JZ), 16); }, [[0, 'zoom_in', .4], [.4, 'creepy_ting', .7]]);
+// 85 «Als ich die Augen öffnete,»: Jonas abre los ojos de golpe, la cara iluminada de morado
+shot(97.17, 'F', null, L => { festS(L); const j = pose(jonas, 0, 0, JZ, PI, L, { crouch: .1, headX: -.1 }, 'shock'); cara(j, L.T, L.lt < .2 ? { eyes: 'closed', mouth: 'grimace' } : { expr: 'shock', eyes: 'wide', mouth: 'o' }); lp(3, -2, 6, JZ - 3, 120, 0x9a4aff, 20);
+  onFace(j, 6.5, .3, 0, 40, L.k, 5); sh(V(0, 0, JZ), 16); }, [[0, 'flash', .4], [.15, 'gasp', .6]]);
+// 86 «rissen schwarze Flügel aus seinem Rücken.»: ¡las alas negras estallan desde la espalda de Elias! Lluvia de plumas negras, destello rojo, temblor
+shot(98.69, 'C', 'punch', L => { festS(L); const e = pose(elias, -2.6, 0, JZ - 2.4, .4, L, { aLx: .6, aRx: .6, aLz: .6, aRz: .6, aLe: .3, aRe: .3, lean: -.15, headX: -.2 }, 'angry', { mouth: 'grin' }); const k = clamp(L.lt / .45); eliasWings(k, L.T); if (L.lt < .4) SHAKE = 1 - L.lt / .4;
+  FEA.fall(V(-2.6, 0, JZ - 2.4), L.T, 0x16141c, .2, 22, 18); if (L.lt < .12) TINT = 'rgba(255,20,40,.45)'; todOn(0, 0, JZ - 9, 0, L, { rx: -2.8, sx: .4, eyes: 6 });
+  orb(L.k, V(-2.6, 6, JZ - 2.4), null, [26, PI + .4, .12, 50], [22, PI + .15, .1, 48]); sh(V(-2, 0, JZ), 26); }, [[0, 'impact', .6], [.02, 'metal_rip', .6], [.08, 'feathers', .8], [.2, 'braam', .7], [.5, 'wind', .5]]);
+// 87 «aus seinem Rücken.»: desde atrás: las dos alas enormes se despliegan del todo con un golpe de aire que levanta el confeti
+shot(99.89, 'R', null, L => { festS(L); const e = pose(elias, -2.6, 0, JZ - 2.4, PI + .2, L, { aLx: .4, aRx: .4, aLz: .3, aRz: .3, headX: -.1 }, 'angry'); eliasWings(1, L.T); confetti(V(6, -4, JZ - 8), L.t0, L.T, 14, 1.2);
+  orb(L.k, V(-2.6, 7, JZ - 2.4), null, [24, .2, .25, 52], [19, -.25, .18, 50]); sh(V(-2, 0, JZ), 26); }, [[0, 'whirl', .4], [.1, 'wind', .6], [.3, 'feathers', .5]]);
+// 88 «Sein Schatten verschluckte den halben Platz.»: cenital: una sombra negra se extiende desde Elias y se traga media plaza; la gente corre
+shot(100.57, 'W', null, L => { festS(L); pose(elias, -2.6, 0, JZ - 2.4, PI + .2, L, { aLx: .4, aRx: .4, aLz: .3, aRz: .3 }, 'angry'); eliasWings(1, L.T); pose(jonas, 0, 0, JZ, PI, L, {}, 'shock'); pose(mira, 3.4, 0, JZ + .6, PI - .15, L, {}, 'smug');
+  crowdF(L, 20, { mode: 'run', expr: 'shock', x: 0, z: JZ, r0: 12, r1: 30, gap: 0 }); POST.push(() => DX.forEach(c => { if (c.root.visible) { const p = c.root.position; c.root.rotation.y = Math.atan2(p.x, p.z - JZ); } }));
+  SHD.visible = true; SHD.position.set(-2.6, .08, JZ - 2.4); SHD.scale.setScalar(lerp(4, 42, easeOut(clamp(L.lt / 1.4)))); hemi.intensity *= lerp(1, .55, L.k);
+  cm([0, 60, JZ + 10, 0, 0, JZ - 2, 50], [0, 46, JZ + 6, 0, 0, JZ - 2, 54], L.k); sh(V(0, 0, JZ), 40); }, [[0, 'swipe', .4], [.1, 'drone', .7], [.4, 'crowd_run', .6], [.8, 'scream_girl', .3]]);
+// 89 «den halben Platz.»: plano bajo: la oscuridad avanza por los adoquines hacia la cámara, las bombillas de las guirnaldas se apagan
+shot(101.93, 'S', null, L => { festS(L); pose(elias, -2.6, 0, JZ - 2.4, PI + .2, L, { aLx: .4, aRx: .4 }, 'angry'); eliasWings(1, L.T); SHD.visible = true; SHD.position.set(-2.6, .08, JZ - 2.4); SHD.scale.setScalar(42 + L.lt * 6);
+  hemi.intensity *= .5; FILL.intensity *= .4; for (let i = 0; i < 3; i++) LP[i].intensity *= .3; DARK = .2;
+  cm([6, 1.5, JZ + 22, -2, 6, JZ - 2, 50], [4, 1.8, JZ + 17, -2, 7, JZ - 2, 48], L.k); sh(V(0, 0, JZ), 30); }, [[0, 'whoosh_down', .5], [.2, 'switch', .5], [.5, 'hum_low', .5]]);
+// 90 «Und Mira?»: Jonas se gira hacia Mira; ella le devuelve una sonrisa tranquila… y le brilla el pelo
+shot(103.02, 'F', null, L => { festS(L); const [j, , m] = trio(L, { j: { headY: lerp(0, -.7, easeOut(clamp(L.lt / .3))) } }); cara(j, L.T, { expr: 'shock', mouth: 'o' }); cara(m, L.T, { expr: 'happy', mouth: 'smile' }); eliasWings(1, L.T); glowAt(hp(m), 3, 0xffd890, .15); DARK = .15;
+  orb(L.k, V(1.7, 5.5, JZ + .3), null, [13, PI - .7, .1, 42], [10, PI - .4, .1, 40]); sh(V(0, 0, JZ), 18); }, [[0, 'flash', .3], [.1, 'whoosh', .4], [.4, 'hum_glow', .4]]);
+// 91 «Mira brannte.»: Mira se envuelve en luz dorada: brasas subiendo, el aire tiembla a su alrededor
+shot(103.77, 'C', 'punch', L => { festS(L); const m = pose(mira, 3.4, 0, JZ + .6, PI - .15, L, { aLx: .4, aRx: .4, aLz: .5, aRz: .5, headX: -.15 }, 'determined'); GOLDEYE.forEach(e => e.visible = true); HANDG.forEach(g => g.visible = true);
+  glowAt(hp(m).add(V(0, -1, 0)), 4, 0xffb040, .1); EMB.rise(V(3.4, 0, JZ + .6), L.T, 0xffa020, 6, 14, 44); lp(3, 3.4, 5, JZ + 4, 160, 0xffb040, 24);
+  onBody(m, 18, 0, .1, 44, L.k, 13); sh(V(3, 0, JZ), 18); }, [[0, 'impact', .5], [.05, 'fire_whoosh', .7], [.2, 'fire_crackle', .6]]);
+// 92 «Acht Flügel»: zoom lento: ocho alas de luz se abren una tras otra detrás de Mira; «8»
+shot(105.04, 'Z', 'slow', L => { festS(L); const m = pose(mira, 3.4, 0, JZ + .6, PI - .15, L, { aLx: .6, aRx: .6, aLz: .7, aRz: .7, aLe: .2, aRe: .2, headX: -.2 }, 'determined'); miraWings(easeOut(clamp(L.lt / 1.1)), L.T, false);
+  glowAt(hp(m).add(V(0, -1, 0)), 4, 0xfff0c0, .1); EMB.rise(V(3.4, 0, JZ + .6), L.T, 0xfff0c0, 8, 14, 30); lp(3, 3.4, 6, JZ + 6, 140, 0xfff0d0, 30); BLOOMMAX = .24;
+  badge('gold', '8', W / 2, H * .18, clamp((L.lt - .9) / .2), 1, 1.5); onBody(m, 30, .05, .12, 48, L.k, 24); sh(V(3, 0, JZ), 24); }, [[0, 'zoom_in', .3], [.1, 'whoosh_magic', .6], [.3, 'feathers', .5], [.6, 'choir', .6]]);
+// 93 «aus reinem, weißem Licht.»: órbita alrededor de Mira con las ocho alas abiertas, plumas blancas cayendo
+shot(105.72, 'R', null, L => { festS(L); const m = pose(mira, 3.4, 0, JZ + .6, PI - .15, L, { aLx: .6, aRx: .6, aLz: .7, aRz: .7, aLe: .2, aRe: .2 }, 'determined'); miraWings(1, L.T, false); FEA.fall(V(3.4, 0, JZ), L.T, 0xffffff, .8, 22, 18);
+  glowAt(hp(m).add(V(0, -1, 0)), 4, 0xfff0c0, .1); lp(3, 3.4, 6, JZ + 6, 140, 0xfff0d0, 30); BLOOMMAX = .24; orb(L.k, V(3.4, 7, JZ + .6), null, [30, PI - .6, .15, 50], [26, PI + .5, .1, 50]); sh(V(3, 0, JZ), 26); }, [[0, 'whirl', .4], [.1, 'choir', .5], [.5, 'sparkle', .5]]);
+// 94 «Und ihr Heiligenschein»: aparece la aureola sobre su cabeza…
+shot(107.45, 'S', null, L => { festS(L); const m = pose(mira, 3.4, 0, JZ + .6, PI - .15, L, { headX: -.1 }, 'determined'); miraWings(1, L.T, true); HALO.scale.setScalar(easeOut(clamp(L.lt / .4)) * 1.2); BLOOMMAX = .24;
+  onFace(m, 9, 1.6, 0, 42, L.k, 7); sh(V(3, 0, JZ), 16); }, [[0, 'swipe', .4], [.1, 'ding_reveal', .6], [.3, 'hum_glow', .5]]);
+// 95 «stand in Flammen.»: …y se prende en llamas doradas; primer plano con brasas
+shot(108.37, 'C', 'punch', L => { festS(L); const m = pose(mira, 3.4, 0, JZ + .6, PI - .15, L, { headX: -.15 }, 'determined'); miraWings(1, L.T, true); HALO.scale.setScalar(1.2); EMB.rise(hp(m).add(V(0, 2, 0)), L.T, 0xffa020, 3, 5, 24); BLOOMMAX = .26;
+  const h = hp(m); cm([h.x - 2, h.y + 5, h.z - 7, h.x, h.y + 1.6, h.z, 42], [h.x - 1.4, h.y + 4, h.z - 5.4, h.x, h.y + 1.6, h.z, 40], L.k); sh(V(3, 0, JZ), 16); }, [[0, 'fire_whoosh', .7], [.1, 'ignite', .6], [.3, 'fire_crackle', .6]]);
+// 96 «Der Tod erstarrte.»: el Tod se congela con la guadaña en alto; escarcha azul, sus ojos parpadean
+shot(109.55, 'F', null, L => { festS(L); const t = todOn(0, 0, JZ - 9, 0, L, { rx: -2.8, sx: .4, eyes: Math.sin(L.T * 30) > 0 ? 6 : 1 }); TINT = 'rgba(120,180,255,.16)';
+  const h = t.head.getWorldPosition(V(0, 0, 0)); cm([h.x + 6, h.y - 3, h.z + 14, h.x, h.y - 2, h.z, 46], [h.x + 4, h.y - 2.4, h.z + 10.5, h.x, h.y - 2, h.z, 44], L.k); sh(V(0, 0, JZ - 9), 20); }, [[0, 'flash', .4], [.1, 'freeze', .7], [.4, 'glass_crack', .4]]);
+// 97 «Nachtiel.»: Elias de frente con las alas negras abiertas; título NACHTIEL en morado
+shot(110.73, 'C', 'punch', L => { festS(L); const e = pose(elias, -2.6, 0, JZ - 2.4, .1, L, { aLx: .3, aRx: .3, aLz: .5, aRz: .5, headX: -.1 }, 'smug', { mouth: 'smirk' }); eliasWings(1, L.T); FEA.fall(V(-2.6, 0, JZ - 2.4), L.T, 0x16141c, .2, 18, 16, 20); TINT = 'rgba(40,0,70,.2)';
+  title('NACHTIEL', null, clamp(L.lt / .2), 'red'); onBody(e, 30, 0, .1, 50, L.k, 24); sh(V(-2, 0, JZ), 26); }, [[0, 'impact', .6], [.05, 'braam', .7], [.3, 'feathers', .4]]);
+// 98 «Der Engel der absoluten Dunkelheit.»: grúa lenta alrededor de Nachtiel, ojos rojos, plumas negras cayendo; subtítulo
+shot(111.83, 'R', null, L => { festS(L); const e = pose(elias, -2.6, 0, JZ - 2.4, .1, L, { aLx: .3, aRx: .3, aLz: .5, aRz: .5 }, 'angry', { mouth: 'smirk' }); eliasWings(1, L.T); FEA.fall(V(-2.6, 0, JZ - 2.4), L.T, 0x16141c, .2, 18, 16, 24); TINT = 'rgba(40,0,70,.22)';
+  title('NACHTIEL', 'DER ENGEL DER ABSOLUTEN DUNKELHEIT', 1, 'red'); orb(L.k, V(-2.6, 6, JZ - 2.4), null, [22, -.6, -.05, 50], [24, .5, .2, 50]); sh(V(-2, 0, JZ), 26); }, [[0, 'whirl', .4], [.2, 'drone', .6], [.7, 'wind', .4]]);
+// 99 «Das Leben wich zurück.»: el Leben, en el escenario, retrocede flotando con las manos en alto y los ojos muy abiertos
+shot(114.19, 'W', null, L => { festS(L); const l = lebenOn(-9, SY, lerp(-65, -69, easeOut(L.k)), .2, L, { rx: -1.6, lx: -1.6, eyes: 2, hx: -.2 });
+  const h = l.head.getWorldPosition(V(0, 0, 0)); cm([h.x + 6, h.y - 4, h.z + 22, h.x, h.y - 3, h.z, 46], [h.x + 3, h.y - 3, h.z + 17, h.x, h.y - 3, h.z, 46], L.k); sh(V(-9, 4, -66), 24); }, [[0, 'swipe', .4], [.1, 'leaves', .5], [.4, 'gasp_old', .4]]);
+// 100 «Und Lumiel.»: Mira de frente con las ocho alas y la aureola en llamas; título LUMIEL en oro
+shot(115.76, 'C', 'punch', L => { festS(L); const m = pose(mira, 3.4, 0, JZ + .6, -.1, L, { aLx: .6, aRx: .6, aLz: .7, aRz: .7, aLe: .2, aRe: .2 }, 'determined', { mouth: 'smile' }); miraWings(1, L.T, true); HALO.scale.setScalar(1.2); BLOOMMAX = .24; glowAt(hp(m).add(V(0, -1, 0)), 4, 0xfff0c0, .1);
+  title('LUMIEL', null, clamp(L.lt / .2), 'gold'); onBody(m, 30, 0, .1, 50, L.k, 24); sh(V(3, 0, JZ), 26); }, [[0, 'impact', .6], [.05, 'magic_hit', .7], [.2, 'choir', .5]]);
+// 101 «Der Dämon des absoluten Lichts.»: grúa ascendente sobre Lumiel brillando; subtítulo
+shot(116.66, 'Z', null, L => { festS(L); const m = pose(mira, 3.4, 0, JZ + .6, -.1, L, { aLx: .6, aRx: .6, aLz: .7, aRz: .7, aLe: .2, aRe: .2 }, 'determined'); miraWings(1, L.T, true); HALO.scale.setScalar(1.2); BLOOMMAX = .24; EMB.rise(V(3.4, 0, JZ + .6), L.T, 0xfff0c0, 10, 16, 30);
+  title('LUMIEL', 'DER DÄMON DES ABSOLUTEN LICHTS', 1, 'gold'); orb(L.k, V(3.4, 6, JZ + .6), null, [24, .4, -.1, 50], [22, -.3, .3, 50]); sh(V(3, 0, JZ), 26); }, [[0, 'zoom_in', .4], [.2, 'hum_glow', .6], [.6, 'sparkle', .5]]);
+// ---------- d: la pelea, el rayo blanco y negro, el alcalde escondido, las alas plegadas, el final (118,79 – 162,4 s) ----------
+const TZ = JZ - 9;   // donde flota el Tod (delante del trío)
+function fightBase(L, o = {}) { festS(L); BLOOMMAX = .24; const e = pose(elias, o.ex ?? -2.6, 0, o.ez ?? JZ - 2.4, o.ery ?? PI, L, o.e || { aLx: .3, aRx: .3, aLz: .4, aRz: .4 }, o.ee || 'angry', { mouth: 'smirk' }); eliasWings(1, L.T);
+  const m = pose(mira, o.mx ?? 3.4, 0, o.mz ?? JZ - 1.6, o.mry ?? PI, L, o.m || { aLx: .5, aRx: .5, aLz: .6, aRz: .6 }, o.me || 'determined'); miraWings(1, L.T, true); HALO.scale.setScalar(1.2);
+  if (o.jonas !== false) pose(jonas, 0, 0, JZ + 3, PI, L, { crouch: .15, aLx: .8, aRx: .8, aLe: 1.6, aRe: 1.6 }, 'shock', { mouth: 'o' }); return [e, m]; }
+const staffTip = () => { LEBEN.root.updateMatrixWorld(true); return LEBEN.orb.getWorldPosition(V(0, 0, 0)); };
+
+// 102 «Trotzdem schlug der Tod zuerst zu.»: el Tod se descongela y lanza un tajo horizontal enorme con la guadaña hacia Elias; estela azul
+shot(118.79, 'C', 'punch', L => { const [e] = fightBase(L); const sw = easeIn(clamp((L.lt - .4) / .5)); todOn(0, 0, TZ, -.3, L, { rx: lerp(-2.8, -1.2, sw), rz: lerp(.15, -1.6, sw), sx: lerp(.4, 1.4, sw), eyes: 7 }); TINT = 'rgba(20,30,80,.15)';
+  if (sw > .2) EMB.burst(V(-1.5, 8, TZ + 3), L.t0 + .6, L.T, 0x9ae8ff, 20, 9);
+  cm([10, 5, TZ + 14, -1, 7, TZ + 2, 50], [7, 5.4, TZ + 10, -1, 7, TZ + 2, 48], L.k); sh(V(0, 0, TZ + 3), 26); }, [[0, 'impact', .4], [.1, 'growl', .5], [.45, 'whoosh', .8], [.8, 'metal_rip', .5]]);
+// 103 «Aber Nachtiel fing die Sense»: ¡CLANG! Elias atrapa la hoja con una mano; chispas azules y moradas, el suelo se agrieta
+shot(120.86, 'F', null, L => { const [e] = fightBase(L, { e: { aRx: 1.6, aRz: .3, aRe: .2, aLx: .3, lean: .2, lLx: -.4, lRx: .5 } }); todOn(0, 0, TZ, -.3, L, { rx: -1.2, rz: -1.6, sx: 1.4, eyes: 7 });
+  const hp_ = wpos(elias.aR.hand); EMB.burst(hp_, L.t0 + .05, L.T, 0xb08aff, 30, 12); if (L.lt < .3) SHAKE = 1 - L.lt / .3; dust(V(-2.6, 0, JZ - 2.4), L.t0, L.T, 10, .8);
+  orb(L.k, hp(e).add(V(0, -1, 0)), null, [17, -2.35, .1, 46], [13, -2.0, .08, 44]); sh(V(-2, 0, JZ), 22); }, [[0, 'metal_hit', .9], [.02, 'sparks', .7], [.1, 'impact', .6], [.4, 'rubble', .4]]);
+// 104 «mit nur einer Hand.»: primer plano: la mano de Elias apretando el filo brillante sin un rasguño; sonrisa ladeada
+shot(122.06, 'Z', null, L => { const [e] = fightBase(L, { e: { aRx: 1.6, aRz: .3, aRe: .2, aLx: -.2, aLe: .5 } , ee: 'smug' }); todOn(0, 0, TZ, -.3, L, { rx: -1.2, rz: -1.6, sx: 1.4, eyes: 7 }); TINT = 'rgba(40,0,70,.15)';
+  badge('red', '1 HAND', W / 2, H * .2, clamp((L.lt - .2) / .2), 1, .9); orb(L.k, wpos(elias.aR.hand), null, [11, -2.2, .15, 42], [8.5, -1.9, .12, 40]); sh(V(-2, 0, JZ), 18); }, [[0, 'zoom_in', .4], [.1, 'hum_low', .5], [.3, 'metal_creak', .5]]);
+// 105 «Und brach sie einfach in zwei Teile.»: ¡CRACK! la guadaña se parte en dos; la hoja sale girando por el aire; destello
+shot(123.22, 'C', 'punch', L => { fightBase(L, { e: { aRx: 1.6 - clamp((L.lt - .2) / .2) * .8, aRz: .3, aLx: .3, lean: .1 } }); const t = todOn(0, 0, TZ, -.3, L, { rx: -1.2, rz: -1.6, sx: 1.4, eyes: 7 }); t.snap(clamp((L.lt - .2) / 1.2)); if (L.lt > .2 && L.lt < .3) TINT = 'rgba(255,255,255,.6)';
+  EMB.burst(V(-1, 8, TZ + 4), L.t0 + .2, L.T, 0x9ae8ff, 26, 12); if (L.lt > .2 && L.lt < .45) SHAKE = 1;
+  cm([-16, 6, TZ + 10, -1, 7, TZ + 1, 50], [-13, 7, TZ + 8, -1, 8, TZ + 1, 50], L.k); sh(V(0, 0, TZ + 3), 26); }, [[0, 'impact', .5], [.2, 'glass_break', .6], [.22, 'crash_wood', .7], [.35, 'whirl', .5], [.9, 'metal_hit', .4]]);
+// 106 «Dann schoss das Leben einen Strahl,»: el Leben en el escenario alza su bastón: el orbe se carga y dispara un rayo verde enorme
+shot(125.14, 'W', null, L => { festS(L); const l = lebenOn(-9, SY, -66, .35, L, { rx: -2.2, eyes: 5, orb: 6 }); const tip = staffTip(); const k = clamp((L.lt - .4) / .3);
+  if (k > 0) { BEAM[0].visible = true; BEAM[0].userData.set(tip, tip.clone().lerp(V(3.4, 6, JZ - 1.6), k), 1.2, L.T); } EMB.rise(tip, L.T, 0x8aff6a, 3, 4, 20); lp(3, -9, 14, -60, 120 + k * 200, 0x6aff5a, 50);
+  cm([-24, 6, -40, -8, 12, -62, 50], [-20, 8, -46, -8, 12, -62, 50], L.k); sh(V(-9, 4, -64), 30); }, [[0, 'swipe', .4], [.1, 'power_on', .6], [.4, 'zap', .8], [.5, 'hum_glow', .6]]);
+// 107 «der den ganzen Platz»: el rayo verde barre la plaza: allí donde toca, brotan árboles, helechos y flores a toda velocidad
+shot(127.20, 'S', null, L => { festS(L); lebenOn(-9, SY, -66, .35, L, { rx: -2.2, eyes: 5, orb: 6 }); const tip = staffTip(); const tg = V(lerp(-30, 30, L.k), 0, lerp(-20, -40, L.k)); BEAM[0].visible = true; BEAM[0].userData.set(tip, tg, 1.1, L.T);
+  JUNG.visible = true; JUNG.userData.grow(L.k * .8); EMB.burst(tg, L.t0 + L.lt - .1, L.T, 0x8aff6a, 14, 6); lp(3, tg.x, 6, tg.z, 160, 0x6aff5a, 40);
+  cm([0, 30, 10, 0, 0, -36, 52], [10, 24, 4, 0, 0, -36, 52], L.k); sh(V(0, 0, -36), 50); }, [[0, 'swipe', .4], [.05, 'zap', .6], [.2, 'leaves', .7], [.6, 'rubble', .4]]);
+// 108 «in einen Dschungel verwandelte.»: la plaza convertida en selva: lianas sobre las casas, flores gigantes; la gente asoma entre las plantas
+shot(128.24, 'Z', null, L => { festS(L); JUNG.visible = true; JUNG.userData.grow(.8 + L.k * .2); crowdF(L, 10, { mode: 'shock', r0: 18, r1: 30, z: -30 });
+  badge('green', 'DSCHUNGEL!', W / 2, H * .2, clamp((L.lt - .1) / .2), 1, .9); cm([-30, 10, 10, 0, 6, -30, 50], [-22, 14, 2, 0, 5, -32, 50], L.k); sh(V(0, 0, -30), 50); }, [[0, 'zoom_in', .4], [.1, 'birds', .5], [.3, 'leaves', .5], [.6, 'whinny', .2]]);
+// 109 «Doch Lumiel schlug einfach mitten durch.»: Mira vuela contra el rayo verde y lo parte de un puñetazo: el rayo estalla en chispas
+shot(129.49, 'C', 'punch', L => { festS(L); JUNG.visible = true; JUNG.userData.grow(1); lebenOn(-9, SY, -66, .35, L, { rx: -2.2, eyes: 5, orb: 6 }); const tip = staffTip();
+  const fly = easeOut(clamp(L.lt / .5)); const mp = V(lerp(3.4, -2, fly), lerp(0, 6, fly), lerp(JZ - 1.6, -50, fly)); const m = put(mira, mp.x, mp.y, mp.z, PI + .4); actuar(m, 0, [[0, { aRx: 2.8, aRe: .1, aLx: .4, aLz: .6, lean: .5, lLx: -.6, lRx: .4 }]], { T: L.T, weight: false }); cara(m, L.T, { expr: 'angry', mouth: 'grimace' }); m.blob.visible = false; miraWings(1, L.T, true); HALO.scale.setScalar(1.2);
+  const hit = wpos(m.aR.hand); if (L.lt < .5) { BEAM[0].visible = true; BEAM[0].userData.set(tip, hit, 1.1, L.T); } else { EMB.burst(hit, L.t0 + .5, L.T, 0x8aff6a, 40, 14); if (L.lt < .7) TINT = 'rgba(200,255,200,.4)'; SHAKE = L.lt < .8 ? 1 : 0; }
+  BLOOMMAX = .26; cm([12, 10, -26, -4, 8, -52, 50], [8, 9, -32, -4, 8, -52, 48], L.k); sh(V(-4, 0, -50), 30); }, [[0, 'whoosh_up', .6], [.45, 'impact', .9], [.5, 'explosion', .6], [.55, 'sparks', .5]]);
+// 110 «mitten durch.»: Mira aterriza junto a Elias con el puño humeante, las ocho alas abiertas
+shot(130.89, 'F', null, L => { const [e, m] = fightBase(L, { m: { aRx: 1.2, aRe: 1.6, aLx: .4, aLz: .6 }, me: 'smug' }); JUNG.visible = true; JUNG.userData.grow(1); EMB.rise(wpos(mira.aR.hand), L.T, 0xffffff, 1.4, 4, 14);
+  orb(L.k, V(.4, 6, JZ - 2), null, [26, PI + .3, .1, 50], [22, PI - .15, .1, 50]); sh(V(0, 0, JZ), 26); }, [[0, 'flash', .3], [.05, 'land', .7], [.2, 'steam', .4]]);
+// 111 «Und dann nahmen sich die beiden an den Händen.»: Elias y Mira se miran, asienten y se dan la mano; luz y oscuridad se mezclan en sus manos
+shot(131.92, 'R', null, L => { const k = easeOut(clamp(L.lt / .6)); const [e, m] = fightBase(L, { ex: -2.6 + k * 1.4, mx: 3.4 - k * 1.4, ez: JZ - 2, mz: JZ - 2, ery: PI - .4, mry: PI + .4, e: { aLx: 1.2 * k, aLz: -.3 * k, aLe: .2 }, m: { aRx: 1.2 * k, aRz: .3 * k, aRe: .2 }, ee: 'smug', me: 'smug' }); JUNG.visible = true; JUNG.userData.grow(1);
+  const hm = wpos(elias.aL.hand).lerp(wpos(mira.aR.hand), .5); glowAt(hm, 1.5 + k, 0xffffff, .3 * k); EMB.rise(hm, L.T, L.T * 8 % 2 > 1 ? 0xffffff : 0x8a3aff, 2, 4, 20);
+  orb(L.k, V(0, 6, JZ - 2), null, [22, PI + .5, .1, 48], [16, PI - .2, .1, 46]); sh(V(0, 0, JZ), 22); }, [[0, 'whirl', .4], [.2, 'hug', .4], [.5, 'hum_glow', .6], [.8, 'magic_hit', .4]]);
+// 112 «Dunkelheit und Licht.»: espiral: alas negras y blancas giran alrededor de las manos unidas
+shot(134.13, 'Z', null, L => { const [e, m] = fightBase(L, { ex: -1.2, mx: 2, ez: JZ - 2, mz: JZ - 2, ery: PI - .4, mry: PI + .4, e: { aLx: 1.2, aLz: -.3, aLe: .2 }, m: { aRx: 1.2, aRz: .3, aRe: .2 }, ee: 'determined' }); JUNG.visible = true; JUNG.userData.grow(1);
+  const hm = wpos(elias.aL.hand).lerp(wpos(mira.aR.hand), .5); glowAt(hm, 3, 0xffffff, .35); FEA.fall(hm.clone().add(V(0, -6, 0)), L.T * 2, L.T * 4 % 2 > 1 ? 0xffffff : 0x16141c, .5, 10, 12, 28);
+  orb(0, hm, null, [lerp(14, 9, L.k), PI + L.k * 1.4, .15, 46], [0, 0, 0]); sh(V(0, 0, JZ), 20); }, [[0, 'zoom_in', .4], [.1, 'feathers', .6], [.3, 'choir', .5]]);
+// 113 «Zu einem einzigen Strahl verdreht.»: zoom lento: de sus manos sale un rayo trenzado, blanco y negro, que atraviesa al Tod y al Leben
+shot(135.17, 'C', 'slow', L => { const [e, m] = fightBase(L, { ex: -1.2, mx: 2, ez: JZ - 2, mz: JZ - 2, ery: PI - .2, mry: PI + .2, e: { aLx: 1.6, aLz: -.2, aLe: .1, aRx: .4 }, m: { aRx: 1.6, aRz: .2, aRe: .1, aLx: .4 }, ee: 'determined' }); JUNG.visible = true; JUNG.userData.grow(1);
+  todOn(0, 0, TZ - 10, 0, L, { eyes: 7 }); lebenOn(-9, SY, -66, .35, L, { eyes: 5 }); const hm = wpos(elias.aL.hand).lerp(wpos(mira.aR.hand), .5); const k = easeOut(clamp((L.lt - .3) / .6));
+  for (const [b, dx] of [[BEAM[1], .9], [BEAM[2], -.9]]) { b.visible = k > 0; const tw = V(Math.sin(L.T * 20) * dx, Math.cos(L.T * 20) * dx, 0); b.userData.set(hm.clone().add(tw), hm.clone().lerp(V(-4, 9, -66), k).add(tw.multiplyScalar(-1)), 1.4, L.T); }
+  BLOOMMAX = .35; if (k > 0) lp(3, 0, 10, JZ - 20, 260, 0xffffff, 60); cm([8, 4, JZ + 12, -2, 8, -54, 50], [5, 4.6, JZ + 8, -2, 8, -54, 46], L.k); sh(V(0, 0, JZ - 10), 40); }, [[0, 'riser_short', .5], [.3, 'zap', .9], [.35, 'fire_whoosh', .6], [.6, 'explosion', .5]]);
+// 114 «Drei Sekunden lang»: el impacto: TODO se vuelve blanco y negro; las figuras de Tod y Leben se deshacen en luz; «3 SEKUNDEN»
+shot(137.32, 'F', null, L => { festS(L); JUNG.visible = true; JUNG.userData.grow(1); BW = 1; BLOOMMAX = .4; const d = clamp(L.lt / .9);
+  todOn(0, 0, TZ - 10, 0, L, { eyes: 7 }, 1 - d * .9); lebenOn(-9, SY, -66, .35, L, { eyes: 5 }, 1 - d * .9); EMB.burst(V(-4, 9, -60), L.t0, L.T, 0xffffff, 44, 16); grade.uniforms.flash.value = lerp(.9, 0, clamp(L.lt / .4));
+  badge('big', '3 SEKUNDEN', W / 2, H * .2, clamp((L.lt - .2) / .2), 1, .9); cm([0, 8, -20, -4, 10, -62, 54], [0, 10, -26, -4, 10, -62, 52], L.k); sh(V(0, 0, -50), 40); }, [[0, 'explosion', .9], [.05, 'impact', .8], [.3, 'braam', .7]]);
+// 115 «war der ganze Himmel»: vista de la ciudad desde lo alto, en blanco y negro, el cielo partido en dos (mitad negra, mitad blanca)
+shot(138.26, 'W', null, L => { festS(L); JUNG.visible = true; JUNG.userData.grow(1); BW = 1; setSky([0, 0, 0], [.5, .5, .5], [1, 1, 1]); sun.intensity = 3.5;
+  cm([-60, 50, 60, 0, 30, -60, 56], [-40, 60, 50, 0, 40, -60, 56], L.k); sh(V(0, 0, -30), 60); }, [[0, 'swipe', .4], [.1, 'hum_low', .6], [.4, 'wind', .6]]);
+// 116 «nur noch schwarz und weiß.»: la gente de la plaza, en blanco y negro, mira al cielo con la boca abierta; nada se mueve
+shot(139.28, 'Z', null, L => { festS(L); JUNG.visible = true; JUNG.userData.grow(1); BW = 1; crowdF(L, 12, { mode: 'shock', r0: 10, r1: 20, z: -24 }); POST.push(() => DX.forEach(c => { if (c.root.visible) c.head.rotation.x = -.5; }));
+  cm([4, 3, 4, 0, 8, -24, 50], [2, 3.4, -2, 0, 9, -24, 50], L.k); sh(V(0, 0, -24), 40); }, [[0, 'zoom_in', .4], [.1, 'silence_tick', .6], [.5, 'heartbeat', .4]]);
+// 117 «Als er wieder klar wurde,»: el color vuelve en una ola desde el centro; humo y plumas flotando
+shot(140.83, 'F', null, L => { festS(L); JUNG.visible = true; JUNG.userData.grow(1 - L.k * .6); BW = 1 - easeOut(L.k); FEA.fall(V(0, 0, -50), L.T, 0xffffff, .6, 30, 16, 16); 
+  cm([10, 8, -30, 0, 8, -62, 50], [6, 9, -36, 0, 8, -62, 48], L.k); sh(V(0, 4, -62), 30); }, [[0, 'flash', .4], [.1, 'wind', .5], [.4, 'chime', .5]]);
+// 118 «waren Leben und Tod verschwunden.»: el escenario: donde estaban, sólo quedan dos marcas quemadas y la media guadaña en el suelo
+shot(142.08, 'S', null, L => { festS(L); EMB.rise(V(0, SY, -64), L.T, 0xffd090, 20, 8, 24);
+  cm([-6, 8, -40, 0, 6, -64, 50], [-2, 7.5, -45, 0, 6, -64, 48], L.k); sh(V(0, 4, -62), 26); }, [[0, 'swipe', .4], [.1, 'wind', .4], [.4, 'sad_tone', .3]]);
+// 119 «Und der Bürgermeister versteckte sich»: Graf agachado detrás del atril, temblando, con el sombrero torcido
+shot(143.92, 'C', 'punch', L => { festS(L); const g = put(graf, 0, SY, -62.6, 0); actuar(g, 0, [[0, { crouch: .9, lean: .3, aLx: 2.2, aRx: 2.2, aLe: 1.6, aRe: 1.6, headX: .2 }]], { T: L.T }); shiver(g, L.T); cara(g, L.T, { expr: 'shock', eyes: 'terror', mouth: 'grimace' }); sweat(g, L.T, 2);
+  cm([6, 9, -72, 0, 5.5, -62, 46], [4, 8.4, -69, 0, 5.5, -62, 44], L.k); sh(V(0, 4, -62), 18); }, [[0, 'impact', .4], [.1, 'shiver', .5], [.4, 'gulp', .5]]);
+// 120 «hinter seinem Rednerpult.»: de frente: sólo asoman los ojos y el sombrero por encima del atril, que tiembla
+shot(145.24, 'R', null, L => { festS(L); const g = put(graf, 0, SY - .8, -62.6, 0); actuar(g, 0, [[0, { crouch: .7, aLx: 1.9, aRx: 1.9, aLe: 1.4, aRe: 1.4 }]], { T: L.T }); cara(g, L.T, { expr: 'shock', eyes: 'terror', mouth: 'o' }); g.root.position.x = Math.sin(L.T * 40) * .06;
+  cm([1.5, 8, -48, 0, 7, -61, 42], [.8, 7.6, -51, 0, 7, -61, 40], L.k); sh(V(0, 4, -62), 18); }, [[0, 'whirl', .4], [.2, 'shiver', .5], [.6, 'kids_laugh', .3]]);
+// 121 «Meine besten Freunde falteten ihre Flügel zusammen»: Elias y Mira pliegan las alas a la vez, despacio; las plumas caen
+shot(146.71, 'W', null, L => { festS(L); const f = 1 - easeInOut(clamp(L.lt / 1.6)); const e = pose(elias, -2.6, 0, JZ - 2.4, PI, L, { aLx: -.2, aRx: -.2, aLe: .5, aRe: .5 }, 'smug'); WE.visible = true; WE.userData.spread(f, L.T); REDEYE.forEach(r => r.visible = f > .3);
+  const m = pose(mira, 3.4, 0, JZ - 1.6, PI, L, {}, 'happy'); miraWings(f, L.T, f > .2); HALO.scale.setScalar(Math.max(.01, f) * 1.2); GOLDEYE.forEach(g => g.visible = f > .3); FEA.fall(V(0, 0, JZ - 2), L.T, 0xffffff, .6, 16, 12, 12);
+  orb(L.k, V(.4, 6, JZ - 2), null, [28, 0, .1, 50], [22, .3, .1, 48]); sh(V(0, 0, JZ), 24); }, [[0, 'swipe', .4], [.2, 'feathers', .6], [.6, 'cloth', .5], [1.2, 'whoosh_down', .4]]);
+// 122 «und drehten sich um,»: se dan la vuelta hacia Jonas como si nada; Elias se mete las manos en los bolsillos
+shot(148.95, 'R', null, L => { festS(L); const t = easeInOut(clamp(L.lt / .6)); pose(elias, -2.6, 0, JZ - 2.4, lerp(PI, .2, t), L, { aLx: -.25, aRx: -.25, aLe: .5, aRe: .5 }, 'smug', { mouth: 'smirk' }); pose(mira, 3.4, 0, JZ - 1.6, lerp(PI, -.2, t), L, { aLx: .2, aRx: .2 }, 'happy', { mouth: 'grin' });
+  pose(jonas, 0, 0, JZ + 3, PI, L, {}, 'shock', { mouth: 'o' }); orb(L.k, V(0, 5, JZ), null, [20, PI - .5, .12, 46], [15, PI - .2, .1, 46]); sh(V(0, 0, JZ), 22); }, [[0, 'whirl', .4], [.1, 'steps', .4], [.4, 'whistle_inno', .5]]);
+// 123 «als wäre nichts passiert.»: plano a la altura de Jonas: sus amigos delante, normales, saludando; detrás, la plaza destrozada
+shot(150.09, 'F', null, L => { festS(L); JUNG.visible = true; JUNG.userData.grow(.4); pose(elias, -2.6, 0, JZ - 2.4, .2, L, { aLx: -.25, aRx: -.25, aLe: .5, aRe: .5 }, 'smug'); pose(mira, 3.4, 0, JZ - 1.6, -.2, L, { aRx: 2.6, aRz: .3 + Math.sin(L.T * 9) * .2, aRe: .3 }, 'happy', { mouth: 'grin' });
+  cm([0, 6, JZ + 18, 0, 5, JZ - 2, 48], [0, 6, JZ + 14, 0, 5, JZ - 2, 46], L.k); sh(V(0, 0, JZ), 22); }, [[0, 'flash', .3], [.2, 'chime', .4]]);
+// 124 «Du warst nie leer,»: Mira se acerca y le pone la mano en el pecho a Jonas, sonriendo con ternura
+shot(151.46, 'C', null, L => { festS(L); const j = pose(jonas, 0, 0, JZ + 3, PI, L, {}, 'sad'); const m = pose(mira, 1.6, 0, JZ - .6, -.3 + PI * 0, L, { aRx: 1.3, aRe: .3, aRz: -.3 }, 'warm', { mouth: 'smile' }); m.root.rotation.y = faceTo(m.root.position, j.root.position); talk(m, L.T, 151.46, 152.6, 'warm');
+  tears(j, L.T, 0); const c = hp(m).lerp(hp(j), .5); orb(L.k, c, null, [13, -1.3, .05, 42], [10, -1.05, .05, 40]); sh(V(0, 0, JZ), 16); }, [[0, 'impact', .2], [.1, 'strings', .5], [.4, 'sniff', .4]]);
+// 125 «sagte Mira.»: primer plano de Mira, guiño
+shot(152.61, 'S', null, L => { festS(L); const j = pose(jonas, 0, 0, JZ + 3, PI, L, {}, 'sad'); const m = pose(mira, 1.6, 0, JZ - .6, 0, L, { aRx: 1.3, aRe: .3, aRz: -.3 }, 'warm', { eyes: L.lt > .2 ? 'wink' : 'happy', mouth: 'grin' }); m.root.rotation.y = faceTo(m.root.position, j.root.position);
+  onFace(m, 7.5, .4, 2.8, 40, L.k, 6); sh(V(0, 0, JZ), 16); }, [[0, 'swipe', .4], [.2, 'ding_soft', .4]]);
+// 126 «Wir sind nur nie von deiner Seite gewichen,»: Elias le pasa el brazo por los hombros a Jonas; los tres juntos, los amigos a sus lados (como dos ángeles)
+shot(153.09, 'Z', null, L => { festS(L); const j = pose(jonas, 0, 0, JZ + 3, 0, L, {}, 'happy', { mouth: 'open_smile' }); tears(j, L.T, 0); const e = pose(elias, -2.6, 0, JZ + 3, .15, L, { aRx: 1.8, aRz: -.9, aRe: .3 }, 'warm'); talk(e, L.T, 153.09, 155.2, 'warm'); pose(mira, 2.6, 0, JZ + 3, -.15, L, { aLx: 1.8, aLz: .9, aLe: .3 }, 'happy', { mouth: 'smile' });
+  onBody(j, 22, 0, .1, 44, L.k, 15); sh(V(0, 0, JZ + 3), 20); }, [[0, 'zoom_in', .4], [.2, 'hug', .5], [.5, 'strings', .4]]);
+// 127 «sagte Elias.»: Elias le revuelve el pelo a Jonas, sonrisa de verdad
+shot(155.24, 'C', null, L => { festS(L); const j = pose(jonas, 0, 0, JZ + 3, 0, L, { headZ: Math.sin(L.T * 14) * .1 }, 'happy', { eyes: 'happy', mouth: 'laugh' }); const e = pose(elias, -2.4, 0, JZ + 3, .5, L, { aRx: 2.6, aRz: -.8, aRe: .4 + Math.sin(L.T * 14) * .2 }, 'happy', { mouth: 'grin' });
+  const c = hp(j).lerp(hp(e), .5); orb(L.k, c, null, [11, .5, .05, 42], [8.5, .2, .05, 40]); sh(V(0, 0, JZ), 16); }, [[0, 'impact', .2], [.2, 'laugh_deep', .5], [.4, 'kids_laugh', .3]]);
+// 128 «Also ja.»: Jonas mira a cámara y se encoge de hombros con una sonrisa enorme
+shot(156.14, 'F', null, L => { festS(L); const j = pose(jonas, 0, 0, JZ + 3, 0, L, { aLx: .3, aRx: .3, aLz: -.5, aRz: -.5, aLe: 1.5, aRe: 1.5 }, 'happy', { mouth: 'grin' });
+  onFace(j, 7, .2, 0, 40, L.k, 5.4); sh(V(0, 0, JZ), 16); }, [[0, 'flash', .3], [.2, 'ding_soft', .4]]);
+// 129 «In dieser Welt hat jeder zwei Schutzengel.»: noche, la plaza recuperada: la gente con sus angelitos de dos en dos, farolillos; grúa subiendo
+shot(156.77, 'W', null, L => { festS(L); crowdF(L, 20, { mode: i => ['talk', 'wave', 'cheer', 'clap'][i % 4], r0: 6, r1: 24, z: -24 }); confRain(V(0, 0, -24), L.T, 30, 40, 30, 18);
+  cm([0, 5, 10, 0, 6, -30, 50], [0, 22, 20, 0, 4, -30, 52], L.k); sh(V(0, 0, -24), 44); }, [[0, 'swipe', .4], [.1, 'bells', .5], [.5, 'cheer', .4], [1.2, 'choir', .4]]);
+// 130 «Meine tun nur so,»: los tres se alejan por la calle iluminada, de espaldas; Jonas en medio
+shot(159.08, 'R', null, L => { town(L, { night: true }); for (const [c, x, i] of [[elias, -3.2, 1], [jonas, 0, 0], [mira, 3.2, 2]]) walk(c, L, x, 10, PI, 2.2, i, { expr: 'happy' });
+  orb(L.k, V(0, 5, 10 - L.lt * 2.2), null, [16, .25, .15, 46], [20, 0, .2, 46]); sh(V(0, 0, 8), 24); }, [[0, 'whirl', .4], [.1, 'steps', .5], [.5, 'owl', .3]]);
+// 131 «als wären sie meine besten Freunde.»: plano final: sus sombras alargadas en el suelo bajo la farola… las de Elias y Mira tienen alas
+shot(160.10, 'Z', 'slow', L => { town(L, { night: true }); for (const [c, x, i] of [[elias, -3.2, 1], [jonas, 0, 0], [mira, 3.2, 2]]) walk(c, L, x, 4, PI, 1.8, i, { expr: 'happy' }); sun.intensity = 2.4;
+  WE.visible = true; WE.userData.spread(1, L.T); WE.userData.ghost(true); WM.visible = true; WM.userData.spread(1, L.T); WM.userData.ghost(true); hemi.intensity = .25; FILL.intensity = 8; sun.intensity = 3.4; sun.color.setRGB(.8, .86, 1);
+  sh(V(0, 0, 0), 30); sun.position.set(0, 12, 40); sun.target.position.set(0, 0, -10); cm([0, 22, 14, 0, 0, -8, 50], [0, 26, 18, 0, 0, -10, 54], L.k); }, [[0, 'zoom_in', .3], [.2, 'whoosh_magic', .5], [.6, 'lullaby', .4], [1.4, 'ding_reveal', .6]]);
 
 
 // ---------- transiciones, sonidos, render ----------

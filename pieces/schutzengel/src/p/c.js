@@ -58,7 +58,7 @@ shot(86.66, 'Z', 'slow', L => { festS(L); trio(L, { j: { aLx: 1.4, aRx: 1.4, aLe
   cm([3, 1.4, JZ + 9, 0, 9, JZ - 6, 54], [2, 1.2, JZ + 6, 0, 10, JZ - 6, 50], L.k); sh(V(0, 0, JZ), 24); }, [[0, 'zoom_in', .3], [.1, 'wind', .6], [.9, 'metal_rip', .5], [1.3, 'heartbeat', .6]]);
 // 80 «Ich schloss die Augen.»: primer plano de Jonas: aprieta los ojos, se encoge; la sombra de la guadaña le cruza la cara
 shot(88.48, 'F', null, L => { festS(L); const [j] = trio(L, { j: { aLx: 1.6, aRx: 1.6, aLe: 2, aRe: 2, crouch: .2, headX: .2 } }); cara(j, L.T, { eyes: 'closed', mouth: 'grimace_wide' }); todOn(0, 0, JZ - 9, 0, L, { rx: -2.8, sx: .4, eyes: 6 }); DARK = .15;
-  onFace(j, 7, .2, 0, 40, L.k, 5.4); POST.push(() => j.root.rotation.y = PI); sh(V(0, 0, JZ), 16); }, [[0, 'flash', .3], [.1, 'gasp', .6], [.5, 'heartbeat', .6]]);
+  const h = hp(j); cm([h.x + 3.5, h.y + 2.6, h.z - 6.5, h.x, h.y - .3, h.z, 42], [h.x + 2.6, h.y + 2, h.z - 5, h.x, h.y - .3, h.z, 40], L.k); sh(V(0, 0, JZ), 16); }, [[0, 'flash', .3], [.1, 'gasp', .6], [.5, 'heartbeat', .6]]);
 // 81 «Doch dann hörte ich Elias lachen.»: casi a oscuras: Elias, con la cabeza gacha, empieza a reírse, los hombros le tiemblan
 shot(89.63, 'B', null, L => { festS(L); const e = pose(elias, -3.4, 0, JZ + .6, PI + .3, L, { headX: lerp(.4, -.2, L.k), lean: .1 + Math.sin(L.T * 18) * .03, aLx: -.2, aRx: -.2, aLe: .5, aRe: .5 }, 'smug'); laughF(e, L.T); DARK = .3; TINT = 'rgba(30,0,40,.25)';
   pose(jonas, 0, 0, JZ, PI, L, { crouch: .2 }, 'worried'); onFace(e, 9, .4, 1.4, 40, L.k, 6.5); sh(V(0, 0, JZ), 16); }, [[0, 'evil_laugh', .6], [.5, 'laugh_deep', .5]]);
@@ -79,7 +79,7 @@ shot(98.69, 'C', 'punch', L => { festS(L); const e = pose(elias, -2.6, 0, JZ - 2
   FEA.fall(V(-2.6, 0, JZ - 2.4), L.T, 0x16141c, .2, 22, 18); if (L.lt < .12) TINT = 'rgba(255,20,40,.45)'; todOn(0, 0, JZ - 9, 0, L, { rx: -2.8, sx: .4, eyes: 6 });
   orb(L.k, V(-2.6, 6, JZ - 2.4), null, [26, PI + .4, .12, 50], [22, PI + .15, .1, 48]); sh(V(-2, 0, JZ), 26); }, [[0, 'impact', .6], [.02, 'metal_rip', .6], [.08, 'feathers', .8], [.2, 'braam', .7], [.5, 'wind', .5]]);
 // 87 «aus seinem Rücken.»: desde atrás: las dos alas enormes se despliegan del todo con un golpe de aire que levanta el confeti
-shot(99.89, 'R', null, L => { festS(L); const e = pose(elias, -2.6, 0, JZ - 2.4, PI + .2, L, { aLx: .4, aRx: .4, aLz: .3, aRz: .3, headX: -.1 }, 'angry'); eliasWings(1, L.T); confetti(V(-2.6, -4, JZ - 2.4), L.t0, L.T, 30, 1.2);
+shot(99.89, 'R', null, L => { festS(L); const e = pose(elias, -2.6, 0, JZ - 2.4, PI + .2, L, { aLx: .4, aRx: .4, aLz: .3, aRz: .3, headX: -.1 }, 'angry'); eliasWings(1, L.T); confetti(V(6, -4, JZ - 8), L.t0, L.T, 14, 1.2);
   orb(L.k, V(-2.6, 7, JZ - 2.4), null, [24, .2, .25, 52], [19, -.25, .18, 50]); sh(V(-2, 0, JZ), 26); }, [[0, 'whirl', .4], [.1, 'wind', .6], [.3, 'feathers', .5]]);
 // 88 «Sein Schatten verschluckte den halben Platz.»: cenital: una sombra negra se extiende desde Elias y se traga media plaza; la gente corre
 shot(100.57, 'W', null, L => { festS(L); pose(elias, -2.6, 0, JZ - 2.4, PI + .2, L, { aLx: .4, aRx: .4, aLz: .3, aRz: .3 }, 'angry'); eliasWings(1, L.T); pose(jonas, 0, 0, JZ, PI, L, {}, 'shock'); pose(mira, 3.4, 0, JZ + .6, PI - .15, L, {}, 'smug');
@@ -95,20 +95,20 @@ shot(103.02, 'F', null, L => { festS(L); const [j, , m] = trio(L, { j: { headY: 
   orb(L.k, V(1.7, 5.5, JZ + .3), null, [13, PI - .7, .1, 42], [10, PI - .4, .1, 40]); sh(V(0, 0, JZ), 18); }, [[0, 'flash', .3], [.1, 'whoosh', .4], [.4, 'hum_glow', .4]]);
 // 91 «Mira brannte.»: Mira se envuelve en luz dorada: brasas subiendo, el aire tiembla a su alrededor
 shot(103.77, 'C', 'punch', L => { festS(L); const m = pose(mira, 3.4, 0, JZ + .6, PI - .15, L, { aLx: .4, aRx: .4, aLz: .5, aRz: .5, headX: -.15 }, 'determined'); GOLDEYE.forEach(e => e.visible = true); HANDG.forEach(g => g.visible = true);
-  glowAt(hp(m).add(V(0, -2.4, 0)), 6 + Math.sin(L.T * 9) * .4, 0xffb040, .3); EMB.rise(V(3.4, 0, JZ + .6), L.T, 0xffa020, 6, 14, 44); lp(3, 3.4, 5, JZ + 4, 160, 0xffb040, 24);
+  glowAt(hp(m).add(V(0, -1, 0)), 4, 0xffb040, .1); EMB.rise(V(3.4, 0, JZ + .6), L.T, 0xffa020, 6, 14, 44); lp(3, 3.4, 5, JZ + 4, 160, 0xffb040, 24);
   onBody(m, 18, 0, .1, 44, L.k, 13); sh(V(3, 0, JZ), 18); }, [[0, 'impact', .5], [.05, 'fire_whoosh', .7], [.2, 'fire_crackle', .6]]);
 // 92 «Acht Flügel»: zoom lento: ocho alas de luz se abren una tras otra detrás de Mira; «8»
 shot(105.04, 'Z', 'slow', L => { festS(L); const m = pose(mira, 3.4, 0, JZ + .6, PI - .15, L, { aLx: .6, aRx: .6, aLz: .7, aRz: .7, aLe: .2, aRe: .2, headX: -.2 }, 'determined'); miraWings(easeOut(clamp(L.lt / 1.1)), L.T, false);
-  glowAt(hp(m).add(V(0, -2.4, 0)), 7, 0xfff0c0, .22); EMB.rise(V(3.4, 0, JZ + .6), L.T, 0xfff0c0, 8, 14, 30); lp(3, 3.4, 6, JZ + 6, 140, 0xfff0d0, 30); BLOOMMAX = .3;
+  glowAt(hp(m).add(V(0, -1, 0)), 4, 0xfff0c0, .1); EMB.rise(V(3.4, 0, JZ + .6), L.T, 0xfff0c0, 8, 14, 30); lp(3, 3.4, 6, JZ + 6, 140, 0xfff0d0, 30); BLOOMMAX = .24;
   badge('gold', '8', W / 2, H * .18, clamp((L.lt - .9) / .2), 1, 1.5); onBody(m, 30, .05, .12, 48, L.k, 24); sh(V(3, 0, JZ), 24); }, [[0, 'zoom_in', .3], [.1, 'whoosh_magic', .6], [.3, 'feathers', .5], [.6, 'choir', .6]]);
 // 93 «aus reinem, weißem Licht.»: órbita alrededor de Mira con las ocho alas abiertas, plumas blancas cayendo
 shot(105.72, 'R', null, L => { festS(L); const m = pose(mira, 3.4, 0, JZ + .6, PI - .15, L, { aLx: .6, aRx: .6, aLz: .7, aRz: .7, aLe: .2, aRe: .2 }, 'determined'); miraWings(1, L.T, false); FEA.fall(V(3.4, 0, JZ), L.T, 0xffffff, .8, 22, 18);
-  glowAt(hp(m).add(V(0, -2.4, 0)), 7, 0xfff0c0, .2); lp(3, 3.4, 6, JZ + 6, 140, 0xfff0d0, 30); BLOOMMAX = .3; orb(L.k, V(3.4, 7, JZ + .6), null, [30, PI - .6, .15, 50], [26, PI + .5, .1, 50]); sh(V(3, 0, JZ), 26); }, [[0, 'whirl', .4], [.1, 'choir', .5], [.5, 'sparkle', .5]]);
+  glowAt(hp(m).add(V(0, -1, 0)), 4, 0xfff0c0, .1); lp(3, 3.4, 6, JZ + 6, 140, 0xfff0d0, 30); BLOOMMAX = .24; orb(L.k, V(3.4, 7, JZ + .6), null, [30, PI - .6, .15, 50], [26, PI + .5, .1, 50]); sh(V(3, 0, JZ), 26); }, [[0, 'whirl', .4], [.1, 'choir', .5], [.5, 'sparkle', .5]]);
 // 94 «Und ihr Heiligenschein»: aparece la aureola sobre su cabeza…
-shot(107.45, 'S', null, L => { festS(L); const m = pose(mira, 3.4, 0, JZ + .6, PI - .15, L, { headX: -.1 }, 'determined'); miraWings(1, L.T, true); HALO.scale.setScalar(easeOut(clamp(L.lt / .4)) * 1.2); BLOOMMAX = .3;
+shot(107.45, 'S', null, L => { festS(L); const m = pose(mira, 3.4, 0, JZ + .6, PI - .15, L, { headX: -.1 }, 'determined'); miraWings(1, L.T, true); HALO.scale.setScalar(easeOut(clamp(L.lt / .4)) * 1.2); BLOOMMAX = .24;
   onFace(m, 9, 1.6, 0, 42, L.k, 7); sh(V(3, 0, JZ), 16); }, [[0, 'swipe', .4], [.1, 'ding_reveal', .6], [.3, 'hum_glow', .5]]);
 // 95 «stand in Flammen.»: …y se prende en llamas doradas; primer plano con brasas
-shot(108.37, 'C', 'punch', L => { festS(L); const m = pose(mira, 3.4, 0, JZ + .6, PI - .15, L, { headX: -.15 }, 'determined'); miraWings(1, L.T, true); HALO.scale.setScalar(1.2); EMB.rise(hp(m).add(V(0, 2, 0)), L.T, 0xffa020, 3, 5, 24); BLOOMMAX = .32;
+shot(108.37, 'C', 'punch', L => { festS(L); const m = pose(mira, 3.4, 0, JZ + .6, PI - .15, L, { headX: -.15 }, 'determined'); miraWings(1, L.T, true); HALO.scale.setScalar(1.2); EMB.rise(hp(m).add(V(0, 2, 0)), L.T, 0xffa020, 3, 5, 24); BLOOMMAX = .26;
   const h = hp(m); cm([h.x - 2, h.y + 5, h.z - 7, h.x, h.y + 1.6, h.z, 42], [h.x - 1.4, h.y + 4, h.z - 5.4, h.x, h.y + 1.6, h.z, 40], L.k); sh(V(3, 0, JZ), 16); }, [[0, 'fire_whoosh', .7], [.1, 'ignite', .6], [.3, 'fire_crackle', .6]]);
 // 96 «Der Tod erstarrte.»: el Tod se congela con la guadaña en alto; escarcha azul, sus ojos parpadean
 shot(109.55, 'F', null, L => { festS(L); const t = todOn(0, 0, JZ - 9, 0, L, { rx: -2.8, sx: .4, eyes: Math.sin(L.T * 30) > 0 ? 6 : 1 }); TINT = 'rgba(120,180,255,.16)';
@@ -123,8 +123,8 @@ shot(111.83, 'R', null, L => { festS(L); const e = pose(elias, -2.6, 0, JZ - 2.4
 shot(114.19, 'W', null, L => { festS(L); const l = lebenOn(-9, SY, lerp(-65, -69, easeOut(L.k)), .2, L, { rx: -1.6, lx: -1.6, eyes: 2, hx: -.2 });
   const h = l.head.getWorldPosition(V(0, 0, 0)); cm([h.x + 6, h.y - 4, h.z + 22, h.x, h.y - 3, h.z, 46], [h.x + 3, h.y - 3, h.z + 17, h.x, h.y - 3, h.z, 46], L.k); sh(V(-9, 4, -66), 24); }, [[0, 'swipe', .4], [.1, 'leaves', .5], [.4, 'gasp_old', .4]]);
 // 100 «Und Lumiel.»: Mira de frente con las ocho alas y la aureola en llamas; título LUMIEL en oro
-shot(115.76, 'C', 'punch', L => { festS(L); const m = pose(mira, 3.4, 0, JZ + .6, -.1, L, { aLx: .6, aRx: .6, aLz: .7, aRz: .7, aLe: .2, aRe: .2 }, 'determined', { mouth: 'smile' }); miraWings(1, L.T, true); HALO.scale.setScalar(1.2); BLOOMMAX = .3; glowAt(hp(m).add(V(0, -2.4, 0)), 7, 0xfff0c0, .18);
+shot(115.76, 'C', 'punch', L => { festS(L); const m = pose(mira, 3.4, 0, JZ + .6, -.1, L, { aLx: .6, aRx: .6, aLz: .7, aRz: .7, aLe: .2, aRe: .2 }, 'determined', { mouth: 'smile' }); miraWings(1, L.T, true); HALO.scale.setScalar(1.2); BLOOMMAX = .24; glowAt(hp(m).add(V(0, -1, 0)), 4, 0xfff0c0, .1);
   title('LUMIEL', null, clamp(L.lt / .2), 'gold'); onBody(m, 30, 0, .1, 50, L.k, 24); sh(V(3, 0, JZ), 26); }, [[0, 'impact', .6], [.05, 'magic_hit', .7], [.2, 'choir', .5]]);
 // 101 «Der Dämon des absoluten Lichts.»: grúa ascendente sobre Lumiel brillando; subtítulo
-shot(116.66, 'Z', null, L => { festS(L); const m = pose(mira, 3.4, 0, JZ + .6, -.1, L, { aLx: .6, aRx: .6, aLz: .7, aRz: .7, aLe: .2, aRe: .2 }, 'determined'); miraWings(1, L.T, true); HALO.scale.setScalar(1.2); BLOOMMAX = .3; EMB.rise(V(3.4, 0, JZ + .6), L.T, 0xfff0c0, 10, 16, 30);
+shot(116.66, 'Z', null, L => { festS(L); const m = pose(mira, 3.4, 0, JZ + .6, -.1, L, { aLx: .6, aRx: .6, aLz: .7, aRz: .7, aLe: .2, aRe: .2 }, 'determined'); miraWings(1, L.T, true); HALO.scale.setScalar(1.2); BLOOMMAX = .24; EMB.rise(V(3.4, 0, JZ + .6), L.T, 0xfff0c0, 10, 16, 30);
   title('LUMIEL', 'DER DÄMON DES ABSOLUTEN LICHTS', 1, 'gold'); orb(L.k, V(3.4, 6, JZ + .6), null, [24, .4, -.1, 50], [22, -.3, .3, 50]); sh(V(3, 0, JZ), 26); }, [[0, 'zoom_in', .4], [.2, 'hum_glow', .6], [.6, 'sparkle', .5]]);

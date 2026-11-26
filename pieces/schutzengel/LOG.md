@@ -10,8 +10,8 @@
 ## Estado
 - [x] análisis, guion, voz y tiempos
 - [x] motor, mundo y reparto
-- [x] planos a–d escritos (131); revisión en curso
-- [ ] revisión de todos los planos
-- [ ] mezcla
-- [ ] render y entrega
+- [x] planos a–d escritos (131) y revisados
+- [x] mezcla (renders/mezcla-final.wav, −12,6 LUFS; regenerar con los comandos de arriba si el contenedor es nuevo: alias 'crack' ya en sfx.py, campanitas en marca.py)
+- [ ] render (./render.sh en segundo plano, idempotente) → ./finish.sh → renders/schutzengel.mp4
+- [ ] entrega: vídeo + portada (src/p/z_cover.js + node cover.mjs) + descripción de TikTok
 - Entrega final: vídeo + portada + descripción de TikTok (lo pidió el usuario).
