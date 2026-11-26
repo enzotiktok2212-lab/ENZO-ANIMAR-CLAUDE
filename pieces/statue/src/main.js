@@ -177,7 +177,7 @@ function crowdGuy(c, x, z, L, i, o) { const T = L.T + i * .37, face = o.face || 
   else if (m === 'sitcheer') { const j = Math.abs(Math.sin(L.T * 7 + i)); sit(c, x, o.seat ?? 2.4, z, ry, L, { aLx: 2.8, aRx: 2.8, aLz: .45 + j * .2, aRz: .45 + j * .2, aLe: .3, aRe: .3 }); laughF(c, T); }
   else { actuar(c, 0, [[0, { headX: Math.sin(L.T * 1.3 + i) * .06, headY: Math.sin(L.T * .9 + i * 2) * .2, aLx: .1 + Math.sin(L.T * 2 + i) * .08 }]], { T: L.T }); cara(c, T, { expr: o.expr || 'neutral', mouth: o.mouth }); } }
 // plano medio/entero de un personaje: cámara delante (yaw relativo a su ry), centro a la altura del pecho
-function onBody(ch, dist, yaw = 0, pitch = .12, fov = 42, k = 0, dist2 = null, yaw2 = null, dy = 3.3) { const s = ch.spec.scale || 1, p = ch.root.position, c = V(p.x, p.y + dy * s, p.z); const q = easeInOut(clamp(k)); orbit(c, lerp(dist, dist2 ?? dist * .88, q) * s, ch.root.rotation.y + lerp(yaw, yaw2 ?? yaw, q), pitch, fov); }
+function onBody(ch, dist, yaw = 0, pitch = .12, fov = 42, k = 0, dist2 = null, yaw2 = null, dy = 3.3) { const s = ch.spec.scale || 1, p = ch.root.position, q = easeInOut(clamp(k)), d = lerp(dist, dist2 ?? dist * .88, q); const hy = hp(ch).y, mid = (p.y + hy) / 2 + .6 * s; const c = V(p.x, lerp(mid, hy - .2 * s, clamp((13 - d) / 7)), p.z); orbit(c, d * s, ch.root.rotation.y + lerp(yaw, yaw2 ?? yaw, q), pitch, fov); }
 const _hb = new THREE.Box3(); function heightTo(ch, m) { ch.root.updateMatrixWorld(true); _hb.makeEmpty(); ch.root.traverseVisible(o => { if (o.isMesh && o !== ch.blob) _hb.expandByObject(o, false); }); const t = _hb.max.y - ch.root.position.y; ch.root.scale.multiplyScalar(m * M2U / t); return ch; }
 const toCam = ch => { const p = ch.root.position; ch.root.rotation.y = Math.atan2(camera.position.x - p.x, camera.position.z - p.z); };
 // ---------- escenarios por plano ----------
@@ -196,8 +196,8 @@ function statues(L, o = {}) { const out = {};
   if (o.finn !== false) { const f = put(finn, P.x + SPX, TOP, P.z, 0); actuar(f, 0, [[0, { ...STF, ...(o.fp || {}) }]], { T: L.T, weight: false }); f.blob.visible = false; stone(f, 1); cara(f, L.T, o.fe || { expr: 'sad' }); out.f = f; }
   return out; }
 const headF = () => hp(finn), headJ = () => hp(jonas);
-function myRoom(L, o = {}) { use('KZ'); if (o.night) { inside(.55, 20); FILL.color.setRGB(.8, .86, 1); KZ.WN.p.material.map = KZ.WN.night; lp(1, KZX - 1, 8, -8, 26, 0xffc870, 24); } else { inside(.95, 38); KZ.WN.p.material.map = KZ.WN.day; } }
-function miaRoom(L) { use('MZ'); inside(.95, 38); MZ.WN.p.material.map = MZ.WN.day; }
+function myRoom(L, o = {}) { use('KZ'); KZ.CLOCK.visible = false; if (o.night) { inside(.55, 20); FILL.color.setRGB(.8, .86, 1); KZ.WN.p.material.map = KZ.WN.night; lp(1, KZX - 1, 8, -8, 26, 0xffc870, 24); } else { inside(.95, 38); KZ.WN.p.material.map = KZ.WN.day; } }
+function miaRoom(L) { use('MZ'); MZ.CLOCK.visible = false; inside(.95, 38); MZ.WN.p.material.map = MZ.WN.day; }
 function cousinRoom(L) { use('CZ'); inside(.8, 30); FILL.color.setRGB(.9, .94, 1); }
 function school(L) { use('KL'); inside(.95, 30); }
 function mallS(L) { use('ML'); inside(1.1, 40); ML.g.userData.run(L.T); }
