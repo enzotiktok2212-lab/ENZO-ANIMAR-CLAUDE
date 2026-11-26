@@ -13,7 +13,7 @@ window.renderCover = async v => { await document.fonts.load('80px Lucky'); await
   const T = 40.3, L = { T, lt: .8, k: 1, t0: 39.5, t1: 41, d: 1.5 }; hideAll(); BAD_.length = 0; FX2D.length = 0; DOF = 0;
   if (v === 0) { platz(L, { dusk: true }); sun.intensity = 2.8; statues(L, { fe: { eyes: 'cry', mouth: 'wavy', noBlink: true }, je: { eyes: 'half', mouth: 'flat', noBlink: true } }); tears(finn, T); const h = hp(finn); dove(0, h.x - .3, h.y + 1.2, h.z, .5, T);
     [[EXS[0], P.x - 9, P.z + 12, .3, 'talk'], [EXS[2], P.x + 10, P.z + 14, -.4, 'talk'], [EXS[5], P.x - 4, P.z + 16, .8, 'walk']].forEach(([c, x, z, ry, m], i) => crowdGuy(c, x, z, { ...L, lt: 0 }, i, { mode: m, ry }));
-    cam([P.x + 3.4, 9.6, P.z + 22], [P.x + 2.4, 7.6, P.z], 46); sh(V(P.x, 0, P.z + 6), 30); finishCover();
+    cam([h.x - .6, 9.2, P.z + 19], [h.x - .6, 7.4, P.z], 46); sh(V(P.x, 0, P.z + 6), 30); finishCover();
     strokeTxt('IN DIESER STADT', W / 2, H * .17, 96, 'Lucky', ['#ffffff', '#d8e4ff'], '#0a1238', 26);
     strokeTxt('WIRST DU ZUR', W / 2, H * .225, 104, 'Lucky', ['#fff2a0', '#f0a820'], '#3a2400', 26, -.02);
     strokeTxt('STATUE!', W / 2, H * .295, 170, 'Lucky', ['#e8e8ee', '#9a9aa4'], '#1a1a22', 34, -.03);
