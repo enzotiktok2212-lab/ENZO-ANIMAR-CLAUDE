@@ -1,0 +1,75 @@
+[  0.00-  2.08] In dieser Stadt macht dich Kaffee reich.
+[  2.46-  5.50] Jede Tasse, die du trinkst, landet sofort als Geld auf deinem Konto.
+[  5.84- 12.20] Ein Espresso, 12 Euro, eine ganze Kanne, 800 Euro, 20 Tassen und schon bist du Millionär!
+[ 12.74- 16.12] Einen Tag lang hatte ich mehr Geld als jeder andere Mensch auf der Erde.
+[ 16.84- 19.58] Heute würde ich alles hergeben für eine einzige Nachtschlaf.
+[ 20.86- 24.44] Jeder hat so jemanden in der Familie, der vor der ersten Tasse kein Wort sagt.
+[ 24.80- 26.36] Bei uns ist das meine Oma.
+[ 27.08- 30.90] Acht Tassen am Tag und um neun schläft sie trotzdem wie ein Baby.
+[ 31.34- 36.16] Und die Legende sagt, wer an einem einzigen Tag 50 Tassen schafft, wird Billionär.
+[ 36.58- 38.78] Aber bei Tasse 30 gibt jeder auf.
+[ 39.28- 41.76] Deshalb sind die Büros hier leer und die Cafés voll.
+[ 42.14- 44.34] Gezählt wird mit einem Kaffezähler am Handgelenk.
+[ 44.70- 47.48] Und seit hier jeder Kaffee trinkt, ist niemand mehr müde.
+[ 47.84- 53.02] Am reichsten sind übrigens die über 55, 40 Jahre lang jeden Morgen eine Tasse
+[ 53.02- 54.70] und um drei Kaffee und Kuchen.
+[ 55.50- 59.12] Deshalb fahren hier die Rentner Sportwagen und die Jugendlichen Fahrrad.
+[ 59.50- 61.86] Aber gezählt wird nur richtig guter Kaffee.
+[ 62.18- 64.90] Und das Verrückte? Der Beste ist nicht der teuerste.
+[ 65.28- 70.14] Chibo zum Beispiel kostet wenig, schmeckt wie im Kaffee und jede Tasse zählt doppelt.
+[ 70.46- 74.30] Meine Friseurin trinkt nur Jakobs Krönung und der Name ist kein Zufall.
+[ 74.64- 78.92] Bei jeder zehnten Tasse schenkt ihr der Zähler eine goldene Krone, 1000 Euro wert.
+[ 79.38- 82.46] Sie hat schon sieben und sich davon einen Salon in Paris gekauft.
+[ 82.96- 84.92] Mein Zahnarzt brüht nur mit Militer.
+[ 85.34- 87.62] Wusstest du, dass Militer den Kaffeefilter erfunden hat?
+[ 88.30- 91.68] 1908 in Dresden, mit Papier aus dem Schulheft ihres Sohnes.
+[ 92.24- 94.60] Deshalb zählt bei Militer sogar der letzte Tropfen.
+[ 95.30- 98.94] In seiner Mittagspause hat er sich ausversehen ein Kreuzfahrtschiff gekauft.
+[ 99.40-101.46] Und wer hat am meisten? Unser Pfarrer.
+[101.56-103.14] Er trinkt sogar während der Predigt.
+[103.46-106.04] Und seit elf Jahren hat er kein Auge mehr zugemacht.
+[106.38-107.74] Und schummeln? Lieber nicht.
+[108.18-110.40] Neulich hat einer braunes Wasser in seine Tasse gefüllt.
+[110.40-113.84] 22 Jahre Gefängnis. Nur Leitungswasser.
+[114.32-117.88] Und ehrlich? Ich wüsste sofort, wer bei uns als Erster da drin sitzen würde.
+[118.40-119.98] Nur bei uns zu Hause gab es ein Problem.
+[120.50-122.60] Mich. Ich vertrage kein Koffein.
+[123.06-126.40] Ein halber Espresso, 6 Euro und schon zitterten meine Hände.
+[127.08-129.86] Ich war der einzige in der Familie ohne einen Cent.
+[130.32-132.60] Bis Oma mich einesabends in den Keller schickte.
+[132.80-133.70] Kartoffeln holen.
+[133.88-137.14] Hinter den Einmachgläsern stand eine alte Kaffeedose aus Blech.
+[137.40-139.22] Darauf ein Zettel im Omas Handschrift.
+[139.22-141.50] Nur ein Löffel. Niemals mehr.
+[141.84-144.06] Ich nahm einen Löffel und kochte mir eine Tasse.
+[144.44-145.70] Und meine Hände zitterten nicht.
+[146.02-147.70] Es war der beste Kaffee meines Lebens.
+[148.14-150.90] Also nahm ich natürlich noch einen Löffel und noch einen.
+[151.18-152.68] Aber die Dose blieb randvoll.
+[152.98-154.16] Mein Zähler drehte durch.
+[154.54-156.34] 10 Tassen. 20. 30.
+[156.86-158.30] Genau da, wo alle aufgeben.
+[158.64-161.24] 40. 50 Tassen. Die Legende.
+[161.58-162.72] Ich war Billionär.
+[163.12-164.76] Ich war schneller als die Straßenbahn.
+[164.96-165.96] Und kaufte mir eine Villa.
+[165.96-169.24] Drei Sportwagen und gleich die ganze Chivo-Filiale.
+[169.66-172.08] Doch am nächsten Morgen kam im Fernsehen eine Eilmeldung.
+[172.42-174.84] Wegen mir brach im ganzen Land die Wirtschaft zusammen.
+[175.14-177.12] Ein Brötchen kostete plötzlich eine Million.
+[177.54-178.82] Die Regierung beschloss über Nacht.
+[179.20-180.38] Kaffegeld zählt nicht mehr.
+[180.74-182.16] Das neue Geld? Schlaf.
+[182.68-184.28] Jede Stunde Schlaf 100 Euro.
+[184.84-185.36] Mein Problem?
+[185.86-188.04] Seit dieser Dose habe ich keine Minute mehr geschlafen.
+[188.40-189.24] Der Pfarrer auch nicht.
+[189.72-191.42] Wir zwei sind jetzt die Ärmsten der Stadt.
+[191.80-192.94] Und die reichste Frau der Welt?
+[193.26-193.82] Meine Oma.
+[193.82-195.32] Acht Tassen am Tag.
+[195.64-197.42] Und um neun schläft sie wie ein Baby.
+[197.90-200.38] Und weißt du noch, wer mich an dem Abend in den Keller geschickt hat?
+[200.84-201.74] Oma lächelt nur.
+[202.32-204.54] Und gestern Abend hat sie mich schon wieder runter geschickt.
+[205.02-205.90] Kartoffeln holen.
