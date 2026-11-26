@@ -39,3 +39,7 @@ pieces/schlafwandler/test/
 pieces/schlafwandler/dbg/
 pieces/schlafwandler/*.log
 pieces/schlafwandler/rv2/
+pieces/statue/review*/
+pieces/statue/rv*/
+pieces/statue/*.log
+pieces/statue/test/
