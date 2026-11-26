@@ -10,7 +10,8 @@
 ## Estado
 - [x] análisis, guion, voz y tiempos
 - [x] motor, mundo y reparto
-- [~] planos (a hecho)
+- [x] planos a–d escritos (131); revisión en curso
 - [ ] revisión de todos los planos
 - [ ] mezcla
 - [ ] render y entrega
+- Entrega final: vídeo + portada + descripción de TikTok (lo pidió el usuario).

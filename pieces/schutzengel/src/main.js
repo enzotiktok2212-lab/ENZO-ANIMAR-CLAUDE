@@ -196,8 +196,8 @@ function town(L, o = {}) { use('LT'); MAUER.visible = !!o.mauer; if (o.night) { 
 // el Gründerfest: plaza al atardecer-noche con guirnaldas encendidas, escenario y puestos
 function festS(L, o = {}) { use('LT'); FEST.g.visible = true; FESTX.forEach(x => x.visible = true); dusk(); sun.intensity = 1.5; setSky([.1, .08, .32], [.5, .26, .5], [1, .5, .3]); hemi.intensity = .8; FILL.intensity = o.fill ?? 36; FILL.color.setRGB(1, .82, .6); bloom.strength = .3;
   lp(0, 0, 14, -54, 120, 0xffc070, 70); lp(1, -20, 12, -30, 70, 0xffb060, 60); lp(2, 20, 12, -30, 70, 0xffb060, 60); lp(3, 0, 12, -8, 60, 0xffd090, 60); }
-function kitchen(L) { use('KU'); inside(1.0, 40); KU.W.p.material.map = KU.W.day; }
-function nursery(L) { use('NU'); inside(1.05, 44); FILL.color.setRGB(1, .98, .95); }
+function kitchen(L, o = {}) { use('KU'); for (const c of KU.CH) c.visible = !!o.chairs; inside(1.0, 40); KU.W.p.material.map = KU.W.day; }
+function nursery(L) { use('NU'); NU.CR.forEach(c => c.g.visible = true); inside(1.05, 44); FILL.color.setRGB(1, .98, .95); }
 function vogelS(L, o = {}) { use('VH'); PARK.visible = !!o.park; day(); }
 function flurS(L, o = {}) { use('FL'); inside(.9, 36); if (o.dark) { for (const l of FLL) l.intensity = 0; for (const m of FLG) m.material.emissiveIntensity = 0; hemi.intensity = .05; FILL.intensity = 0; renderer.toneMappingExposure = .4; } }
 function sportS(L) { use('SP'); day(); }
