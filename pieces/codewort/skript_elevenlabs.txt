@@ -5,7 +5,6 @@
 [amused] Frau Kessler von gegenüber schreit ihres jeden Abend an ihre eigene Haustür. [shouting] „Sauerkraut!“
 [deadpan] Sie wohnt ganz allein. Trotzdem schreit sie es ins leere Haus, bevor sie aufschließt. Nur zur Sicherheit.
 [mischievously] Inzwischen kennt die ganze Straße ihr Wort.
-[playful] Und mal ehrlich: Wer aus deiner Familie würde euer Wort als Erstes ausplaudern? Bei uns? Ganz klar: mein Opa.
 [ominous] Letzten Herbst haben die Brandts ihrem Vater die Tür aufgemacht. Ohne nach dem Wort zu fragen.
 [creepy] Am nächsten Morgen stand die ganze Familie an der Straßenbahn. Alle fünf. Alle mit demselben breiten Lächeln.
 [whispers] Die echten Brandts hat seitdem niemand mehr gesehen.
@@ -51,7 +50,7 @@
 [softly] Sie fragte, ob Mama schon da ist. Ich sagte: „Fast.“
 [softly] Sie fragte, warum wir in der Kammer sitzen. Ich sagte: „Das ist eine Türübung.“
 [anxious] Und ich dachte immer wieder dasselbe.
-[whispers] Niemand kennt unser Wort außer uns. Nicht Frau Kessler. Nicht meine Freunde. Nicht mal Opa.
+[whispers] Niemand kennt unser Wort außer uns. Nicht Frau Kessler. Nicht meine Freunde.
 [whispers] Woher kannte dieses Ding also „Kuschelkeks“?
 [tense][whispers] Irgendwann wurde es draußen still.
 [whispers] Ich bin aus der Kammer geschlichen und habe noch mal durch den Türspion geschaut.
