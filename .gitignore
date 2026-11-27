@@ -47,3 +47,10 @@ pieces/statue/review*/
 pieces/statue/rv*/
 pieces/statue/*.log
 pieces/statue/test/
+pieces/codewort/review*/
+pieces/codewort/rv*/
+pieces/codewort/*.log
+pieces/codewort/test/
+pieces/codewort/renders/
+pieces/codewort/node_modules
+pieces/codewort/partes-in/
