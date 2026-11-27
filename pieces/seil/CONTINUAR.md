@@ -10,11 +10,13 @@ Audio: `node cues.mjs` → alias que falten en `sfx.py` → `python3 sfx.py audi
 Render repartido (ver skill §10): `./rango.sh A B 4` + sesiones hijas (`claude/seil-render-N`) → `./juntar.sh partes-render` → `./finish.sh` → renders/seil.mp4.
 
 ## Estado
-- [x] análisis, guion
-- [x] voz recortada y tiempos (194,6 s; DUR = 195.4; 998/999 corregidos a mano en words.json)
+- [x] análisis, guion, voz (194,6 s; DUR = 195.4; 5862 fotogramas)
 - [x] mundo y reparto (src/swwelt.js, src/swvolk.js)
-- [ ] planos a b c d
-- [ ] revisión de todos los planos
-- [ ] mezcla
-- [ ] render y finish.sh
-- [ ] entrega (solo el vídeo) y desactivar la tarea programada
+- [x] planos a b c d (159) y revisión al 12 % y 60 %
+- [x] mezcla: renders/mezcla-final.wav (−12,7 LUFS). Si el contenedor es nuevo, regenerarla:
+  `python3 armar.py; node cues.mjs; python3 sfx.py audio/cues.json audio/voz-sin-silencios.wav audio/musica-fondo.wav renders/mezcla.wav; python3 marca.py renders/mezcla.wav audio/campanita-recortada.wav renders/mezcla-m.wav; ffmpeg -y -i renders/mezcla-m.wav -af "afade=t=out:st=194.4:d=1" renders/mezcla-final.wav`
+- [ ] render REPARTIDO (~1,7 s/fotograma con 4 procesos): aquí `./rango.sh 0 2000 4` (idempotente; relanzar si se corta);
+  sesiones hijas: render-1 2000-3300 (session_017B1yBoZ3WA3LEGCzfajepd), render-2 3300-4600 (session_017B1yBnZRoUqb75BWbHyEMB), render-3 4600-5862 (session_017B1yBp9nJwzQw41oqLkoCy);
+  suben `pieces/seil/partes-render/p*.mp4` a `claude/seil-render-N`. Al terminar: `git fetch origin claude/seil-render-N` y `git checkout origin/claude/seil-render-N -- pieces/seil/partes-render`
+  (los tres), `./juntar.sh partes-render`, comprobar 5862 fotogramas (si falta un tramo: `./rango.sh A B 4` aquí), `./finish.sh` → renders/seil.mp4
+- [ ] entrega: SOLO el vídeo (SendUserFile, attach) + recordar escuchar la mezcla; desactivar la tarea programada trig_01Lg6NomcvKc33V2kdUy2TzW
