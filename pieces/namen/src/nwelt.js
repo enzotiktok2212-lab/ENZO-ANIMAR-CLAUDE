@@ -221,7 +221,7 @@ export function strasse(scene, X) { const g = G(scene, X); const r = RNG(12);
 export function partyGarten(scene, X) { const g = G(scene, X); const r = RNG(14);
   plane(1600, 1600, new THREE.MeshStandardMaterial({ map: rep(GRASS, 140, 140), roughness: .95 }), g, 0, -.05, 0);
   const v = G(g, 0, 0, -52); box(90, 24, 24, mat(0xf4f0ec, { roughness: .5 }), .2, v, 0, 12, 0); for (let f = 0; f < 2; f++) for (let k = 0; k < 9; k++) ventana(v, -36 + k * 9, 6 + f * 11, 12.2, 3.6, 6, { lit: 1 });
-  plane(50, 26, new THREE.MeshStandardMaterial({ color: 0x2ab8e8, emissive: 0x1a88c8, emissiveIntensity: .8, roughness: .05, metalness: .2 }), g, -26, .1, -18); box(52, .6, 28, mat(0xf4f0ec), .1, g, -26, .1, -18);
+  plane(50, 26, new THREE.MeshStandardMaterial({ color: 0x2ab8e8, emissive: 0x1a88c8, emissiveIntensity: .22, roughness: .05, metalness: .2 }), g, -26, .1, -18); box(52, .6, 28, mat(0xf4f0ec), .1, g, -26, .1, -18);
   const BULBS = []; for (let k = 0; k < 7; k++) { const z = -30 + k * 8, y0 = 13; for (let j = 0; j <= 12; j++) { const x = -40 + j * 6.6, y = y0 - Math.sin(j / 12 * PI) * 2.2; const b = sphere(.32, glowM([0xffe08a, 0xff8ad0, 0x8ae8ff, 0xffd23f][(j + k) % 4], 3), g, x, y, z, 8, 6); b.userData.noOutline = true; } }
   for (const s of [-1, 1]) for (let k = 0; k < 7; k++) cyl(.18, .2, 14, mat(0x3a3a3a), 6, g, s * 42, 7, -30 + k * 8);
   const ban = textPlane(40, 5, 1600, 200, (c, w, h) => { c.fillStyle = '#9a5ad8'; c.beginPath(); c.roundRect(0, 0, w, h, 40); c.fill(); c.strokeStyle = '#ffd23f'; c.lineWidth = 10; c.stroke(); txt(c, 'KRASS PARTY  ★  PARTY DES JAHRES', w / 2, h / 2 + 6, 110, '#ffd23f'); }, .9); ban.position.set(0, 20, -38); g.add(ban);
@@ -231,11 +231,14 @@ export function partyGarten(scene, X) { const g = G(scene, X); const r = RNG(14)
   for (let k = 0; k < 9; k++) { const t = G(g, -30 + (k % 3) * 9, 0, 8 + Math.floor(k / 3) * 9); cyl(2.6, 2.6, .3, mat(0xffffff), 20, t, 0, 3.4, 0); cyl(.3, .3, 3.4, mat(0xd8d8d8, { metalness: .6 }), 8, t, 0, 1.7, 0); for (let j = 0; j < 4; j++) sphere(.4, mat([0xffd23f, 0xff5a8a, 0x8ad84a, 0xe8641a][j]), t, Math.cos(j * 1.6) * 1.4, 3.8, Math.sin(j * 1.6) * 1.4, 8, 6); }
   for (let k = 0; k < 10; k++) { const bg = G(g, -36 + k * 8, 0, -26 + (k % 2) * 4); for (let j = 0; j < 3; j++) { const b = sphere(.9, mat([0xff4a8a, 0xffd23f, 0x9a5ad8, 0x3ab8ff][(k + j) % 4], { roughness: .2 }), bg, (j - 1) * .9, 8 + j * .6, 0, 12, 10); b.scale.y = 1.2; cyl(.02, .02, 7, mat(0xffffff), 3, bg, (j - 1) * .5, 4, 0); } }
   // puesto de döner
-  const d = G(g, 20, 0, 8); d.rotation.y = -PI / 2; box(12, 6, 6, mat(0xf4e8d0, { roughness: .6 }), .1, d, 0, 3, 0); box(12.6, .6, 6.6, mat(0xd8323a), .05, d, 0, 6.3, 0); for (let k = 0; k < 6; k++) { const a = box(2.1, .3, 3.2, mat(k % 2 ? 0xffffff : 0xd8323a), 0, d, -5.25 + k * 2.1, 7.6, 3.6); a.rotation.x = .35; }
-  for (const s of [-1, 1]) box(.4, 7.6, .4, mat(0x8a8a8a), 0, d, s * 6, 3.8, 5.2);
-  const ds = textPlane(11, 2.6, 660, 156, (c, w, h) => { c.fillStyle = '#d8323a'; c.beginPath(); c.roundRect(4, 4, w - 8, h - 8, 26); c.fill(); txt(c, 'DÖNER GRATIS!', w / 2, h * .38, 62, '#ffd23f'); txt(c, 'SAG MEINEN NAMEN: HUSS', w / 2, h * .76, 40, '#ffffff'); }, .8); ds.position.set(0, 10, 3.2); d.add(ds);
-  const spit = G(d, -3.2, 0, 1.6); cyl(.08, .08, 5, mat(0xaaaaaa, { metalness: .8 }), 6, spit, 0, 4.6, 0); const meat = new THREE.Mesh(new THREE.CylinderGeometry(.8, 1.4, 3.4, 16), mat(0xa85a22, { roughness: .8 })); meat.position.y = 4.6; spit.add(meat); box(1.6, 3.6, .3, glowM(0xff6a1a, 1.4), .1, spit, 0, 4.6, -1.6);
-  for (let k = 0; k < 6; k++) { const w = doenerWrap(d, .9); w.position.set(1 + k * .9, 6.4, 2.6); }
+  const d = G(g, 20, 0, 8); d.rotation.y = -PI / 2; const wd = mat(0xf4e8d0, { roughness: .6 });
+  box(12, 3.2, 2.4, wd, .1, d, 0, 1.6, 1.8); box(12.4, .3, 2.8, mat(0xd8323a, { roughness: .4 }), .05, d, 0, 3.35, 1.8); box(12, 9.4, .5, wd, .1, d, 0, 4.7, -3.2);
+  const menu = textPlane(10, 2.6, 600, 156, (c, w, h) => { c.fillStyle = '#1a1a1a'; c.fillRect(0, 0, w, h); txt(c, 'DÖNER · DÜRÜM · POMMES', w / 2, h / 2 + 4, 52, '#ffd23f'); }, .9); menu.position.set(0, 6.4, -2.9); d.add(menu);
+  for (const s2 of [-1, 1]) for (const z of [-3, 2.9]) box(.4, 9.4, .4, mat(0x8a8a8a, { metalness: .5 }), .05, d, s2 * 5.9, 4.7, z);
+  box(12.8, .6, 7, mat(0xd8323a), .05, d, 0, 9.6, 0); for (let k = 0; k < 6; k++) { const a = box(2.1, .3, 2.4, mat(k % 2 ? 0xffffff : 0xd8323a), 0, d, -5.25 + k * 2.1, 9.1, 3.9); a.rotation.x = .4; }
+  const ds = textPlane(11, 2.6, 660, 156, (c, w, h) => { c.fillStyle = '#d8323a'; c.beginPath(); c.roundRect(4, 4, w - 8, h - 8, 26); c.fill(); txt(c, 'DÖNER GRATIS!', w / 2, h * .38, 62, '#ffd23f'); txt(c, 'SAG MEINEN NAMEN: HUSS', w / 2, h * .76, 40, '#ffffff'); }, .8); ds.position.set(0, 11.4, 3.55); d.add(ds);
+  const spit = G(d, -3.6, 0, -1.8); cyl(.08, .08, 5, mat(0xaaaaaa, { metalness: .8 }), 6, spit, 0, 5.4, 0); const meat = new THREE.Mesh(new THREE.CylinderGeometry(.8, 1.4, 3.4, 16), mat(0xa85a22, { roughness: .8 })); meat.position.y = 5.4; spit.add(meat); box(1.6, 3.6, .3, glowM(0xff6a1a, 1.4), .1, spit, 0, 5.4, -1.1);
+  for (let k = 0; k < 6; k++) { const w = doenerWrap(d, .7); w.position.set(1 + k * .8, 4.1, 2); }
   for (let k = 0; k < 14; k++) baum(g, -60 + r() * 120, -70 - r() * 20, 1, k + 1000);
   for (const s of [-1, 1]) hecke(g, s * 48, 0, 3, 80, 4);
   shadow(g); bake(g); return { g, DOENER: V(X + 20, 0, 8), disco }; }

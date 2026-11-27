@@ -10,7 +10,7 @@ import { skyDome, SKIES, applySky, skyEnvs } from './ebwelt.js';
 import { rufingen, drawRanking, villa, krassCenter, diggaGym, strasse, partyGarten, platz, drawScore, euroCoin, basketball, kinderwagen, hantel, langhantel, doenerWrap, sign } from './nwelt.js';
 import { makeIch, makeBlau, makeGenau, makeKrass, makeDigga, makeBoah, makeMama, makeNieser, makeDoener } from './nvolk.js';
 import { makeExtra } from './ecast.js';
-import { partyHat } from './hsets.js';
+import { partyHat, cake } from './hsets.js';
 import { loadKitFaces, kitFace, kitLips, eyesAlive, GEST, actuar, mirar, caminar, saltar, aire, camaraEnMano, shiver } from './vivo.js';
 
 await document.fonts.load('700 40px Cap'); await loadKitFaces();
