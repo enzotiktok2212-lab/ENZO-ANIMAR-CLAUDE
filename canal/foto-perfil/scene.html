@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+</head><body>
+<script type="module">
+import * as THREE from 'three';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+const P = new URLSearchParams(location.search);
+const S = +(P.get('size') || 1024);
+const OUT = +(P.get('out') || 2048);
+
+// deterministic random
+let seed = 7;
+const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+const rr = (a, b) => a + (b - a) * rnd();
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1);
+renderer.setSize(S, S);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 0.97;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environmentIntensity = 0.4;
+
+// ---------- background (screen space) ----------
+function makeBackground() {
+  const c = document.createElement('canvas'); c.width = c.height = 2048;
+  const g = c.getContext('2d');
+  let gr = g.createRadialGradient(1024, 820, 80, 1024, 1024, 1450);
+  gr.addColorStop(0, '#5aa2ff'); gr.addColorStop(0.35, '#2557d6');
+  gr.addColorStop(0.75, '#14247a'); gr.addColorStop(1, '#0a0f3a');
+  g.fillStyle = gr; g.fillRect(0, 0, 2048, 2048);
+  // light rays
+  g.save(); g.translate(1024, 700); g.globalCompositeOperation = 'lighter';
+  for (let i = 0; i < 14; i++) {
+    g.rotate(Math.PI * 2 / 14);
+    const lg = g.createLinearGradient(0, 0, 0, 1500);
+    lg.addColorStop(0, 'rgba(160,200,255,0.10)'); lg.addColorStop(1, 'rgba(160,200,255,0)');
+    g.fillStyle = lg; g.beginPath(); g.moveTo(0, 0); g.lineTo(-120, 1500); g.lineTo(120, 1500); g.closePath(); g.fill();
+  }
+  g.restore();
+  // red glow bottom-left, cyan glow right
+  const glow = (x, y, r, col) => { const q = g.createRadialGradient(x, y, 0, x, y, r); q.addColorStop(0, col); q.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = q; g.fillRect(0, 0, 2048, 2048); };
+  g.globalCompositeOperation = 'lighter';
+  glow(250, 1750, 900, 'rgba(255,40,70,0.45)');
+  glow(1850, 1500, 800, 'rgba(60,170,255,0.35)');
+  // bokeh
+  seed = 99;
+  for (let i = 0; i < 70; i++) {
+    const x = rr(0, 2048), y = rr(900, 2048), r = rr(14, 60);
+    const red = rnd() < 0.4;
+    const q = g.createRadialGradient(x, y, 0, x, y, r);
+    q.addColorStop(0, red ? 'rgba(255,90,110,0.35)' : 'rgba(150,200,255,0.35)');
+    q.addColorStop(0.8, red ? 'rgba(255,90,110,0.18)' : 'rgba(150,200,255,0.16)');
+    q.addColorStop(1, 'rgba(0,0,0,0)');
+    g.fillStyle = q; g.beginPath(); g.arc(x, y, r, 0, 7); g.fill();
+  }
+  g.globalCompositeOperation = 'source-over';
+  // blocky city skyline, two layers
+  const skyline = (base, hMin, hMax, col, win, s0) => {
+    seed = s0; let x = -40;
+    while (x < 2100) {
+      const w = rr(110, 230), h = rr(hMin, hMax);
+      g.fillStyle = col; g.fillRect(x, base - h, w, h + 400);
+      if (rnd() < 0.35) { g.fillRect(x + w * 0.4, base - h - rr(40, 110), 10, 120); }
+      for (let wy = base - h + 30; wy < 2048; wy += 46) for (let wx = x + 22; wx < x + w - 30; wx += 40) {
+        if (rnd() < 0.42) { g.fillStyle = rnd() < 0.25 ? 'rgba(255,120,130,' + win + ')' : 'rgba(255,225,160,' + win + ')'; g.fillRect(wx, wy, 18, 24); }
+      }
+      x += w + rr(6, 24);
+    }
+  };
+  skyline(1500, 250, 650, '#16226b', 0.35, 3);
+  skyline(1640, 150, 420, '#0c1446', 0.6, 5);
+  // vignette
+  const v = g.createRadialGradient(1024, 1024, 700, 1024, 1024, 1450);
+  v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,20,0.55)');
+  g.fillStyle = v; g.fillRect(0, 0, 2048, 2048);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+scene.background = makeBackground();
+scene.backgroundIntensity = 1.0;
+
+// ---------- fabric normal-ish noise ----------
+function noiseTex(scale, strength) {
+  const c = document.createElement('canvas'); c.width = c.height = 512;
+  const g = c.getContext('2d'); const d = g.createImageData(512, 512);
+  seed = 11;
+  for (let i = 0; i < 512 * 512; i++) {
+    const x = i % 512, y = (i / 512) | 0;
+    const weave = (Math.sin(x * scale) * Math.sin(y * scale)) * 0.5 + 0.5;
+    const n = 128 + (weave - 0.5) * strength + (rnd() - 0.5) * 30;
+    d.data[i * 4] = d.data[i * 4 + 1] = d.data[i * 4 + 2] = n; d.data[i * 4 + 3] = 255;
+  }
+  g.putImageData(d, 0, 0);
+  const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; return t;
+}
+const fabricBump = noiseTex(1.6, 60);
+
+// ---------- materials ----------
+const BLUE = '#0f3fd4', RED = '#cf1430';
+const fabric = (col, sheenCol) => new THREE.MeshPhysicalMaterial({
+  color: col, roughness: 0.78, metalness: 0, sheen: 0.6, sheenRoughness: 0.5, sheenColor: new THREE.Color(sheenCol),
+  bumpMap: fabricBump, bumpScale: 0.6,
+});
+const blueMat = fabric(BLUE, '#3d74ff');
+const redMat = fabric(RED, '#ff5a6e');
+const whiteMat = fabric('#f3f5fb', '#ffffff');
+const skinMat = new THREE.MeshPhysicalMaterial({ color: '#f1c193', roughness: 0.48, clearcoat: 0.15, clearcoatRoughness: 0.5, sheen: 0.4, sheenColor: new THREE.Color('#ffd9c0') });
+
+// ---------- torso (hoodie) ----------
+function chestTexture() {
+  const c = document.createElement('canvas'); c.width = c.height = 1024; const g = c.getContext('2d');
+  g.fillStyle = BLUE; g.fillRect(0, 0, 1024, 1024);
+  // soft fabric shading
+  const lg = g.createLinearGradient(0, 0, 0, 1024); lg.addColorStop(0, 'rgba(255,255,255,0.06)'); lg.addColorStop(1, 'rgba(0,0,30,0.18)');
+  g.fillStyle = lg; g.fillRect(0, 0, 1024, 1024);
+  // red side panels / varsity stripes
+  g.fillStyle = RED; g.fillRect(0, 0, 70, 1024); g.fillRect(954, 0, 70, 1024);
+  g.fillStyle = '#f3f5fb'; g.fillRect(70, 0, 16, 1024); g.fillRect(938, 0, 16, 1024);
+  // zipper
+  g.fillStyle = '#c9ced9'; g.fillRect(505, 150, 14, 900);
+  for (let y = 160; y < 1024; y += 14) { g.fillStyle = '#8f96a6'; g.fillRect(500, y, 24, 5); }
+  // chest emblem (left chest = viewer right)
+  const ex = 730, ey = 330;
+  g.fillStyle = '#f3f5fb'; g.beginPath(); g.arc(ex, ey, 118, 0, 7); g.fill();
+  g.fillStyle = RED; g.beginPath(); g.arc(ex, ey, 100, 0, 7); g.fill();
+  g.fillStyle = '#f3f5fb'; g.beginPath();
+  for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, r = i % 2 ? 34 : 78; g.lineTo(ex + Math.cos(a) * r, ey + Math.sin(a) * r); }
+  g.closePath(); g.fill();
+  // seams
+  g.strokeStyle = 'rgba(0,0,40,0.25)'; g.lineWidth = 4; g.setLineDash([14, 10]);
+  g.beginPath(); g.moveTo(100, 760); g.lineTo(924, 760); g.stroke();
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t;
+}
+const chestMat = blueMat.clone(); chestMat.map = chestTexture(); chestMat.color.set('#ffffff');
+
+const torsoGeo = new RoundedBoxGeometry(2.0, 2.0, 1.0, 6, 0.16);
+// box face order: +x, -x, +y, -y, +z, -z
+const torso = new THREE.Mesh(torsoGeo, [blueMat, blueMat, blueMat, blueMat, chestMat, blueMat]);
+torso.position.y = 0; torso.castShadow = torso.receiveShadow = true;
+
+const armGeo = new RoundedBoxGeometry(0.96, 2.0, 0.96, 6, 0.18);
+const armL = new THREE.Mesh(armGeo, redMat); armL.position.set(-1.5, 0.0, 0); armL.rotation.z = -0.04;
+const armR = new THREE.Mesh(armGeo, redMat); armR.position.set(1.5, 0.0, 0); armR.rotation.z = 0.04;
+// white sleeve stripes
+for (const arm of [armL, armR]) {
+  arm.castShadow = arm.receiveShadow = true;
+  for (const y of [-0.35, -0.5]) {
+    const s = new THREE.Mesh(new RoundedBoxGeometry(0.985, 0.08, 0.985, 3, 0.04), whiteMat);
+    s.position.y = y; s.castShadow = s.receiveShadow = true; arm.add(s);
+  }
+}
+
+// hood bunched around the neck
+const hood = new THREE.Mesh(new THREE.TorusGeometry(0.62, 0.2, 32, 96), redMat);
+hood.rotation.x = Math.PI / 2; hood.scale.set(1.25, 0.95, 1.0); hood.position.set(0, 1.04, -0.08);
+hood.castShadow = hood.receiveShadow = true;
+const hoodBack = new THREE.Mesh(new THREE.SphereGeometry(0.75, 48, 32, 0, Math.PI * 2, 0, Math.PI / 2), redMat);
+hoodBack.scale.set(1.15, 0.55, 0.6); hoodBack.position.set(0, 0.95, -0.35); hoodBack.rotation.x = -0.5;
+hoodBack.castShadow = hoodBack.receiveShadow = true;
+// collar rib
+const rib = new THREE.Mesh(new THREE.TorusGeometry(0.55, 0.07, 16, 96), whiteMat);
+rib.rotation.x = Math.PI / 2; rib.scale.set(1.2, 0.95, 1); rib.position.set(0, 1.13, -0.04); rib.castShadow = true;
+
+// drawstrings
+const strings = new THREE.Group();
+for (const sx of [-0.28, 0.28]) {
+  const curve = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(sx, 1.02, 0.52), new THREE.Vector3(sx * 1.05, 0.8, 0.54),
+    new THREE.Vector3(sx * 1.1, 0.45, 0.535), new THREE.Vector3(sx * 1.08, 0.2, 0.53)]);
+  const s = new THREE.Mesh(new THREE.TubeGeometry(curve, 40, 0.035, 12), whiteMat); s.castShadow = true; strings.add(s);
+  const tip = new THREE.Mesh(new THREE.CapsuleGeometry(0.045, 0.12, 6, 12),
+    new THREE.MeshPhysicalMaterial({ color: '#c8ccd6', metalness: 1, roughness: 0.25 }));
+  tip.position.set(sx * 1.08, 0.13, 0.53); tip.castShadow = true; strings.add(tip);
+}
+
+// ---------- head ----------
+const HR = 0.64, HH = 1.28, HC = 0.24; // radius, height, corner radius
+function headProfile(r, h, c, n) {
+  const pts = []; const hb = -h / 2, ht = h / 2;
+  pts.push([0, hb]);
+  const seg = (a, b, k) => { for (let i = 1; i <= k; i++) pts.push([a[0] + (b[0] - a[0]) * i / k, a[1] + (b[1] - a[1]) * i / k]); };
+  seg([0, hb], [r - c, hb], 20);
+  for (let i = 1; i <= 30; i++) { const a = -Math.PI / 2 + i / 30 * Math.PI / 2; pts.push([r - c + Math.cos(a) * c, hb + c + Math.sin(a) * c]); }
+  seg([r, hb + c], [r, ht - c], 40);
+  for (let i = 1; i <= 30; i++) { const a = i / 30 * Math.PI / 2; pts.push([r - c + Math.cos(a) * c, ht - c + Math.sin(a) * c]); }
+  seg([r - c, ht], [0.0001, ht], 20);
+  // resample by arc length
+  const L = [0]; for (let i = 1; i < pts.length; i++) L.push(L[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+  const total = L[L.length - 1]; const out = [];
+  for (let k = 0; k < n; k++) {
+    const d = total * k / (n - 1); let i = 1; while (i < L.length - 1 && L[i] < d) i++;
+    const t = (d - L[i - 1]) / (L[i] - L[i - 1] || 1);
+    out.push(new THREE.Vector2(pts[i - 1][0] + (pts[i][0] - pts[i - 1][0]) * t, pts[i - 1][1] + (pts[i][1] - pts[i - 1][1]) * t));
+  }
+  return { pts: out, total };
+}
+const prof = headProfile(HR, HH, HC, 160);
+
+// face texture: canvas spans full circumference (u) × profile length (v)
+const FW = 4096, FH = Math.round(FW * prof.total / (2 * Math.PI * HR));
+const PX = FW / (2 * Math.PI * HR); // pixels per world unit
+function faceCanvas(bump) {
+  const c = document.createElement('canvas'); c.width = FW; c.height = FH; const g = c.getContext('2d');
+  const cx = FW / 2, cy = FH / 2;
+  const W = (x) => cx + x * PX, Hy = (y) => cy - y * PX;
+  if (!bump) {
+    g.fillStyle = '#f1c193'; g.fillRect(0, 0, FW, FH);
+    // cheeks
+    for (const s of [-1, 1]) {
+      const x = W(s * 0.36), y = Hy(-0.1);
+      const q = g.createRadialGradient(x, y, 0, x, y, 0.13 * PX);
+      q.addColorStop(0, 'rgba(255,110,120,0.55)'); q.addColorStop(1, 'rgba(255,110,120,0)');
+      g.fillStyle = q; g.fillRect(0, 0, FW, FH);
+    }
+  } else { g.fillStyle = '#808080'; g.fillRect(0, 0, FW, FH); }
+  // big open smile
+  const mx = W(0), my = Hy(-0.19), mw = 0.25 * PX, mh = 0.2 * PX;
+  const smile = () => {
+    g.beginPath();
+    g.moveTo(mx - mw, my - mh * 0.12);
+    g.bezierCurveTo(mx - mw * 0.55, my - mh * 0.02, mx + mw * 0.55, my - mh * 0.02, mx + mw, my - mh * 0.12);
+    g.bezierCurveTo(mx + mw * 0.9, my + mh * 1.05, mx - mw * 0.9, my + mh * 1.05, mx - mw, my - mh * 0.12);
+    g.closePath();
+  };
+  if (bump) { g.fillStyle = '#303030'; smile(); g.fill(); }
+  else {
+    g.fillStyle = '#5a0f1c'; smile(); g.fill();
+    g.save(); smile(); g.clip();
+    // teeth
+    g.fillStyle = '#fffaf2'; g.fillRect(mx - mw, my - mh * 0.2, mw * 2, mh * 0.3);
+    g.fillStyle = 'rgba(0,0,0,0.12)'; g.fillRect(mx - mw, my + mh * 0.08, mw * 2, mh * 0.03);
+    // tongue
+    g.fillStyle = '#ff5f78'; g.beginPath(); g.ellipse(mx + mw * 0.08, my + mh * 0.95, mw * 0.55, mh * 0.5, 0, 0, 7); g.fill();
+    g.fillStyle = 'rgba(255,255,255,0.18)'; g.beginPath(); g.ellipse(mx - mw * 0.05, my + mh * 0.72, mw * 0.22, mh * 0.1, 0, 0, 7); g.fill();
+    g.restore();
+    // lip line + dimples
+    g.strokeStyle = '#7a2a2a'; g.lineWidth = 0.012 * PX; g.lineCap = 'round'; smile(); g.stroke();
+    for (const s of [-1, 1]) { g.beginPath(); g.arc(mx + s * mw * 1.04, my - mh * 0.12, 0.03 * PX, s > 0 ? -2.2 : -0.95, s > 0 ? -0.6 : 0.85); g.stroke(); }
+  }
+  return c;
+}
+const faceMap = new THREE.CanvasTexture(faceCanvas(false)); faceMap.colorSpace = THREE.SRGBColorSpace; faceMap.anisotropy = 8;
+const faceBump = new THREE.CanvasTexture(faceCanvas(true));
+const headMat = skinMat.clone(); headMat.map = faceMap; headMat.color.set('#ffffff'); headMat.bumpMap = faceBump; headMat.bumpScale = 1.5;
+const headGeo = new THREE.LatheGeometry(prof.pts, 160, Math.PI, Math.PI * 2);
+const head = new THREE.Mesh(headGeo, headMat); head.castShadow = head.receiveShadow = true;
+const headGroup = new THREE.Group(); headGroup.add(head);
+headGroup.position.set(0, 1.12 + HH / 2, 0.02);
+headGroup.rotation.set(-0.03, 0.12, -0.05);
+
+const onHead = (x, y, push = 0) => { const a = x / HR; return new THREE.Vector3(Math.sin(a) * (HR + push), y, Math.cos(a) * (HR + push)); };
+
+// eyes: glossy, slightly protruding
+const eyeMat = new THREE.MeshPhysicalMaterial({ color: '#120c0a', roughness: 0.12, clearcoat: 1, clearcoatRoughness: 0.03 });
+const irisMat = new THREE.MeshPhysicalMaterial({ color: '#3b2516', roughness: 0.2, clearcoat: 1 });
+const glintMat = new THREE.MeshBasicMaterial({ color: '#ffffff' });
+for (const s of [-1, 1]) {
+  const ex = s * 0.2, ey = 0.08;
+  const p = onHead(ex, ey, -0.015);
+  const eye = new THREE.Group(); eye.position.copy(p); eye.rotation.y = ex / HR;
+  const ball = new THREE.Mesh(new THREE.SphereGeometry(0.1, 48, 32), eyeMat); ball.scale.set(0.82, 1.18, 0.4); ball.castShadow = true;
+  const iris = new THREE.Mesh(new THREE.SphereGeometry(0.06, 32, 24), irisMat); iris.scale.set(0.85, 1.1, 0.3); iris.position.set(0, -0.03, 0.03);
+  const g1 = new THREE.Mesh(new THREE.SphereGeometry(0.03, 16, 12), glintMat); g1.scale.set(1, 1.15, 0.3); g1.position.set(0.027, 0.045, 0.04);
+  const g2 = new THREE.Mesh(new THREE.SphereGeometry(0.014, 16, 12), glintMat); g2.scale.set(1, 1, 0.3); g2.position.set(-0.03, -0.055, 0.04);
+  eye.add(ball, iris, g1, g2); headGroup.add(eye);
+  // eyebrows: raised, happy arch
+  const bc = new THREE.QuadraticBezierCurve3(new THREE.Vector3(-0.1, 0, 0), new THREE.Vector3(0, 0.045, 0), new THREE.Vector3(0.1, -0.005, 0));
+  const brow = new THREE.Mesh(new THREE.TubeGeometry(bc, 24, 0.022, 10), new THREE.MeshPhysicalMaterial({ color: '#3a2216', roughness: 0.6 }));
+  const bp = onHead(s * 0.21, 0.27, 0.0); brow.position.copy(bp); brow.rotation.set(0, ex / HR, s * -0.1); brow.scale.x = s; brow.castShadow = true;
+  headGroup.add(brow);
+}
+
+// ---------- hair ----------
+const hairLine = (phi) => { // phi: 0 = front, + = toward +x
+  const c = Math.cos(phi);
+  return 0.39 * Math.max(c, 0) ** 1.5 + 0.03 + (c < 0 ? -0.4 * (-c) ** 1.2 : 0) + 0.02 * Math.cos(phi * 8);
+};
+const capProf = headProfile(HR + 0.05, HH + 0.1, HC + 0.05, 160);
+const capGeo = new THREE.LatheGeometry(capProf.pts, 220, Math.PI, Math.PI * 2);
+{
+  const pos = capGeo.attributes.position; const col = new Float32Array(pos.count * 3);
+  const v = new THREE.Vector3(); const base = new THREE.Color('#2e1b10'), fade = new THREE.Color('#6a4e3c');
+  for (let i = 0; i < pos.count; i++) {
+    v.fromBufferAttribute(pos, i);
+    const phi = Math.atan2(v.x, v.z); const hl = hairLine(phi);
+    if (v.y < hl) { const r = HR * 0.97; const rad = Math.hypot(v.x, v.z) || 1; v.x *= r / rad; v.z *= r / rad; v.y = hl - 0.01; }
+    pos.setXYZ(i, v.x, v.y, v.z);
+    // side fade: lighter (skin showing through) on low sides
+    const side = Math.abs(Math.sin(phi)); const k = THREE.MathUtils.clamp((0.3 - v.y) / 0.4, 0, 1) * side;
+    const cc = base.clone().lerp(fade, k * 0.8); col[i * 3] = cc.r; col[i * 3 + 1] = cc.g; col[i * 3 + 2] = cc.b;
+  }
+  capGeo.setAttribute('color', new THREE.BufferAttribute(col, 3)); capGeo.computeVertexNormals();
+}
+const hairBump = noiseTex(9, 90);
+const capMat = new THREE.MeshPhysicalMaterial({ vertexColors: true, roughness: 0.55, sheen: 1, sheenColor: new THREE.Color('#8a6448'), sheenRoughness: 0.35, bumpMap: hairBump, bumpScale: 0.8 });
+const mass = new THREE.Mesh(new THREE.SphereGeometry(1, 64, 32), capMat.clone());
+mass.material.vertexColors = false; mass.material.color.set('#3a2314');
+mass.scale.set(0.6, 0.2, 0.62); mass.position.set(-0.03, HH / 2 + 0.03, 0.02); mass.castShadow = mass.receiveShadow = true; headGroup.add(mass);
+const cap = new THREE.Mesh(capGeo, capMat); cap.castShadow = cap.receiveShadow = true; headGroup.add(cap);
+
+// locks: tapered, curved, flattened tubes
+function makeLock(base, dir, bend, len, rad, flat) {
+  const rings = 16, sides = 10; const posA = [], colA = [], idx = [];
+  const root = new THREE.Color('#2e1b10'), tip = new THREE.Color('#a8733f');
+  const pt = (t) => base.clone().addScaledVector(dir, len * t).addScaledVector(bend, len * t * t);
+  for (let i = 0; i <= rings; i++) {
+    const t = i / rings; const p = pt(t);
+    const tan = pt(Math.min(t + 0.01, 1)).sub(pt(Math.max(t - 0.01, 0))).normalize();
+    let side = new THREE.Vector3().crossVectors(tan, new THREE.Vector3(0, 1, 0.3)).normalize();
+    if (side.lengthSq() < 0.1) side.set(1, 0, 0);
+    const up = new THREE.Vector3().crossVectors(side, tan).normalize();
+    const r = rad * Math.pow(1 - t, 0.75) + 0.004;
+    const cc = root.clone().lerp(tip, Math.pow(t, 1.3));
+    for (let j = 0; j < sides; j++) {
+      const a = j / sides * Math.PI * 2;
+      const q = p.clone().addScaledVector(side, Math.cos(a) * r).addScaledVector(up, Math.sin(a) * r * flat);
+      posA.push(q.x, q.y, q.z); colA.push(cc.r, cc.g, cc.b);
+    }
+  }
+  for (let i = 0; i < rings; i++) for (let j = 0; j < sides; j++) {
+    const a = i * sides + j, b = i * sides + (j + 1) % sides, c = a + sides, d = b + sides;
+    idx.push(a, c, b, b, c, d);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(posA, 3));
+  g.setAttribute('color', new THREE.Float32BufferAttribute(colA, 3));
+  g.setIndex(idx); g.computeVertexNormals(); return g;
+}
+const lockMat = new THREE.MeshPhysicalMaterial({ vertexColors: true, roughness: 0.42, sheen: 1, sheenColor: new THREE.Color('#c08a5c'), sheenRoughness: 0.3, clearcoat: 0.25, clearcoatRoughness: 0.4 });
+// sample points over the cap's upper surface
+{
+  const cp = capProf.pts; const n = cp.length;
+  seed = 2024; const locks = [];
+  const tries = 3000;
+  for (let k = 0; k < tries && locks.length < 260; k++) {
+    const phi = rr(-Math.PI, Math.PI);
+    const i = Math.floor(rr(n * 0.38, n - 2)); // from wall upward across corner to top
+    const p2 = cp[i], p3 = cp[i + 1];
+    if (p2.x < 0.02) continue;
+    const hl = hairLine(phi);
+    if (p2.y < hl + 0.06) continue;
+    const front = Math.cos(phi);
+    // fewer at the back-bottom, denser on top/front
+    if (p2.y < 0.3 && rnd() < 0.5) continue;
+    const base = new THREE.Vector3(Math.sin(phi) * p2.x, p2.y, Math.cos(phi) * p2.x);
+    // profile normal
+    const tx = p3.x - p2.x, ty = p3.y - p2.y; const nr = new THREE.Vector3(ty, -tx, 0).normalize();
+    const normal = new THREE.Vector3(Math.sin(phi) * nr.x, nr.y, Math.cos(phi) * nr.x).normalize();
+    const layer = locks.length % 2 ? 0.07 + 0.08 * Math.max(0, (p2.y - 0.3) / 0.4) : -0.03;
+    base.addScaledVector(normal, layer);
+    const topness = THREE.MathUtils.clamp((p2.y - 0.2) / 0.5, 0, 1);
+    // flow: forward and to the viewer's left, lying on the head; lifted quiff at the front-top
+    const F = new THREE.Vector3(-0.5, 0.1, 1).normalize();
+    const tang = F.clone().addScaledVector(normal, -normal.dot(F)).normalize();
+    const frontTop = THREE.MathUtils.clamp(front * 1.4 - 0.3, 0, 1) * topness;
+    const lift = 0.25 + 0.55 * frontTop + rr(-0.08, 0.08);
+    const dir = tang.clone().add(normal.clone().multiplyScalar(lift)).normalize();
+    const bend = normal.clone().multiplyScalar(-0.55).addScaledVector(tang, 0.15).add(new THREE.Vector3(rr(-0.1, 0.1), -0.15, rr(-0.05, 0.05)));
+    const len = (0.36 + 0.22 * frontTop) * rr(0.85, 1.15);
+    const rad = rr(0.13, 0.19);
+    locks.push([base, dir, bend, len, rad]);
+  }
+  for (const L of locks) {
+    const m = new THREE.Mesh(makeLock(L[0], L[1], L[2], L[3], L[4], rr(0.4, 0.55)), lockMat);
+    m.castShadow = m.receiveShadow = true; headGroup.add(m);
+  }
+  // fringe: a few longer front pieces falling over the forehead to the left
+  for (let f = 0; f < 8; f++) {
+    const phi = -0.55 + f * 0.16 + rr(-0.04, 0.04); const y = HH / 2 + 0.02;
+    const rad0 = HR - 0.12;
+    const base = new THREE.Vector3(Math.sin(phi) * rad0, y, Math.cos(phi) * rad0);
+    const dir = new THREE.Vector3(-0.45, 0.6, 0.7).normalize();
+    const bend = new THREE.Vector3(-0.3, -0.75, 0.05);
+    const m = new THREE.Mesh(makeLock(base, dir, bend, rr(0.46, 0.56), rr(0.13, 0.17), 0.5), lockMat);
+    m.castShadow = m.receiveShadow = true; headGroup.add(m);
+  }
+}
+
+const character = new THREE.Group();
+character.add(torso, armL, armR, hood, hoodBack, rib, strings, headGroup);
+character.rotation.y = -0.22;
+scene.add(character);
+
+// ---------- lights ----------
+const key = new THREE.DirectionalLight('#fff1dc', 3.6);
+key.position.set(-4, 6, 6); key.castShadow = true;
+key.shadow.mapSize.set(4096, 4096); key.shadow.radius = 6; key.shadow.blurSamples = 24;
+key.shadow.bias = -0.0002; key.shadow.normalBias = 0.02;
+Object.assign(key.shadow.camera, { left: -4, right: 4, top: 4, bottom: -4, near: 0.5, far: 25 });
+scene.add(key);
+const fill = new THREE.DirectionalLight('#9fc4ff', 0.9); fill.position.set(5, 2, 5); scene.add(fill);
+const rimBlue = new THREE.DirectionalLight('#4fb0ff', 4.5); rimBlue.position.set(5, 3, -5); scene.add(rimBlue);
+const rimRed = new THREE.DirectionalLight('#ff3550', 3.0); rimRed.position.set(-5, 0.5, -4); scene.add(rimRed);
+scene.add(new THREE.HemisphereLight('#bcd6ff', '#3a1830', 0.3));
+
+// ---------- camera ----------
+const camera = new THREE.PerspectiveCamera(23.5, 1, 0.1, 100);
+camera.position.set(1.2, 2.25, 9.6);
+camera.lookAt(0, 1.2, 0);
+
+// ---------- render ----------
+const composer = new EffectComposer(renderer, new THREE.WebGLRenderTarget(S, S, { type: THREE.HalfFloatType, samples: 4 }));
+composer.setPixelRatio(1); composer.setSize(S, S);
+composer.addPass(new RenderPass(scene, camera));
+const ao = new GTAOPass(scene, camera, S, S);
+ao.updateGtaoMaterial({ radius: 0.35, distanceExponent: 1.5, thickness: 1, scale: 1.2, samples: 16 });
+ao.updatePdMaterial({ lumaPhi: 10, depthPhi: 2, normalPhi: 3, radius: 6, rings: 2, samples: 16 });
+ao.blendIntensity = 0.85;
+composer.addPass(ao);
+composer.addPass(new OutputPass());
+composer.render();
+
+// ---------- final circular composite ----------
+const out = document.createElement('canvas'); out.width = out.height = OUT; const o = out.getContext('2d');
+o.imageSmoothingEnabled = true; o.imageSmoothingQuality = 'high';
+const R = OUT / 2, ring = OUT * 0.028;
+o.save(); o.beginPath(); o.arc(R, R, R - 1, 0, 7); o.clip();
+o.drawImage(renderer.domElement, 0, 0, OUT, OUT);
+o.restore();
+// ring: red → blue sweep with white inner line
+const cg = o.createConicGradient ? o.createConicGradient(-Math.PI / 2, R, R) : null;
+if (cg) { cg.addColorStop(0, '#ff2d48'); cg.addColorStop(0.5, '#2a6bff'); cg.addColorStop(1, '#ff2d48'); }
+o.lineWidth = ring; o.strokeStyle = cg || '#2a6bff';
+o.beginPath(); o.arc(R, R, R - ring / 2 - 1, 0, 7); o.stroke();
+o.lineWidth = OUT * 0.005; o.strokeStyle = 'rgba(255,255,255,0.9)';
+o.beginPath(); o.arc(R, R, R - ring - OUT * 0.0025, 0, 7); o.stroke();
+window.__circle = out.toDataURL('image/png');
+window.__square = renderer.domElement.toDataURL('image/png');
+window.__done = true;
+</script></body></html>
