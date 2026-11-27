@@ -54,3 +54,9 @@ pieces/codewort/test/
 pieces/codewort/renders/
 pieces/codewort/node_modules
 pieces/codewort/partes-in/
+pieces/seil/rv*/
+pieces/seil/review*/
+pieces/seil/*.log
+pieces/seil/renders/
+pieces/seil/node_modules
+pieces/seil/partes-in/
