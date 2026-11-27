@@ -504,7 +504,7 @@ shot(112.02, 'B', null, L => { kuecheS(L); SEPIA = .3; const m = put(mamaB, KUX,
   const c = sit(mats, KUX - 2.5, 2.8, -5.4, .25, L, { aLx: .9, aRx: .9, aLe: 1.6, aRe: 1.6, lean: -.1 }); laughF(c, L.T + .3); const i = sit(ida, KUX + 2.5, 2.8, -5.4, -.25, L, { aLx: 2, aRx: 2, aLe: 2.3, aRe: 2.3 }); laughF(i, L.T + .6);
   cm([KUX - 2, 9.6, 10, KUX, 5.6, -6.6, 48], [KUX + 1.2, 9.2, 8.4, KUX, 5.6, -6.6, 48], L.k); }, [[0, 'film_roll', .4], [.3, 'laugh_deep', .5], [.6, 'kids_laugh', .4]]);
 // ---- 74 «ohne zu lachen.»: primer plano de Mama riéndose con la cabeza hacia atrás
-shot(114.26, 'C', 'punch', L => { kuecheS(L); SEPIA = .3; const m = put(mamaB, KUX, 0, -8.4, 0); actuar(m, 0, [[0, { aLx: 1.0, aRx: 1.0, aLz: -.3, aRz: -.3, aLe: 1.8, aRe: 1.8, lean: -.2 + Math.sin(L.T * 16) * .05, headX: -.3 }]], { T: L.T }); laughF(m, L.T); onFace(m, 5.2, -.6, 0, 40, L.k, 4.4); }, [[0, 'laugh_deep', .7]]);
+shot(114.26, 'C', 'punch', L => { kuecheS(L); SEPIA = .3; const m = put(mamaB, KUX, 0, -8.4, 0); actuar(m, 0, [[0, { aLx: 1.0, aRx: 1.0, aLz: -.3, aRz: -.3, aLe: 1.8, aRe: 1.8, lean: -.2 + Math.sin(L.T * 16) * .05, headX: -.3 }]], { T: L.T }); laughF(m, L.T); onFace(m, 6.4, 2.6, 0, 42, L.k, 5.6); }, [[0, 'laugh_deep', .7]]);
 // ---- 75 «Kein einziges Mal, seit ich fünf bin.»: recuerdo: el cumpleaños de Mats con 5 años, la tarta con cinco velas; Mama le da un beso riéndose
 shot(115.14, 'R', null, L => { kuecheS(L); SEPIA = .5; show(CAKE, KUX, 4.7, -4); CAKE.userData.flames.forEach(f => f.visible = true); const c = put(mats5, KUX - 1, 0, -7, .2); actuar(c, 0, [[0, 'cheer']], { T: L.T }); laughF(c, L.T);
   const m = put(mamaB, KUX + 2.6, 0, -8.2, -.5); actuar(m, 0, [[0, { lean: .2, aLx: 1.2, aLz: -.4, aLe: 1.2, headZ: .2 }]], { T: L.T }); laughF(m, L.T + .4); bigNum('5', (L.lt - .2) / .2, 'gold', .14, 1.1);
@@ -532,7 +532,7 @@ shot(128.21, 'R', null, L => { const m = officeMama(L, 128.21, 129.81, { expr: '
 // ---- 84 «Was ist los?“»: frunce el ceño
 shot(129.81, 'C', 'punch', L => { const m = officeMama(L, 129.81, 130.5, { expr: 'worried', pose: { headZ: .25 } }); onFace(m, 4.6, -.3, .8, 40, L.k, 4.2); }, []);
 // ---- 85 «Ich flüsterte: „Mama, du stehst vor der Tür.“»: Mats, agachado en la penumbra del pasillo, susurra tapándose la boca; Ida asoma detrás
-shot(130.5, 'S', null, L => { const c = hallMats(L, { x: 3, z: 6, ry: PI - .3, pose: { crouch: .35, lean: .25, aLx: 2.2, aLz: -.2, aLe: 2.4 } }); talk(c, L.T, 131, 132.96, 'scared'); const i = put(ida, HAX - 6.2, 0, 5.4, PI - .4); actuar(i, 0, [[0, 'hug_self']], { T: L.T }); cara(i, L.T, { expr: 'worried' });
+shot(130.5, 'S', null, L => { const c = hallMats(L, { x: .6, z: 6, ry: PI - .2, pose: { crouch: .35, lean: .25, aLx: 2.2, aLz: -.2, aLe: 2.4 } }); talk(c, L.T, 131, 132.96, 'scared'); const i = put(ida, HAX - 6.2, 0, 5.4, PI - .4); actuar(i, 0, [[0, 'hug_self']], { T: L.T }); cara(i, L.T, { expr: 'worried' });
   bubble(c, 'Mama, du stehst vor der Tür.', (L.lt - .5) / .2, 1.4); onFace(c, 6.2, -.4, 0, 42, L.k, 5.2); }, [[0, 'whisper', .7]]);
 // ---- 86 «Dann war es lange still.» (pantalla partida): arriba Mama, petrificada en la oficina; abajo Mats, inmóvil en el pasillo
 shot(132.96, 'F', null, L => { const m = officeMama(L, null, null, { expr: 'shock' }); m.setFace({ eyes: 'wide', mouth: 'o' }); onFace(m, 6, -.3, 0, 40, L.k, 5.4); }, [[0, 'silence_tick', .5], [.5, 'heartbeat', .4]],
@@ -561,7 +561,7 @@ shot(145.41, 'Z', 'slow', L => { const c = porchDing(L, null, null, .9, { ry: PI
 // ---- 95 «„Mats, wer ist an der Tür?“»: POV de la mirilla: la Cosa lo repite, la sonrisa estirada
 shot(147.38, 'G', null, L => { const c = porchDing(L, 147.38, 149.57, .95); peephole(L, 1, { look: hp(c).add(V(0, .2, 0)), fov: lerp(64, 56, L.k) }); }, [[0, 'glitch', .4]]);
 // ---- 96 «Es hat nicht geraten, was Mama sagen würde.»: Mats retrocede hasta chocar con la pared y niega con la cabeza
-shot(149.57, 'W', null, L => { const c = hallMats(L, { x: -5.4, z: 12 - easeOut(clamp(L.lt / .8)) * 2, ry: PI * .75, pose: { headY: Math.sin(L.T * 9) * .35, lean: -.1 } }); cara(c, L.T, { expr: 'scared', mouth: 'grimace' }); onFace(c, 6.6, -.4, 0, 42, L.k, 5.6); }, [[0, 'steps', .4], [.6, 'thud', .5]]);
+shot(149.57, 'W', null, L => { const c = hallMats(L, { x: -.6, z: 12 - easeOut(clamp(L.lt / .8)) * 2, ry: PI * .9, pose: { headY: Math.sin(L.T * 9) * .35, lean: -.1 } }); cara(c, L.T, { expr: 'scared', mouth: 'grimace' }); onFace(c, 6.6, -.4, 0, 42, L.k, 5.6); }, [[0, 'steps', .4], [.6, 'thud', .5]]);
 // ---- 97 «Es hat sie nachgemacht, während sie sprach.» (pantalla partida): arriba Mama, abajo la Cosa, hablando a la vez
 shot(152.03, 'S', null, L => { const m = officeMama(L, null, null, { expr: 'determined' }); talk(m, L.T, L.T - .2, L.T + .2, 'determined'); onFace(m, 5.6, -.3, 0, 40, L.k, 5); }, [[.3, 'creepy_ting', .4]],
   L => { const c = porchDing(L, null, null, .9); creepF(c, L.T, Math.sin(L.T * 14 - 2) > 0 ? .75 : .95); peephole(L, 0, { look: hp(c).add(V(0, .2, 0)), fov: 46 }); });
