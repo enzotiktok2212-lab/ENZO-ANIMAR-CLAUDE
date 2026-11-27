@@ -432,8 +432,8 @@ function cbCaption(words, t, y = 1270) {
     ctx.save(); ctx.translate(W / 2, y); ctx.scale(k, k); ctx.translate(-W / 2, -y);
     grp.forEach((w, k) => {
       const on = t >= w.t0 - 0.05, cur = on && (k === grp.length - 1 || t < grp[k + 1].t0 - 0.05);
-      if (on) { ctx.save(); ctx.shadowColor = 'rgba(0,0,0,0.35)'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 8;
-        cbText(parts[k], x + ws[k] / 2, y, size, { color: cur ? CB.yellow : '#ffffff', stroke: 18 }); ctx.restore(); }
+      ctx.save(); ctx.shadowColor = 'rgba(0,0,0,0.35)'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 8;
+      cbText(parts[k], x + ws[k] / 2, y, size, { color: cur ? CB.yellow : '#ffffff', stroke: 18 }); ctx.restore();
       x += ws[k] + gap;
     });
     ctx.restore();

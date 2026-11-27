@@ -25,6 +25,6 @@ const TIMELINE = {
     { name: '5 The circle', role: 'gift', t0: 80.64, t1: 96.0 },
   ],
   board: [],
-  narration: WORDS.map((w) => ({ t: w.t0, text: w.w })),
+  narration: WORDS.map((w) => ({ t: w.t0, t0: w.t0, t1: w.t1, text: w.w })),
 };
 window.TIMELINE = TIMELINE;

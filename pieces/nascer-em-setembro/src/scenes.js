@@ -7,7 +7,13 @@ const SCENES = {}, SCENE_CAM = {};
 const TAG = 'POR QUE É CHATO…';
 function scene(name, cam, fn) {
   SCENE_CAM[name] = cam || {};
-  SCENES[name] = (p) => { const lt = TT - p.base; fn(p, lt, p.end - p.base); cbTag(TAG); cbCaption(WORDS, TT, CAP_Y); };
+  SCENES[name] = (p) => {
+    const lt = TT - p.base; fn(p, lt, p.end - p.base);
+    // chapter cuts open on a white flash; every other cut on a short soft flash
+    const e = TT - E0, chap = CHAPTER(name) && p.setup === 1, a = chap ? 0.85 * (1 - e / 0.25) : 0.25 * (1 - e / 0.1);
+    if (a > 0) cbDefer(() => { ctx.save(); ctx.fillStyle = `rgba(255,252,240,${a})`; ctx.fillRect(0, 0, W, H); ctx.restore(); });
+    cbTag(TAG); cbCaption(WORDS, TT, CAP_Y);
+  };
 }
 const sparkRing = (x, y, r, n = 8, s = 20) => { for (let i = 0; i < n; i++) { const a = i / n * TAU + TT * 1.5; cbSparkle(x + Math.cos(a) * r, y + Math.sin(a) * r * 0.8, s + 8 * Math.sin(TT * 7 + i)); } };
 const motionLines = (x, y, dir, a = 1) => { for (let i = 0; i < 4; i++) cbLine([[x - dir * (60 + i * 8), y - 120 + i * 80], [x - dir * (220 + i * 30), y - 120 + i * 80]], { w: 8, c: `rgba(255,255,255,${0.8 * a})` }); };
