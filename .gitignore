@@ -7,3 +7,6 @@ __pycache__/
 # built files (tools/build.mjs makes them from src/ + kit/ + the style)
 plugins/**/index.html
 plugins/**/review/
+
+# voice.wav is made from the narration mp3 with ffmpeg
+pieces/*/voice/voice.wav
