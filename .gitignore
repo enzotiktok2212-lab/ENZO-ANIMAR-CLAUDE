@@ -54,3 +54,7 @@ pieces/codewort/test/
 pieces/codewort/renders/
 pieces/codewort/node_modules
 pieces/codewort/partes-in/
+pieces/ebbe/rv*/
+pieces/ebbe/review*/
+pieces/ebbe/*.log
+pieces/ebbe/renders/

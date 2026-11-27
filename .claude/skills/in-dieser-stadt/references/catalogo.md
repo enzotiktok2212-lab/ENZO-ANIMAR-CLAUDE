@@ -1,4 +1,5 @@
 # Catálogo de todos los vídeos (ramas `claude/*` del repo, `pieces/`)
+# Catálogo de todos los vídeos (todo está unido en la rama de la sesión, `pieces/`)
 
 Orden cronológico. Dur = duración de la voz recortada (s). RPM según lo que contó el usuario (— = no lo dijo; «bajo» = 1,5–2 $).
 
@@ -50,6 +51,23 @@ Orden cronológico. Dur = duración de la voz recortada (s). RPM según lo que c
 | 39 | `schutzengel` | «In dieser Welt wird jeder mit zwei Schutzengeln geboren. Und sie sind immer Gegenteile» | 162 | (esperado alto: fantasía + familia) | corte cada ~1,2 s, 4 cambios de escena en 5 s; ángeles, alas, Tod/Leben; **render HQ repartido** entre 12 sesiones (`rango.sh`, `trozos.sh`, `juntar.sh`); guion sin preguntas al espectador |
 | 40 | `statue` | «In dieser Stadt wirst du zur Statue, wenn du ein Jahr lang keine Freundin oder keinen Freund hast» — solo un beso te libera | 166 | — | piedra progresiva, pedestal, Rolltreppe, lluvia; 130 planos; render a ss 1.25 sin AO (más rápido); portada centrada en el protagonista |
 | 41 | `codewort` | «In dieser Stadt hat jede Familie ein geheimes Wort» — terror: la Cosa imita la voz de Mama; mirilla y eco | 225 | (esperado bajo: terror) | mundo copiado del original (casas de madera con porche, bosque de abetos, calle mojada); mirilla con ojo de pez; pantalla partida; **sin preguntas al espectador** (prohibidas); con AO el render iba a 14 fps/min → ss 1.25 sin AO repartido en 5 sesiones |
+
+## Episodios posteriores a `knopf` (motor `schluck` y sucesores)
+
+| # | carpeta | gancho (alemán) / tema | dur | RPM | lecciones clave |
+|---|---|---|---|---|---|
+| 34 | `sofort` | «In dieser Stadt bin ich der Superschurke» — ayer conquisté la ciudad | 174 | — | fachadas detalladas; luz en el protagonista en la portada |
+| 35 | `lukas` | «heißt jeder Junge Lukas und jedes Mädchen Mia… nur ich nicht» | 130 | — | 300 cabezas que se giran a la vez; portada con burlones |
+| 36 | `frauenstadt` | «Frauenrechte heilig… jeder Mann im Gefängnis geboren», puntos por buenas acciones | 135 | — | **base visual preferida** (luz, sombras, ambiente) |
+| 37 | `schluck` | dinero por cada cerveza: «Ein Bier? Zwanzig Euro.» | 168 | — | **motor de referencia** (AO, DOF, bloom, SS 1,5); jarras para todos |
+| 38 | `wachcheck` | «darf niemand schlafen», el alcalde que no duerme desde hace 40 años | — | — | portada con los personajes del canal |
+| 39 | `dampf` / `dampfsammler` | vapear prohibido: el humo se recoge | 118 | — | 500 mil vistas; base visual preferida |
+| 40 | `neinhals` | «wird dein Hals jedes Mal länger, wenn du Nein sagst» | 176 | — | 4 escenas en 5 s; cuellos de distintos largos en la 1.ª escena; CTA «Wer ist das bei dir? — Bei mir? meine Mama» |
+| 41 | `lispeln` | «In diether Thtadt itht der Buchthtabe S verboten» | 96 | — | hecho de una tirada sin preguntar; portada «GTA THECHTH» |
+| 42 | `kaffee` | «Kaffee macht dich reich», cada taza = dinero | 195 | — | 163 planos (1,19 s); la taza no tapa la cara; cámara menos cerca; render repartido en 11 sesiones |
+| 43 | `schlafwandler` | «schlafwandelt jeder um drei Uhr nachts. Wenn du wach bist, tu so, als ob.» | 223 | — | CTA como afirmación (sin pregunta) |
+| 44 | `statue` | si pasas un año sin pareja, te vuelves estatua; solo un beso te despierta | 166 | — | portada centrada en el protagonista |
+| 45 | `schutzengel` | «In dieser Welt wird jeder mit zwei Schutzengeln geboren. Und sie sind immer Gegenteile.» | 162 | — | **última plantilla**; 131 planos (~1,2 s); guion sin preguntas; render repartido (`rango/trozos/juntar`) |
 
 \* `traumsammler` tiene `words.json` parcial; el vídeo final era más largo.
 
