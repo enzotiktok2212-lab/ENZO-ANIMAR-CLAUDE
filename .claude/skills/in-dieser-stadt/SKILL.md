@@ -19,6 +19,16 @@ Documentos del repo que siguen siendo la referencia detallada (léelos al empeza
 - Cuando el usuario diga "ya puedes renderizar", **no hagas más revisiones**: lanza el render.
 - Rama: **la rama de desarrollo que indique la sesión** (en este chat `claude/charming-euler-5lnaoi`, que ya une todas las ramas anteriores: wizardly-meitner, serene-clarke, determined-cerf, upbeat-maxwell, zen-clarke, chat-videos-in-dieser-stadt) del repo `enzotiktok2212-lab/enzo-animar-claude`. El trabajo de otros chats vive en ramas `claude/*`: si falta una pieza, búscala con `git log --all`. Antes de cada push: `git fetch` + `git rebase`. Commit y push de todo (el hook lo exige), **nunca** los vídeos finales (>100 MB), el vídeo de referencia, sus fotogramas ni las capturas de revisión (`review/`, `review60/` → `.gitignore`).
 
+## 0b. Encargo fijo del usuario (27-11-2026, `namen`) — vale para TODOS los vídeos siguientes
+- **Motor**: el de los vídeos que salieron con mejor calidad: `schluck` (cerveza), `dampf` (vape), `frauenstadt` (derechos de las mujeres), `statue` (estatua) → plantilla `schutzengel`.
+- **Mejorar un poco en cada vídeo**: algo más de sombra, de iluminación y de ambiente; **cielo mucho más realista** (nubes, degradado, sol/halo), ambiente realista (niebla de profundidad, partículas, luz cálida), casas y todo **más detallado**. **No siempre el mismo ambiente**: varía escenarios, hora del día y lugares.
+- **Física**: añadir gradualmente físicas (caídas con rebote, objetos que vuelan con gravedad, telas/pelo que se mueven, monedas que caen y rebotan, empujones con reacción).
+- **Ritmo**: cambio de escena cada **1,2–1,3 s**. **En los primeros 5 s, 4 cambios de escena.**
+- **Primera escena** en la ciudad («In dieser Stadt»): arranca con **zoom rápido** y muestra **una acción concreta que diga de qué va el vídeo** (p. ej. en `namen`: gente caminando que se para, saluda y le sale un **bocadillo con un nombre**, y saltan **símbolos de € ganados con su sonidito**).
+- **Todo centrado** en todas las escenas (lo principal en el centro).
+- **Transición distinta en cada cambio de escena** (barrido, zoom, destello, deslizamiento, giro, iris, golpe de zoom…), cada una con su sonido.
+- **Revisar siempre que no haya errores** antes de enseñar o renderizar.
+
 ## 1. Flujo completo
 1. **Referencia** (MP4 que manda el usuario; los links de TikTok no se pueden abrir aquí):
    - copia al scratchpad, `ffprobe`, transcripción con `plugins/animate/skills/animate/tools/transcribir.py ref.mp4 raw.json --lang de --txt t.txt`;

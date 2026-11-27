@@ -48,3 +48,6 @@ Se llama «In dieser Stadt». La foto de perfil está en `pieces/gaense/src/avat
   - Todo lo importante (texto, personajes, ilustraciones del tema) tiene que caber en la zona central 3:4, de y = 240 a y = 1680 px; arriba y abajo solo cielo o suelo vacíos, porque TikTok recorta.
   - El texto va centrado entre los personajes, no separado arriba.
 - Comunicación: respuestas muy cortas en español; mientras se renderiza no hay que contar el progreso. Cuando el vídeo esté listo, mandar solo el vídeo. La descripción y las portadas se hacen cuando las pida.
+
+## Encargo fijo del usuario (27-11-2026) para todos los vídeos siguientes
+Motor de los vídeos de mejor calidad (cerveza `schluck`, vape `dampf`, `frauenstadt`, `statue` → plantilla `schutzengel`) y mejorarlo un poco cada vez: más sombra, luz y ambiente, cielo y ambiente mucho más realistas, casas y todo más detallado, ambientes variados, físicas añadidas poco a poco. Cambio de escena cada 1,2–1,3 s; 4 cambios en los primeros 5 s; la 1.ª escena en la ciudad con zoom rápido y una acción concreta que explique el vídeo; todo centrado; transición distinta en cada corte con su sonido; revisar siempre que no haya errores. Detalle en la skill `in-dieser-stadt` §0b.

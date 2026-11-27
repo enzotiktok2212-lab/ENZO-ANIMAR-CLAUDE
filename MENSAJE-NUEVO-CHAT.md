@@ -28,3 +28,6 @@ Hola. Seguimos con mis vídeos de TikTok para Alemania (canal «In dieser Stadt�
 
 ## Ahora
 Te voy a mandar varios vídeos virales recientes (MP4). Analízalos y puntúa cada uno según ese patrón de RPM y su potencial viral. Al final dime los **2 mejores para hacer**, con el porqué.
+
+## Encargo fijo del usuario (27-11-2026) para todos los vídeos siguientes
+Motor de los vídeos de mejor calidad (cerveza `schluck`, vape `dampf`, `frauenstadt`, `statue` → plantilla `schutzengel`) y mejorarlo un poco cada vez: más sombra, luz y ambiente, cielo y ambiente mucho más realistas, casas y todo más detallado, ambientes variados, físicas añadidas poco a poco. Cambio de escena cada 1,2–1,3 s; 4 cambios en los primeros 5 s; la 1.ª escena en la ciudad con zoom rápido y una acción concreta que explique el vídeo; todo centrado; transición distinta en cada corte con su sonido; revisar siempre que no haya errores. Detalle en la skill `in-dieser-stadt` §0b.
