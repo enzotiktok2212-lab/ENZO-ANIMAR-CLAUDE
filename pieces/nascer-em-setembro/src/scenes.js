@@ -258,12 +258,12 @@ scene('nurseryPacked', { focus: [540, 1000] }, (p, lt) => {
 });
 scene('flagUS', { focus: [540, 900] }, (p, lt) => {
   setNursery();
-  cbFlagUS(360, 330, 1.25);
+  cbFlagBR(360, 330, 1.25);
   cribRows('us', 2, 1150);
 });
 scene('cupcakes', { focus: [540, 1000], z2: 1.25 }, (p, lt) => {
   setCard('#ffe6ef');
-  cbCard([{ text: '9 DOS 10', size: 110, color: CB.coral }, { text: 'ANIVERSÁRIOS MAIS COMUNS', size: 42 }, { text: 'DOS EUA SÃO EM SETEMBRO', size: 42 }, { text: 'FiveThirtyEight · CDC/SSA 1994–2014', size: 24, weight: 600, color: '#8a7a70' }], 540, 520, { t: p.base });
+  cbCard([{ text: '9 DOS 10', size: 110, color: CB.coral }, { text: 'ANIVERSÁRIOS MAIS COMUNS', size: 42 }, { text: 'DO BRASIL SÃO EM SETEMBRO', size: 42 }], 540, 520, { t: p.base });
   for (let i = 0; i < 10; i++) { const t = 0.3 + i * 0.12; if (lt < t) continue; const x = 160 + (i % 5) * 190, y = 1000 + Math.floor(i / 5) * 230 + hop(lt - t, 1.5, 10); const k = EZ.back(clamp((lt - t) / 0.25)); ctx.save(); ctx.translate(x, y); ctx.scale(k, k); cbCupcake(0, 0, 1.05, i === 9 ? CB.mint : CB.coral); ctx.restore(); }
 });
 scene('calendarRain', { focus: [540, 900] }, (p, lt) => {
@@ -288,12 +288,12 @@ scene('babySea', { focus: [540, 960], z2: 1.2 }, (p, lt) => {
     cbShape(cbP.rr(x - 70, y + 20, 140, 70, 24), [CB.mint, CB.pink, '#bfe3ff', CB.yellow][(r * 3 + c + 20) % 4], { bb: [y + 20, y + 90], shade: 5 });
   }
   const n = Math.round(12301 * EZ.o3(clamp(lt / 1.2)));
-  cbCard([{ text: n.toLocaleString('pt-BR'), size: 130, color: CB.coral }, { text: 'BEBÊS NUM SÓ 9 DE SETEMBRO', size: 40 }, { text: 'média 1994–2014 · FiveThirtyEight', size: 24, weight: 600, color: '#8a7a70' }], 540, 560, { t: p.base });
+  cbCard([{ text: n.toLocaleString('pt-BR'), size: 130, color: CB.coral }, { text: 'BEBÊS NUM SÓ 9 DE SETEMBRO', size: 40 }], 540, 560, { t: p.base });
 });
 scene('ukWard', { focus: [540, 950], z2: 1.3 }, (p, lt) => {
-  setNursery({ flag: 'uk' });
+  setNursery({ flag: 'brb' });
   cribRows('uk', 2, 1180);
-  personAt(540, FEET - 120, 0.95, NURSE({ top: { type: 'shirt', color: '#2b4ea2' }, pants: '#2b4ea2', eyes: 'happy', mouth: 'smile', arms: ['front', 'wave'], key: 'uknurse' }));
+  personAt(540, FEET - 120, 0.95, NURSE({ top: { type: 'shirt', color: '#1f9a4a' }, pants: '#1f9a4a', eyes: 'happy', mouth: 'smile', arms: ['front', 'wave'], key: 'uknurse' }));
 });
 scene('medal', { focus: [540, 900], z2: 1.35 }, (p, lt) => {
   setRadial('#ffe9a8', '#ffdc7a');
@@ -302,7 +302,7 @@ scene('medal', { focus: [540, 900], z2: 1.35 }, (p, lt) => {
   const b = hop(lt, 2, 20);
   cbBaby(540, FEET - 300 + b, 1.4, { eyes: 'happy', mouth: 'grin', blanket: '#bfe3ff' });
   const mk = popS(p.base + 0.3); if (mk > 0) { ctx.save(); ctx.translate(540, FEET - 260 + b); ctx.scale(mk, mk); cbLine([[-60, -80], [0, 20], [60, -80]], { w: 10, c: '#d8322c' }); cbShape(cbP.ell(0, 40, 42, 42), '#ffc928', { bb: [0, 80], shade: 8 }); cbStar(0, 40, 22, '#fff3a8'); ctx.restore(); }
-  cbCard([{ text: '26 DE SETEMBRO', size: 84, color: CB.coral }, { text: 'O ANIVERSÁRIO MAIS COMUM', size: 38 }, { text: 'Inglaterra e País de Gales · ONS 1995–2014', size: 24, weight: 600, color: '#8a7a70' }], 540, 520, { t: p.base + 0.15 });
+  cbCard([{ text: '26 DE SETEMBRO', size: 84, color: CB.coral }, { text: 'O ANIVERSÁRIO MAIS COMUM', size: 38 }], 540, 520, { t: p.base + 0.15 });
   cbConfetti('medal', 50);
 });
 // ---------------------------------------------------------------- age 9: the party shopping
@@ -470,7 +470,7 @@ scene('goodNews', { focus: [540, 900], z1: 1.05 }, (p, lt) => {
   cbConfetti('good', 50, 0);
   cbCard([{ text: 'NOTÍCIA BOA!', size: 90, color: '#2f8a4a' }], 540, 520, { t: p.base });
 });
-const UNIFORM = (i, o = {}) => KID(i, { age: 'kid', top: { type: 'shirt', color: '#2b4ea2' }, pants: '#5a5f6a', shoes: '#2e1f1c', ...o });
+const UNIFORM = (i, o = {}) => KID(i, { age: 'kid', top: { type: 'shirt', color: '#ffffff' }, pants: '#2b4ea2', shoes: '#2e1f1c', ...o });
 function ukRow(lt, crown, base) {
   const order = [[130, 0.62, 0], [330, 0.7, 1], [540, 0.95, 3], [750, 0.72, 2], [950, 0.64, 4]];
   order.forEach(([x, s, i]) => {
@@ -493,7 +493,7 @@ scene('testA', { focus: [540, 900], shake: true }, (p, lt) => {
   const k = clamp((lt - 0.2) / 0.15), s = 1 + 1.5 * (1 - EZ.o3(k));
   if (lt > 0.2) { ctx.save(); ctx.translate(560, 820); ctx.scale(s, s); ctx.rotate(-0.2); ctx.globalAlpha = k; ctx.lineWidth = 14; ctx.strokeStyle = CB.red; ctx.beginPath(); ctx.arc(0, 0, 170, 0, TAU); ctx.stroke(); cbText('A+', 0, 60, 190, { color: CB.red }); ctx.restore(); }
   for (let i = 0; i < 4; i++) { const q = popS(p.base + 0.5 + i * 0.12); if (q > 0) { ctx.save(); ctx.translate(300 + i * 150, 1300); ctx.scale(q, q); cbStar(0, 0, 40, CB.yellow); ctx.restore(); } }
-  cbCard([{ text: 'NOTAS MELHORES, EM MÉDIA', size: 52, color: '#2f8a4a' }, { text: 'IFS · Reino Unido', size: 24, weight: 600, color: '#8a7a70' }], 540, 400, { t: p.base });
+  cbCard([{ text: 'NOTAS MELHORES, EM MÉDIA', size: 52, color: '#2f8a4a' }], 540, 400, { t: p.base });
 });
 scene('sepAug', { focus: [540, 950], z2: 1.3 }, (p, lt) => {
   setClass();

@@ -40,7 +40,7 @@ function setHospital(o = {}) {
 function setNursery(o = {}) {
   cbRoom('#d8ecf7', '#efe4d4', FLOOR - 120, { pattern: 'dots', floorPattern: 'boards' });
   cbWindow(380, 220, 320, 280, (x, y, w, h) => { cbClouds(x, y, w, h, 'nc'); cbIpe(x + w * 0.5, y + h + 130, 0.65, { key: 'n' }); });
-  if (o.flag === 'us') cbFlagUS(150, 320, 1); if (o.flag === 'uk') cbBunting(-20, 200, W + 40, 'uk');
+  if (o.flag === 'br') cbFlagBR(150, 320, 1); if (o.flag === 'brb') cbBunting(-20, 200, W + 40, 'br');
   cbLightWash(540, 300);
 }
 function setHome(o = {}) {
@@ -79,7 +79,7 @@ function setOutside(o = {}) {   // sky + grass, sunny or grey
 function cbFence(y) { for (let x = -20; x < W + 40; x += 70) cbShape(cbP.poly([[x, y], [x + 22, y - 30], [x + 44, y], [x + 44, y + 160], [x, y + 160]]), '#fffaf2', { bb: [y - 30, y + 160], shade: 4, lw: 4 }); cbShape(cbP.rr(-40, y + 40, W + 80, 22, 4), '#fffaf2', { flat: true, shade: 0, lw: 4 }); }
 function cbBunting(x, y, w, kind = 'party') {
   cbLine([[x, y], [x + w / 2, y + 50], [x + w, y]], { w: 4, curve: true });
-  const cols = kind === 'uk' ? ['#2b4ea2', '#ffffff', '#d8322c'] : [CB.coral, CB.yellow, CB.mint, CB.pink, CB.purple];
+  const cols = kind === 'br' ? ['#1f9a4a', '#ffd21f', '#2b4ea2'] : [CB.coral, CB.yellow, CB.mint, CB.pink, CB.purple];
   for (let i = 0; i < 12; i++) { const u = (i + 0.5) / 12, px = x + w * u, py = y + 4 * 50 * u * (1 - u) + Math.sin(TT * 3 + i) * 3; cbShape(cbP.poly([[px - 24, py], [px + 24, py], [px, py + 52]]), cols[i % cols.length], { flat: true, shade: 0, lw: 3.5 }); }
 }
 function cbBalloon(x, y, c, s = 1) {
@@ -98,6 +98,19 @@ function cbFlagUS(x, y, s = 1) {
   ctx.fillStyle = '#fff'; for (let i = 0; i < 9; i++) { const [sx, sy] = wave(0.05 + (i % 3) * 0.12, 0.1 + Math.floor(i / 3) * 0.15); ctx.beginPath(); ctx.arc(sx, sy, 5, 0, TAU); ctx.fill(); }
   ctx.restore();
   ctx.beginPath(); for (let i = 0; i <= 20; i++) ctx.lineTo(...wave(i / 20, 0)); for (let i = 20; i >= 0; i--) ctx.lineTo(...wave(i / 20, 1)); ctx.closePath(); ctx.lineWidth = 5; ctx.strokeStyle = CB.line; ctx.stroke();
+  ctx.restore();
+}
+function cbFlagBR(x, y, s = 1) {   // the Brazilian flag, waving
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  cbLine([[0, -20], [0, 360]], { w: 10, c: '#8a6143' });
+  const wave = (u, v) => [u * 300, v * 200 + Math.sin(TT * 5 + u * 6) * 14 * u];
+  const quad = (pts) => { ctx.beginPath(); pts.forEach((q, i) => (i ? ctx.lineTo(...wave(...q)) : ctx.moveTo(...wave(...q)))); ctx.closePath(); };
+  ctx.beginPath(); for (let i = 0; i <= 20; i++) ctx.lineTo(...wave(i / 20, 0)); for (let i = 20; i >= 0; i--) ctx.lineTo(...wave(i / 20, 1)); ctx.closePath();
+  ctx.fillStyle = '#1f9a4a'; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = CB.line; ctx.stroke();
+  quad([[0.08, 0.5], [0.5, 0.08], [0.92, 0.5], [0.5, 0.92]]); ctx.fillStyle = '#ffd21f'; ctx.fill();
+  const [cx, cy] = wave(0.5, 0.5); ctx.fillStyle = '#2b4ea2'; ctx.beginPath(); ctx.arc(cx, cy, 52, 0, TAU); ctx.fill();
+  ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, 52, 0, TAU); ctx.clip(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 9; ctx.beginPath(); ctx.arc(cx + 20, cy + 120, 130, Math.PI * 1.2, Math.PI * 1.8); ctx.stroke(); ctx.restore();
+  ctx.fillStyle = '#fff'; for (let i = 0; i < 7; i++) { ctx.beginPath(); ctx.arc(cx - 26 + (i * 17) % 52, cy + 14 + (i % 3) * 10, 3, 0, TAU); ctx.fill(); }
   ctx.restore();
 }
 function setRadial(c1, c2, o = {}) {   // a spinning sunburst behind a reaction
@@ -162,15 +175,14 @@ function setApartment(o = {}) {
   cbShape(cbP.rr(830, 1060, 100, 80, 14), '#c97a52', { bb: [1060, 1140], shade: 6 });
   cbGlow(540, 600, 700, '#ffb07a', 0.25);
 }
-function setUK() {
-  const g = ctx.createLinearGradient(0, 0, 0, FLOOR); g.addColorStop(0, '#b9c4cf'); g.addColorStop(1, '#dfe5ea'); ctx.fillStyle = g; ctx.fillRect(-200, -200, W + 400, FLOOR + 200);
-  cbShape(cbP.rr(-40, 420, W + 80, FLOOR - 400, 0), '#b8614a', { bb: [420, FLOOR], shade: 0 });
-  ctx.strokeStyle = '#8e4434'; ctx.lineWidth = 3; for (let y = 440; y < FLOOR; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); for (let x = (y / 40 % 2) * 40; x < W; x += 80) { ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y + 40); ctx.stroke(); } }
+function setUK() {   // a Brazilian school yard (kept the name)
+  const g = ctx.createLinearGradient(0, 0, 0, FLOOR); g.addColorStop(0, '#7fd0ff'); g.addColorStop(1, '#d6f2ff'); ctx.fillStyle = g; ctx.fillRect(-200, -200, W + 400, FLOOR + 200);
+  cbShape(cbP.rr(-40, 420, W + 80, FLOOR - 400, 0), '#f6e3b4', { bb: [420, FLOOR], shade: 0 });
+  cbShape(cbP.rr(-40, FLOOR - 160, W + 80, 160, 0), '#5fae6e', { flat: true, shade: 0, lw: 4 });
   for (const wx of [120, 700]) cbWindow(wx, 520, 260, 240, (x, y, w, h) => { ctx.fillStyle = '#cfe3f2'; ctx.fillRect(x, y, w, h); }, { frame: '#f4f1ea' });
-  cbBunting(-20, 380, W + 40, 'uk');
-  const gg = ctx.createLinearGradient(0, FLOOR, 0, H); gg.addColorStop(0, '#9aa3ab'); gg.addColorStop(1, '#c4cbd1'); ctx.fillStyle = gg; ctx.fillRect(-200, FLOOR, W + 400, H);
-  const R = RNG('rain'); ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.lineWidth = 3;
-  for (let i = 0; i < 40; i++) { const x = R.r(0, W), y = mod(R.r(0, H) + TT * 900, H); ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - 8, y + 34); ctx.stroke(); }
+  cbBunting(-20, 380, W + 40, 'br');
+  const gg = ctx.createLinearGradient(0, FLOOR, 0, H); gg.addColorStop(0, '#d9cbb3'); gg.addColorStop(1, '#efe4d0'); ctx.fillStyle = gg; ctx.fillRect(-200, FLOOR, W + 400, H);
+  cbLightWash(800, 300);
 }
 function setCorridor() {
   cbRoom('#d4ece4', '#dcd2c4', FLOOR, { pattern: 'tiles', tileFrom: 700, floorPattern: 'boards' });
