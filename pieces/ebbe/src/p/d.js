@@ -6,7 +6,7 @@ shot(110.0, 'P', 'punch', L => { kueste(L, { t: 'storm' }); wave(L.T, 520 - L.lt
 shot(111.38, 'W', 'slow', L => { kueste(L, { t: 'storm' }); wave(L.T, 330 - L.lt * 20, 82, .6, { glow: .5 }); crowdBox(L, -40, 40, -7, -10, 10, 67, { y: CH, mode: 'shock', face: V(0, 40, 300) });
   cm([-320, 40, 150, 0, 40, 170, 56], [-300, 42, 160, 0, 42, 170, 54], L.k); }, [[0, 'rumble_far', .8]]);
 // 83 «Dunkelgrün»: primer plano de la cara de la ola, verde oscuro y translúcida
-shot(112.99, 'F', null, L => { kueste(L, { t: 'day' }); wave(L.T, 300, 82, .6, { glow: .8 }); cm([20, 30, 240, 0, 60, 300, 46], [18, 32, 244, 0, 62, 300, 44], L.k); }, [[0, 'water_rush', .7]]);
+shot(112.99, 'F', null, L => { kueste(L, { t: 'day' }); wave(L.T, 300, 82, .6, { glow: .8 }); cm([20, 14, 200, 0, 70, 300, 52], [18, 16, 204, 0, 72, 300, 50], L.k); }, [[0, 'water_rush', .7]]);
 // 84 «und die Sonne schien durch sie hindurch»: contraluz: el sol brilla a través de la cresta (verde esmeralda)
 shot(113.88, 'R', null, L => { kueste(L, { t: 'day' }); SUND.set(0, .35, 1).normalize(); wave(L.T, 300, 82, .65, { glow: 1.1 }); cm([-10, 12, 200, 0, 80, 330, 56], [-8, 14, 206, 0, 82, 330, 56], L.k); BLOOMMAX = .5; bloom.strength = .5; }, [[0, 'shimmer', .6]]);
 // 85 «Ich rutschte den Mast hinunter»: Jonte se desliza por el mástil abrazado a él
@@ -52,21 +52,21 @@ shot(130.28, 'F', null, L => { kueste(L, { t: 'day', sea: 1, seaY: 10 }); REGEN.
   cm([0, CH + 6, 20, 0, CH + 12, -60, 56], [0, CH + 7, 14, 0, CH + 14, -60, 56], L.k); }, [[0, 'rain', .8]]);
 // 98 «Ich sah mich um»: Jonte empapado mira a su alrededor
 shot(132.48, 'S', null, L => { kueste(L, { t: 'day', sea: 1, seaY: 10 }); REGEN.visible = true; REGEN.userData.set(V(0, CH, -14), L.T, { r: 30, h: 40 }); pose(jonte, 0, CH, -12, PI + Math.sin(L.T * 1.5) * .6, L, { headY: Math.sin(L.T * 2) * .5 }, 'shock', { mouth: 'o' });
-  cm([1, CH + 6, -26, 0, CH + 4.5, -12, 44], [1, CH + 5.6, -23, 0, CH + 4.5, -12, 42], L.k); }, [[0, 'rain', .6]]);
+  cm([1, CH + 6, -24, 0, CH + 4.5, -10, 44], [1, CH + 5.6, -22, 0, CH + 4.5, -10, 42], L.k); }, [[0, 'rain', .6]]);
 // 99 «Jede Familie»: una familia se abraza bajo la lluvia
 shot(133.42, 'W', null, L => { kueste(L, { t: 'day', sea: 1, seaY: 10 }); REGEN.visible = true; REGEN.userData.set(V(0, CH, -14), L.T, { r: 30, h: 40 }); const H_ = { aLx: 1.4, aRx: 1.4, aLz: -.5, aRz: -.5, aLe: 1.3, aRe: 1.3 };
   pose(NB[0], -2, CH, -12, PI - .6, L, H_, 'relief', { mouth: 'smile' }); pose(NB[2], 1.6, CH, -12.6, PI + .6, L, H_, 'relief', { mouth: 'smile' }); pose(NB[3], 0, CH, -14.2, PI, L, { ...H_, aLz: .3, aRz: .3 }, 'joy');
-  cm([0, CH + 5, -28, 0, CH + 3.4, -12, 44], [0, CH + 5, -25, 0, CH + 3.4, -12, 42], L.k); }, [[0, 'cheer_soft', .5]]);
+  cm([0, CH + 5, -24, 0, CH + 3.4, -11, 44], [0, CH + 5, -22, 0, CH + 3.4, -11, 42], L.k); }, [[0, 'cheer_soft', .5]]);
 // 100 «Jedes Kind»: los niños saltan en los charcos del paseo
 shot(134.32, 'C', null, L => { kueste(L, { t: 'day', sea: 1, seaY: 10 }); REGEN.visible = true; REGEN.userData.set(V(0, CH, -14), L.T, { r: 30, h: 40 }); crowdBox(L, -8, 8, -10, -14, 4, 75, { y: CH, mode: 'cheer', list: [NB[8], NB[13], NB[18], NB[23]] });
-  cm([0, CH + 3.5, -28, 0, CH + 3, -12, 44], [0, CH + 3.8, -26, 0, CH + 3, -12, 42], L.k); }, [[0, 'kids_laugh', .6], [.2, 'splash_step', .6]]);
+  cm([0, CH + 3.5, -24, 0, CH + 3, -11, 44], [0, CH + 3.8, -22, 0, CH + 3, -11, 42], L.k); }, [[0, 'kids_laugh', .6], [.2, 'splash_step', .6]]);
 // 101 «Jede Oma»: dos abuelas ríen a carcajadas, chorreando
 shot(135.22, 'R', null, L => { kueste(L, { t: 'day', sea: 1, seaY: 10 }); REGEN.visible = true; REGEN.userData.set(V(0, CH, -14), L.T, { r: 30, h: 40 }); pose(NB[5], -2, CH, -12, PI - .4, L, { aLx: 1.2, aLe: 1.6 }, 'joy'); laughF(NB[5], L.T); pose(NB[15], 2, CH, -12, PI + .4, L, { aRx: 2.4, aRe: .4 }, 'joy'); laughF(NB[15], L.T + 1);
-  cm([0, CH + 4.6, -26, 0, CH + 3.8, -12, 42], [0, CH + 4.6, -23, 0, CH + 3.8, -12, 40], L.k); }, [[0, 'laugh_old', .6]]);
+  cm([0, CH + 4.6, -24, 0, CH + 3.8, -11, 42], [0, CH + 4.6, -22, 0, CH + 3.8, -11, 40], L.k); }, [[0, 'laugh_old', .6]]);
 // 102 «Alle hatten es geschafft»: el pueblo alza a Jonte a hombros; confeti de agua y gaviotas que vuelven
 shot(136.0, 'Z', 'punch', L => { kueste(L, { t: 'day', sea: 1, seaY: 10 }); put(jonte, 0, CH + 4 + Math.abs(Math.sin(L.T * 6)) * 1.2, -12, PI); actuar(jonte, 0, [[0, { aLx: 2.8, aRx: 2.8, aLz: .5, aRz: .5 }]], { T: L.T, weight: false }); laughF(jonte, L.T); jonte.blob.visible = false; attach(HORN, jonte.aR.hand, [.4, -.6, .6], [0, 0, 1.4], .55);
   crowdAt(L, 0, -12, 14, 3, 9, 77, { y: CH, mode: 'cheer', list: [mama, opa, papa, broesel, ...NB] }); MOEW.fly(L.T, V(-40, CH + 30, 20), V(1, 0, .2), { lt: L.lt, n: 14, speed: 10 });
-  cm([0, CH + 7, -34, 0, CH + 7, -12, 50], [0, CH + 7.5, -30, 0, CH + 7, -12, 48], L.k); }, [[0, 'crowd_cheer', .8]]);
+  cm([0, CH + 7, -24.5, 0, CH + 6, -9, 54], [0, CH + 7.5, -23, 0, CH + 6, -9, 52], L.k); }, [[0, 'crowd_cheer', .8]]);
 // 103 «Jetzt hängt Opas Muschelhorn im Rathaus»: la sala del Rathaus, la caracola en su placa; Opa y Jonte delante
 shot(137.31, 'B', null, L => { saal(L); pose(opa, RHX - 6, 0, -22, .35, L, { headY: -.3 }, 'warm', { mouth: 'smile' }); pose(jonte, RHX + 6, 0, -22, -.35, L, { headY: .3, aRx: 1.4, aRe: .1, aRz: -.4 }, 'happy', { mouth: 'smile' });
   cm([RHX + 4, 13, 4, RHX, 12, -26, 50], [RHX + 3, 13, 0, RHX, 12.5, -26, 48], L.k); }, [[0, 'room_hall', .5]]);

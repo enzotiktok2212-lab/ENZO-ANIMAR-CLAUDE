@@ -8,7 +8,7 @@ shot(69.31, 'F', 'punch', L => { kueste(L, { t: 'noon' }); pose(jonte, SC.x, 0, 
   notes(wpos(SHELLS[2]), L.T, 5, .9); onFace(jonte, 6, .3, 1.2, 40, L.k, 5); }, [[0, 'shell_sing1', .8]]);
 // 53 «Dann noch eine»: otra concha en la arena empieza a cantar a su lado
 shot(69.88, 'S', null, L => { kueste(L, { t: 'noon' }); show(SHELLS[4], SC.x + 3, .25, SC.z + 4, 1, 1.4); notes(V(SC.x + 3, .5, SC.z + 4), L.T, 4, .8); pose(jonte, SC.x, 0, SC.z, 1.2, L, { headX: .3 }, 'shock', { mouth: 'o' });
-  cm([SC.x + 6, 2, SC.z + 9, SC.x + 3, .8, SC.z + 4, 38], [SC.x + 5.5, 1.8, SC.z + 8, SC.x + 3, .8, SC.z + 4, 36], L.k); }, [[0, 'shell_sing2', .8]]);
+  cm([SC.x + 8, 4, SC.z + 14, SC.x + 1.5, 2, SC.z + 2, 44], [SC.x + 7, 3.6, SC.z + 12, SC.x + 1.5, 2, SC.z + 2, 42], L.k); }, [[0, 'shell_sing2', .8]]);
 // 54 «Und noch eine»: y otra, más allá
 shot(70.52, 'R', null, L => { kueste(L, { t: 'noon' }); show(SHELLS[5], SC.x - 4, .25, SC.z + 6, 2, 1.4); notes(V(SC.x - 4, .5, SC.z + 6), L.T, 4, .8); show(SHELLS[4], SC.x + 3, .25, SC.z + 4, 1, 1.4); notes(V(SC.x + 3, .5, SC.z + 4), L.T + .3, 4, .8, 4);
   cm([SC.x - 8, 2.4, SC.z + 12, SC.x - 3, .8, SC.z + 5, 40], [SC.x - 7, 2.2, SC.z + 11, SC.x - 3, .8, SC.z + 5, 38], L.k); }, [[0, 'shell_sing3', .8]]);
@@ -45,10 +45,10 @@ shot(88.04, 'I', null, L => { kueste(L, { t: 'storm' }); crowdBox(L, -40, 40, 36
   cm([6, 7, 486, 0, 3, 380, 46], [5, 7.5, 488, 0, 3, 380, 44], L.k); }, [[0, 'wind_strong', .7]]);
 // 66 «Dann dachte ich an Opas Muschelhorn»: Jonte saca el Muschelhorn de la mochila/cubo; recuerdo de Opa (tono cálido)
 shot(89.2, 'F', null, L => { kueste(L, { t: 'storm' }); pose(jonte, SC.x, 0, SC.z - 30, 0, L, { aRx: lerp(.6, 1.6, easeOut(clamp(L.lt / .6))), aRe: .6, aLx: .4 }, 'determined'); attach(HORN, jonte.aR.hand, [.4, -.6, .6], [0, 0, 0], .55);
-  const h = wpos(HORN); cm([h.x + 4, h.y + 2.4, h.z + 7, h.x, h.y + .8, h.z, 42], [h.x + 3.4, h.y + 2, h.z + 6, h.x, h.y + .8, h.z, 40], L.k); }, [[0, 'sparkle', .6]]);
+  onFace(jonte, 6, 0, 1.4, 42, L.k, 5); }, [[0, 'sparkle', .6]]);
 // 67 «Ich kletterte auf den Mast»: Jonte trepa por el mástil inclinado del barco pirata
 shot(91.17, 'W', null, L => { kueste(L, { t: 'storm' }); const p = mastP(1, lerp(.3, .55, L.k)); put(jonte, p.x, p.y - 2, p.z + 1.2, PI); actuar(jonte, 0, [[0, climbP(L.T, 0)]], { T: L.T, weight: false }); jonte.blob.visible = false; cara(jonte, L.T, { expr: 'determined', mouth: 'grimace' });
-  cm([p.x - 16, p.y - 10, p.z - 22, p.x, p.y, p.z, 50], [p.x - 15, p.y - 8, p.z - 20, p.x, p.y + 1, p.z, 50], L.k); }, [[0, 'wood_creak', .7], [.2, 'rope_creak', .5]]);
+  cm([p.x - 8, p.y - 4, p.z - 11, p.x, p.y, p.z, 48], [p.x - 7, p.y - 3, p.z - 10, p.x, p.y + 1, p.z, 48], L.k); }, [[0, 'wood_creak', .7], [.2, 'rope_creak', .5]]);
 // 68 «des Piratenschiffs»: plano general del barco con Jonte arriba, la ola a lo lejos
 shot(92.39, 'Z', null, L => { kueste(L, { t: 'storm' }); wave(L.T, 1600, 74, .5, { glow: .45 }); const p = mastP(1, .7); put(jonte, p.x, p.y - 2, p.z + 1.2, PI); actuar(jonte, 0, [[0, climbP(L.T, 0)]], { T: L.T, weight: false }); jonte.blob.visible = false;
   const S_ = MW.SCHIFF.position; cm([S_.x - 40, 8, S_.z - 80, S_.x, 30, S_.z + 100, 54], [S_.x - 36, 10, S_.z - 72, S_.x, 32, S_.z + 100, 54], L.k); }, [[0, 'wave_roar', .5]]);
@@ -75,11 +75,11 @@ shot(100.94, 'B', 'punch', L => { kueste(L, { t: 'storm' }); wave(L.T, 1300, 80,
 shot(101.78, 'C', null, L => { kueste(L, { t: 'storm' }); wave(L.T, 1250, 80, .55, { glow: .5 }); crowdBox(L, -22, 22, 470, 500, 12, 57, { mode: 'run', ry: () => PI, speed: 10, expr: 'shock' });
   cm([0, 6, 430 - L.lt * 10, 0, 8, 520, 54], [0, 6, 424 - L.lt * 10, 0, 8, 520, 54], L.k); }, [[0, 'footsteps_run', .8], [0, 'crowd_scream', .5]]);
 // 76 «Familien rasten zwischen den Wracks hindurch»: travelling lateral junto al carguero oxidado
-shot(102.92, 'S', null, L => { kueste(L, { t: 'storm' }); const Wr = MW.WRACKS[1].position; crowdBox(L, Wr.x - 20, Wr.x + 10, Wr.z + 10, Wr.z + 30, 10, 59, { mode: 'run', ry: () => PI, speed: 11 }); run(mama, L, Wr.x - 4, Wr.z + 20, PI, 11, 2);
-  cm([Wr.x + 26, 5, Wr.z + 10 - L.lt * 11, Wr.x - 4, 5, Wr.z + 10 - L.lt * 11, 52], [Wr.x + 24, 5, Wr.z + 6 - L.lt * 11, Wr.x - 4, 5, Wr.z + 6 - L.lt * 11, 52], L.k); }, [[0, 'footsteps_run', .7], [.2, 'metal_creak', .5]]);
+shot(102.92, 'S', null, L => { kueste(L, { t: 'storm' }); const Wr = MW.WRACKS[1].position; crowdBox(L, Wr.x - 26, Wr.x + 4, Wr.z - 40, Wr.z - 20, 10, 59, { mode: 'run', ry: () => PI, speed: 11 }); run(mama, L, Wr.x - 8, Wr.z - 28, PI, 11, 2);
+  cm([Wr.x - 44, 6, Wr.z - 34 - L.lt * 11, Wr.x - 8, 5, Wr.z - 30 - L.lt * 11, 52], [Wr.x - 42, 6, Wr.z - 38 - L.lt * 11, Wr.x - 8, 5, Wr.z - 34 - L.lt * 11, 52], L.k); }, [[0, 'footsteps_run', .7], [.2, 'metal_creak', .5]]);
 // 77 «Wracks hindurch»: bajo la proa de otro pecio, gente saltando las rocas
-shot(104.2, 'R', null, L => { kueste(L, { t: 'storm' }); const Wr = MW.WRACKS[0].position; crowdBox(L, Wr.x - 10, Wr.x + 14, Wr.z + 6, Wr.z + 26, 8, 61, { mode: 'run', ry: () => PI + .3, speed: 11 });
-  cm([Wr.x + 4, 2, Wr.z - 16, Wr.x, 6, Wr.z + 20, 58], [Wr.x + 3, 2.2, Wr.z - 18, Wr.x, 6, Wr.z + 20, 58], L.k); }, [[0, 'footsteps_run', .7]]);
+shot(104.2, 'R', null, L => { kueste(L, { t: 'storm' }); const Wr = MW.WRACKS[0].position; crowdBox(L, Wr.x + 10, Wr.x + 34, Wr.z - 30, Wr.z - 14, 8, 61, { mode: 'run', ry: () => PI + .3, speed: 11 });
+  cm([Wr.x + 30, 3, Wr.z - 60, Wr.x + 14, 7, Wr.z - 10, 56], [Wr.x + 29, 3.2, Wr.z - 62, Wr.x + 14, 7, Wr.z - 10, 56], L.k); }, [[0, 'footsteps_run', .7]]);
 // 78 «Papas mit Kindern auf den Schultern»: Papa Ole corre con un niño a hombros
 shot(105.15, 'W', null, L => { kueste(L, { t: 'storm' }); wave(L.T, 900, 80, .6, { glow: .5 }); run(papa, L, 6, 300, PI, 10, 1); const kid = NB[13]; put(kid, 0, 0, 0, 0); papa.spine.add(kid.root); kid.root.position.set(0, .9, -.4); kid.root.rotation.set(0, 0, 0); kid.root.scale.setScalar(.9); actuar(kid, 0, [[0, sitPose({ aLx: 2.6, aRx: 2.6, aLz: .4, aRz: .4 })]], { T: L.T, weight: false }); kid.blob.visible = false; cara(kid, L.T, { expr: 'shock', mouth: 'o' });
   const p = papa.root.position; cm([p.x + 3, 7, p.z - 12, p.x, 6, p.z, 50], [p.x + 3, 7, p.z - 11, p.x, 6, p.z, 50], L.k); }, [[0, 'footsteps_run', .7], [0, 'heavy_breath', .5]]);
@@ -89,4 +89,4 @@ shot(106.79, 'S', null, L => { kueste(L, { t: 'storm' }); const om = [NB[5], NB[
 // 80 «schneller … als ich es je gesehen hatte»: picado desde arriba: las escaleras llenas de gente subiendo rapidísimo
 shot(107.95, 'Z', null, L => { kueste(L, { t: 'storm' }); for (let i = 3; i < 9; i++) for (let j = 0; j < 3; j++) onLadder(NB[(i * 3 + j) % 40], i, .1 + j * .3 + L.k * .2, L, i * 3 + j, { sp: 2.2, expr: 'shock' });
   crowdBox(L, -60, 60, -7, -10, 8, 63, { y: CH, mode: 'point', face: V(0, 0, 60), list: [mama, opa, ...NB.slice(36)] });
-  cm([LX(5) + 4, CH + 24, -14, LX(5) + 4, 22, 10, 56], [LX(5) + 4, CH + 27, -16, LX(5) + 4, 22, 12, 56], L.k); }, [[0, 'ladder_steps', .8], [.3, 'crowd_scream', .4]]);
+  cm([LX(5) + 40, 22, 74, LX(5), 30, 4, 54], [LX(5) + 36, 24, 70, LX(5), 32, 4, 54], L.k); }, [[0, 'ladder_steps', .8], [.3, 'crowd_scream', .4]]);

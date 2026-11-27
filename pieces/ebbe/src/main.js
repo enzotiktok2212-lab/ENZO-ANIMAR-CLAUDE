@@ -17,7 +17,7 @@ const stage = document.getElementById('stage'); const renderer = makeRenderer(st
 const out = document.createElement('canvas'); out.width = W; out.height = H; stage.appendChild(out); const octx = out.getContext('2d');
 const scene = new THREE.Scene(); scene.fog = new THREE.FogExp2(0xcfe0f0, .0004);
 const QS = new URLSearchParams(location.search); const HQ = QS.get('hq') !== '0';
-const camera = new THREE.PerspectiveCamera(50, W / H, .3, 9000); const { composer, bloom, grade, ao } = makeComposer(renderer, scene, camera); ao.enabled = QS.get('ao') !== '0';
+const camera = new THREE.PerspectiveCamera(50, W / H, .3, 30000); const { composer, bloom, grade, ao } = makeComposer(renderer, scene, camera); ao.enabled = QS.get('ao') !== '0';
 const bokeh = new BokehPass(scene, camera, { focus: 10, aperture: .0008, maxblur: .012 }); composer.insertPass(bokeh, 2); let DOF = 1;
 let CAMT = new THREE.Vector3(); { const la = camera.lookAt.bind(camera); camera.lookAt = (...a) => { if (a.length === 3) CAMT.set(...a); else CAMT.copy(a[0]); la(...a); }; }
 const SS = +(QS.get('ss') ?? 1.5); if (SS > 1) { renderer.setPixelRatio(SS); renderer.setSize(W, H); composer.setPixelRatio(SS); composer.setSize(W, H); grade.uniforms.px.value.set(1 / W, 1 / H); octx.imageSmoothingEnabled = true; octx.imageSmoothingQuality = 'high'; }
@@ -86,7 +86,7 @@ function hideAll() {
   for (const c of POOL) { c.root.visible = false; c.head.visible = true; c.root.rotation.order = 'XYZ'; c.root.rotation.set(0, 0, 0); c.root.scale.setScalar(c.spec.scale || 1); applyPose(c, {}); c.setFace({}); if (c.root.parent !== scene) { c.root.parent.remove(c.root); scene.add(c.root); } c.blob.visible = true; c.aR.sh.rotation.y = 0; c.aL.sh.rotation.y = 0; }
   for (const p of PROPS) { p.visible = false; p.rotation.order = 'XYZ'; p.rotation.set(0, 0, 0); p.scale.setScalar(1); if (p.parent !== scene) { p.parent.remove(p); scene.add(p); } }
   BUCKET.visible = false; HORN.scale.setScalar(.55); TRUHE.userData.lid.rotation.x = 0;
-  WELLE.visible = false; SPRITZ.visible = false; REGEN.visible = false; BOGEN.visible = false; MOEW.hide(); MW.MEERF.visible = true; MW.MEERF.position.z = 1800 + 3000; MW.MEERF.position.y = 0; MW.REGEL.visible = true; MW.LEIT.forEach(l => { l.visible = true; l.rotation.x = 0; });
+  WELLE.visible = false; SPRITZ.visible = false; REGEN.visible = false; BOGEN.visible = false; MOEW.hide(); MW.MEERF.visible = true; MW.MEERF.position.z = 2600 + 6000; MW.MEERF.position.y = 0; MW.REGEL.visible = true; MW.LEIT.forEach(l => { l.visible = true; l.rotation.x = 0; });
   for (const l of MW.LAMPS) l.userData.lamp.material.emissiveIntensity = .15;
   for (const k in SETS) SETS[k].visible = false; FX2D.length = 0; for (const l of LP) l.intensity = 0;
   FILL.color.setRGB(1, .96, .91); grade.uniforms.vig.value = .35; grade.uniforms.flash.value = 0; grade.uniforms.lift.value = 0; grade.uniforms.sat.value = +(QS.get('sat') ?? 1.12); grade.uniforms.con.value = +(QS.get('con') ?? .22); grade.uniforms.warm.value = +(QS.get('warm') ?? .8); grade.uniforms.sharp.value = .5; grade.uniforms.sepia.value = 0; DARK = 0; TINT = null; SHAKE = 0; DOF = 1; BW = 0; BLOOMMAX = .24; day(); }
@@ -164,7 +164,7 @@ const toCam = ch => { const p = ch.root.position; ch.root.rotation.y = Math.atan
 function lp(i, x, y, z, k = 40, col = 0xffb060, d = 60) { const l = LP[i]; l.position.set(x, y, z); l.intensity = k; l.color.setHex(col); l.distance = d; }
 // la costa: o.t = 'day' | 'noon' | 'dawn' | 'dusk' | 'night' | 'storm'; o.sea = nivel del mar (0 = seco; 1 = marea alta hasta el pie del acantilado)
 function kueste(L, o = {}) { use('MW'); const t = o.t ?? 'day'; if (t === 'night') { night(o.fill ?? 26); MW.LAMPS.forEach(l => l.userData.lamp.material.emissiveIntensity = 2.6); } else if (t === 'dawn') dawn(); else if (t === 'dusk') dusk(); else if (t === 'storm') storm(); else day(t);
-  if (o.sea != null) { MW.MEERF.position.z = lerp(1800, -6, o.sea) + 3000; MW.MEERF.position.y = o.seaY ?? lerp(0, 3.5, o.sea); } }
+  if (o.sea != null) { MW.MEERF.position.z = lerp(2600, -6, o.sea) + 6000; MW.MEERF.position.y = o.seaY ?? lerp(0, 3.5, o.sea); } }
 function zimmer(L) { use('JZ'); inside(.95, 40); lp(0, JZX + 12, 16, -14, 90, 0xcfe4ff, 60); }
 function stube(L) { use('OP'); inside(.75, 26); lp(0, OPX - 12, 4, -18, 90, 0xff9a40, 50); OPS.userData.flame.scale.set(1.6 + Math.sin(L.T * 13) * .15, 1 + Math.sin(L.T * 17) * .2, .6); }
 function saal(L) { use('RH'); inside(.9, 34); }
@@ -260,6 +260,6 @@ function renderAt(T) {
   for (const f of FX2D) f(octx); for (const b of BAD_) drawBadge(b); caption(T);
 }
 console.log('ready', performance.now()|0); window.renderAt = renderAt; window.DUR = DUR; window.FPS = FPS; window.CUES = CUES; window.SHOTS = S.map(s => [s.t0, s.t1, s.tr, s.zoom]); window.__ready = true;
-window.DBG = { applyPose, hp, jonte, opa, mama, cam, renderer, composer, bloom, sun, grade, scene, camera, MW, WELLE };
+window.DBG = { THREE, applyPose, hp, jonte, opa, mama, cam, renderer, composer, bloom, sun, grade, scene, camera, MW, WELLE };
 // ---------- portadas (1080×1920; lo importante entre y = 240 y 1680) ----------
 //@@COVER@@

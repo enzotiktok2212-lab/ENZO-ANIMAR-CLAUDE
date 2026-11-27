@@ -13,6 +13,9 @@ En un contenedor nuevo: `cd /home/user/ENZO-ANIMAR-CLAUDE && ./preparar-entorno.
 - Voz: `audio/voz-original.mp3` → `prep_audio.py … .055` → `audio/voz-sin-silencios.wav` (143,25 s), `audio/words.json`. DUR = 144.1.
 - Mundo `src/ebwelt.js` (cielo con nubes + reflejos, arena, acantilado, Möwensand, pecios, arrecifes, huesos, barco pirata, ola, salpicadura, lluvia, arcoíris, gaviotas, cuarto de Jonte, salón de Opa, Rathaus), reparto `src/ebvolk.js`, motor `src/main.js`.
 
+- Planos (106) escritos y revisados (3 pasadas); mezcla hecha (`renders/mezcla-final.wav`, -12,5 LUFS; si el contenedor es nuevo, regenerarla con sfx.py + marca.py + fundido final 1 s).
+- Render: `nohup ./watchdog.sh > renders/watchdog.log 2>&1 &` (idempotente; al acabar ejecuta finish.sh -> renders/ebbe.mp4). Luego mandar SOLO el vídeo.
+
 ## Pendiente (en orden)
 1. Prueba de look (`src/p/a.js` provisional) → ajustar luz y materiales.
 2. Planos `src/p/a.js…d.js` (~120, corte ~1,2 s) → `python3 armar.py`.

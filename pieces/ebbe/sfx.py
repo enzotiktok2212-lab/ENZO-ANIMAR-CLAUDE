@@ -532,7 +532,7 @@ LIB['crack'] = LIB['back_crack']
 
 if __name__ == '__main__':
     cues_f, voice_f, music_f, out_f = sys.argv[1:5]
-    cues = json.load(open(cues_f)); DUR = 162.4
+    cues = json.load(open(cues_f)); DUR = 144.1
     cues = fill_gaps(cues, DUR); print(len(cues), 'efectos; hueco máximo', max(np.diff(sorted([0] + [c['t'] for c in cues] + [DUR]))).round(2))
     TEN = {'riser', 'braam', 'riser_short', 'braam_short'}
     ten = render([c for c in cues if c['s'] in TEN], DUR); ten = norm(ten, 0.9)
@@ -545,3 +545,37 @@ if __name__ == '__main__':
     import os
     subprocess.run([os.path.join(os.path.dirname(os.path.abspath(__file__)), 'mezclar.sh'), voice_f, music_f, sfx_f, out_f], check=True, env={**os.environ, 'TENSION': out_f.replace('.wav', '-tension.wav')})
     print('ok', out_f)
+
+# --- EBBE: mar, ola, caracola, conchas que cantan, gaviotas ---
+def surf_f(s, d=2.0, lo=150, hi=3000, a=.3, r=.6, swell=0.0):   # rumor de agua (olas/escurrir)
+    t = T(d); n = bp(noise(d, s), lo, hi) * (.65 + .35 * np.sin(2 * np.pi * (.6 + swell) * t + s)); return norm(n * adsr(d, a, r))
+def roar_f(s, d=2.5): t = T(d); return norm(lp(noise(d, s), 400) * 1.2 * adsr(d, .4, .5) + bp(noise(d, s + 1), 600, 4000) * .5 * adsr(d, .8, .4) + sine(glide(45, 35, d), d) * .4 * adsr(d, .5, .5))
+def crash_f(s, d=2.2): out = np.zeros(int(d * SR)); at(out, impact(1.0, 90, 30, 1.4, s), 0); at(out, surf_f(s + 2, d - .05, 200, 6000, .02, .9) * .9, .03); return norm(out)
+def conch_f(s, d=2.4):   # caracola: tono grave de metal con vibrato y aire
+    t = T(d); f = 146 * (1 + .012 * np.sin(2 * np.pi * 5.2 * t)) * (1 + .03 * np.minimum(1, t * 3))
+    ph = 2 * np.pi * np.cumsum(f) / SR; x = sum(np.sin(ph * k) / k ** .9 for k in range(1, 9))
+    x = lp(x, 1800) + bp(noise(d, s), 800, 3000) * .12; return norm(x * adsr(d, .12, .5))
+def shell_song(s, d=1.6, base=880):   # concha que canta: notas puras con trémolo
+    t = T(d); out = np.zeros(int(d * SR)); ns = [1, 1.25, 1.5, 2][s % 4]
+    for i, k in enumerate([1, ns, 1.5]): at(out, norm(sine(base * k * (1 + .006 * np.sin(2 * np.pi * 6 * T(d - i * .3))), d - i * .3)) * adsr(d - i * .3, .08, .5) * (1 + .3 * np.sin(2 * np.pi * 4 * T(d - i * .3))), i * .3)
+    return norm(out)
+def gull_f(s, d=.7): f = glide(1500 * R(s, .9, 1.2), 900, d, .5); return norm(voice(list(np.linspace(1500, 950, 5) * R(s)), [E, A, A, A, O], d, .3, s) * .6 + sine(f, d) * .25 * adsr(d, .02, .4))
+def flock_f(s, d=2.0):
+    out = np.zeros(int(d * SR)); rng = np.random.default_rng(s)
+    [at(out, gull_f(s + k, .5 + rng.random() * .4) * (.4 + rng.random() * .6), rng.random() * (d - .9)) for k in range(7)]; at(out, norm(bp(noise(d, s), 200, 1500) * (np.sin(2 * np.pi * 9 * T(d)) > 0) * .4) * adsr(d, .05, .5) * .5, 0); return norm(out)
+def wings_f(s, d=1.2): t = T(d); return norm(bp(noise(d, s), 150, 1200) * ((np.sin(2 * np.pi * 7 * t) > .3) * 1.0) * adsr(d, .02, .5))
+LIB.update({
+  'water_drain': (lambda s, c: surf_f(s, 2.0, 200, 3500, .1, .8, .8), .55), 'wave_retreat': (lambda s, c: surf_f(s, 1.4, 150, 2500, .1, .8), .5), 'waves_shore': (lambda s, c: surf_f(s, 2.2, 120, 2500, .4, .6, .2), .5),
+  'water_rush': (lambda s, c: surf_f(s, 1.4, 200, 5000, .05, .7, 1.4), .55), 'water_suck': (lambda s, c: norm(surf_f(s, 1.6, 100, 1500, .9, .1) * np.linspace(.3, 1, int(1.6 * SR))), .55),
+  'wave_roar': (lambda s, c: roar_f(s), .65), 'wave_crash': (lambda s, c: crash_f(s), .8), 'rumble_far': (lambda s, c: roar_f(s + 5, 2.0), .5), 'thunder_roll': (lambda s, c: norm(roar_f(s + 2, 2.4) + pad(LIB['thunder_far'][0](s, c), 2.4)[:int(2.4 * SR)] * .6), .7),
+  'horn_blast': (lambda s, c: conch_f(s, 2.6), .9), 'shell_sing1': (lambda s, c: shell_song(1, 1.0, 880), .45), 'shell_sing2': (lambda s, c: shell_song(2, 1.0, 988), .45), 'shell_sing3': (lambda s, c: shell_song(3, 1.0, 1175), .45),
+  'shells_sing': (lambda s, c: norm(shell_song(1, 1.6, 784) + shell_song(2, 1.6, 988) * .7), .45), 'shells_choir': (lambda s, c: norm(sum(pad(shell_song(k, 2.2, 660 * 2 ** (k / 5)), 2.4)[:int(2.4 * SR)] for k in range(5)) + pad(LIB['choir'][0](s, c), 2.4)[:int(2.4 * SR)] * .4), .55),
+  'ocean_shell': (lambda s, c: surf_f(s, 1.2, 200, 1200, .3, .5, .3), .4), 'hum_tune': (lambda s, c: LIB['happy_hum'][0](s, c), .45), 'gull_call': (lambda s, c: gull_f(s), .5), 'gulls_flock': (lambda s, c: flock_f(s), .6), 'wings_flap': (lambda s, c: wings_f(s), .55),
+})
+for _a, _b in [('birds_dawn', 'birds_morning'), ('bone_knock', 'wood_knock'), ('cheer_kids', 'kids_cheer'), ('cheer_soft', 'crowd_cheer_small'), ('chest_open', 'door_creak'), ('counter_tick', 'counter_fast'), ('crowd_gasp', 'gasp_crowd'),
+  ('crowd_happy', 'kids_chatter'), ('crowd_scream', 'screams'), ('dig_sand', 'snow_crunch'), ('footsteps_run', 'crowd_run'), ('footsteps_sand', 'snow_steps'), ('grab', 'glove_grab'), ('heave', 'strain'), ('heavy_breath', 'breath_run'),
+  ('inhale_deep', 'breath_slow'), ('kid_shout', 'scream_kid'), ('knock_wood', 'wood_knock'), ('ladder_steps', 'run_steps'), ('laugh_family', 'laugh_m'), ('metal_bang', 'metal_hit'), ('night_crickets', 'crickets'), ('old_paper', 'paper'),
+  ('picnic_laugh', 'kids_laugh'), ('pirate_flag', 'cloth'), ('room_hall', 'hum_low'), ('rope_creak', 'creak'), ('slide_rope', 'strain'), ('splash_step', 'splash'), ('squish', 'water_bloop'), ('water_drip', 'drip'),
+  ('wind_strong', 'wind_howl'), ('shell_clink', 'porcelain'), ('wood_clack', 'wood_knock'), ('crowd_cheer', 'cheer')]:
+    if _a not in LIB and _b in LIB: LIB[_a] = LIB[_b]
+LIB['room_hall'] = LIB.get('hum_low', LIB['murmur'])

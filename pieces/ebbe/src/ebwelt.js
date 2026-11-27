@@ -58,7 +58,7 @@ export function skyDome() {
         c = mix(c, hor, haze * (1. - smoothstep(0., .25, y)));
         if (d.y < 0.) c = mix(hor, hor * .8, clamp(-d.y * 4., 0., 1.));
         gl_FragColor = vec4(c, 1.); }` });
-  const g = new THREE.Mesh(new THREE.SphereGeometry(4000, 64, 32), m); g.frustumCulled = false; g.renderOrder = -10; noOut(g); return g;
+  const g = new THREE.Mesh(new THREE.SphereGeometry(16000, 64, 32), m); g.frustumCulled = false; g.renderOrder = -10; noOut(g); return g;
 }
 // cielos por momento del día: [top, mid, hor, sunDir, sunCol, cloud, cCol, cShade, haze]
 export const SKIES = {
@@ -72,7 +72,7 @@ export const SKIES = {
 export function applySky(m, k) { const s = SKIES[k], u = m.uniforms; u.top.value.setRGB(...s[0]); u.mid.value.setRGB(...s[1]); u.hor.value.setRGB(...s[2]); u.sunDir.value.set(...s[3]).normalize(); u.sunCol.value.setRGB(...s[4]); u.cloud.value = s[5]; u.cCol.value.setRGB(...s[6]); u.cShade.value.setRGB(...s[7]); u.haze.value = s[8]; }
 // mapas de entorno (reflejos del cielo en agua, charcos y metal), uno por momento del día
 export function skyEnvs(renderer) { const pm = new THREE.PMREMGenerator(renderer), sc = new THREE.Scene(), d = skyDome(); sc.add(d); const out = {};
-  for (const k in SKIES) { applySky(d.material, k); out[k] = pm.fromScene(sc, 0, .1, 9000).texture; } return out; }
+  for (const k in SKIES) { applySky(d.material, k); out[k] = pm.fromScene(sc, 0, .1, 40000).texture; } return out; }
 
 // ---------- texturas ----------
 // arena con ondas de marea: color, relieve (normal) y rugosidad (charquitos brillantes en los valles)
@@ -309,8 +309,8 @@ export function moewen(scene, n = 40) { const birds = [], wb = mat(0xf4f4f2, { r
         const fl = Math.sin(T * 9 + i * 1.7) * (o.glide ? .25 : .9); b.wings[0].rotation.z = fl; b.wings[1].rotation.z = -fl; }); } }; }
 
 // ---------- el mar y la gran ola ----------
-export function meer(parent, z0 = 60, len = 6000) { const m = new THREE.MeshStandardMaterial({ color: 0x1e5a68, roughness: .06, metalness: .1, normalMap: WNOR, normalScale: new THREE.Vector2(.5, .5), envMapIntensity: 1.3 });
-  WNOR.repeat.set(80, 80); const p = new THREE.Mesh(new THREE.PlaneGeometry(8000, len, 1, 1), m); p.rotation.x = -PI / 2; p.position.set(0, 0, z0 + len / 2); p.receiveShadow = true; p.userData.noOutline = true; parent.add(p); return p; }
+export function meer(parent, z0 = 60, len = 6000) { const m = new THREE.MeshStandardMaterial({ color: 0x123c48, roughness: .1, metalness: .1, normalMap: WNOR, normalScale: new THREE.Vector2(.5, .5), envMapIntensity: 1.0 });
+  WNOR.repeat.set(160, 160); const p = new THREE.Mesh(new THREE.PlaneGeometry(30000, len, 1, 1), m); p.rotation.x = -PI / 2; p.position.set(0, 0, z0 + len / 2); p.receiveShadow = true; p.userData.noOutline = true; parent.add(p); return p; }
 // la ola: perfil que rompe, extruido a lo largo de x. k = altura relativa (0..1), curl = cuánto se curva la cresta
 export function welle(parent, width = 1600) { const g = new THREE.Group(); parent.add(g); const nx = 240, nv = 64;
   const geo = new THREE.PlaneGeometry(1, 1, nx, nv), col = new Float32Array(geo.attributes.position.count * 3); geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
@@ -363,14 +363,14 @@ export function regenbogen(scene) { const m = new THREE.ShaderMaterial({ transpa
 // ---------- el set principal: Möwensand sobre el acantilado + fondo marino ----------
 export function moewensand(scene) { const g = new THREE.Group(); scene.add(g); const r = RNG(77);
   // fondo marino: plano grande con arena de ondas; parches húmedos con vertex color
-  const sea = new THREE.PlaneGeometry(4000, 4000, 200, 200), sp = sea.attributes.position, sc = new Float32Array(sp.count * 3), N = vnoise(12);
-  for (let i = 0; i < sp.count; i++) { const x = sp.getX(i), y = sp.getY(i), n = N(x * .004 + 50, y * .004, 4), w = N(x * .012, y * .012 + 9, 3); const zz = -y + 2000;
+  const sea = new THREE.PlaneGeometry(8000, 8000, 240, 240), sp = sea.attributes.position, sc = new Float32Array(sp.count * 3), N = vnoise(12);
+  for (let i = 0; i < sp.count; i++) { const x = sp.getX(i), y = sp.getY(i), n = N(x * .004 + 50, y * .004, 4), w = N(x * .012, y * .012 + 9, 3); const zz = -y + 4000;
     sp.setZ(i, (n - .5) * 3 + Math.max(0, 30 - zz) * -.0);
     const wet = clamp((w - .5) * 3) ; const b = .92 + n * .16 - wet * .26; sc[i * 3] = b; sc[i * 3 + 1] = b * .98; sc[i * 3 + 2] = b * (.96 + wet * .04); }
   sea.setAttribute('color', new THREE.BufferAttribute(sc, 3)); sea.computeVertexNormals();
   const sm = new THREE.MeshStandardMaterial({ map: SAND.col, normalMap: SAND.nor, roughnessMap: SAND.rough, vertexColors: true, roughness: 1, normalScale: new THREE.Vector2(1.6, 1.6), envMapIntensity: .9 });
-  for (const t of [SAND.col, SAND.nor, SAND.rough]) t.repeat.set(70, 70);
-  const floor = new THREE.Mesh(sea, sm); floor.rotation.x = -PI / 2; floor.position.set(0, 0, 2000 - 6); floor.receiveShadow = true; floor.userData.noOutline = true; g.add(floor);
+  for (const t of [SAND.col, SAND.nor, SAND.rough]) t.repeat.set(140, 140);
+  const floor = new THREE.Mesh(sea, sm); floor.rotation.x = -PI / 2; floor.position.set(0, 0, 4000 - 6); floor.receiveShadow = true; floor.userData.noOutline = true; g.add(floor);
   // acantilado y meseta
   cliffFace(g, -1100, 1100, CH, 3);
   const top = new THREE.Mesh(new THREE.PlaneGeometry(2200, 900), new THREE.MeshStandardMaterial({ map: GRASS, roughness: .95 })); GRASS.repeat.set(180, 70); top.rotation.x = -PI / 2; top.position.set(0, CH, -450); top.receiveShadow = true; top.userData.noOutline = true; g.add(top);
@@ -407,7 +407,7 @@ export function moewensand(scene) { const g = new THREE.Group(); scene.add(g); c
   const KNOCHEN = walknochen(g, 40, 560, .6, 1.4);
   const SCHIFF = piratenschiff(g, 30, 1050, -.4, .5);
   // el mar lejano (horizonte) cuando hay marea baja
-  const MEERF = meer(g, 1800, 6000); MEERF.userData.keep = true;
+  const MEERF = meer(g, 2600, 12000); MEERF.userData.keep = true;
   g.traverse(m => { if (m.isMesh) m.receiveShadow = true; }); floor.castShadow = false; top.castShadow = false; bake(g);
   return { g, LAMPS, LEIT, RIFFE, WRACKS, KNOCHEN, SCHIFF, MEERF, REGEL }; }
 

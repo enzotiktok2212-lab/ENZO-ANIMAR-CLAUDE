@@ -17,7 +17,7 @@ const stage = document.getElementById('stage'); const renderer = makeRenderer(st
 const out = document.createElement('canvas'); out.width = W; out.height = H; stage.appendChild(out); const octx = out.getContext('2d');
 const scene = new THREE.Scene(); scene.fog = new THREE.FogExp2(0xcfe0f0, .0004);
 const QS = new URLSearchParams(location.search); const HQ = QS.get('hq') !== '0';
-const camera = new THREE.PerspectiveCamera(50, W / H, .3, 9000); const { composer, bloom, grade, ao } = makeComposer(renderer, scene, camera); ao.enabled = QS.get('ao') !== '0';
+const camera = new THREE.PerspectiveCamera(50, W / H, .3, 30000); const { composer, bloom, grade, ao } = makeComposer(renderer, scene, camera); ao.enabled = QS.get('ao') !== '0';
 const bokeh = new BokehPass(scene, camera, { focus: 10, aperture: .0008, maxblur: .012 }); composer.insertPass(bokeh, 2); let DOF = 1;
 let CAMT = new THREE.Vector3(); { const la = camera.lookAt.bind(camera); camera.lookAt = (...a) => { if (a.length === 3) CAMT.set(...a); else CAMT.copy(a[0]); la(...a); }; }
 const SS = +(QS.get('ss') ?? 1.5); if (SS > 1) { renderer.setPixelRatio(SS); renderer.setSize(W, H); composer.setPixelRatio(SS); composer.setSize(W, H); grade.uniforms.px.value.set(1 / W, 1 / H); octx.imageSmoothingEnabled = true; octx.imageSmoothingQuality = 'high'; }
@@ -86,7 +86,7 @@ function hideAll() {
   for (const c of POOL) { c.root.visible = false; c.head.visible = true; c.root.rotation.order = 'XYZ'; c.root.rotation.set(0, 0, 0); c.root.scale.setScalar(c.spec.scale || 1); applyPose(c, {}); c.setFace({}); if (c.root.parent !== scene) { c.root.parent.remove(c.root); scene.add(c.root); } c.blob.visible = true; c.aR.sh.rotation.y = 0; c.aL.sh.rotation.y = 0; }
   for (const p of PROPS) { p.visible = false; p.rotation.order = 'XYZ'; p.rotation.set(0, 0, 0); p.scale.setScalar(1); if (p.parent !== scene) { p.parent.remove(p); scene.add(p); } }
   BUCKET.visible = false; HORN.scale.setScalar(.55); TRUHE.userData.lid.rotation.x = 0;
-  WELLE.visible = false; SPRITZ.visible = false; REGEN.visible = false; BOGEN.visible = false; MOEW.hide(); MW.MEERF.visible = true; MW.MEERF.position.z = 1800 + 3000; MW.MEERF.position.y = 0; MW.REGEL.visible = true; MW.LEIT.forEach(l => { l.visible = true; l.rotation.x = 0; });
+  WELLE.visible = false; SPRITZ.visible = false; REGEN.visible = false; BOGEN.visible = false; MOEW.hide(); MW.MEERF.visible = true; MW.MEERF.position.z = 2600 + 6000; MW.MEERF.position.y = 0; MW.REGEL.visible = true; MW.LEIT.forEach(l => { l.visible = true; l.rotation.x = 0; });
   for (const l of MW.LAMPS) l.userData.lamp.material.emissiveIntensity = .15;
   for (const k in SETS) SETS[k].visible = false; FX2D.length = 0; for (const l of LP) l.intensity = 0;
   FILL.color.setRGB(1, .96, .91); grade.uniforms.vig.value = .35; grade.uniforms.flash.value = 0; grade.uniforms.lift.value = 0; grade.uniforms.sat.value = +(QS.get('sat') ?? 1.12); grade.uniforms.con.value = +(QS.get('con') ?? .22); grade.uniforms.warm.value = +(QS.get('warm') ?? .8); grade.uniforms.sharp.value = .5; grade.uniforms.sepia.value = 0; DARK = 0; TINT = null; SHAKE = 0; DOF = 1; BW = 0; BLOOMMAX = .24; day(); }
@@ -164,7 +164,7 @@ const toCam = ch => { const p = ch.root.position; ch.root.rotation.y = Math.atan
 function lp(i, x, y, z, k = 40, col = 0xffb060, d = 60) { const l = LP[i]; l.position.set(x, y, z); l.intensity = k; l.color.setHex(col); l.distance = d; }
 // la costa: o.t = 'day' | 'noon' | 'dawn' | 'dusk' | 'night' | 'storm'; o.sea = nivel del mar (0 = seco; 1 = marea alta hasta el pie del acantilado)
 function kueste(L, o = {}) { use('MW'); const t = o.t ?? 'day'; if (t === 'night') { night(o.fill ?? 26); MW.LAMPS.forEach(l => l.userData.lamp.material.emissiveIntensity = 2.6); } else if (t === 'dawn') dawn(); else if (t === 'dusk') dusk(); else if (t === 'storm') storm(); else day(t);
-  if (o.sea != null) { MW.MEERF.position.z = lerp(1800, -6, o.sea) + 3000; MW.MEERF.position.y = o.seaY ?? lerp(0, 3.5, o.sea); } }
+  if (o.sea != null) { MW.MEERF.position.z = lerp(2600, -6, o.sea) + 6000; MW.MEERF.position.y = o.seaY ?? lerp(0, 3.5, o.sea); } }
 function zimmer(L) { use('JZ'); inside(.95, 40); lp(0, JZX + 12, 16, -14, 90, 0xcfe4ff, 60); }
 function stube(L) { use('OP'); inside(.75, 26); lp(0, OPX - 12, 4, -18, 90, 0xff9a40, 50); OPS.userData.flame.scale.set(1.6 + Math.sin(L.T * 13) * .15, 1 + Math.sin(L.T * 17) * .2, .6); }
 function saal(L) { use('RH'); inside(.9, 34); }
@@ -212,13 +212,13 @@ function rings(c, k, n = 4, R = 120, y = 1) { RINGS.forEach((r, i) => { if (i >=
 
 // 1 «In dieser Stadt zieht sich»: GANCHO. Amanecer dorado; el pueblo entero en el paseo, apoyado en la barandilla; bajo ellos el mar se vacía de golpe por el acantilado
 // (se ven aparecer las escaleras y las rocas). Golpe de zoom + zoom lento hacia la gente que señala y celebra.
-shot(0, 'C', 'hook', L => { seaDrop(L, .1 + L.k * .9); crowdBox(L, -15, 15, -6.2, -8.5, 14, 3, { y: CH, mode: i => ['point', 'cheer', 'shock', 'point', 'cheer', 'look'][i % 6], face: V(0, CH - 6, 40), jit: .2 });
-  pose(jonte, 0, CH, -5.8, 0, L, { aRx: 1.5, aRz: .1, aRe: .1, headX: .25 }, 'shock', { mouth: 'o' }); MOEW.fly(L.T, V(-10, CH + 20, 20), V(1, .1, 0), { lt: L.lt, n: 6, speed: 10, sx: 40, sy: 8, sz: 10 });
-  cm([3, CH - 4, 34, 0, CH + 1.5, -6, 42], [2, CH - 1, 24, 0, CH + 2.5, -6, 40], L.k); SHC = V(0, CH - 4, 2); }, [[0, 'water_drain', .9], [.3, 'crowd_gasp', .6]]);
+shot(0, 'C', 'hook', L => { kueste(L, { t: 'dawn', sea: 1, seaY: lerp(40, 6, easeInOut(L.k)) }); crowdBox(L, -20, 18, -6.2, -8.8, 16, 3, { y: CH, mode: i => ['point', 'cheer', 'shock', 'point', 'cheer', 'look'][i % 6], face: V(20, CH, 40), jit: .3 });
+  pose(jonte, 4, CH, -5.9, .5, L, { aRx: 1.5, aRz: .1, aRe: .1, headX: .25 }, 'shock', { mouth: 'o' }); MOEW.fly(L.T, V(-10, CH - 6, 30), V(1, .1, .2), { lt: L.lt, n: 8, speed: 12, sx: 40, sy: 10, sz: 20 });
+  cm([24, CH + 15, 10, -2, CH + 2, -8, 48], [19, CH + 13, 6, -2, CH + 3, -8, 44], L.k); SHC = V(2, CH, -4); }, [[0, 'water_drain', .9], [.3, 'crowd_gasp', .6]]);
 // 2 «alle hundert Jahre»: Opa junto a la placa de piedra de la última Ebbe («1926 · 2026»): 100 Jahre
-shot(1.62, 'Z', 'punch', L => { kueste(L, { t: 'dawn', sea: 1, seaY: 8 }); show(PLAQ, -34, CH + 5, -11, .25, .55);
-  pose(opa, -29, CH, -12, -.35, L, { aRx: 1.3, aRz: -.3, aRe: .2, headY: -.3 }, 'warm', { mouth: 'smile' }); pose(jonte, -24.5, CH, -10, -.5, L, { headY: .3 }, 'happy', { mouth: 'open_smile' });
-  orb(L.k, V(-28, CH + 4, -11), null, [16, .15, .12, 46], [13, -.05, .1, 46]); badge('gold', '100 JAHRE', W / 2, H * .22, (L.lt - .1) * 3); }, [[.1, 'ding_reveal', .7]]);
+shot(1.62, 'Z', 'punch', L => { kueste(L, { t: 'dawn', sea: 1, seaY: 8 }); show(PLAQ, -34, CH + 5, -9, .25, .55);
+  pose(opa, -29, CH, -8, -.35, L, { aRx: 1.3, aRz: -.3, aRe: .2, headY: -.3 }, 'warm', { mouth: 'smile' }); pose(jonte, -24.5, CH, -7.4, -.5, L, { headY: .3 }, 'happy', { mouth: 'open_smile' });
+  orb(L.k, V(-28, CH + 4.4, -8), null, [11, .15, .04, 46], [9, -.05, .03, 46]); badge('gold', '100 JAHRE', W / 2, H * .22, (L.lt - .1) * 3); }, [[.1, 'ding_reveal', .7]]);
 // 3 «das Meer zurück»: plano aéreo de la costa: el agua se retira hacia el horizonte dejando la arena al descubierto
 shot(2.46, 'W', null, L => { kueste(L, { t: 'dawn', sea: lerp(.85, .4, L.k), seaY: 0 }); cm([-160, 170, 160, 0, 0, 420, 52], [-120, 160, 200, 0, 0, 520, 52], L.k); MOEW.fly(L.T, V(-40, 70, 220), V(.3, 0, 1), { lt: L.lt, n: 10, speed: 6, s: 1.6 }); }, [[0, 'wave_retreat', .8]]);
 // 4 «Einen ganzen Tag lang»: el sol sube sobre el fondo marino brillante; la gente baja ya por las escaleras
@@ -245,8 +245,8 @@ shot(8.23, 'R', null, L => { kueste(L, { t: 'night', sea: 1, seaY: 2 }); const x
   cm([x + 4, 3, 46, x, 30, 0, 50], [x + 2, 4, 40, x, 34, 0, 50], L.k); SHC = V(x, 25, 6); }, [[.1, 'wood_clack', .7], [.5, 'wood_clack', .6]]);
 
 // 9 «Bei Sonnenaufgang»: el sol asoma sobre el mar; el pueblo despierta en el paseo con tazas y mantas
-shot(9.36, 'F', 'slow', L => { kueste(L, { t: 'dawn', sea: 1, seaY: 3 }); crowdBox(L, -30, 30, -7.5, -12, 12, 11, { y: CH, mode: i => i % 3 ? 'look' : 'wave', face: V(0, 0, 400) });
-  cm([1, CH + 3, -26, 1, CH + 6, 400, 48], [1, CH + 3.5, -20, 1, CH + 8, 400, 44], L.k); }, [[0, 'birds_dawn', .4]]);
+shot(9.36, 'F', 'slow', L => { kueste(L, { t: 'dawn', sea: 1, seaY: 3 }); crowdBox(L, -14, 14, -6.4, -9, 10, 11, { y: CH, mode: i => i % 3 ? 'look' : 'wave', face: V(0, CH, 60), jit: .25 });
+  cm([0, CH + 2, 16, 0, CH + 4, -8, 48], [0, CH + 2.6, 12, 0, CH + 4.4, -8, 44], L.k); }, [[0, 'birds_dawn', .4]]);
 // 10 «ist das Wasser einfach weg»: a ras de arena: el agua se escurre hacia el mar a toda velocidad, peces saltando en los charcos
 shot(10.47, 'P', null, L => { kueste(L, { t: 'dawn', sea: lerp(.25, .05, L.k), seaY: lerp(1.2, 0, L.k) }); cm([10, 2.2, 40, 0, 1, 140, 40], [10, 2.6, 52, 0, 1, 160, 40], L.k);
   crowdBox(L, -12, 18, 28, 34, 3, 13, { mode: 'look', face: V(0, 0, 200), expr: 'shock' }); }, [[0, 'water_drain', .9]]);
@@ -257,7 +257,7 @@ shot(13.5, 'C', null, L => { kueste(L, { t: 'day' }); crowdBox(L, -76, -44, 150,
   walk(papa, L, -54, 182, .4, 2.2, 1, { expr: 'happy', mouth: 'open_smile' }); cm([-30, 7, 205, -60, 12, 165, 52], [-36, 8, 210, -60, 13, 165, 52], L.k); }, [[0, 'footsteps_sand', .6], [.2, 'metal_creak', .5]]);
 // 13 «Schiffswracks herum»: contrapicado bajo el casco oxidado; un niño golpea el metal y suena hueco
 shot(14.83, 'W', null, L => { kueste(L, { t: 'day' }); pose(NB[3], -58, 0, 178, PI - .3, L, { aRx: 2.2 + Math.sin(L.T * 14) * .3, aRe: .4 }, 'happy', { mouth: 'open_smile' }); pose(NB[8], -54, 0, 182, PI + .5, L, { aLx: 1.5 }, 'shock', { mouth: 'o' });
-  cm([-46, 2.5, 196, -60, 14, 170, 56], [-48, 2, 194, -60, 18, 168, 56], L.k); }, [[.2, 'metal_bang', .7]]);
+  cm([-26, 2.5, 206, -58, 14, 172, 56], [-28, 2, 204, -58, 18, 170, 56], L.k); }, [[.2, 'metal_bang', .7]]);
 // 14 «Die Kinder klettern auf Riffe»: niños trepando por un arrecife cubierto de corales
 shot(15.92, 'S', null, L => { kueste(L, { t: 'day' }); const R = MW.RIFFE[0].position; [NB[3], NB[8], NB[13]].forEach((c, i) => { put(c, R.x - 4 + i * 4, 6 + i * 5 + L.k * 3, R.z + 9 - i, PI + (i - 1) * .2); actuar(c, 0, [[0, climbP(L.T, i)]], { T: L.T, weight: false }); c.blob.visible = false; cara(c, L.T, { expr: 'happy', mouth: 'open_smile' }); });
   cm([R.x + 6, 6, R.z + 40, R.x, 14, R.z, 50], [R.x + 8, 10, R.z + 36, R.x, 18, R.z, 50], L.k); }, [[0, 'kids_laugh', .6]]);
@@ -332,7 +332,7 @@ shot(42.86, 'Z', 'punch', L => { stube(L); pose(jonte, OPX + 2, 0, 2, 0, L, { aR
 // 35 «Die anderen Kinder sagen»: en el paseo, tres niños se burlan de Jonte señalándolo
 shot(43.98, 'R', null, L => { kueste(L, { t: 'day', sea: 1, seaY: 4 }); pose(jonte, 3, CH, -14, PI - .6, L, { aLx: .3, aRx: .3, headX: .2 }, 'sad');
   [NB[13], NB[18], NB[23]].forEach((c, i) => { pose(c, -5 + i * 2.6, CH, -12 + i * 1.2, PI / 2 + .3 - i * .2, L, i === 1 ? { aRx: 1.6, aRe: .1 } : { aLx: 1.2, aRx: 1.2, aLe: 1.6, aRe: 1.6, lean: -.1 }, 'joy'); laughF(c, L.T + i); });
-  cm([-3, CH + 5, -28, -1, CH + 3, -12, 46], [-2, CH + 5, -25, -1, CH + 3, -12, 44], L.k); }, [[0, 'kids_laugh', .7]]);
+  cm([-3, CH + 5, -24, -1, CH + 3, -11, 46], [-2, CH + 5, -22, -1, CH + 3, -11, 44], L.k); }, [[0, 'kids_laugh', .7]]);
 // 36 «das langweiligste Hobby der Welt»: un niño finge dormirse de aburrimiento (Zzz); Jonte abraza su cubo
 shot(45.42, 'G', null, L => { kueste(L, { t: 'day', sea: 1, seaY: 4 }); pose(NB[18], -2, CH, -12, PI + .3, L, { headX: .4, headZ: .3, aLx: .2, aRx: .2, lean: .1 }, 'tired', { eyes: 'closed', mouth: 'o' }); pose(jonte, 4, CH, -13, PI - .5, L, { aLx: 1, aLe: 1.4, aRx: 1, aRe: 1.4 }, 'sad');
   onFace(NB[18], 8, .5, -2, 44, L.k); badge('big', 'LANGWEILIG!', W / 2, H * .22, (L.lt - .2) * 3, 1, .9); }, [[.2, 'snore', .7]]);
@@ -372,7 +372,7 @@ shot(62.53, 'W', null, L => { kueste(L, { t: 'day' }); const S_ = MW.SCHIFF.posi
 // 48 «Ich bin fast sechs Kilometer hinausgelaufen»: Jonte camina solo mar adentro con su cubo; 6 KM
 shot(63.73, 'S', null, L => { kueste(L, { t: 'day' }); walk(jonte, L, 10, 700, 0, 2.6, 0, { expr: 'happy', mouth: 'smile' }); cm([4, 4, 740, 10, 4, 700, 44], [2, 5, 742, 10, 4, 704, 44], L.k); badge('gold', '6 KM', W / 2, H * .22, (L.lt - .3) * 3); }, [[0, 'footsteps_sand', .7]]);
 // 49 «hinausgelaufen»: cenital: sus huellas en línea recta sobre la arena ondulada
-shot(65.0, 'I', null, L => { kueste(L, { t: 'day' }); walk(jonte, L, 10, 720, 0, 2.6, 0, { expr: 'happy' }); cm([10, 40, 724, 10, 0, 728, 50], [10, 44, 728, 10, 0, 732, 50], L.k); }, [[0, 'wind_soft', .5]]);
+shot(65.0, 'I', null, L => { kueste(L, { t: 'day' }); walk(jonte, L, 10, 720, 0, 2.6, 0, { expr: 'happy' }); const jp = jonte.root.position; cm([jp.x + 2, 26, jp.z - 8, jp.x, 0, jp.z + 2, 50], [jp.x + 2, 28, jp.z - 8, jp.x, 0, jp.z + 2, 50], L.k); }, [[0, 'wind_soft', .5]]);
 // 50 «Weiter als alle anderen»: plano enorme: Jonte diminuto lejos, el pueblo y la gente muy atrás, junto al acantilado
 shot(66.09, 'Z', null, L => { kueste(L, { t: 'day' }); walk(jonte, L, 10, 760, PI, 2.4, 0, { expr: 'happy' }); crowdBox(L, -60, 60, 120, 260, 12, 37, { mode: 'walk' });
   cm([30, 10, 820, 0, 10, 300, 50], [28, 14, 840, 0, 14, 300, 50], L.k); }, [[0, 'wind_soft', .5]]);
@@ -386,7 +386,7 @@ shot(69.31, 'F', 'punch', L => { kueste(L, { t: 'noon' }); pose(jonte, SC.x, 0, 
   notes(wpos(SHELLS[2]), L.T, 5, .9); onFace(jonte, 6, .3, 1.2, 40, L.k, 5); }, [[0, 'shell_sing1', .8]]);
 // 53 «Dann noch eine»: otra concha en la arena empieza a cantar a su lado
 shot(69.88, 'S', null, L => { kueste(L, { t: 'noon' }); show(SHELLS[4], SC.x + 3, .25, SC.z + 4, 1, 1.4); notes(V(SC.x + 3, .5, SC.z + 4), L.T, 4, .8); pose(jonte, SC.x, 0, SC.z, 1.2, L, { headX: .3 }, 'shock', { mouth: 'o' });
-  cm([SC.x + 6, 2, SC.z + 9, SC.x + 3, .8, SC.z + 4, 38], [SC.x + 5.5, 1.8, SC.z + 8, SC.x + 3, .8, SC.z + 4, 36], L.k); }, [[0, 'shell_sing2', .8]]);
+  cm([SC.x + 8, 4, SC.z + 14, SC.x + 1.5, 2, SC.z + 2, 44], [SC.x + 7, 3.6, SC.z + 12, SC.x + 1.5, 2, SC.z + 2, 42], L.k); }, [[0, 'shell_sing2', .8]]);
 // 54 «Und noch eine»: y otra, más allá
 shot(70.52, 'R', null, L => { kueste(L, { t: 'noon' }); show(SHELLS[5], SC.x - 4, .25, SC.z + 6, 2, 1.4); notes(V(SC.x - 4, .5, SC.z + 6), L.T, 4, .8); show(SHELLS[4], SC.x + 3, .25, SC.z + 4, 1, 1.4); notes(V(SC.x + 3, .5, SC.z + 4), L.T + .3, 4, .8, 4);
   cm([SC.x - 8, 2.4, SC.z + 12, SC.x - 3, .8, SC.z + 5, 40], [SC.x - 7, 2.2, SC.z + 11, SC.x - 3, .8, SC.z + 5, 38], L.k); }, [[0, 'shell_sing3', .8]]);
@@ -423,10 +423,10 @@ shot(88.04, 'I', null, L => { kueste(L, { t: 'storm' }); crowdBox(L, -40, 40, 36
   cm([6, 7, 486, 0, 3, 380, 46], [5, 7.5, 488, 0, 3, 380, 44], L.k); }, [[0, 'wind_strong', .7]]);
 // 66 «Dann dachte ich an Opas Muschelhorn»: Jonte saca el Muschelhorn de la mochila/cubo; recuerdo de Opa (tono cálido)
 shot(89.2, 'F', null, L => { kueste(L, { t: 'storm' }); pose(jonte, SC.x, 0, SC.z - 30, 0, L, { aRx: lerp(.6, 1.6, easeOut(clamp(L.lt / .6))), aRe: .6, aLx: .4 }, 'determined'); attach(HORN, jonte.aR.hand, [.4, -.6, .6], [0, 0, 0], .55);
-  const h = wpos(HORN); cm([h.x + 4, h.y + 2.4, h.z + 7, h.x, h.y + .8, h.z, 42], [h.x + 3.4, h.y + 2, h.z + 6, h.x, h.y + .8, h.z, 40], L.k); }, [[0, 'sparkle', .6]]);
+  onFace(jonte, 6, 0, 1.4, 42, L.k, 5); }, [[0, 'sparkle', .6]]);
 // 67 «Ich kletterte auf den Mast»: Jonte trepa por el mástil inclinado del barco pirata
 shot(91.17, 'W', null, L => { kueste(L, { t: 'storm' }); const p = mastP(1, lerp(.3, .55, L.k)); put(jonte, p.x, p.y - 2, p.z + 1.2, PI); actuar(jonte, 0, [[0, climbP(L.T, 0)]], { T: L.T, weight: false }); jonte.blob.visible = false; cara(jonte, L.T, { expr: 'determined', mouth: 'grimace' });
-  cm([p.x - 16, p.y - 10, p.z - 22, p.x, p.y, p.z, 50], [p.x - 15, p.y - 8, p.z - 20, p.x, p.y + 1, p.z, 50], L.k); }, [[0, 'wood_creak', .7], [.2, 'rope_creak', .5]]);
+  cm([p.x - 8, p.y - 4, p.z - 11, p.x, p.y, p.z, 48], [p.x - 7, p.y - 3, p.z - 10, p.x, p.y + 1, p.z, 48], L.k); }, [[0, 'wood_creak', .7], [.2, 'rope_creak', .5]]);
 // 68 «des Piratenschiffs»: plano general del barco con Jonte arriba, la ola a lo lejos
 shot(92.39, 'Z', null, L => { kueste(L, { t: 'storm' }); wave(L.T, 1600, 74, .5, { glow: .45 }); const p = mastP(1, .7); put(jonte, p.x, p.y - 2, p.z + 1.2, PI); actuar(jonte, 0, [[0, climbP(L.T, 0)]], { T: L.T, weight: false }); jonte.blob.visible = false;
   const S_ = MW.SCHIFF.position; cm([S_.x - 40, 8, S_.z - 80, S_.x, 30, S_.z + 100, 54], [S_.x - 36, 10, S_.z - 72, S_.x, 32, S_.z + 100, 54], L.k); }, [[0, 'wave_roar', .5]]);
@@ -453,11 +453,11 @@ shot(100.94, 'B', 'punch', L => { kueste(L, { t: 'storm' }); wave(L.T, 1300, 80,
 shot(101.78, 'C', null, L => { kueste(L, { t: 'storm' }); wave(L.T, 1250, 80, .55, { glow: .5 }); crowdBox(L, -22, 22, 470, 500, 12, 57, { mode: 'run', ry: () => PI, speed: 10, expr: 'shock' });
   cm([0, 6, 430 - L.lt * 10, 0, 8, 520, 54], [0, 6, 424 - L.lt * 10, 0, 8, 520, 54], L.k); }, [[0, 'footsteps_run', .8], [0, 'crowd_scream', .5]]);
 // 76 «Familien rasten zwischen den Wracks hindurch»: travelling lateral junto al carguero oxidado
-shot(102.92, 'S', null, L => { kueste(L, { t: 'storm' }); const Wr = MW.WRACKS[1].position; crowdBox(L, Wr.x - 20, Wr.x + 10, Wr.z + 10, Wr.z + 30, 10, 59, { mode: 'run', ry: () => PI, speed: 11 }); run(mama, L, Wr.x - 4, Wr.z + 20, PI, 11, 2);
-  cm([Wr.x + 26, 5, Wr.z + 10 - L.lt * 11, Wr.x - 4, 5, Wr.z + 10 - L.lt * 11, 52], [Wr.x + 24, 5, Wr.z + 6 - L.lt * 11, Wr.x - 4, 5, Wr.z + 6 - L.lt * 11, 52], L.k); }, [[0, 'footsteps_run', .7], [.2, 'metal_creak', .5]]);
+shot(102.92, 'S', null, L => { kueste(L, { t: 'storm' }); const Wr = MW.WRACKS[1].position; crowdBox(L, Wr.x - 26, Wr.x + 4, Wr.z - 40, Wr.z - 20, 10, 59, { mode: 'run', ry: () => PI, speed: 11 }); run(mama, L, Wr.x - 8, Wr.z - 28, PI, 11, 2);
+  cm([Wr.x - 44, 6, Wr.z - 34 - L.lt * 11, Wr.x - 8, 5, Wr.z - 30 - L.lt * 11, 52], [Wr.x - 42, 6, Wr.z - 38 - L.lt * 11, Wr.x - 8, 5, Wr.z - 34 - L.lt * 11, 52], L.k); }, [[0, 'footsteps_run', .7], [.2, 'metal_creak', .5]]);
 // 77 «Wracks hindurch»: bajo la proa de otro pecio, gente saltando las rocas
-shot(104.2, 'R', null, L => { kueste(L, { t: 'storm' }); const Wr = MW.WRACKS[0].position; crowdBox(L, Wr.x - 10, Wr.x + 14, Wr.z + 6, Wr.z + 26, 8, 61, { mode: 'run', ry: () => PI + .3, speed: 11 });
-  cm([Wr.x + 4, 2, Wr.z - 16, Wr.x, 6, Wr.z + 20, 58], [Wr.x + 3, 2.2, Wr.z - 18, Wr.x, 6, Wr.z + 20, 58], L.k); }, [[0, 'footsteps_run', .7]]);
+shot(104.2, 'R', null, L => { kueste(L, { t: 'storm' }); const Wr = MW.WRACKS[0].position; crowdBox(L, Wr.x + 10, Wr.x + 34, Wr.z - 30, Wr.z - 14, 8, 61, { mode: 'run', ry: () => PI + .3, speed: 11 });
+  cm([Wr.x + 30, 3, Wr.z - 60, Wr.x + 14, 7, Wr.z - 10, 56], [Wr.x + 29, 3.2, Wr.z - 62, Wr.x + 14, 7, Wr.z - 10, 56], L.k); }, [[0, 'footsteps_run', .7]]);
 // 78 «Papas mit Kindern auf den Schultern»: Papa Ole corre con un niño a hombros
 shot(105.15, 'W', null, L => { kueste(L, { t: 'storm' }); wave(L.T, 900, 80, .6, { glow: .5 }); run(papa, L, 6, 300, PI, 10, 1); const kid = NB[13]; put(kid, 0, 0, 0, 0); papa.spine.add(kid.root); kid.root.position.set(0, .9, -.4); kid.root.rotation.set(0, 0, 0); kid.root.scale.setScalar(.9); actuar(kid, 0, [[0, sitPose({ aLx: 2.6, aRx: 2.6, aLz: .4, aRz: .4 })]], { T: L.T, weight: false }); kid.blob.visible = false; cara(kid, L.T, { expr: 'shock', mouth: 'o' });
   const p = papa.root.position; cm([p.x + 3, 7, p.z - 12, p.x, 6, p.z, 50], [p.x + 3, 7, p.z - 11, p.x, 6, p.z, 50], L.k); }, [[0, 'footsteps_run', .7], [0, 'heavy_breath', .5]]);
@@ -467,7 +467,7 @@ shot(106.79, 'S', null, L => { kueste(L, { t: 'storm' }); const om = [NB[5], NB[
 // 80 «schneller … als ich es je gesehen hatte»: picado desde arriba: las escaleras llenas de gente subiendo rapidísimo
 shot(107.95, 'Z', null, L => { kueste(L, { t: 'storm' }); for (let i = 3; i < 9; i++) for (let j = 0; j < 3; j++) onLadder(NB[(i * 3 + j) % 40], i, .1 + j * .3 + L.k * .2, L, i * 3 + j, { sp: 2.2, expr: 'shock' });
   crowdBox(L, -60, 60, -7, -10, 8, 63, { y: CH, mode: 'point', face: V(0, 0, 60), list: [mama, opa, ...NB.slice(36)] });
-  cm([LX(5) + 4, CH + 24, -14, LX(5) + 4, 22, 10, 56], [LX(5) + 4, CH + 27, -16, LX(5) + 4, 22, 12, 56], L.k); }, [[0, 'ladder_steps', .8], [.3, 'crowd_scream', .4]]);
+  cm([LX(5) + 40, 22, 74, LX(5), 30, 4, 54], [LX(5) + 36, 24, 70, LX(5), 32, 4, 54], L.k); }, [[0, 'ladder_steps', .8], [.3, 'crowd_scream', .4]]);
 // ---------- d: la pared de agua, la carrera de Jonte, Mama, el BUMM, la lluvia, el Rathaus (110 – 144,1 s) ----------
 // 81 «Die Welle war jetzt eine Wand»: la ola ocupa todo el cuadro; gente diminuta corriendo delante
 shot(110.0, 'P', 'punch', L => { kueste(L, { t: 'storm' }); wave(L.T, 520 - L.lt * 20, 82, .6, { glow: .55 }); crowdBox(L, -60, 60, 300, 380, 14, 65, { mode: 'run', ry: () => PI, speed: 11 });
@@ -476,7 +476,7 @@ shot(110.0, 'P', 'punch', L => { kueste(L, { t: 'storm' }); wave(L.T, 520 - L.lt
 shot(111.38, 'W', 'slow', L => { kueste(L, { t: 'storm' }); wave(L.T, 330 - L.lt * 20, 82, .6, { glow: .5 }); crowdBox(L, -40, 40, -7, -10, 10, 67, { y: CH, mode: 'shock', face: V(0, 40, 300) });
   cm([-320, 40, 150, 0, 40, 170, 56], [-300, 42, 160, 0, 42, 170, 54], L.k); }, [[0, 'rumble_far', .8]]);
 // 83 «Dunkelgrün»: primer plano de la cara de la ola, verde oscuro y translúcida
-shot(112.99, 'F', null, L => { kueste(L, { t: 'day' }); wave(L.T, 300, 82, .6, { glow: .8 }); cm([20, 30, 240, 0, 60, 300, 46], [18, 32, 244, 0, 62, 300, 44], L.k); }, [[0, 'water_rush', .7]]);
+shot(112.99, 'F', null, L => { kueste(L, { t: 'day' }); wave(L.T, 300, 82, .6, { glow: .8 }); cm([20, 14, 200, 0, 70, 300, 52], [18, 16, 204, 0, 72, 300, 50], L.k); }, [[0, 'water_rush', .7]]);
 // 84 «und die Sonne schien durch sie hindurch»: contraluz: el sol brilla a través de la cresta (verde esmeralda)
 shot(113.88, 'R', null, L => { kueste(L, { t: 'day' }); SUND.set(0, .35, 1).normalize(); wave(L.T, 300, 82, .65, { glow: 1.1 }); cm([-10, 12, 200, 0, 80, 330, 56], [-8, 14, 206, 0, 82, 330, 56], L.k); BLOOMMAX = .5; bloom.strength = .5; }, [[0, 'shimmer', .6]]);
 // 85 «Ich rutschte den Mast hinunter»: Jonte se desliza por el mástil abrazado a él
@@ -522,21 +522,21 @@ shot(130.28, 'F', null, L => { kueste(L, { t: 'day', sea: 1, seaY: 10 }); REGEN.
   cm([0, CH + 6, 20, 0, CH + 12, -60, 56], [0, CH + 7, 14, 0, CH + 14, -60, 56], L.k); }, [[0, 'rain', .8]]);
 // 98 «Ich sah mich um»: Jonte empapado mira a su alrededor
 shot(132.48, 'S', null, L => { kueste(L, { t: 'day', sea: 1, seaY: 10 }); REGEN.visible = true; REGEN.userData.set(V(0, CH, -14), L.T, { r: 30, h: 40 }); pose(jonte, 0, CH, -12, PI + Math.sin(L.T * 1.5) * .6, L, { headY: Math.sin(L.T * 2) * .5 }, 'shock', { mouth: 'o' });
-  cm([1, CH + 6, -26, 0, CH + 4.5, -12, 44], [1, CH + 5.6, -23, 0, CH + 4.5, -12, 42], L.k); }, [[0, 'rain', .6]]);
+  cm([1, CH + 6, -24, 0, CH + 4.5, -10, 44], [1, CH + 5.6, -22, 0, CH + 4.5, -10, 42], L.k); }, [[0, 'rain', .6]]);
 // 99 «Jede Familie»: una familia se abraza bajo la lluvia
 shot(133.42, 'W', null, L => { kueste(L, { t: 'day', sea: 1, seaY: 10 }); REGEN.visible = true; REGEN.userData.set(V(0, CH, -14), L.T, { r: 30, h: 40 }); const H_ = { aLx: 1.4, aRx: 1.4, aLz: -.5, aRz: -.5, aLe: 1.3, aRe: 1.3 };
   pose(NB[0], -2, CH, -12, PI - .6, L, H_, 'relief', { mouth: 'smile' }); pose(NB[2], 1.6, CH, -12.6, PI + .6, L, H_, 'relief', { mouth: 'smile' }); pose(NB[3], 0, CH, -14.2, PI, L, { ...H_, aLz: .3, aRz: .3 }, 'joy');
-  cm([0, CH + 5, -28, 0, CH + 3.4, -12, 44], [0, CH + 5, -25, 0, CH + 3.4, -12, 42], L.k); }, [[0, 'cheer_soft', .5]]);
+  cm([0, CH + 5, -24, 0, CH + 3.4, -11, 44], [0, CH + 5, -22, 0, CH + 3.4, -11, 42], L.k); }, [[0, 'cheer_soft', .5]]);
 // 100 «Jedes Kind»: los niños saltan en los charcos del paseo
 shot(134.32, 'C', null, L => { kueste(L, { t: 'day', sea: 1, seaY: 10 }); REGEN.visible = true; REGEN.userData.set(V(0, CH, -14), L.T, { r: 30, h: 40 }); crowdBox(L, -8, 8, -10, -14, 4, 75, { y: CH, mode: 'cheer', list: [NB[8], NB[13], NB[18], NB[23]] });
-  cm([0, CH + 3.5, -28, 0, CH + 3, -12, 44], [0, CH + 3.8, -26, 0, CH + 3, -12, 42], L.k); }, [[0, 'kids_laugh', .6], [.2, 'splash_step', .6]]);
+  cm([0, CH + 3.5, -24, 0, CH + 3, -11, 44], [0, CH + 3.8, -22, 0, CH + 3, -11, 42], L.k); }, [[0, 'kids_laugh', .6], [.2, 'splash_step', .6]]);
 // 101 «Jede Oma»: dos abuelas ríen a carcajadas, chorreando
 shot(135.22, 'R', null, L => { kueste(L, { t: 'day', sea: 1, seaY: 10 }); REGEN.visible = true; REGEN.userData.set(V(0, CH, -14), L.T, { r: 30, h: 40 }); pose(NB[5], -2, CH, -12, PI - .4, L, { aLx: 1.2, aLe: 1.6 }, 'joy'); laughF(NB[5], L.T); pose(NB[15], 2, CH, -12, PI + .4, L, { aRx: 2.4, aRe: .4 }, 'joy'); laughF(NB[15], L.T + 1);
-  cm([0, CH + 4.6, -26, 0, CH + 3.8, -12, 42], [0, CH + 4.6, -23, 0, CH + 3.8, -12, 40], L.k); }, [[0, 'laugh_old', .6]]);
+  cm([0, CH + 4.6, -24, 0, CH + 3.8, -11, 42], [0, CH + 4.6, -22, 0, CH + 3.8, -11, 40], L.k); }, [[0, 'laugh_old', .6]]);
 // 102 «Alle hatten es geschafft»: el pueblo alza a Jonte a hombros; confeti de agua y gaviotas que vuelven
 shot(136.0, 'Z', 'punch', L => { kueste(L, { t: 'day', sea: 1, seaY: 10 }); put(jonte, 0, CH + 4 + Math.abs(Math.sin(L.T * 6)) * 1.2, -12, PI); actuar(jonte, 0, [[0, { aLx: 2.8, aRx: 2.8, aLz: .5, aRz: .5 }]], { T: L.T, weight: false }); laughF(jonte, L.T); jonte.blob.visible = false; attach(HORN, jonte.aR.hand, [.4, -.6, .6], [0, 0, 1.4], .55);
   crowdAt(L, 0, -12, 14, 3, 9, 77, { y: CH, mode: 'cheer', list: [mama, opa, papa, broesel, ...NB] }); MOEW.fly(L.T, V(-40, CH + 30, 20), V(1, 0, .2), { lt: L.lt, n: 14, speed: 10 });
-  cm([0, CH + 7, -34, 0, CH + 7, -12, 50], [0, CH + 7.5, -30, 0, CH + 7, -12, 48], L.k); }, [[0, 'crowd_cheer', .8]]);
+  cm([0, CH + 7, -24.5, 0, CH + 6, -9, 54], [0, CH + 7.5, -23, 0, CH + 6, -9, 52], L.k); }, [[0, 'crowd_cheer', .8]]);
 // 103 «Jetzt hängt Opas Muschelhorn im Rathaus»: la sala del Rathaus, la caracola en su placa; Opa y Jonte delante
 shot(137.31, 'B', null, L => { saal(L); pose(opa, RHX - 6, 0, -22, .35, L, { headY: -.3 }, 'warm', { mouth: 'smile' }); pose(jonte, RHX + 6, 0, -22, -.35, L, { headY: .3, aRx: 1.4, aRe: .1, aRz: -.4 }, 'happy', { mouth: 'smile' });
   cm([RHX + 4, 13, 4, RHX, 12, -26, 50], [RHX + 3, 13, 0, RHX, 12.5, -26, 48], L.k); }, [[0, 'room_hall', .5]]);
@@ -611,6 +611,6 @@ function renderAt(T) {
   for (const f of FX2D) f(octx); for (const b of BAD_) drawBadge(b); caption(T);
 }
 console.log('ready', performance.now()|0); window.renderAt = renderAt; window.DUR = DUR; window.FPS = FPS; window.CUES = CUES; window.SHOTS = S.map(s => [s.t0, s.t1, s.tr, s.zoom]); window.__ready = true;
-window.DBG = { applyPose, hp, jonte, opa, mama, cam, renderer, composer, bloom, sun, grade, scene, camera, MW, WELLE };
+window.DBG = { THREE, applyPose, hp, jonte, opa, mama, cam, renderer, composer, bloom, sun, grade, scene, camera, MW, WELLE };
 // ---------- portadas (1080×1920; lo importante entre y = 240 y 1680) ----------
 //@@COVER@@

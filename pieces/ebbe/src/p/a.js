@@ -14,13 +14,13 @@ function rings(c, k, n = 4, R = 120, y = 1) { RINGS.forEach((r, i) => { if (i >=
 
 // 1 «In dieser Stadt zieht sich»: GANCHO. Amanecer dorado; el pueblo entero en el paseo, apoyado en la barandilla; bajo ellos el mar se vacía de golpe por el acantilado
 // (se ven aparecer las escaleras y las rocas). Golpe de zoom + zoom lento hacia la gente que señala y celebra.
-shot(0, 'C', 'hook', L => { seaDrop(L, .1 + L.k * .9); crowdBox(L, -15, 15, -6.2, -8.5, 14, 3, { y: CH, mode: i => ['point', 'cheer', 'shock', 'point', 'cheer', 'look'][i % 6], face: V(0, CH - 6, 40), jit: .2 });
-  pose(jonte, 0, CH, -5.8, 0, L, { aRx: 1.5, aRz: .1, aRe: .1, headX: .25 }, 'shock', { mouth: 'o' }); MOEW.fly(L.T, V(-10, CH + 20, 20), V(1, .1, 0), { lt: L.lt, n: 6, speed: 10, sx: 40, sy: 8, sz: 10 });
-  cm([3, CH - 4, 34, 0, CH + 1.5, -6, 42], [2, CH - 1, 24, 0, CH + 2.5, -6, 40], L.k); SHC = V(0, CH - 4, 2); }, [[0, 'water_drain', .9], [.3, 'crowd_gasp', .6]]);
+shot(0, 'C', 'hook', L => { kueste(L, { t: 'dawn', sea: 1, seaY: lerp(40, 6, easeInOut(L.k)) }); crowdBox(L, -20, 18, -6.2, -8.8, 16, 3, { y: CH, mode: i => ['point', 'cheer', 'shock', 'point', 'cheer', 'look'][i % 6], face: V(20, CH, 40), jit: .3 });
+  pose(jonte, 4, CH, -5.9, .5, L, { aRx: 1.5, aRz: .1, aRe: .1, headX: .25 }, 'shock', { mouth: 'o' }); MOEW.fly(L.T, V(-10, CH - 6, 30), V(1, .1, .2), { lt: L.lt, n: 8, speed: 12, sx: 40, sy: 10, sz: 20 });
+  cm([24, CH + 15, 10, -2, CH + 2, -8, 48], [19, CH + 13, 6, -2, CH + 3, -8, 44], L.k); SHC = V(2, CH, -4); }, [[0, 'water_drain', .9], [.3, 'crowd_gasp', .6]]);
 // 2 «alle hundert Jahre»: Opa junto a la placa de piedra de la última Ebbe («1926 · 2026»): 100 Jahre
-shot(1.62, 'Z', 'punch', L => { kueste(L, { t: 'dawn', sea: 1, seaY: 8 }); show(PLAQ, -34, CH + 5, -11, .25, .55);
-  pose(opa, -29, CH, -12, -.35, L, { aRx: 1.3, aRz: -.3, aRe: .2, headY: -.3 }, 'warm', { mouth: 'smile' }); pose(jonte, -24.5, CH, -10, -.5, L, { headY: .3 }, 'happy', { mouth: 'open_smile' });
-  orb(L.k, V(-28, CH + 4, -11), null, [16, .15, .12, 46], [13, -.05, .1, 46]); badge('gold', '100 JAHRE', W / 2, H * .22, (L.lt - .1) * 3); }, [[.1, 'ding_reveal', .7]]);
+shot(1.62, 'Z', 'punch', L => { kueste(L, { t: 'dawn', sea: 1, seaY: 8 }); show(PLAQ, -34, CH + 5, -9, .25, .55);
+  pose(opa, -29, CH, -8, -.35, L, { aRx: 1.3, aRz: -.3, aRe: .2, headY: -.3 }, 'warm', { mouth: 'smile' }); pose(jonte, -24.5, CH, -7.4, -.5, L, { headY: .3 }, 'happy', { mouth: 'open_smile' });
+  orb(L.k, V(-28, CH + 4.4, -8), null, [11, .15, .04, 46], [9, -.05, .03, 46]); badge('gold', '100 JAHRE', W / 2, H * .22, (L.lt - .1) * 3); }, [[.1, 'ding_reveal', .7]]);
 // 3 «das Meer zurück»: plano aéreo de la costa: el agua se retira hacia el horizonte dejando la arena al descubierto
 shot(2.46, 'W', null, L => { kueste(L, { t: 'dawn', sea: lerp(.85, .4, L.k), seaY: 0 }); cm([-160, 170, 160, 0, 0, 420, 52], [-120, 160, 200, 0, 0, 520, 52], L.k); MOEW.fly(L.T, V(-40, 70, 220), V(.3, 0, 1), { lt: L.lt, n: 10, speed: 6, s: 1.6 }); }, [[0, 'wave_retreat', .8]]);
 // 4 «Einen ganzen Tag lang»: el sol sube sobre el fondo marino brillante; la gente baja ya por las escaleras
@@ -47,8 +47,8 @@ shot(8.23, 'R', null, L => { kueste(L, { t: 'night', sea: 1, seaY: 2 }); const x
   cm([x + 4, 3, 46, x, 30, 0, 50], [x + 2, 4, 40, x, 34, 0, 50], L.k); SHC = V(x, 25, 6); }, [[.1, 'wood_clack', .7], [.5, 'wood_clack', .6]]);
 
 // 9 «Bei Sonnenaufgang»: el sol asoma sobre el mar; el pueblo despierta en el paseo con tazas y mantas
-shot(9.36, 'F', 'slow', L => { kueste(L, { t: 'dawn', sea: 1, seaY: 3 }); crowdBox(L, -30, 30, -7.5, -12, 12, 11, { y: CH, mode: i => i % 3 ? 'look' : 'wave', face: V(0, 0, 400) });
-  cm([1, CH + 3, -26, 1, CH + 6, 400, 48], [1, CH + 3.5, -20, 1, CH + 8, 400, 44], L.k); }, [[0, 'birds_dawn', .4]]);
+shot(9.36, 'F', 'slow', L => { kueste(L, { t: 'dawn', sea: 1, seaY: 3 }); crowdBox(L, -14, 14, -6.4, -9, 10, 11, { y: CH, mode: i => i % 3 ? 'look' : 'wave', face: V(0, CH, 60), jit: .25 });
+  cm([0, CH + 2, 16, 0, CH + 4, -8, 48], [0, CH + 2.6, 12, 0, CH + 4.4, -8, 44], L.k); }, [[0, 'birds_dawn', .4]]);
 // 10 «ist das Wasser einfach weg»: a ras de arena: el agua se escurre hacia el mar a toda velocidad, peces saltando en los charcos
 shot(10.47, 'P', null, L => { kueste(L, { t: 'dawn', sea: lerp(.25, .05, L.k), seaY: lerp(1.2, 0, L.k) }); cm([10, 2.2, 40, 0, 1, 140, 40], [10, 2.6, 52, 0, 1, 160, 40], L.k);
   crowdBox(L, -12, 18, 28, 34, 3, 13, { mode: 'look', face: V(0, 0, 200), expr: 'shock' }); }, [[0, 'water_drain', .9]]);
@@ -59,7 +59,7 @@ shot(13.5, 'C', null, L => { kueste(L, { t: 'day' }); crowdBox(L, -76, -44, 150,
   walk(papa, L, -54, 182, .4, 2.2, 1, { expr: 'happy', mouth: 'open_smile' }); cm([-30, 7, 205, -60, 12, 165, 52], [-36, 8, 210, -60, 13, 165, 52], L.k); }, [[0, 'footsteps_sand', .6], [.2, 'metal_creak', .5]]);
 // 13 «Schiffswracks herum»: contrapicado bajo el casco oxidado; un niño golpea el metal y suena hueco
 shot(14.83, 'W', null, L => { kueste(L, { t: 'day' }); pose(NB[3], -58, 0, 178, PI - .3, L, { aRx: 2.2 + Math.sin(L.T * 14) * .3, aRe: .4 }, 'happy', { mouth: 'open_smile' }); pose(NB[8], -54, 0, 182, PI + .5, L, { aLx: 1.5 }, 'shock', { mouth: 'o' });
-  cm([-46, 2.5, 196, -60, 14, 170, 56], [-48, 2, 194, -60, 18, 168, 56], L.k); }, [[.2, 'metal_bang', .7]]);
+  cm([-26, 2.5, 206, -58, 14, 172, 56], [-28, 2, 204, -58, 18, 170, 56], L.k); }, [[.2, 'metal_bang', .7]]);
 // 14 «Die Kinder klettern auf Riffe»: niños trepando por un arrecife cubierto de corales
 shot(15.92, 'S', null, L => { kueste(L, { t: 'day' }); const R = MW.RIFFE[0].position; [NB[3], NB[8], NB[13]].forEach((c, i) => { put(c, R.x - 4 + i * 4, 6 + i * 5 + L.k * 3, R.z + 9 - i, PI + (i - 1) * .2); actuar(c, 0, [[0, climbP(L.T, i)]], { T: L.T, weight: false }); c.blob.visible = false; cara(c, L.T, { expr: 'happy', mouth: 'open_smile' }); });
   cm([R.x + 6, 6, R.z + 40, R.x, 14, R.z, 50], [R.x + 8, 10, R.z + 36, R.x, 18, R.z, 50], L.k); }, [[0, 'kids_laugh', .6]]);

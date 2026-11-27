@@ -29,7 +29,7 @@ shot(42.86, 'Z', 'punch', L => { stube(L); pose(jonte, OPX + 2, 0, 2, 0, L, { aR
 // 35 «Die anderen Kinder sagen»: en el paseo, tres niños se burlan de Jonte señalándolo
 shot(43.98, 'R', null, L => { kueste(L, { t: 'day', sea: 1, seaY: 4 }); pose(jonte, 3, CH, -14, PI - .6, L, { aLx: .3, aRx: .3, headX: .2 }, 'sad');
   [NB[13], NB[18], NB[23]].forEach((c, i) => { pose(c, -5 + i * 2.6, CH, -12 + i * 1.2, PI / 2 + .3 - i * .2, L, i === 1 ? { aRx: 1.6, aRe: .1 } : { aLx: 1.2, aRx: 1.2, aLe: 1.6, aRe: 1.6, lean: -.1 }, 'joy'); laughF(c, L.T + i); });
-  cm([-3, CH + 5, -28, -1, CH + 3, -12, 46], [-2, CH + 5, -25, -1, CH + 3, -12, 44], L.k); }, [[0, 'kids_laugh', .7]]);
+  cm([-3, CH + 5, -24, -1, CH + 3, -11, 46], [-2, CH + 5, -22, -1, CH + 3, -11, 44], L.k); }, [[0, 'kids_laugh', .7]]);
 // 36 «das langweiligste Hobby der Welt»: un niño finge dormirse de aburrimiento (Zzz); Jonte abraza su cubo
 shot(45.42, 'G', null, L => { kueste(L, { t: 'day', sea: 1, seaY: 4 }); pose(NB[18], -2, CH, -12, PI + .3, L, { headX: .4, headZ: .3, aLx: .2, aRx: .2, lean: .1 }, 'tired', { eyes: 'closed', mouth: 'o' }); pose(jonte, 4, CH, -13, PI - .5, L, { aLx: 1, aLe: 1.4, aRx: 1, aRe: 1.4 }, 'sad');
   onFace(NB[18], 8, .5, -2, 44, L.k); badge('big', 'LANGWEILIG!', W / 2, H * .22, (L.lt - .2) * 3, 1, .9); }, [[.2, 'snore', .7]]);
@@ -69,7 +69,7 @@ shot(62.53, 'W', null, L => { kueste(L, { t: 'day' }); const S_ = MW.SCHIFF.posi
 // 48 «Ich bin fast sechs Kilometer hinausgelaufen»: Jonte camina solo mar adentro con su cubo; 6 KM
 shot(63.73, 'S', null, L => { kueste(L, { t: 'day' }); walk(jonte, L, 10, 700, 0, 2.6, 0, { expr: 'happy', mouth: 'smile' }); cm([4, 4, 740, 10, 4, 700, 44], [2, 5, 742, 10, 4, 704, 44], L.k); badge('gold', '6 KM', W / 2, H * .22, (L.lt - .3) * 3); }, [[0, 'footsteps_sand', .7]]);
 // 49 «hinausgelaufen»: cenital: sus huellas en línea recta sobre la arena ondulada
-shot(65.0, 'I', null, L => { kueste(L, { t: 'day' }); walk(jonte, L, 10, 720, 0, 2.6, 0, { expr: 'happy' }); cm([10, 40, 724, 10, 0, 728, 50], [10, 44, 728, 10, 0, 732, 50], L.k); }, [[0, 'wind_soft', .5]]);
+shot(65.0, 'I', null, L => { kueste(L, { t: 'day' }); walk(jonte, L, 10, 720, 0, 2.6, 0, { expr: 'happy' }); const jp = jonte.root.position; cm([jp.x + 2, 26, jp.z - 8, jp.x, 0, jp.z + 2, 50], [jp.x + 2, 28, jp.z - 8, jp.x, 0, jp.z + 2, 50], L.k); }, [[0, 'wind_soft', .5]]);
 // 50 «Weiter als alle anderen»: plano enorme: Jonte diminuto lejos, el pueblo y la gente muy atrás, junto al acantilado
 shot(66.09, 'Z', null, L => { kueste(L, { t: 'day' }); walk(jonte, L, 10, 760, PI, 2.4, 0, { expr: 'happy' }); crowdBox(L, -60, 60, 120, 260, 12, 37, { mode: 'walk' });
   cm([30, 10, 820, 0, 10, 300, 50], [28, 14, 840, 0, 14, 300, 50], L.k); }, [[0, 'wind_soft', .5]]);
