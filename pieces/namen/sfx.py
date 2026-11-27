@@ -530,9 +530,18 @@ for _a, _b in [('cash_reg', 'cash'), ('money_rain', 'coins'), ('money_burst', 'c
 # --- SCHUTZENGEL: alias ---
 LIB['crack'] = LIB['back_crack']
 
+# --- NAMEN: alias ---
+for _a, _b in [('airhorn', 'party_horn'), ('applause', 'clap'), ('baby_giggle', 'baby_coo'), ('baby_laugh', 'laugh_kid'), ('ball_catch', 'catch'), ('ball_slam', 'ball_bounce'), ('balls_many', 'ball_bounce'), ('body_fall', 'collapse'),
+  ('buzzer_wrong', 'buzzer'), ('cash_big', 'money_burst'), ('coin_jingle', 'coins'), ('coin_pling', 'coin_flip'), ('coin_toss', 'coin_flip'), ('coin_whoosh', 'whoosh_soft'), ('coins_bounce', 'coins'), ('coins_hand', 'coins'),
+  ('coins_rain', 'money_rain'), ('coins_stream', 'money_rain'), ('counter_up', 'counter_fast'), ('crowd_party', 'crowd_cheer'), ('crowd_shout', 'shout_crowd'), ('ding_idea', 'ding_good'), ('dunk', 'net_swish'), ('fail_down', 'sad_tone'),
+  ('fist_bump', 'hit_soft'), ('flex_pop', 'pop'), ('fly_buzz', 'buzz'), ('footsteps', 'steps'), ('footsteps_slow', 'steps_slow'), ('gym_clank', 'metal_hit'), ('handshake', 'pat'), ('heels', 'steps_soft'), ('kid_laugh', 'laugh_kid'),
+  ('knife', 'knife_down'), ('magic_reveal', 'magic_hit'), ('mall_ambience', 'murmur_soft'), ('night_wind', 'wind'), ('party_music', 'cheer'), ('sad_horn', 'sad_trombone'), ('shout_echo', 'shout_m'), ('sneakers', 'squeak'),
+  ('sneeze', 'fake_sneeze'), ('stampede', 'crowd_run'), ('sticker', 'paper_slap'), ('stroller_roll', 'ball_roll'), ('water_jacuzzi', 'bubbling'), ('water_whoosh', 'splash'), ('yay', 'cheer_small'), ('crowd_happy', 'cheer'), ('night_crickets', 'crickets')]:
+    if _a not in LIB and _b in LIB: LIB[_a] = LIB[_b]
+
 if __name__ == '__main__':
     cues_f, voice_f, music_f, out_f = sys.argv[1:5]
-    cues = json.load(open(cues_f)); DUR = 144.1
+    cues = json.load(open(cues_f)); DUR = 94.1
     cues = fill_gaps(cues, DUR); print(len(cues), 'efectos; hueco máximo', max(np.diff(sorted([0] + [c['t'] for c in cues] + [DUR]))).round(2))
     TEN = {'riser', 'braam', 'riser_short', 'braam_short'}
     ten = render([c for c in cues if c['s'] in TEN], DUR); ten = norm(ten, 0.9)

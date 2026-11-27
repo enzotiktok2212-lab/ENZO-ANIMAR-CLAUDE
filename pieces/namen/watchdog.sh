@@ -3,7 +3,7 @@
 # mata lo que quede y relanza render.sh (idempotente: salta los fotogramas ya hechos). Al terminar, ejecuta finish.sh.
 # uso: nohup ./watchdog.sh > renders/watchdog.log 2>&1 &
 cd "$(dirname "$0")"; mkdir -p renders/frames
-N=$(python3 -c "import math;print(math.ceil(144.1*30))"); last=-1; stall=0
+N=$(python3 -c "import math;print(math.ceil(94.1*30))"); last=-1; stall=0
 while true; do
   n=$(ls renders/frames 2>/dev/null | wc -l)
   if [ "$n" -ge "$N" ]; then echo "$(date +%T) todos los fotogramas ($n)"; break; fi

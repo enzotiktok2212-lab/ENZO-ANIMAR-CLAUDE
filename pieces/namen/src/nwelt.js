@@ -108,7 +108,7 @@ export function rufingen(scene) { const g = G(scene); const r = RNG(41);
   const dome = new THREE.Mesh(new THREE.SphereGeometry(12, 32, 16, 0, PI * 2, 0, PI / 2), GOLD()); dome.position.set(0, 30, -2); nb.add(dome); cyl(1, 1, 6, GOLD(), 10, nb, 0, 44, -2); sphere(1.6, GOLD(), nb, 0, 48, -2, 14, 10);
   const nbSign = textPlane(40, 4.6, 1600, 184, (c, w, h) => { c.fillStyle = '#1a2a4a'; c.fillRect(0, 0, w, h); c.strokeStyle = '#ffd23f'; c.lineWidth = 10; c.strokeRect(6, 6, w - 12, h - 12); txt(c, 'NAMENSBANK', w / 2, h / 2 + 8, 130, '#ffd23f'); }, .4); nbSign.position.set(0, 35.2, 19.2); nb.add(nbSign);
   box(14, 16, .6, mat(0x3a2a1a, { roughness: .5 }), .1, nb, 0, 8, 17.4); for (const s of [-1, 1]) box(6.6, 15, .3, mat(0x5a3a1a, { roughness: .4 }), .05, nb, s * 3.5, 7.6, 17.8);
-  const BOARD = dynPlane(30, 20, 1200, 800, 1.1); BOARD.position.set(0, 18, 17.6); nb.add(BOARD); box(31.4, 21.4, .6, mat(0x1a1a22, { metalness: .5 }), .1, nb, 0, 18, 17.2);
+  const BOARD = dynPlane(28, 18.7, 1200, 800, 1.1); BOARD.position.set(0, 17, 20.6); nb.add(BOARD); box(29.4, 20.1, .6, mat(0x1a1a22, { metalness: .5 }), .1, nb, 0, 17, 20.2);
   for (let k = 0; k < 2; k++) for (const s of [-1, 1]) { const fl = G(nb, s * 44, 0, 20 + k * 8); cyl(.2, .2, 18, mat(0xd8d8d8, { metalness: .6 }), 8, fl, 0, 9, 0); const f = box(4, 2.6, .1, mat([0x1a1a1a, 0xd8202a, 0xffd23f][(k + (s > 0)) % 3]), 0, fl, 2, 16.4, 0); }
   shadow(g); bake(g);
   return { g, LAMPS, BOARD }; }
@@ -264,7 +264,7 @@ export function platz(scene, X, o = {}) { const g = G(scene, X); const r = RNG(o
   // gradas
   const ST = G(g, 26, 0, 0); for (let k = 0; k < 6; k++) box(5, 1.2 + k * 1.2, 56, mat(gold ? 0xffd23f : 0x8a8e96, { roughness: .4, metalness: gold ? .6 : .3 }), .05, ST, k * 4, (1.2 + k * 1.2) / 2, 0);
   const ST2 = G(g, -26, 0, 0); ST2.rotation.y = PI; for (let k = 0; k < 6; k++) box(5, 1.2 + k * 1.2, 56, mat(gold ? 0xffd23f : 0x8a8e96, { roughness: .4, metalness: gold ? .6 : .3 }), .05, ST2, k * 4, (1.2 + k * 1.2) / 2, 0);
-  const SB = dynPlane(14, 7, 700, 350, 1.4); const sbg = G(g, -22, 0, -36); cyl(.4, .4, 18, mat(0x2a2a30), 8, sbg, -5, 9, 0); cyl(.4, .4, 18, mat(0x2a2a30), 8, sbg, 5, 9, 0); box(15, 8, 1, mat(0x1a1a22), .1, sbg, 0, 18, -.6); SB.position.set(0, 18, 0); sbg.add(SB);
+  const SB = dynPlane(14, 7, 700, 350, 1.4); const sbg = G(g, -11, 0, -38); cyl(.4, .4, 18, mat(0x2a2a30), 8, sbg, -5, 9, 0); cyl(.4, .4, 18, mat(0x2a2a30), 8, sbg, 5, 9, 0); box(15, 8, 1, mat(0x1a1a22), .1, sbg, 0, 18, -.6); SB.position.set(0, 18, 0); sbg.add(SB);
   const LAMPS = []; for (const s of [-1, 1]) for (const z of [-30, 30]) { const l = G(g, s * 21, 0, z); cyl(.3, .4, 22, mat(0x3a3a40, { metalness: .5 }), 8, l, 0, 11, 0); const h = box(4, 1.2, 2, glowM(0xfff4d8, gold ? 2.5 : 1.6), .1, l, -s * 1.4, 22, 0); h.userData.noOutline = true; LAMPS.push(h); }
   const FEST = G(g); for (let k = 0; k < 5; k++) bunting(FEST, V(-20, 12, -30 + k * 15), V(20, 12, -30 + k * 15), 1.6);
   if (gold) { const sg = textPlane(30, 4.6, 1500, 230, (c, w, h) => { const gr = c.createLinearGradient(0, 0, w, 0); gr.addColorStop(0, '#ffd23f'); gr.addColorStop(.5, '#fff6c0'); gr.addColorStop(1, '#ffb820'); c.fillStyle = '#1a2a6a'; c.beginPath(); c.roundRect(0, 0, w, h, 40); c.fill(); txt(c, 'DER BESTE PLATZ DER WELT', w / 2, h / 2 + 6, 120, gr); }, .8); sg.position.set(0, 24, -38); g.add(sg);
@@ -274,7 +274,7 @@ export function platz(scene, X, o = {}) { const g = G(scene, X); const r = RNG(o
   for (let k = 0; k < 10; k++) giebelHaus(g, 70 + (k % 2) * 10, -70 + k * 22, { w: 18, d: 14, fl: 2, seed: k + 1130, ry: -PI / 2, tile2: k % 2 === 0, lit: o.lit });
   for (let k = 0; k < 24; k++) baum(g, -70 + r() * 140, -50 - r() * 20, .9 + r() * .3, k + 1200);
   for (let k = 0; k < 10; k++) baum(g, -40 - r() * 20, -30 + r() * 80, .9, k + 1300);
-  shadow(g); bake(g); FEST.traverse(m => m.userData.keep = true);
+  FEST.traverse(m => m.userData.keep = true); shadow(g); bake(g);
   return { g, K1, K2, SB, FEST, LAMPS }; }
 export function drawScore(SB, a, b, o = {}) { SB.userData.draw((c, w, h) => { c.fillStyle = '#0a0a12'; c.fillRect(0, 0, w, h); txt(c, o.l ?? 'BLAU', w * .27, 60, 46, '#3a8aff'); txt(c, o.r ?? 'PARTY', w * .73, 60, 46, '#ff5aa8');
   txt(c, String(a), w * .27, h * .62, 170, '#ffd23f'); txt(c, String(b), w * .73, h * .62, 170, '#ffd23f'); c.fillStyle = '#ffd23f'; c.fillRect(w / 2 - 4, 110, 8, h - 150); }); }
