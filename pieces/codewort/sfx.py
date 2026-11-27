@@ -570,9 +570,11 @@ LIB['thunder'] = LIB['thunder_far']
 LIB['wave'] = LIB['whoosh_soft']
 LIB['wind_night'] = LIB['wind_howl']
 LIB['wings_flap'] = LIB['flag_flutter']
+# --- CODEWORT: alias ---
+for _a, _b in {'car_door': 'truck_door', 'door_rattle': 'rattle', 'echo': 'gym_echo', 'gravel': 'steps_snow', 'harbor': 'wave', 'seagulls': 'birds', 'slide': 'plate_slide', 'static': 'tv_static'}.items(): LIB[_a] = LIB[_b]
 if __name__ == '__main__':
     cues_f, voice_f, music_f, out_f = sys.argv[1:5]
-    cues = json.load(open(cues_f)); DUR = 165.6
+    cues = json.load(open(cues_f)); DUR = 225.6
     cues = fill_gaps(cues, DUR); print(len(cues), 'efectos; hueco máximo', max(np.diff(sorted([0] + [c['t'] for c in cues] + [DUR]))).round(2))
     TEN = {'riser', 'braam', 'riser_short', 'braam_short'}
     ten = render([c for c in cues if c['s'] in TEN], DUR); ten = norm(ten, 0.9)
