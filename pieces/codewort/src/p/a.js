@@ -9,7 +9,7 @@ const rattle = (L, t0, n = 3, rate = 3.2, amt = 1) => { const t = L.lt - t0; if 
 // ---- 1 «In dieser Stadt»: golpe de zoom en el Flur de noche: Mats retrocede de la puerta mientras el pomo gira solo, la cadena se tensa
 //      y por el cristal lateral se ve la silueta de la Cosa sonriendo
 shot(0, 'C', null, L => { flur(L, { h: 18, m: 10 }); const r = rattle(L, .05, 3, 3.6); HA.front.door.rotation.y = PI - r * .025; HA.front.knob.rotation.z = Math.sin(L.T * 20) * .6;
-  HA.side.forEach(s => s.material.opacity = .22); const d = put(ding, DOORIN.x + 5.6, 0, 22.6, PI); creepF(d, L.T, 1); lp(0, DOORIN.x + 5.6, 8, 25, 80, 0xffb060, 16);
+  HA.side.forEach(s => s.material.opacity = .22); const d = put(ding, DOORIN.x + 4.1, 0, 22.4, PI); creepF(d, L.T, 1); lp(0, DOORIN.x + 4.1, 8, 25, 80, 0xffb060, 16);
   const c = put(mats, DOORIN.x + .2, 0, 12.6 - easeOut(L.k) * 2, PI + .2); actuar(c, L.lt, [[0, 'idle'], [.08, 'recoil', { dur: .25 }]], { T: L.T, extra: shiver(L.T, 1) }); cara(c, L.T, { expr: 'scared', mouth: 'o' });
   cm([DOORIN.x + 1.6, 6.2, -2, DOORIN.x + 1.8, 5.6, 18], [DOORIN.x + 1.4, 6.4, 0, DOORIN.x + 1.8, 5.8, 18], L.k, easeOut); }, [[0, 'knock', .8], [.28, 'knock', .8], [.55, 'chain_rattle', .6]]);
 // ---- 2 «hat jede Familie»: en la cocina, Mama se inclina sobre la mesa y les cuchichea algo a Mats e Ida; Ida se ríe tapándose la boca

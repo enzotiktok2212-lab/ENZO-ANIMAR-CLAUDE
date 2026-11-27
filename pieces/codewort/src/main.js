@@ -29,7 +29,7 @@ const camera = new THREE.PerspectiveCamera(50, W / H, .3, 5000); const { compose
 const bokeh = new BokehPass(scene, camera, { focus: 10, aperture: .0008, maxblur: .01 }); composer.insertPass(bokeh, 2); let DOF = 1;
 // ojo de pez de la mirilla (abomba el centro); amount 0 = apagado
 const FISH = new ShaderPass({ uniforms: { tDiffuse: { value: null }, amt: { value: 0 }, asp: { value: W / H } }, vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.); }',
-  fragmentShader: 'uniform sampler2D tDiffuse; uniform float amt; uniform float asp; varying vec2 vUv; void main(){ vec2 c = vec2(.5,.44); vec2 d = vUv - c; d.x *= asp; float r = length(d); vec2 q = d * (1. - amt * .9 + amt * .9 * r * r * 2.2); q.x /= asp; gl_FragColor = texture2D(tDiffuse, c + q); }' });
+  fragmentShader: 'uniform sampler2D tDiffuse; uniform float amt; uniform float asp; varying vec2 vUv; void main(){ vec2 c = vec2(.5,.44); vec2 d = vUv - c; d.x *= asp; float r = length(d); float rn = r / .5; vec2 q = d * mix(1., .55 + .9 * rn * rn, amt); q.x /= asp; gl_FragColor = texture2D(tDiffuse, c + q); }' });
 composer.insertPass(FISH, composer.passes.length - 1);
 let CAMT = new THREE.Vector3(); { const la = camera.lookAt.bind(camera); camera.lookAt = (...a) => { if (a.length === 3) CAMT.set(...a); else CAMT.copy(a[0]); la(...a); }; }
 const SS = +(QS.get('ss') ?? 1.5); if (SS > 1) { renderer.setPixelRatio(SS); renderer.setSize(W, H); composer.setPixelRatio(SS); composer.setSize(W, H); grade.uniforms.px.value.set(1 / W, 1 / H); octx.imageSmoothingEnabled = true; octx.imageSmoothingQuality = 'high'; }
@@ -49,8 +49,15 @@ const SD = siedlung(scene), HM = SD.houses.MATS, HK = SD.houses.KESSLER, HBR = S
 const HA = haus(scene, HAX), KA = kammer(scene, KAX), BU = buero(scene, BUX), KL = klasse(scene, KLX), KZ = kinderzimmer(scene, KZX), KU = kueche(scene, KUX), HF = hafen(scene, HFX);
 const AUTUMN = new THREE.Group(); scene.add(AUTUMN); for (const [x, z, s] of [[-24, -60, 1.1], [24, -78, 1], [-24, -120, 1.2], [24, -128, .9], [-26, 20, 1], [26, 30, 1.1]]) herbstbaum(AUTUMN, x, z, s, x * 3 + z); AUTUMN.visible = false;
 // clase: puerta con ventanita en la pared izquierda (x = -20) y pasillo detrás para Herr Pohl
-const KDOOR = new THREE.Group(); { const g = KDOOR; g.position.set(KLX - 19.6, 0, 8); KL.g.parent.add(g); box(.5, 11, 6.2, mat(0x8a5a32, { roughness: .5 }), .05, g, 0, 5.5, 0); const gl = box(.6, 3, 2.4, new THREE.MeshStandardMaterial({ color: 0xbcd8e8, roughness: .05, transparent: true, opacity: .35 }), 0, g, 0, 7.6, 0); gl.userData.noShadow = true;
-  sphere(.3, mat(0xb8b8c0, { metalness: .9 }), g, .5, 5, 2.3, 10, 8); box(.6, .6, 7, mat(0xf4f0e6), 0, g, 0, 11.2, 0); const cor = new THREE.Group(); cor.position.set(-8, 0, 0); g.add(cor); box(16, .3, 20, mat(0xc8beb0), 0, cor, 0, 0, 0); box(.3, 16, 20, mat(0xf4e8c8), 0, cor, -6, 8, 0); const L = new THREE.PointLight(0xfff0d8, 60, 20, 1.6); L.position.set(-3, 9, 0); cor.add(L); }
+const KDOOR = new THREE.Group(); { const g = KDOOR; g.position.set(KLX - 19.6, 0, 8); KL.g.parent.add(g); const dm = mat(0x8a5a32, { roughness: .5 }), wm = KL.g.children[2].material; KL.g.children[2].visible = false;
+  // pared izquierda de la clase con hueco para la puerta (z de 4,9 a 11,1, y < 11)
+  box(.4, 20, 20.9, wm, 0, g, -.4, 10, -13.55); box(.4, 20, 4.9, wm, 0, g, -.4, 10, 5.55); box(.4, 9, 6.2, wm, 0, g, -.4, 15.5, 0);
+  box(.5, 6.1, 6.2, dm, .05, g, 0, 3.05, 0); box(.5, 1.9, 6.2, dm, .05, g, 0, 10.05, 0); for (const s of [-1, 1]) box(.5, 3, 1.9, dm, .02, g, 0, 7.6, s * 2.15);
+  const gl = box(.12, 3, 2.4, new THREE.MeshStandardMaterial({ color: 0xbcd8e8, roughness: .05, transparent: true, opacity: .22 }), 0, g, 0, 7.6, 0); gl.userData.noShadow = true; gl.castShadow = false;
+  sphere(.3, mat(0xb8b8c0, { metalness: .9 }), g, .5, 5, 2.3, 10, 8); box(.6, .6, 7, mat(0xf4f0e6), 0, g, 0, 11.2, 0);
+  const cor = new THREE.Group(); cor.position.set(-8, 0, 0); g.add(cor); const cw = mat(0xe8dcc0, { roughness: .9 }); box(16, .3, 30, mat(0xc8beb0), 0, cor, 0, 0, 0); box(.3, 16, 30, cw, 0, cor, -6, 8, 0); box(16, .3, 30, mat(0xf4f0e8), 0, cor, 0, 16, 0); for (const s of [-1, 1]) box(16, 16, .3, cw, 0, cor, 0, 8, s * 15);
+  for (let k = 0; k < 5; k++) { box(2, 8, 1.6, mat([0xd8323a, 0x2a6ad8, 0xffd23f][k % 3], { metalness: .3, roughness: .5 }), .05, cor, -5, 4, -12 + k * 2.2); }
+  const L = new THREE.PointLight(0xfff0d8, 120, 30, 1.6); L.position.set(-2, 13, 0); cor.add(L); }
 const SETS = { SD: SD.g, HA: HA.g, KA: KA.g, BU: BU.g, KL: KL.g, KZ: KZ.g, KU: KU.g, HF: HF.g, AU: AUTUMN };
 for (const k in SETS) outline(SETS[k], OS);
 const BILL = []; scene.traverse(o => { if (o.userData && o.userData.bill) BILL.push(o); });
@@ -177,7 +184,7 @@ function strasse(L, o = {}) { use('SD'); const t = o.t || 'night';
   const lit = t === 'night' || (t === 'dusk' && (o.k ?? 1) > .7) || o.lamps; for (const l of SD.lamps) { l.glass.material.emissiveIntensity = lit ? 3.2 : .05; l.halo.material.opacity = lit ? .75 : 0; l.puddle.material.opacity = lit ? .3 : 0; }
   for (const h of [HM, HK, HBR]) { h.lamp.glass.material.emissiveIntensity = lit ? 3 : .1; h.lamp.halo.material.opacity = lit ? .55 : 0; } }
 // casa por dentro (noche: lámparas encendidas; o.dark: todo apagado y azul)
-function flur(L, o = {}) { use('HA'); inside(o.dark ? .3 : .85, o.dark ? 8 : 34); FILL.color.setRGB(1, .88, .72); HA.L.forEach((l, i) => l.intensity = o.dark ? 0 : [240, 200, 160][i]); HA.lamps.forEach(b => b.material.emissiveIntensity = o.dark ? 0 : 2.6); if (o.dark) { hemi.color.setRGB(.5, .6, 1); FILL.color.setRGB(.6, .7, 1); }
+function flur(L, o = {}) { use('HA'); HA.setDay(!!o.day); inside(o.dark ? .3 : .85, o.dark ? 8 : 34); FILL.color.setRGB(1, .88, .72); HA.L.forEach((l, i) => l.intensity = o.dark ? 0 : [240, 200, 160][i]); HA.lamps.forEach(b => b.material.emissiveIntensity = o.dark ? 0 : 2.6); if (o.dark) { hemi.color.setRGB(.5, .6, 1); FILL.color.setRGB(.6, .7, 1); }
   HA.clock.set(o.h ?? 18, o.m ?? 10); }
 function kammerS(L) { use('KA'); inside(.12, 3); FILL.color.setRGB(.6, .7, 1); grade.uniforms.vig.value = .6; }
 function bueroS(L) { use('BU'); inside(.9, 30); FILL.color.setRGB(.9, .96, 1); BU.screens.forEach((s, i) => s.material.emissiveIntensity = 1.1 + Math.sin(L.T * 3 + i) * .1); }
@@ -191,7 +198,7 @@ const PORCH = HMW(HM.doorX, HM.B, HM.frontZ + 3.4);   // en el porche, frente a 
 const DOORIN = V(HAX + 1.5, 0, 16.6);   // dentro, frente a la puerta de casa (mirando a +z)
 const PEEPW = () => HA.front.peepW();
 // mirilla: la cámara en la mirilla de la casa de Mats mirando al porche (ojo de pez + círculo)
-function peephole(L, k = 1, o = {}) { const p = HMW(HM.doorX, HM.B + 7.6, HM.frontZ + .7), t = HMW(HM.doorX + (o.dx ?? 0), HM.B + (o.ty ?? 6.4), HM.frontZ + 6 + (o.dz ?? 0));
+function peephole(L, k = 1, o = {}) { const p = HMW(HM.doorX, HM.B + 7.6, HM.frontZ + .7), t = o.look || HMW(HM.doorX + (o.dx ?? 0), HM.B + (o.ty ?? 6.4), HM.frontZ + 3.4 + (o.dz ?? 0));
   cam([p.x, p.y, p.z], [t.x, t.y, t.z], o.fov ?? 92); PEEP = k; }
 // ---------- gestos de esta pieza ----------
 const knockP = (T, t0 = 0, rate = 3) => { const ph = ((T - t0) * rate) % 1; return { ...GEST.knock, aRe: 1.5 - Math.max(0, Math.sin(ph * PI)) * .6, aRx: 1.55 + Math.sin(ph * PI) * .25 }; };
@@ -266,7 +273,7 @@ function renderShot(i, T, tr, a, fn = null) {
   composer.render();
 }
 // la mirilla: círculo con borde oscuro y viñeta, el resto negro
-function peepMask(c) { const cx = W / 2, cy = H * .44, r = W * .47; c.save(); c.fillStyle = '#000'; c.beginPath(); c.rect(0, 0, W, H); c.arc(cx, cy, r, 0, 7, true); c.fill('evenodd');
+function peepMask(c) { const cx = W / 2, cy = H * .44, r = W * .47; c.save(); c.fillStyle = '#000'; c.beginPath(); c.rect(0, 0, W, H); c.moveTo(cx + r, cy); c.arc(cx, cy, r, 0, 2 * PI, true); c.closePath(); c.fill('evenodd');
   const g = c.createRadialGradient(cx, cy, r * .55, cx, cy, r); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(.8, 'rgba(10,6,0,.35)'); g.addColorStop(1, 'rgba(0,0,0,.95)'); c.fillStyle = g; c.beginPath(); c.arc(cx, cy, r, 0, 7); c.fill();
   c.strokeStyle = 'rgba(200,150,60,.35)'; c.lineWidth = 6; c.beginPath(); c.arc(cx, cy, r - 3, 0, 7); c.stroke(); c.restore(); }
 function renderAt(T) {

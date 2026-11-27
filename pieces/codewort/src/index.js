@@ -29,7 +29,7 @@ const camera = new THREE.PerspectiveCamera(50, W / H, .3, 5000); const { compose
 const bokeh = new BokehPass(scene, camera, { focus: 10, aperture: .0008, maxblur: .01 }); composer.insertPass(bokeh, 2); let DOF = 1;
 // ojo de pez de la mirilla (abomba el centro); amount 0 = apagado
 const FISH = new ShaderPass({ uniforms: { tDiffuse: { value: null }, amt: { value: 0 }, asp: { value: W / H } }, vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.); }',
-  fragmentShader: 'uniform sampler2D tDiffuse; uniform float amt; uniform float asp; varying vec2 vUv; void main(){ vec2 c = vec2(.5,.44); vec2 d = vUv - c; d.x *= asp; float r = length(d); vec2 q = d * (1. - amt * .9 + amt * .9 * r * r * 2.2); q.x /= asp; gl_FragColor = texture2D(tDiffuse, c + q); }' });
+  fragmentShader: 'uniform sampler2D tDiffuse; uniform float amt; uniform float asp; varying vec2 vUv; void main(){ vec2 c = vec2(.5,.44); vec2 d = vUv - c; d.x *= asp; float r = length(d); float rn = r / .5; vec2 q = d * mix(1., .55 + .9 * rn * rn, amt); q.x /= asp; gl_FragColor = texture2D(tDiffuse, c + q); }' });
 composer.insertPass(FISH, composer.passes.length - 1);
 let CAMT = new THREE.Vector3(); { const la = camera.lookAt.bind(camera); camera.lookAt = (...a) => { if (a.length === 3) CAMT.set(...a); else CAMT.copy(a[0]); la(...a); }; }
 const SS = +(QS.get('ss') ?? 1.5); if (SS > 1) { renderer.setPixelRatio(SS); renderer.setSize(W, H); composer.setPixelRatio(SS); composer.setSize(W, H); grade.uniforms.px.value.set(1 / W, 1 / H); octx.imageSmoothingEnabled = true; octx.imageSmoothingQuality = 'high'; }
@@ -49,8 +49,15 @@ const SD = siedlung(scene), HM = SD.houses.MATS, HK = SD.houses.KESSLER, HBR = S
 const HA = haus(scene, HAX), KA = kammer(scene, KAX), BU = buero(scene, BUX), KL = klasse(scene, KLX), KZ = kinderzimmer(scene, KZX), KU = kueche(scene, KUX), HF = hafen(scene, HFX);
 const AUTUMN = new THREE.Group(); scene.add(AUTUMN); for (const [x, z, s] of [[-24, -60, 1.1], [24, -78, 1], [-24, -120, 1.2], [24, -128, .9], [-26, 20, 1], [26, 30, 1.1]]) herbstbaum(AUTUMN, x, z, s, x * 3 + z); AUTUMN.visible = false;
 // clase: puerta con ventanita en la pared izquierda (x = -20) y pasillo detrás para Herr Pohl
-const KDOOR = new THREE.Group(); { const g = KDOOR; g.position.set(KLX - 19.6, 0, 8); KL.g.parent.add(g); box(.5, 11, 6.2, mat(0x8a5a32, { roughness: .5 }), .05, g, 0, 5.5, 0); const gl = box(.6, 3, 2.4, new THREE.MeshStandardMaterial({ color: 0xbcd8e8, roughness: .05, transparent: true, opacity: .35 }), 0, g, 0, 7.6, 0); gl.userData.noShadow = true;
-  sphere(.3, mat(0xb8b8c0, { metalness: .9 }), g, .5, 5, 2.3, 10, 8); box(.6, .6, 7, mat(0xf4f0e6), 0, g, 0, 11.2, 0); const cor = new THREE.Group(); cor.position.set(-8, 0, 0); g.add(cor); box(16, .3, 20, mat(0xc8beb0), 0, cor, 0, 0, 0); box(.3, 16, 20, mat(0xf4e8c8), 0, cor, -6, 8, 0); const L = new THREE.PointLight(0xfff0d8, 60, 20, 1.6); L.position.set(-3, 9, 0); cor.add(L); }
+const KDOOR = new THREE.Group(); { const g = KDOOR; g.position.set(KLX - 19.6, 0, 8); KL.g.parent.add(g); const dm = mat(0x8a5a32, { roughness: .5 }), wm = KL.g.children[2].material; KL.g.children[2].visible = false;
+  // pared izquierda de la clase con hueco para la puerta (z de 4,9 a 11,1, y < 11)
+  box(.4, 20, 20.9, wm, 0, g, -.4, 10, -13.55); box(.4, 20, 4.9, wm, 0, g, -.4, 10, 5.55); box(.4, 9, 6.2, wm, 0, g, -.4, 15.5, 0);
+  box(.5, 6.1, 6.2, dm, .05, g, 0, 3.05, 0); box(.5, 1.9, 6.2, dm, .05, g, 0, 10.05, 0); for (const s of [-1, 1]) box(.5, 3, 1.9, dm, .02, g, 0, 7.6, s * 2.15);
+  const gl = box(.12, 3, 2.4, new THREE.MeshStandardMaterial({ color: 0xbcd8e8, roughness: .05, transparent: true, opacity: .22 }), 0, g, 0, 7.6, 0); gl.userData.noShadow = true; gl.castShadow = false;
+  sphere(.3, mat(0xb8b8c0, { metalness: .9 }), g, .5, 5, 2.3, 10, 8); box(.6, .6, 7, mat(0xf4f0e6), 0, g, 0, 11.2, 0);
+  const cor = new THREE.Group(); cor.position.set(-8, 0, 0); g.add(cor); const cw = mat(0xe8dcc0, { roughness: .9 }); box(16, .3, 30, mat(0xc8beb0), 0, cor, 0, 0, 0); box(.3, 16, 30, cw, 0, cor, -6, 8, 0); box(16, .3, 30, mat(0xf4f0e8), 0, cor, 0, 16, 0); for (const s of [-1, 1]) box(16, 16, .3, cw, 0, cor, 0, 8, s * 15);
+  for (let k = 0; k < 5; k++) { box(2, 8, 1.6, mat([0xd8323a, 0x2a6ad8, 0xffd23f][k % 3], { metalness: .3, roughness: .5 }), .05, cor, -5, 4, -12 + k * 2.2); }
+  const L = new THREE.PointLight(0xfff0d8, 120, 30, 1.6); L.position.set(-2, 13, 0); cor.add(L); }
 const SETS = { SD: SD.g, HA: HA.g, KA: KA.g, BU: BU.g, KL: KL.g, KZ: KZ.g, KU: KU.g, HF: HF.g, AU: AUTUMN };
 for (const k in SETS) outline(SETS[k], OS);
 const BILL = []; scene.traverse(o => { if (o.userData && o.userData.bill) BILL.push(o); });
@@ -177,7 +184,7 @@ function strasse(L, o = {}) { use('SD'); const t = o.t || 'night';
   const lit = t === 'night' || (t === 'dusk' && (o.k ?? 1) > .7) || o.lamps; for (const l of SD.lamps) { l.glass.material.emissiveIntensity = lit ? 3.2 : .05; l.halo.material.opacity = lit ? .75 : 0; l.puddle.material.opacity = lit ? .3 : 0; }
   for (const h of [HM, HK, HBR]) { h.lamp.glass.material.emissiveIntensity = lit ? 3 : .1; h.lamp.halo.material.opacity = lit ? .55 : 0; } }
 // casa por dentro (noche: lámparas encendidas; o.dark: todo apagado y azul)
-function flur(L, o = {}) { use('HA'); inside(o.dark ? .3 : .85, o.dark ? 8 : 34); FILL.color.setRGB(1, .88, .72); HA.L.forEach((l, i) => l.intensity = o.dark ? 0 : [240, 200, 160][i]); HA.lamps.forEach(b => b.material.emissiveIntensity = o.dark ? 0 : 2.6); if (o.dark) { hemi.color.setRGB(.5, .6, 1); FILL.color.setRGB(.6, .7, 1); }
+function flur(L, o = {}) { use('HA'); HA.setDay(!!o.day); inside(o.dark ? .3 : .85, o.dark ? 8 : 34); FILL.color.setRGB(1, .88, .72); HA.L.forEach((l, i) => l.intensity = o.dark ? 0 : [240, 200, 160][i]); HA.lamps.forEach(b => b.material.emissiveIntensity = o.dark ? 0 : 2.6); if (o.dark) { hemi.color.setRGB(.5, .6, 1); FILL.color.setRGB(.6, .7, 1); }
   HA.clock.set(o.h ?? 18, o.m ?? 10); }
 function kammerS(L) { use('KA'); inside(.12, 3); FILL.color.setRGB(.6, .7, 1); grade.uniforms.vig.value = .6; }
 function bueroS(L) { use('BU'); inside(.9, 30); FILL.color.setRGB(.9, .96, 1); BU.screens.forEach((s, i) => s.material.emissiveIntensity = 1.1 + Math.sin(L.T * 3 + i) * .1); }
@@ -191,7 +198,7 @@ const PORCH = HMW(HM.doorX, HM.B, HM.frontZ + 3.4);   // en el porche, frente a 
 const DOORIN = V(HAX + 1.5, 0, 16.6);   // dentro, frente a la puerta de casa (mirando a +z)
 const PEEPW = () => HA.front.peepW();
 // mirilla: la cámara en la mirilla de la casa de Mats mirando al porche (ojo de pez + círculo)
-function peephole(L, k = 1, o = {}) { const p = HMW(HM.doorX, HM.B + 7.6, HM.frontZ + .7), t = HMW(HM.doorX + (o.dx ?? 0), HM.B + (o.ty ?? 6.4), HM.frontZ + 6 + (o.dz ?? 0));
+function peephole(L, k = 1, o = {}) { const p = HMW(HM.doorX, HM.B + 7.6, HM.frontZ + .7), t = o.look || HMW(HM.doorX + (o.dx ?? 0), HM.B + (o.ty ?? 6.4), HM.frontZ + 3.4 + (o.dz ?? 0));
   cam([p.x, p.y, p.z], [t.x, t.y, t.z], o.fov ?? 92); PEEP = k; }
 // ---------- gestos de esta pieza ----------
 const knockP = (T, t0 = 0, rate = 3) => { const ph = ((T - t0) * rate) % 1; return { ...GEST.knock, aRe: 1.5 - Math.max(0, Math.sin(ph * PI)) * .6, aRx: 1.55 + Math.sin(ph * PI) * .25 }; };
@@ -236,14 +243,14 @@ const rattle = (L, t0, n = 3, rate = 3.2, amt = 1) => { const t = L.lt - t0; if 
 // ---- 1 «In dieser Stadt»: golpe de zoom en el Flur de noche: Mats retrocede de la puerta mientras el pomo gira solo, la cadena se tensa
 //      y por el cristal lateral se ve la silueta de la Cosa sonriendo
 shot(0, 'C', null, L => { flur(L, { h: 18, m: 10 }); const r = rattle(L, .05, 3, 3.6); HA.front.door.rotation.y = PI - r * .025; HA.front.knob.rotation.z = Math.sin(L.T * 20) * .6;
-  HA.side.forEach(s => s.material.opacity = .22); const d = put(ding, DOORIN.x + 5.6, 0, 22.6, PI); creepF(d, L.T, 1); lp(0, DOORIN.x + 5.6, 8, 25, 80, 0xffb060, 16);
+  HA.side.forEach(s => s.material.opacity = .22); const d = put(ding, DOORIN.x + 4.1, 0, 22.4, PI); creepF(d, L.T, 1); lp(0, DOORIN.x + 4.1, 8, 25, 80, 0xffb060, 16);
   const c = put(mats, DOORIN.x + .2, 0, 12.6 - easeOut(L.k) * 2, PI + .2); actuar(c, L.lt, [[0, 'idle'], [.08, 'recoil', { dur: .25 }]], { T: L.T, extra: shiver(L.T, 1) }); cara(c, L.T, { expr: 'scared', mouth: 'o' });
   cm([DOORIN.x + 1.6, 6.2, -2, DOORIN.x + 1.8, 5.6, 18], [DOORIN.x + 1.4, 6.4, 0, DOORIN.x + 1.8, 5.8, 18], L.k, easeOut); }, [[0, 'knock', .8], [.28, 'knock', .8], [.55, 'chain_rattle', .6]]);
 // ---- 2 «hat jede Familie»: en la cocina, Mama se inclina sobre la mesa y les cuchichea algo a Mats e Ida; Ida se ríe tapándose la boca
 shot(.84, 'W', 'punch', L => { kuecheS(L); const m = put(mamaB, KUX, 0, -8.6, 0); actuar(m, L.lt, [[0, { lean: .34, aLx: 1.0, aRx: 1.0, aLz: .1, aRz: .1, aLe: 1.2, aRe: 1.2, headX: .25, headY: Math.sin(L.T * 3) * .3 }]], { T: L.T }); cara(m, L.T, { expr: 'happy', mouth: Math.sin(L.T * 14) > 0 ? 'o' : 'smile', eyes: 'half' });
-  const c = sit(mats, KUX - 3.4, 2.8, -5.4, .25, L, { aLx: .9, aRx: .9, aLe: 1.4, aRe: 1.4, lean: .2, headZ: -.25 }); cara(c, L.T, { expr: 'happy', eyes: 'wide', mouth: 'smile' });
-  const i = sit(ida, KUX + 3.4, 2.8, -5.4, -.25, L, { aLx: 2, aRx: 2, aLe: 2.3, aRe: 2.3, lean: .1 + Math.sin(L.T * 16) * .04 }); cara(i, L.T, { eyes: 'happy', mouth: 'laugh' });
-  cm([KUX - 2, 11, 5.5, KUX, 4.6, -6.6, 46], [KUX + 1.2, 10.6, 4.2, KUX, 4.8, -6.6, 46], L.k); }, [[.05, 'whisper', .7], [.4, 'kids_laugh', .4]]);
+  const c = sit(mats, KUX - 2.5, 2.8, -5.4, .25, L, { aLx: .9, aRx: .9, aLe: 1.4, aRe: 1.4, lean: .2, headZ: -.25 }); cara(c, L.T, { expr: 'happy', eyes: 'wide', mouth: 'smile' });
+  const i = sit(ida, KUX + 2.5, 2.8, -5.4, -.25, L, { aLx: 2, aRx: 2, aLe: 2.3, aRe: 2.3, lean: .1 + Math.sin(L.T * 16) * .04 }); cara(i, L.T, { eyes: 'happy', mouth: 'laugh' });
+  cm([KUX - 2, 9.6, 10, KUX, 5.4, -6.4, 48], [KUX + 1.2, 9.2, 8.6, KUX, 5.4, -6.4, 48], L.k); }, [[.05, 'whisper', .7], [.4, 'kids_laugh', .4]]);
 // ---- 3 «ein geheimes Wort.»: primer plano: Mama le susurra al oído a Mats, que abre mucho los ojos; «PSST!» y «GEHEIM»
 shot(1.76, 'S', null, L => { kuecheS(L); const c = put(mats, KUX - 1, 0, 8.4, 0), m = put(mamaB, KUX + 1.9, 0, 8.1, -PI / 2); actuar(m, L.lt, [[0, { lean: .3, crouch: .16, aRx: 1.9, aRz: -.3, aRe: 2.1, headX: .1 }]], { T: L.T }); cara(m, L.T, { eyes: 'half', mouth: Math.sin(L.T * 18) > 0 ? 'o' : 'flat' });
   actuar(c, L.lt, [[0, { aRx: 2.3, aRz: .1, aRe: 2.6, headY: .2 }]], { T: L.T }); cara(c, L.T, { eyes: 'wide', mouth: 'o' });
@@ -257,7 +264,7 @@ shot(4.51, 'F', null, L => { strasse(L, { t: 'night' }); const p = PORCH; const 
   lp(0, p.x - 3, 10, p.z - 3, 60, 0xffb860, 26); badge('q', '???', W / 2, H * .2, (L.lt - .7) / .2); cm([p.x - 9.5, 7.4, p.z - 7, p.x, 5.8, p.z - .4, 42], [p.x - 8, 7, p.z - 5.6, p.x, 5.8, p.z - .2, 42], L.k); sh(V(p.x, 0, p.z), 26); }, [[.05, 'knock', .7], [.25, 'knock', .7], [.7, 'creepy_ting', .5]]);
 // ---- 6 «machst du die Tür nicht auf.»: dentro: Mats engancha la cadena, gira el cerrojo y niega con la cabeza; X roja
 shot(6.01, 'C', null, L => { flur(L); const c = put(mats, DOORIN.x + .4, 0, DOORIN.z - .4, -.35); actuar(c, L.lt, [[0, { aRx: 1.9, aRz: .3, aRe: .6, headX: -.1 }], [.6, { aRx: .3, aLx: .2, headY: Math.sin(L.T * 12) * .45 }, { dur: .25 }]], { T: L.T }); cara(c, L.T, { expr: 'determined', mouth: 'flat' });
-  HA.front.thumb.rotation.z = clamp((L.lt - .3) / .2) * PI / 2; badge('x', '', W / 2, H * .2, (L.lt - .75) / .2);
+  HA.front.thumb.rotation.z = clamp((L.lt - .3) / .2) * PI / 2; badge('x', '', W / 2, H * .2, (L.lt - .75) / .2, 1, 1.6);
   cm([DOORIN.x - 4.2, 6.8, 19.4, DOORIN.x + .4, 5.2, 15.6, 42], [DOORIN.x - 3.6, 6.6, 19.6, DOORIN.x + .4, 5.2, 15.8, 42], L.k); }, [[.1, 'chain_rattle', .7], [.35, 'click_metal', .8], [.75, 'thud', .4]]);
 // ---- 7 «Denn wenn es dunkel wird,»: grúa sobre la calle: el cielo pasa de atardecer a noche y las farolas se encienden una a una
 shot(7.52, 'W', null, L => { strasse(L, { t: 'dusk', k: 1 }); const n = Math.floor(L.k * 1.6 * SD.lamps.length); SD.lamps.forEach((l, i) => { const on = i < n; l.glass.material.emissiveIntensity = on ? 3.2 : .05; l.halo.material.opacity = on ? .75 : 0; l.puddle.material.opacity = on ? .3 : 0; });
@@ -336,7 +343,7 @@ shot(36.98, 'W', null, L => { strasse(L, { t: 'morning' }); SD.tram.visible = tr
   cm([14, 7.2, 50, -15, 5.2, 67.2, 44], [11, 6.8, 54, -15, 5.2, 67.2, 44], L.k); sh(V(-15, 0, 66), 30); }, [[0, 'bells', .5], [.3, 'wheels', .5], [1.5, 'bell_far', .4]]);
 // ---- 28 «Alle fünf.»: los números 1–5 saltan sobre sus cabezas
 shot(39.95, 'C', 'punch', L => { strasse(L, { t: 'morning' }); BRANDT.forEach((c, i) => { put(c, -15, 0, 60 + i * 3.6, PI / 2); actuar(c, 0, [[0, { aLx: .02, aRx: .02 }]], { T: L.T, breathe: false }); creepF(c, L.T, .55); badge3('num', String(i + 1), hp(c).add(V(0, 3, 0)), (L.lt - i * .1) / .15, .9); });
-  cm([19, 7.2, 67.2, -15, 5.2, 67.2, 44], [17.5, 7, 67.2, -15, 5.2, 67.2, 44], L.k); sh(V(-15, 0, 66), 30); }, [[0, 'pop', .5], [.1, 'pop', .5], [.2, 'pop', .5], [.3, 'pop', .5], [.4, 'pop', .5]]);
+  cm([26, 7.6, 67.2, -15, 5.6, 67.2, 44], [24, 7.4, 67.2, -15, 5.6, 67.2, 44], L.k); sh(V(-15, 0, 66), 30); }, [[0, 'pop', .5], [.1, 'pop', .5], [.2, 'pop', .5], [.3, 'pop', .5], [.4, 'pop', .5]]);
 // ---- 29 «Alle mit demselben breiten Lächeln.» (zoom lento): travelling lateral pegado a sus caras: la misma sonrisa enorme en todos
 shot(40.76, 'Z', 'slow', L => { strasse(L, { t: 'morning' }); BRANDT.forEach((c, i) => { put(c, -15, 0, 60 + i * 3.6, PI / 2); actuar(c, 0, [[0, { aLx: .02, aRx: .02, headZ: Math.sin(L.T * .8 + i) * .05 }]], { T: L.T, breathe: false }); creepF(c, L.T + i, .85 + L.k * .15); });
   const z = lerp(60, 74.4, easeInOut(L.k)), c = BRANDT[clamp(Math.round((z - 60) / 3.6), 0, 4)]; const h = hp(c); cam([-15 + 9, h.y + .4, z + 1.4], [-15, h.y + .1, z], 40); }, [[.1, 'creepy_ting', .5]]);
@@ -351,6 +358,341 @@ shot(45.37, 'S', null, L => { strasse(L, { t: 'night' }); HBR.wins.forEach((w, i
 shot(48.03, 'F', null, L => { strasse(L, { t: 'night' }); HBR.wins.forEach(w => w.material.emissiveIntensity = 1.7); const p = BPORCH;
   BRANDT.forEach((c, i) => { const s = HBW(HBR.doorX - 6 + i * 3, HBR.B, HBR.frontZ + 2.6); put(c, s.x, s.y, s.z, HBR.rot); actuar(c, 0, [[0, { aLx: .02, aRx: .02, headY: Math.sin(L.T * .5 + i) * .05 }]], { T: L.T, breathe: false, weight: false }); creepF(c, L.T, .6); });
   bigNum('03:00', (L.lt - .2) / .2, 'red', .15, .9); lp(0, p.x - 5, 10, p.z, 70, 0xffb860, 26); orbit(V(p.x - 2, 5.4, p.z + 1), lerp(30, 25, L.k), HBR.rot + .02, .05, 44); sh(V(p.x, 0, p.z), 30); }, [[0, 'clock_tick', .6], [.6, 'creepy_ting', .5]]);
+// ---------- b: colegio, Mats, la espera, los golpes y la mirilla (50,15 – 106,31 s) ----------
+// Clase (KLX): puerta con ventanita en x = KLX - 19,6, z = 8; pasillo detrás (x < KLX - 20). Pupitres en x = -11/0/11, z = -2/6/14.
+const KD = V(KLX - 19.6, 0, 8);
+const kidsAt = (L, list, mode = 'shout', y = 0) => list.forEach(([x, z, ry, i, m]) => { const c = put(KIDS[i], KLX + x, y, z, ry); const mm = m || mode;
+  if (mm === 'shout') { actuar(c, 0, [[0, { aRx: 2.3, aRz: .25, aRe: .4, aLx: .5, lean: -.08 + Math.sin(L.T * 9 + i) * .03 }]], { T: L.T }); cara(c, L.T + i, { expr: 'shout', mouth: 'talk_wide' }); }
+  else if (mm === 'sit') { sit(c, KLX + x, 3.3, z, ry, L, { aLx: .9, aRx: .9, aLe: 1.4, aRe: 1.4, headY: Math.sin(L.T + i) * .3 }); cara(c, L.T + i, { expr: 'neutral' }); }
+  else if (mm === 'cheer') { const j = Math.abs(Math.sin(L.T * 7 + i)); c.root.position.y = j * .4; actuar(c, 0, [[0, { ...GEST.cheer, aLz: .45 + j * .2 }]], { T: L.T }); laughF(c, L.T + i); }
+  else if (mm === 'look') { actuar(c, 0, [[0, { headY: .3, lean: .05 }]], { T: L.T }); cara(c, L.T + i, { expr: 'sus' }); } });
+const pohlMask = (c, on = 1) => { if (!on) return; attach(MASK, c.head, [0, -.04, .02], [0, 0, 0], 1.04); };
+// ---- 33 «In der Schule machen wir Türübungen.»: clase: el cartel TÜRÜBUNG junto a la puerta; una niña lo señala, los demás repasan las reglas
+shot(50.15, 'F', null, L => { schule(L); show(DRILL, KLX - 19.4, 9.5, 1.2, PI / 2); kidsAt(L, [[-11, -2, -.7, 0, 'sit'], [0, -2, -.4, 1, 'sit'], [-11, 6, -.8, 3, 'sit'], [0, 6, -.6, 4, 'sit']]);
+  const g = put(KIDS[2], KLX - 15, 0, 3, -PI / 2 - .5); actuar(g, L.lt, [[0, 'idle'], [.2, 'point', { dur: .3 }]], { T: L.T }); cara(g, L.T, { expr: 'determined', mouth: Math.sin(L.T * 9) > 0 ? 'talk' : 'flat' });
+  cm([KLX + 4, 9, 14, KLX - 16, 7, 3, 46], [KLX + 1, 8.6, 12, KLX - 16, 7, 3, 46], L.k); }, [[0, 'classroom', .5], [.3, 'chalk', .3]]);
+// ---- 34 «Herr Pohl klopft an unsere Klassentür,»: por la ventanita de la puerta: Herr Pohl llama; la puerta tiembla
+shot(51.88, 'W', null, L => { schule(L); const p = put(pohl, KD.x - 3, 0, KD.z - .4, PI / 2); actuar(p, 0, [[0, knockP(L.T, 0, 3)]], { T: L.T }); pohlMask(p, 1); KDOOR.position.x = KD.x + rattle(L, .05, 3, 3, .06);
+  kidsAt(L, [[-11, 6, -1.2, 0, 'look'], [-11, -2, -1.2, 5, 'look']]); cm([KLX - 7, 8, 13, KD.x, 7.2, KD.z, 44], [KLX - 9, 7.8, 12, KD.x, 7.2, KD.z, 44], L.k); }, [[0, 'knock', .8], [.33, 'knock', .8], [.66, 'knock', .8]]);
+// ---- 35 «mit einer Gummimaske von unserer Rektorin.»: primer plano a través del cristal: la máscara de goma de la Rektorin (moño gris), saluda despacio
+shot(53.42, 'C', 'punch', L => { schule(L); const p = put(pohl, KD.x - 2.4, 0, KD.z, PI / 2); actuar(p, 0, [[0, { ...GEST.wave, aRz: .4 + Math.sin(L.T * 3) * .3, headZ: Math.sin(L.T * 1.5) * .15 }]], { T: L.T }); pohlMask(p, 1);
+  const h = hp(p); cam([KD.x + 4.6, h.y + .6, KD.z + .4], [h.x, h.y + .2, h.z], 38); badge('tag', 'REKTORIN', W / 2, H * .17, (L.lt - .5) / .2); }, [[.1, 'creepy_ting', .5], [.5, 'pop', .3]]);
+// ---- 36 «Und achtundzwanzig Kinder brüllen:»: toda la clase de pie, gritando hacia la puerta; «28»
+shot(55.44, 'S', null, L => { schule(L); kidsAt(L, [[-5.5, 0, -PI / 2 + .2, 0], [-5.5, 4, -PI / 2, 1], [-5.5, 9, -PI / 2 - .2, 2], [5.5, 1, -PI / 2 + .15, 3], [5.5, 6, -PI / 2, 4], [5.5, 11, -PI / 2 - .15, 5], [-14, 10, -PI / 2 - .3, 6], [-14, 1, -PI / 2 + .3, 7]]);
+  bigNum('28', (L.lt - .2) / .2, 'gold', .17, 1.3); cm([KLX - 18, 8.4, 5, KLX + 2, 5.6, 5, 54], [KLX - 18, 8, 5.6, KLX + 2, 5.6, 5.6, 54], L.k); }, [[0, 'cheer', .6], [.3, 'shout_m', .4]]);
+// ---- 37 «„Das Wort?“»: golpe de zoom a tres niños gritando
+shot(57.28, 'C', 'punch', L => { schule(L); kidsAt(L, [[-13.5, 3, -PI / 2 + .25, 2], [-12.5, 6.5, -PI / 2 - .1, 1], [-13, 10, -PI / 2 - .35, 0]]); bigNum('DAS WORT?', (L.lt - .02) / .12, 'red', .18, 1); SHAKE = .4;
+  cm([KLX - 19, 6.4, 6.5, KLX - 12, 6, 6.5, 44], [KLX - 18.6, 6.4, 6.5, KLX - 12, 6, 6.5, 44], L.k); }, [[0, 'cheer', .8]]);
+// ---- 38 «Reingekommen ist er noch nie.»: en el pasillo, Herr Pohl se quita la máscara, suspira y se va encogido de hombros
+shot(57.8, 'W', null, L => { schule(L); const p = put(pohl, KD.x - 3.2 - L.lt * 1.2, 0, KD.z - 1, -PI / 2 - .6); const off = L.lt > .5; actuar(p, L.lt, [[0, { aRx: 2.2, aRe: 1.6 }], [.5, 'shrug', { dur: .3 }]], { T: L.T });
+  if (!off) pohlMask(p, 1); else { attach(MASK, p.aR.hand, [0, -1.2, .3], [PI, 0, 0], .9); cara(p, L.T, { expr: 'sad', mouth: 'frown' }); } badge('tag', 'NOCH NIE', W / 2, H * .2, (L.lt - 1.0) / .2);
+  cm([KD.x - 3, 7.4, KD.z - 10, KD.x - 4, 6, KD.z - 1, 46], [KD.x - 2, 7.2, KD.z - 9, KD.x - 5, 6, KD.z - 1, 46], L.k); }, [[0, 'rip', .4], [.5, 'sigh', .6], [.9, 'steps', .4]]);
+// ---- 39 «Ich bin Mats.»: en su cuarto, Mats se gira hacia la cámara y saluda; etiqueta MATS
+shot(59.55, 'Z', null, L => { zimmer(L, false); const c = put(mats, KZX - 2, 0, 1, -.6 + easeOut(clamp(L.lt / .3)) * .6); actuar(c, L.lt, [[0, 'idle'], [.1, 'wave', { dur: .25 }]], { T: L.T }); cara(c, L.T, { expr: 'happy', mouth: 'open_smile' });
+  badge('tag', 'MATS', W / 2, H * .18, (L.lt - .1) / .2); onBody(c, 15, 0, .08, 42, L.k, 13); }, [[0, 'whoosh', .4], [.1, 'pop', .4]]);
+// ---- 40 «Ich bin zwölf.»: sopla las 12 velas de su tarta en la cocina; «12»
+shot(60.35, 'C', null, L => { kuecheS(L); const c = put(mats, KUX, 0, -7.6, 0); actuar(c, 0, [[0, { lean: .32, aLx: .6, aRx: .6, aLe: .6, aRe: .6, headX: .1 }]], { T: L.T }); cara(c, L.T, { eyes: 'closed', mouth: 'o' }); show(CAKE12, KUX, 4.7, -3.4);
+  CAKE12.userData.flames.forEach((f, i) => f.visible = L.lt < .3 + i * .02); bigNum('12', (L.lt - .1) / .2, 'gold', .17, 1.3); cm([KUX + 3, 8, 6, KUX, 5.4, -5, 44], [KUX + 2.4, 7.6, 4, KUX, 5.4, -5, 44], L.k); }, [[.2, 'breath', .6], [.4, 'cheer', .3]]);
+// ---- 41 «Unser Familienwort ist „Kuschelkeks“.» (zoom lento): Mats, rojo de vergüenza, se tapa la cara; KUSCHELKEKS en rosa
+shot(61.14, 'Z', 'slow', L => { flur(L, { h: 15, m: 0 }); const c = put(mats, HAX + 2, 0, -8, PI); actuar(c, L.lt, [[0, 'idle'], [1.0, 'hands_face', { dur: .3 }]], { T: L.T }); cara(c, L.T, { expr: 'happy', eyes: 'squint', mouth: 'grimace', blush: 1 });
+  badge('gold', 'KUSCHELKEKS', W / 2, H * .18, (L.lt - 1.0) / .2, 1, 1.05); onFace(c, 6.2, -.3, 0, 42, L.k, 4.4); }, [[1.0, 'magic_hit', .4]]);
+// ---- 42 «Das habe ich mir mit fünf ausgedacht,»: recuerdo en sepia: Mats con cinco años, en la cama con su galleta, se ríe; «5»
+shot(63.4, 'B', null, L => { zimmer(L, true); SEPIA = .55; const c = sit(mats5, KZX - 9, 3.7, -4.6, .2, L, { aRx: 1.2, aRe: 1.4, aLx: .4, lean: Math.sin(L.T * 10) * .05 }); laughF(c, L.T);
+  bigNum('5', (L.lt - .2) / .2, 'gold', .13, 1.2); onBody(c, 13, .2, .12, 44, L.k, 11.5); }, [[0, 'film_roll', .4], [.3, 'kids_laugh', .4]]);
+// ---- 43 «aus einem Gute-Nacht-Lied, das Mama mir immer vorgesungen hat.»: Mama sentada en la cama le canta; notas que flotan; luz de la lamparita
+shot(65.2, 'S', null, L => { zimmer(L, true); SEPIA = .55; const c = sit(mats5, KZX - 10, 3.7, -4.6, .5, L, { aLx: .3, aRx: .3, headY: .3 }); cara(c, L.T, { expr: 'happy', eyes: 'half', mouth: 'smile' });
+  const m = sit(mamaB, KZX - 6.6, 3.7, -3.6, -.9, L, { aLx: 1.1, aLz: -.3, aLe: 1.2, aRx: .4, headY: -.3, headZ: Math.sin(L.T * 2) * .12 }); cara(m, L.T, { eyes: 'happy', mouth: Math.sin(L.T * 4) > 0 ? 'o' : 'smile' }); notes(hp(m).add(V(-1, 1, 0)), L.T, 5);
+  orb(L.k, V(KZX - 8.4, 5.4, -4), null, [14, .35, .12, 44], [12, .05, .12, 44]); }, [[0, 'lullaby', .8]]);
+// ---- 44 «Und jetzt hängt es an mir.»: hoy: Mats (12) se da una palmada en la frente en su cuarto
+shot(67.71, 'W', null, L => { zimmer(L, false); const c = put(mats, KZX - 2, 0, 0, .3); actuar(c, L.lt, [[0, 'idle'], [.15, 'facepalm', { dur: .3 }]], { T: L.T }); cara(c, L.T, { expr: 'tired', mouth: 'frown' }); onBody(c, 13, .2, .06, 42, L.k, 11.5); }, [[.15, 'slap', .6], [.4, 'sigh', .5]]);
+// ---- 45 «Ich würde mich lieber schnappen lassen,»: de noche, unas manos pálidas lo agarran por detrás… y él, tan tranquilo, se encoge de hombros
+shot(69.23, 'G', null, L => { strasse(L, { t: 'night' }); const c = put(mats, 2, 0, -60, 0); actuar(c, 0, [[0, 'shrug']], { T: L.T }); cara(c, L.T, { expr: 'smug', mouth: 'smile' });
+  const g = put(CALL[1], 2, 0, -62.6, 0); actuar(g, 0, [[0, { aLx: 1.5, aRx: 1.5, aLz: -.4, aRz: -.4, aLe: .4, aRe: .4, lean: .2 }]], { T: L.T }); creepF(g, L.T, .9); lp(0, 6, 10, -54, 50, 0xffb860, 24);
+  orbit(V(2, 6, -61), lerp(15, 13, L.k), .35, .08, 42); sh(V(2, 0, -61), 26); }, [[0, 'glitch', .4], [.1, 'cloth', .6], [.5, 'sigh', .4]]);
+// ---- 46 «als es vor meinen Freunden zu sagen.»: en el patio con tres amigos que esperan que lo diga; él se tapa la boca y suda
+shot(70.53, 'S', null, L => { strasse(L, { t: 'day' }); const c = put(mats, 0, 0, 40, PI); actuar(c, 0, [[0, { aRx: 2.2, aRz: -.1, aRe: 2.3, aLx: .3 }]], { T: L.T }); cara(c, L.T, { expr: 'worried', eyes: 'wide', mouth: 'flat' }); sweat(c, L.T);
+  [[-3.4, 36.6, .5, 4], [3.4, 36.4, -.5, 5], [0, 34.4, 0, 6]].forEach(([x, z, ry, i]) => { const k = put(KIDS[i], x, 0, z, ry); actuar(k, 0, [[0, { lean: .15, aLx: .5, aRx: .5, headX: .1 }]], { T: L.T }); cara(k, L.T + i, { expr: 'happy', mouth: 'open_smile' }); });
+  cm([2, 7.4, 52, 0, 5.4, 37, 44], [1, 7.2, 49, 0, 5.4, 37, 44], L.k); sh(V(0, 0, 38), 30); }, [[.1, 'kids_laugh', .5], [.5, 'gulp', .5]]);
+// ---- 47 «Papa war auf Montage in Hamburg.»: Papa con chaleco naranja y casco en el puerto de Hamburgo, saludando a la cámara; grúas y contenedores
+shot(71.96, 'R', null, L => { hafenS(L); const c = put(papa, HFX + 26, 0, 4, -.2); actuar(c, L.lt, [[0, 'wave']], { T: L.T }); cara(c, L.T, { expr: 'happy', mouth: 'open_smile' });
+  badge('tag', 'HAMBURG', W / 2, H * .17, (L.lt - .2) / .2); orb(L.k, V(HFX + 26, 6, 4), null, [18, -.3, .1, 46], [15, .1, .1, 46]); sh(V(HFX + 26, 0, 4), 40); }, [[0, 'harbor', .6], [.3, 'seagulls', .5]]);
+// ---- 48 «Also waren nur ich und meine kleine Schwester Ida zu Hause.»: en el salón: Mats en el sofá con el móvil, Ida en la alfombra jugando con su conejo
+shot(73.73, 'F', null, L => { flur(L, { h: 15, m: 50 }); const c = sit(mats, HAX + 22, 3.4, -32.4, 0, L, { aRx: .9, aRe: 1.3, aLx: .8, aLe: 1.3, headX: .25 }); attach(PHONE, c.aR.hand, [0, -.55, .5], [-.4, 0, 0], .9); cara(c, L.T, { expr: 'neutral', eyes: 'down' });
+  const i = put(ida, HAX + 26, 0, -22, -.6); actuar(i, 0, [[0, { crouch: .5, lLx: .6, rLx: .6, lLk: 1.1, lRk: 1.1, aLx: 1.4, aRx: 1.4 + Math.sin(L.T * 4) * .3, aLe: .6, aRe: .6 }]], { T: L.T }); attach(BUNNY, i.aL.hand, [0, -.6, .5], [0, 0, 0], .8); laughF(i, L.T);
+  cm([HAX + 25, 7.6, -11, HAX + 24, 3.6, -28, 50], [HAX + 25.5, 7.4, -12.5, HAX + 24, 3.6, -28, 50], L.k); }, [[0, 'tv_static', .2], [.5, 'toy', .4], [1.5, 'kids_laugh', .3]]);
+// ---- 49 «Sie ist sieben.»: Ida levanta su conejo y sonríe; «7»
+shot(76.52, 'C', 'punch', L => { flur(L); const i = put(ida, HAX + 24, 0, -22, 0); actuar(i, 0, [[0, { aLx: 2.6, aRx: 2.6, aLe: .4, aRe: .4, aLz: .2, aRz: .2 }]], { T: L.T }); attach(BUNNY, i.aL.hand, [.6, -.6, .4], [0, 0, 0], .8); laughF(i, L.T);
+  bigNum('7', (L.lt - .05) / .15, 'gold', .18, 1.3); onFace(i, 5.6, -.4, 0, 42, L.k, 5); }, [[0, 'pop', .5], [.1, 'kids_laugh', .4]]);
+// ---- 50 «Wir haben auf Mama gewartet.»: los dos en la ventana del salón, mirando a la calle; el reloj marca las 16:00
+shot(77.1, 'S', null, L => { flur(L, { h: 16, m: 0, day: true }); const c = put(mats, HAX + 20.4, 0, -4.4, 0), i = put(ida, HAX + 23.4, 0, -4.2, 0); actuar(c, 0, [[0, { aLx: .4, aRx: .4, headY: Math.sin(L.T * .7) * .3 }]], { T: L.T }); cara(c, L.T, { expr: 'neutral' });
+  actuar(i, 0, [[0, { aLx: 1.2, aRx: 1.2, aLe: .8, aRe: .8, headX: -.1 }]], { T: L.T }); attach(BUNNY, i.aL.hand, [.5, -.6, .4], [0, 0, 0], .8); cara(i, L.T, { expr: 'happy' });
+  bigNum('16:00', (L.lt - .2) / .2, 'big', .15, .9); cm([HAX + 27, 7.6, -17, HAX + 22, 5.6, -1, 44], [HAX + 25, 7.4, -15.5, HAX + 22, 5.6, -1, 44], L.k); }, [[0, 'clock_tick', .5]]);
+// ---- 51 «Im Winter geht die Sonne hier um halb fünf unter.»: la calle en invierno con nieve fina; el sol, bajo, entre las montañas; «16:30»
+shot(78.55, 'W', null, L => { strasse(L, { t: 'dusk', k: .7 }); AIRM = 'nieve'; show(SUND, 0, lerp(70, 40, L.k), -1100); walk(EXS[2], L, 13, 20, PI, 2.4, 0, { expr: 'neutral' }); breath(EXS[2], L.T);
+  bigNum('16:30', (L.lt - .3) / .2, 'gold', .16, .9); cm([-2, 9, 80, 0, 12, -200, 42], [0, 8, 70, 0, 11, -200, 42], L.k); sh(V(0, 0, 40), 60); }, [[0, 'wind', .5], [.4, 'steps_snow', .4]]);
+// ---- 52 «Deshalb ist Mama immer spätestens um vier zu Hause.»: de día, Mama sube por el camino a casa saludando con la mano; «16:00»
+shot(80.88, 'R', null, L => { strasse(L, { t: 'day' }); const p = PORCH; const c = walk(mama, L, p.x - 13 + L.lt * 2.4, p.z + 1, PI / 2, 0, 0, { expr: 'happy' }); c.root.position.x = p.x - 13 + L.lt * 2.4; actuar(c, 0, [[0, { ...walkP(L.T, 0), ...GEST.wave, aRz: .4 + Math.sin(L.T * 9) * .3 }]], { T: L.T }); cara(c, L.T, { expr: 'happy', mouth: 'open_smile' });
+  attach(BAG, c.aL.hand, [0, -1.2, 0], [0, 0, 0], .9); bigNum('16:00', (L.lt - .3) / .2, 'green', .15, .9); orbit(V(c.root.position.x, 5.6, p.z), lerp(16, 14, L.k), -PI / 2 + .25, .1, 44); sh(V(p.x, 0, p.z), 30); }, [[0, 'steps', .5], [.6, 'birds', .4]]);
+// ---- 53 «Um halb fünf verschwand die Sonne hinter dem Wald.»: el sol se hunde tras los abetos (time-lapse); las sombras se alargan; «16:30»
+shot(83.47, 'F', null, L => { strasse(L, { t: 'dusk', k: lerp(.6, 1, L.k) }); show(SUND, 0, lerp(30, -60, easeIn(L.k)), -1100); show(GOLF2, -24, 0, 40, .2);
+  bigNum('16:30', (L.lt - .2) / .2, 'gold', .15, .9); cm([0, 5, 60, 0, 22, -400, 40], [0, 6, 62, 0, 18, -400, 40], L.k); sh(V(0, 0, 0), 60); }, [[0, 'wind', .4], [.5, 'owl', .3]]);
+// ---- 54 «Um halb sechs war es stockdunkel.»: la calle de noche, vacía; el hueco del coche de Mama en el camino; «17:30»
+shot(86.06, 'W', null, L => { strasse(L, { t: 'night' }); walk(EXS[9], L, -13, -10, 0, 3, 0, { expr: 'worried' }); bigNum('17:30', (L.lt - .2) / .2, 'cyan', .15, .9);
+  cm([-6, 12, 26, 36, 2, -22, 46], [-4, 11, 20, 36, 2, -22, 46], L.k); sh(V(30, 0, -20), 40); }, [[0, 'crickets', .5], [.6, 'owl', .4]]);
+// ---- 55 «Und Mama war immer noch nicht da.»: en la ventana: Mats, preocupado, con la frente en el cristal; Ida abraza su conejo
+shot(87.97, 'S', null, L => { flur(L, { h: 17, m: 50 }); const c = put(mats, HAX + 20.6, 0, -6.4, 0), i = put(ida, HAX + 23.6, 0, -6.6, -.3); actuar(c, 0, [[0, { lean: .1, aLx: 1.6, aRx: 1.6, aLe: .3, aRe: .3 }]], { T: L.T }); cara(c, L.T, { expr: 'worried' });
+  actuar(i, 0, [[0, 'hug_self']], { T: L.T }); attach(BUNNY, i.spine, [0, 1.2, .9], [0, 0, 0], .8); cara(i, L.T, { expr: 'sad' });
+  cm([HAX + 23, 7, -1.2, HAX + 22, 5.2, -6.5, 46], [HAX + 22.6, 6.8, -1.4, HAX + 22, 5.2, -6.5, 42], L.k); }, [[0, 'clock_tick', .5], [.4, 'sigh', .3]]);
+// ---- 56 «Um sechs Uhr zehn»: el reloj de pared del pasillo: las agujas saltan a las 18:10
+shot(89.45, 'C', 'punch', L => { flur(L, { h: 18, m: Math.min(10, 4 + Math.floor(L.lt * 12)) }); bigNum('18:10', (L.lt - .1) / .15, 'red', .15, 1); cam([HAX + 2.5, 11.2, -3], [HAX + 7.8, 11, -3], 38); }, [[0, 'clock_tick', .8], [.3, 'tick', .6]]);
+// ---- 57 «klopfte es.»: la puerta de casa se sacude con tres golpes; Mats e Ida, en el pasillo, giran la cabeza de golpe
+shot(90.27, 'C', 'punch', L => { flur(L, { h: 18, m: 10 }); const r = rattle(L, 0, 3, 3.6); HA.front.door.rotation.y = PI - r * .03; const c = put(mats, HAX + 2.4, 0, 6, PI), i = put(ida, HAX - .4, 0, 4, PI - .3);
+  const turn = easeOut(clamp(L.lt / .15)); c.root.rotation.y = PI - turn * PI; i.root.rotation.y = PI - .3 - turn * (PI - .4); actuar(c, 0, [[0, 'shock']], { T: L.T }); actuar(i, 0, [[0, 'shock']], { T: L.T }); cara(c, L.T, { expr: 'shock', mouth: 'o' }); cara(i, L.T, { expr: 'shock', mouth: 'o' });
+  cm([HAX + 1.5, 8, -9, HAX + 1.5, 5.4, 16, 46], [HAX + 1.5, 7.6, -7, HAX + 1.5, 5.4, 16, 46], L.k); }, [[0, 'knock', 1], [.28, 'knock', 1], [.56, 'knock', 1]]);
+// ---- 58 «„Mats, ich bin’s.»: Mats delante de la puerta; Ida asoma en la escalera; la voz de Mama tras la puerta
+shot(91.23, 'S', null, L => { flur(L); const c = put(mats, DOORIN.x - .2, 0, 13.4, 0); actuar(c, 0, [[0, { aLx: .3, aRx: .3, lean: -.05 }]], { T: L.T }); cara(c, L.T, { expr: 'worried' }); const i = put(ida, HAX - 4.4, 2, 4.8, .7); actuar(i, 0, [[0, { aLx: 1.2, aLe: 1.0, lean: .1 }]], { T: L.T }); cara(i, L.T, { expr: 'happy', eyes: 'wide' });
+  badge('bubble', 'Mats, ich bin’s.', W / 2, H * .2, (L.lt - .05) / .2); cm([HAX + 5, 7.6, 2, DOORIN.x, 4.6, 15, 46], [HAX + 4.6, 7.4, 3.6, DOORIN.x, 4.6, 15, 46], L.k); }, [[0, 'whisper', .3]]);
+// ---- 59 «Lass mich rein.“»: primer plano del pomo y la cadena: el pomo gira de un lado a otro
+shot(92.45, 'C', null, L => { flur(L); HA.front.knob.rotation.z = Math.sin(L.T * 14) * .7; HA.front.door.rotation.y = PI - Math.abs(Math.sin(L.T * 14)) * .01; const k = wpos(HA.front.knob);
+  cam([k.x - 2.4, k.y + 1.6, k.z - 3.4], [k.x - .6, k.y + .6, k.z], 40); }, [[0, 'door_rattle', .8], [.3, 'chain_rattle', .5]]);
+// ---- 60 «Es war Mamas Stimme.»: Ida corre feliz hacia la puerta («Mama!») y Mats la para con el brazo
+shot(93.19, 'W', null, L => { flur(L); const i = walk(ida, L, HAX + .2, 6, 0, 3.4, 0, { run: true, face: false }); i.root.position.z = Math.min(i.root.position.z, 12); laughF(i, L.T); bubble(i, 'Mama!', (L.lt - .1) / .2, 1.6);
+  const c = put(mats, HAX + 2.4, 0, 13.2, -PI / 2); actuar(c, L.lt, [[0, 'idle'], [.4, { aRx: 1.6, aRz: -.3, aRe: .2, lean: .05 }, { dur: .2 }]], { T: L.T }); cara(c, L.T, { expr: 'worried', mouth: 'o' });
+  cm([HAX + 4, 7.2, 22 - 3, HAX + 1.4, 4.4, 10, 50], [HAX + 3.6, 7, 19, HAX + 1.4, 4.4, 10.5, 50], L.k); }, [[0, 'run_cobble', .4], [.4, 'cloth', .5]]);
+// ---- 61 «Ich habe durch den Türspion geschaut.»: Mats de puntillas, el ojo pegado a la mirilla (perfil)
+shot(94.37, 'Z', null, L => { flur(L); const c = put(mats, DOORIN.x + 1, .5 * easeOut(clamp(L.lt / .4)), 18.2, 0); actuar(c, 0, [[0, { aLx: 1.6, aRx: 1.6, aLe: .4, aRe: .4, lean: .12, headX: -.15 }]], { T: L.T }); cara(c, L.T, { eyes: 'squint', mouth: 'flat' });
+  const h = hp(c); cam([h.x - 7, h.y + .6, h.z - 5], [h.x, h.y - .8, h.z + .4], 44); }, [[.05, 'cloth', .4], [.3, 'wood_creak', .4]]);
+// ---- 62 «Und da stand sie, auf der Veranda,»: POV de la mirilla (ojo de pez): Mama en el porche, bajo el farol
+shot(96.08, 'I', null, L => { strasse(L, { t: 'night' }); const p = PORCH; const c = put(ding, p.x, p.y, p.z, toDoorM); actuar(c, 0, [[0, { aLx: .08, aRx: .08, aLz: .05, aRz: .05 }]], { T: L.T, breathe: false }); cara(c, L.T, { expr: 'happy', mouth: 'smile', noBlink: true }); lp(0, p.x + 1, 10, p.z + 2.6, 60, 0xffb860, 16); moths(HMW(HM.doorX + 3.2, HM.B + 9.6, HM.frontZ + .8), L.T);
+  peephole(L, 1, { ty: 4.6, fov: 100 }); }, [[0, 'creepy_ting', .4], [.3, 'crickets', .3]]);
+// ---- 63 «in ihrem Wintermantel.»: POV más cerca: el abrigo camel y la bufanda roja
+shot(97.7, 'C', null, L => { strasse(L, { t: 'night' }); const p = PORCH; const c = put(ding, p.x, p.y, p.z - 1.2, toDoorM); actuar(c, 0, [[0, { aLx: .08, aRx: .08 }]], { T: L.T, breathe: false }); cara(c, L.T, { expr: 'happy', mouth: 'smile', noBlink: true }); lp(0, p.x + 1, 10, p.z + 2.6, 60, 0xffb860, 16);
+  peephole(L, 1, { look: hp(c).add(V(0, -2.6, 0)), fov: 74 }); }, [[0, 'cloth', .3]]);
+// ---- 64 «Sie lächelte.»: POV: la cara de Mama, sonriendo
+shot(99.22, 'C', null, L => { strasse(L, { t: 'night' }); const p = PORCH; const c = put(ding, p.x, p.y, p.z - 1.8, toDoorM); actuar(c, 0, [[0, { aLx: .08, aRx: .08 }]], { T: L.T, breathe: false }); cara(c, L.T, { eyes: 'happy', mouth: L.k > .6 ? 'open_smile' : 'smile', noBlink: true }); lp(0, p.x + 1, 10, p.z + 2.6, 60, 0xffb860, 16);
+  peephole(L, 1, { look: hp(c).add(V(0, .3, 0)), fov: 72 }); }, [[0, 'creepy_ting', .4]]);
+// ---- 65 «Ihr Lächeln ging fast bis zu den Ohren.» (zoom lento): la sonrisa se estira hasta las orejas
+shot(100.16, 'Z', 'slow', L => { strasse(L, { t: 'night' }); const p = PORCH; const c = put(ding, p.x, p.y, p.z - 1.8, toDoorM); actuar(c, 0, [[0, { aLx: .08, aRx: .08, headZ: L.k * .1 }]], { T: L.T, breathe: false }); creepF(c, L.T, .1 + easeIn(L.k) * .9); lp(0, p.x + 1, 10, p.z + 2.6, 60, 0xffb860, 16);
+  peephole(L, 1, { look: hp(c).add(V(0, .3, 0)), fov: lerp(56, 40, L.k) }); }, [[.3, 'stretch', .5]]);
+// ---- 66 «Ich habe mir gesagt:»: Mats se aparta de la puerta y se frota el ojo, pensando
+shot(102.3, 'W', null, L => { flur(L); const c = put(mats, DOORIN.x + .6, 0, 17 - easeOut(clamp(L.lt / .4)) * 2, PI); actuar(c, L.lt, [[0, { aRx: 2.2, aRz: -.4, aRe: 2.4, headX: .1 }], [.5, 'think', { dur: .3 }]], { T: L.T }); cara(c, L.T, { expr: 'worried', eyes: L.lt < .5 ? 'closed' : 'side_l' });
+  onFace(c, 6.6, -.2, .8, 42, L.k, 5.6); }, [[0, 'cloth', .4]]);
+// ---- 67 «Das macht der Türspion.»: macro de la mirilla dorada en la puerta azul
+shot(103.28, 'C', null, L => { flur(L); const p = PEEPW(); cam([p.x + .3, p.y + .2, p.z - lerp(2.6, 1.6, L.k)], [p.x, p.y, p.z], 34); }, [[0, 'click_metal', .4]]);
+// ---- 68 «Der zieht jedes Gesicht in die Breite.»: ojo de pez: la cara de Ida, estirada y graciosa, sacando la lengua
+shot(104.24, 'F', null, L => { flur(L); const i = put(ida, HAX + 1.5, 0, 8, 0); actuar(i, 0, [[0, { lean: .2, aLx: 1.0, aRx: 1.0, aLz: .3, aRz: .3, aLe: 1.2, aRe: 1.2 }]], { T: L.T }); laughF(i, L.T);
+  const h = hp(i); cam([h.x, h.y + .6, h.z + 3.2], [h.x, h.y + .2, h.z], 96); PEEP = 1; }, [[0, 'boing_metal', .4], [.4, 'kids_laugh', .4]]);
+// ---------- c: la palabra, la llamada y el eco (106,31 – 163,97 s) ----------
+// pantalla partida: arriba Mama en la oficina, abajo (split) la Cosa en el porche o Mats en el pasillo
+const officeMama = (L, a, b, o = {}) => { bueroS(L); const m = put(mamaB, BUX + 1.2, 0, 7.4, .15 + (o.ry ?? 0)); actuar(m, L.lt, [[0, { ...GEST.phone, ...(o.pose || {}) }]], { T: L.T }); if (a != null) talk(m, L.T, a, b, o.expr || 'worried'); else cara(m, L.T, { expr: o.expr || 'worried' });
+  attach(PHONE, m.aR.hand, [0, -.6, .5], [-.3, 0, 0], .85); show(LUNCH, BUX - 1, 5.8, .4, .3, .5); [[BUX - 15, -3.6, 0], [BUX + 15, -3.6, 1]].forEach(([x, z, i]) => { const c = sit(EXS[i], x, 2.9, z, PI, L, { aLx: 1.3, aRx: 1.3, aLe: 1.2, aRe: 1.2, aLz: Math.sin(L.T * 20 + i) * .1, aRz: Math.cos(L.T * 22 + i) * .1, headX: .2 }); cara(c, L.T + i, { expr: 'neutral' }); }); return m; };
+const porchDing = (L, a, b, k = .9, o = {}) => { strasse(L, { t: 'night' }); const p = PORCH; const c = put(ding, p.x, p.y, p.z, toDoorM + (o.ry ?? 0)); actuar(c, 0, [[0, { aLx: .06, aRx: .06, headZ: o.tilt ?? 0 }]], { T: L.T, breathe: false, weight: false }); if (a != null) creepTalk(c, L.T, a, b, k); else creepF(c, L.T, k); lp(0, p.x + 1.4, 10, p.z + 3, 70, 0xffb860, 18); return c; };
+const hallMats = (L, o = {}) => { flur(L, { dark: o.dark }); const c = put(mats, DOORIN.x + (o.x ?? -1.4), 0, o.z ?? 13, o.ry ?? PI - .4); actuar(c, 0, [[0, { ...GEST.phone, ...(o.pose || {}) }]], { T: L.T, extra: shiver(L.T, o.shiver ?? .6) }); attach(PHONE, c.aR.hand, [0, -.6, .5], [-.3, 0, 0], .85); cara(c, L.T, o.f || { expr: 'scared' }); return c; };
+// ---- 69 «„Wie heißt das Wort?“, habe ich gefragt.»: Mats, pegado a la puerta, la mano en el cerrojo, pregunta en voz baja
+shot(106.31, 'S', null, L => { flur(L); const c = put(mats, DOORIN.x + .6, 0, 18.2, -.25); actuar(c, 0, [[0, { aRx: 1.5, aRz: .2, aRe: .7, aLx: 2.0, aLz: -.2, aLe: 2.3, lean: .1 }]], { T: L.T }); talk(c, L.T, 106.31, 107.4, 'worried');
+  bubble(c, 'Wie heißt das Wort?', (L.lt - .1) / .2, 1.8); cm([DOORIN.x - 3.4, 7, 9, DOORIN.x + .6, 5.6, 18, 44], [DOORIN.x - 2.8, 6.8, 10.6, DOORIN.x + .6, 5.6, 18, 42], L.k); }, [[0, 'whisper', .5]]);
+// ---- 70 «„Kuschelkeks.“»: POV de la mirilla: la Cosa lo dice, sin reírse
+shot(108.54, 'I', null, L => { const c = porchDing(L, null, null); c.setFace({ eyes: 'normal', mouth: kitLips(L.T, spoken(108.5, 109.2)) || 'flat' }); peephole(L, 1, { look: hp(c).add(V(0, -.6, 0)), fov: 74 }); }, [[0, 'creepy_ting', .3]]);
+// ---- 71 «Es war das richtige Wort.»: Mats suelta el aire, aliviado; ✓ verde
+shot(109.15, 'C', null, L => { flur(L); const c = put(mats, DOORIN.x + .6, 0, 16.4, PI); actuar(c, L.lt, [[0, { aLx: .3, aRx: .3, lean: .05, headX: -.1 }], [.3, { aLx: .1, aRx: .1, lean: -.02, headX: .1 }, { dur: .4 }]], { T: L.T }); cara(c, L.T, { expr: 'relief', mouth: 'smile' });
+  badge('check', '', W / 2, H * .2, (L.lt - .3) / .2, 1, 1.3); onFace(c, 6.4, -.2, .6, 42, L.k, 5.6); }, [[.2, 'sigh', .5], [.35, 'ding_soft', .6]]);
+// ---- 72 «Meine Hand lag schon am Schloss.»: primer plano: la mano de Mats gira el cerrojo… despacio
+shot(110.51, 'Z', null, L => { flur(L); const c = put(mats, DOORIN.x + 2.2, 0, 17.8, .1); actuar(c, 0, [[0, { aRx: 1.6, aRz: .1, aRe: .5, lean: .08 }]], { T: L.T }); cara(c, L.T, { expr: 'neutral' }); HA.front.thumb.rotation.z = PI / 2 - easeInOut(clamp(L.lt / 1.4)) * .7;
+  const k = wpos(HA.front.thumb); cam([k.x - 1.8, k.y + .9, k.z - 3.4], [k.x - .3, k.y - .1, k.z], 40); }, [[.2, 'click_metal', .4], [.8, 'metal_creak', .4]]);
+// ---- 73 «Aber Mama hat „Kuschelkeks“ noch nie gesagt,»: recuerdo cálido en la cocina: Mama lo dice muerta de risa; Mats e Ida se ríen
+shot(112.02, 'B', null, L => { kuecheS(L); SEPIA = .3; const m = put(mamaB, KUX, 0, -8.4, 0); actuar(m, 0, [[0, { aLx: .9, aRx: .9, aLz: -.3, aRz: -.3, aLe: 1.6, aRe: 1.6, lean: -.14 + Math.sin(L.T * 14) * .05, headX: -.15 }]], { T: L.T }); laughF(m, L.T); bubble(m, 'Kuschelkeks!', (L.lt - .4) / .2, 1.8);
+  const c = sit(mats, KUX - 2.5, 2.8, -5.4, .25, L, { aLx: .9, aRx: .9, aLe: 1.6, aRe: 1.6, lean: -.1 }); laughF(c, L.T + .3); const i = sit(ida, KUX + 2.5, 2.8, -5.4, -.25, L, { aLx: 2, aRx: 2, aLe: 2.3, aRe: 2.3 }); laughF(i, L.T + .6);
+  cm([KUX - 2, 9.6, 10, KUX, 5.6, -6.6, 48], [KUX + 1.2, 9.2, 8.4, KUX, 5.6, -6.6, 48], L.k); }, [[0, 'film_roll', .4], [.3, 'laugh_deep', .5], [.6, 'kids_laugh', .4]]);
+// ---- 74 «ohne zu lachen.»: primer plano de Mama riéndose con la cabeza hacia atrás
+shot(114.26, 'C', 'punch', L => { kuecheS(L); SEPIA = .3; const m = put(mamaB, KUX, 0, -8.4, 0); actuar(m, 0, [[0, { aLx: 1.0, aRx: 1.0, aLz: -.3, aRz: -.3, aLe: 1.8, aRe: 1.8, lean: -.2 + Math.sin(L.T * 16) * .05, headX: -.3 }]], { T: L.T }); laughF(m, L.T); onFace(m, 5.2, -.6, 0, 40, L.k, 4.4); }, [[0, 'laugh_deep', .7]]);
+// ---- 75 «Kein einziges Mal, seit ich fünf bin.»: recuerdo: el cumpleaños de Mats con 5 años, la tarta con cinco velas; Mama le da un beso riéndose
+shot(115.14, 'R', null, L => { kuecheS(L); SEPIA = .5; show(CAKE, KUX, 4.7, -4); CAKE.userData.flames.forEach(f => f.visible = true); const c = put(mats5, KUX - 1, 0, -7, .2); actuar(c, 0, [[0, 'cheer']], { T: L.T }); laughF(c, L.T);
+  const m = put(mamaB, KUX + 2.6, 0, -8.2, -.5); actuar(m, 0, [[0, { lean: .2, aLx: 1.2, aLz: -.4, aLe: 1.2, headZ: .2 }]], { T: L.T }); laughF(m, L.T + .4); bigNum('5', (L.lt - .2) / .2, 'gold', .14, 1.1);
+  cm([KUX + 1, 8, 6, KUX, 5, -6, 46], [KUX - 1, 7.6, 4.6, KUX, 5, -6, 46], L.k); }, [[0, 'party_horn', .5], [.4, 'kids_laugh', .4]]);
+// ---- 76 «Diesmal sagte sie es ganz flach.»: POV de la mirilla: la cara de la Cosa, sin expresión, mirando fijo
+shot(116.98, 'G', null, L => { const c = porchDing(L, null, null); c.setFace({ eyes: 'stare', mouth: 'flat' }); peephole(L, 1, { look: hp(c).add(V(0, .2, 0)), fov: lerp(68, 60, L.k) }); }, [[0, 'glitch', .5], [.2, 'hum_low', .4]]);
+// ---- 77 «Als würde sie es von einem Schild ablesen.»: en el porche, la Cosa lee en un cartel «KUSCHELKEKS», moviendo los ojos de izquierda a derecha
+shot(118.78, 'W', null, L => { const c = porchDing(L, null, null); actuar(c, 0, [[0, { aLx: 1.4, aRx: 1.4, aLe: .7, aRe: .7 }]], { T: L.T, breathe: false }); const h = hp(c); const sp = HMW(HM.doorX, HM.B + 7.2, HM.frontZ + .75); show(SIGN, sp.x, sp.y, sp.z, HM.rot);
+  c.setFace({ eyes: Math.sin(L.T * 5) > 0 ? 'side_l' : 'side_r', mouth: kitLips(L.T, [[118.8, 120.6, 'x']]) ? 'o' : 'flat' }); cm([PORCH.x - 6, 9, PORCH.z + 5.6, PORCH.x + 1.6, 7, PORCH.z - .6, 44], [PORCH.x - 5, 8.6, PORCH.z + 4.6, PORCH.x + 1.6, 7, PORCH.z - .6, 42], L.k); sh(V(PORCH.x, 0, PORCH.z), 20); }, [[0, 'paper', .5], [.5, 'creepy_ting', .4]]);
+// ---- 78 «Also habe ich die Hand vom Schloss genommen.»: Mats aparta la mano de golpe y retrocede despacio
+shot(120.61, 'C', null, L => { flur(L); const b = easeOut(clamp(L.lt / .3)); const c = put(mats, DOORIN.x + .8, 0, 17.6 - easeInOut(clamp((L.lt - .3) / 1.2)) * 3, PI - .3); actuar(c, L.lt, [[0, { aRx: 1.4, aRe: .5 }], [.05, { aRx: .6, aRz: .4, aRe: 1.6, lean: -.15 }, { dur: .2 }]], { T: L.T, extra: shiver(L.T, .6) }); cara(c, L.T, { expr: 'scared', mouth: 'o' });
+  HA.front.thumb.rotation.z = PI / 2; onBody(c, 12, .2, .1, 42, L.k, 10.5); }, [[0, 'whoosh', .4], [.3, 'wood_creak', .4]]);
+// ---- 79 «Und Mama auf dem Handy angerufen.»: Mats saca el móvil y llama: «MAMA ♥» en la pantalla
+shot(122.39, 'S', null, L => { const c = hallMats(L, { pose: { ...GEST.phone_look }, f: { expr: 'worried', eyes: 'down' } }); badge('phone', 'Mama ♥', W / 2, H * .3, (L.lt - .2) / .2, 1, .62); onBody(c, 11, .3, .14, 44, L.k, 9.6); }, [[.2, 'dial', .6], [.8, 'phone_ring', .3]]);
+// ---- 80 «Sie ging beim ersten Klingeln ran.»: en la oficina, Mama coge el móvil al primer tono
+shot(124.0, 'W', null, L => { const m = officeMama(L, null, null, { expr: 'happy', pose: L.lt < .4 ? { aRx: .9, aRe: 1.2 } : {} }); cm([BUX + 5, 8.4, 19, BUX + 1.2, 5.6, 7.4, 44], [BUX + 3.6, 8, 17.4, BUX + 1.2, 5.6, 7.4, 44], L.k); }, [[0, 'phone_ring', .7], [.4, 'click_metal', .3]]);
+// ---- 81 «Im Hintergrund klapperten Tastaturen»: compañeros tecleando sin parar; pantallas azules
+shot(125.46, 'S', null, L => { bueroS(L); [[BUX - 15, -3.6, 0], [BUX + 15, -3.6, 1], [BUX - 15, 14.4, 2], [BUX, 4.4, 3]].forEach(([x, z, i]) => { const c = sit(EXS[i], x, 2.9, z, PI, L, { aLx: 1.3, aRx: 1.3, aLe: 1.2, aRe: 1.2, aLz: Math.sin(L.T * 26 + i) * .12, aRz: Math.cos(L.T * 24 + i) * .12, headX: .2 }); cara(c, L.T + i, { expr: 'neutral', eyes: 'down' }); });
+  cm([BUX - 20, 8.4, 4, BUX - 15, 5.4, -6, 44], [BUX - 19, 8, 2.4, BUX - 15, 5.4, -6, 42], L.k); }, [[0, 'clack', .6], [.6, 'clack', .5]]);
+// ---- 82 «und ein Kopierer lief.»: la fotocopiadora escupe hojas; un compañero espera bostezando
+shot(127.1, 'C', null, L => { bueroS(L); BU.paper.position.x = -3.2 - ((L.lt * 3) % 1) * 1.6; const c = put(EXS[4], BUX + 22, 0, -12.6, PI); actuar(c, 0, [[0, { aRx: 2.2, aRz: -.4, aRe: 2.3 }]], { T: L.T }); cara(c, L.T, { expr: 'tired', mouth: 'o' });
+  cm([BUX + 10, 9, -2, BUX + 21, 5, -15, 46], [BUX + 11, 8.6, -3.4, BUX + 21, 5, -15, 44], L.k); }, [[0, 'machine_hum', .6], [.3, 'paper', .5]]);
+// ---- 83 «„Hallo, Schatz. Ich bin noch im Büro.»: Mama al teléfono, sonriente
+shot(128.21, 'R', null, L => { const m = officeMama(L, 128.21, 129.81, { expr: 'warm' }); onFace(m, 5.6, -.3, -.8, 40, L.k, 4.8); }, []);
+// ---- 84 «Was ist los?“»: frunce el ceño
+shot(129.81, 'C', 'punch', L => { const m = officeMama(L, 129.81, 130.5, { expr: 'worried', pose: { headZ: .25 } }); onFace(m, 4.6, -.3, .8, 40, L.k, 4.2); }, []);
+// ---- 85 «Ich flüsterte: „Mama, du stehst vor der Tür.“»: Mats, agachado en la penumbra del pasillo, susurra tapándose la boca; Ida asoma detrás
+shot(130.5, 'S', null, L => { const c = hallMats(L, { x: 3, z: 6, ry: PI - .3, pose: { crouch: .35, lean: .25, aLx: 2.2, aLz: -.2, aLe: 2.4 } }); talk(c, L.T, 131, 132.96, 'scared'); const i = put(ida, HAX - 6.2, 0, 5.4, PI - .4); actuar(i, 0, [[0, 'hug_self']], { T: L.T }); cara(i, L.T, { expr: 'worried' });
+  bubble(c, 'Mama, du stehst vor der Tür.', (L.lt - .5) / .2, 1.4); onFace(c, 6.2, -.4, 0, 42, L.k, 5.2); }, [[0, 'whisper', .7]]);
+// ---- 86 «Dann war es lange still.» (pantalla partida): arriba Mama, petrificada en la oficina; abajo Mats, inmóvil en el pasillo
+shot(132.96, 'F', null, L => { const m = officeMama(L, null, null, { expr: 'shock' }); m.setFace({ eyes: 'wide', mouth: 'o' }); onFace(m, 6, -.3, 0, 40, L.k, 5.4); }, [[0, 'silence_tick', .5], [.5, 'heartbeat', .4]],
+  L => { const c = hallMats(L, { x: -1, z: 10, ry: PI, f: { eyes: 'wide', mouth: 'flat', noBlink: true } }); onFace(c, 6, -.3, 0, 40, L.k, 5.4); });
+// ---- 87 «Als Mama wieder sprach, war ihre Stimme ganz ruhig.» (zoom lento): Mama se levanta despacio y coge las llaves, con la cara serena
+shot(134.19, 'Z', 'slow', L => { const m = officeMama(L, 134.19, 136.82, { expr: 'determined', pose: { aLx: 1.4, aLe: .4 } }); attach(KEYS, m.aL.hand, [0, -1, .4], [0, 0, 0], .8); onFace(m, 6.6, -.3, .4, 42, L.k, 4.6); }, []);
+// ---- 88 «So ruhig wie damals, als Ida Fieber hatte.»: recuerdo: Ida en la cama con fiebre (39,5°), Mama le acaricia la frente con calma
+shot(136.82, 'B', null, L => { zimmer(L, true); SEPIA = .4; const i = put(ida, KZX - 9, 2.6, -6, 0); i.root.rotation.x = -PI / 2 + .3; i.root.position.y = 4.4; actuar(i, 0, [[0, { aLx: .2, aRx: .2 }]], { T: L.T, breathe: true }); cara(i, L.T, { eyes: 'half', mouth: 'wavy', blush: 1 }); attach(THERMO, i.head, [.2, .4, .9], [0, 0, .5], 1);
+  const m = sit(mamaB, KZX - 6, 3.7, -4.4, -1.1, L, { aRx: 1.5, aRz: -.3, aRe: .9 + Math.sin(L.T * 2) * .2, lean: .2, headX: .2 }); cara(m, L.T, { expr: 'warm', eyes: 'half' }); bigNum('39,5°', (L.lt - .3) / .2, 'red', .14, .9);
+  orb(L.k, V(KZX - 8, 4.4, -5.4), null, [12, -.5, .35, 44], [10.5, -.3, .35, 44]); }, [[0, 'film_roll', .3], [.3, 'cough', .4]]);
+// ---- 89 «Sie sagte:»: Mama, seria, se acerca el teléfono
+shot(139.21, 'C', null, L => { const m = officeMama(L, null, null, { expr: 'determined' }); onFace(m, 5, -.3, -.6, 40, L.k, 4.6); }, []);
+// ---- 90 «„Mats, wer ist an der Tür?“» (pantalla partida): arriba Mama lo pregunta; abajo Mats escucha, con los ojos muy abiertos
+shot(139.91, 'S', null, L => { const m = officeMama(L, 139.91, 141.41, { expr: 'determined' }); onFace(m, 5.4, -.3, 0, 40, L.k, 5); }, [],
+  L => { const c = hallMats(L, { x: -1, z: 10, ry: PI }); cara(c, L.T, { eyes: 'wide', mouth: 'flat' }); onFace(c, 5.4, -.3, 0, 40, L.k, 5); });
+// ---- 91 «Und durch die Tür,»: la puerta de casa: Mats gira la cabeza despacio hacia ella
+shot(141.41, 'W', null, L => { const c = hallMats(L, { x: 1.2, z: 9.6, ry: PI - easeInOut(clamp(L.lt / .8)) * 2.6 }); cara(c, L.T, { expr: 'scared' }); cm([DOORIN.x - 3, 7, -1, DOORIN.x + 1, 5.6, 16, 46], [DOORIN.x - 2.4, 7, 1.4, DOORIN.x + 1, 5.6, 16, 46], L.k); }, [[0, 'wood_creak', .5]]);
+// ---- 92 «mit derselben Stimme,» (pantalla partida): arriba Mama, abajo la Cosa: las dos bocas a la vez
+shot(142.63, 'C', null, L => { const m = officeMama(L, 139.91, 141.41, { expr: 'determined' }); talk(m, L.T, L.T - .2, L.T + .2, 'determined'); onFace(m, 5.2, -.3, 0, 40, L.k, 4.8); }, [[0, 'creepy_ting', .5]],
+  L => { const c = porchDing(L, null, null, .9); creepF(c, L.T, Math.sin(L.T * 14) > 0 ? .75 : .95); peephole(L, 0, { look: hp(c).add(V(0, .2, 0)), fov: 46 }); });
+// ---- 93 «einen Herzschlag später,»: primer plano de Mats; el latido aprieta la viñeta
+shot(144.09, 'C', 'punch', L => { const c = hallMats(L, { x: 1.2, z: 9.6, ry: .2 }); cara(c, L.T, { eyes: 'terror', mouth: 'flat' }); const hb = Math.max(0, Math.sin(L.lt * 9)) ** 6; grade.uniforms.vig.value = .5 + hb * .5; TINT = `rgba(120,0,0,${(hb * .18).toFixed(3)})`; onFace(c, 4.6, -.3, 0, 40, L.k, 4.2); }, [[0, 'heartbeat', .9]]);
+// ---- 94 «sagte das Ding auf unserer Veranda:» (zoom lento): desde la calle: la Cosa en el porche, demasiado quieta, la cabeza ladeada, bajo el farol
+shot(145.41, 'Z', 'slow', L => { const c = porchDing(L, null, null, .9, { ry: PI, tilt: .25 * easeIn(L.k) }); moths(HMW(HM.doorX + 3.2, HM.B + 9.6, HM.frontZ + .8), L.T);
+  cm([PORCH.x - 20, 6.4, PORCH.z, PORCH.x, 5.8, PORCH.z, 44], [PORCH.x - 11, 6.6, PORCH.z, PORCH.x, 6.2, PORCH.z, 40], L.k); sh(V(PORCH.x, 0, PORCH.z), 26); }, [[.2, 'crickets', .4], [.6, 'owl', .3]]);
+// ---- 95 «„Mats, wer ist an der Tür?“»: POV de la mirilla: la Cosa lo repite, la sonrisa estirada
+shot(147.38, 'G', null, L => { const c = porchDing(L, 147.38, 149.57, .95); peephole(L, 1, { look: hp(c).add(V(0, .2, 0)), fov: lerp(64, 56, L.k) }); }, [[0, 'glitch', .4]]);
+// ---- 96 «Es hat nicht geraten, was Mama sagen würde.»: Mats retrocede hasta chocar con la pared y niega con la cabeza
+shot(149.57, 'W', null, L => { const c = hallMats(L, { x: -5.4, z: 12 - easeOut(clamp(L.lt / .8)) * 2, ry: PI * .75, pose: { headY: Math.sin(L.T * 9) * .35, lean: -.1 } }); cara(c, L.T, { expr: 'scared', mouth: 'grimace' }); onFace(c, 6.6, -.4, 0, 42, L.k, 5.6); }, [[0, 'steps', .4], [.6, 'thud', .5]]);
+// ---- 97 «Es hat sie nachgemacht, während sie sprach.» (pantalla partida): arriba Mama, abajo la Cosa, hablando a la vez
+shot(152.03, 'S', null, L => { const m = officeMama(L, null, null, { expr: 'determined' }); talk(m, L.T, L.T - .2, L.T + .2, 'determined'); onFace(m, 5.6, -.3, 0, 40, L.k, 5); }, [[.3, 'creepy_ting', .4]],
+  L => { const c = porchDing(L, null, null, .9); creepF(c, L.T, Math.sin(L.T * 14 - 2) > 0 ? .75 : .95); peephole(L, 0, { look: hp(c).add(V(0, .2, 0)), fov: 46 }); });
+// ---- 98 «Wort für Wort.» (pantalla partida, más cerca)
+shot(154.25, 'C', 'punch', L => { const m = officeMama(L, null, null, { expr: 'determined' }); talk(m, L.T, L.T - .2, L.T + .2, 'determined'); onFace(m, 4.2, -.4, 0, 38, L.k, 3.9); }, [],
+  L => { const c = porchDing(L, null, null, 1); creepF(c, L.T, Math.sin(L.T * 14 - 2) > 0 ? .8 : 1); peephole(L, 0, { look: hp(c).add(V(0, .2, 0)), fov: 36 }); });
+// ---- 99 «Wie ein Echo.»: Mats con el móvil en la oreja; anillos de eco que se expanden desde la puerta
+shot(155.36, 'Z', null, L => { const c = hallMats(L, { x: .4, z: 11, ry: PI - .3 }); onFace(c, 6, -.3, .6, 42, L.k, 5.2); FX2D.push(x => { for (let k = 0; k < 3; k++) { const t = (L.lt * 1.2 + k / 3) % 1; x.strokeStyle = `rgba(255,255,255,${(.5 * (1 - t)).toFixed(3)})`; x.lineWidth = 8; x.beginPath(); x.arc(W / 2, H * .4, 120 + t * 520, 0, 7); x.stroke(); } }); }, [[0, 'echo', .6]]);
+// ---- 100 «Zuerst durchs Handy,»: el móvil en la mano de Mats: «MAMA», llamada en curso
+shot(156.34, 'C', null, L => { const c = hallMats(L, { x: .4, z: 11, ry: PI - .3, pose: GEST.phone_look }); badge('phone', 'Mama ♥', W / 2, H * .36, (L.lt - .05) / .15, 1, .7); BAD_[BAD_.length - 1].sub = '00:47'; onFace(c, 6.6, -.5, .2, 44, L.k, 6); }, [[0, 'vibrate', .4]]);
+// ---- 101 «dann durch die Tür.»: la puerta azul, quieta, con la mirilla brillando; empuje lento
+shot(157.44, 'C', null, L => { flur(L); HA.front.door.rotation.y = PI - Math.sin(L.T * 30) * .003; const p = PEEPW(); cam([p.x - .6, p.y - 1.4, p.z - lerp(9, 7, L.k)], [p.x, p.y - 2, p.z], 44); }, [[0, 'knock', .2]]);
+// ---- 102 «„Mach nicht auf“, sagte Mama.»: Mama, ya con el abrigo, sale corriendo de la oficina con las llaves
+shot(158.41, 'W', null, L => { bueroS(L); const m = walk(mama, L, BUX + 6, 4, -PI / 2 - .3, 7, 0, { run: true, face: false }); attach(KEYS, m.aL.hand, [0, -1, .4], [0, 0, 0], .8); attach(PHONE, m.aR.hand, [0, -.6, .5], [-.3, 0, 0], .85); actuar(m, 0, [[0, { ...runP(L.T, 0), ...GEST.phone }]], { T: L.T }); talk(m, L.T, 158.41, 159.2, 'determined');
+  orbit(V(m.root.position.x, 5, m.root.position.z), 15, -PI / 2 + .1, .12, 46); }, [[0, 'run_cobble', .5], [.3, 'door_open', .4]]);
+// ---- 103 «„Ich komme sofort nach Hause.“»: de noche, Mama corre hacia su Golf rojo y abre la puerta de un tirón
+shot(159.59, 'S', null, L => { strasse(L, { t: 'night' }); show(GOLF, -2, 0, 110, PI / 2 + .1); GOLF.userData.door.rotation.y = -easeOut(clamp((L.lt - .9) / .3)) * 1.1; const m = walk(mama, L, -16, 112, PI / 2 + .1, 7, 0, { run: true, face: false }); m.root.position.x = Math.min(m.root.position.x, -6.4); talk(m, L.T, 159.59, 161.25, 'determined');
+  orbit(V(-8, 4.6, 111), lerp(18, 15, L.k), -.4, .12, 46); sh(V(-6, 0, 110), 30); }, [[0, 'run_cobble', .6], [1.0, 'car_door', .6]]);
+// ---- 104 «Durch die Tür:»: la puerta de casa, a oscuras; Mats se tapa la boca
+shot(161.25, 'C', null, L => { const c = hallMats(L, { x: -1.6, z: 14, ry: 0, pose: { aLx: 2.2, aLz: -.2, aLe: 2.4 } }); cara(c, L.T, { eyes: 'terror', mouth: 'flat' }); cm([DOORIN.x - 1.6, 6.8, 6.2, DOORIN.x - 1.2, 5.6, 16, 44], [DOORIN.x - 1.6, 6.6, 7.6, DOORIN.x - 1.2, 5.6, 16, 42], L.k); }, [[0, 'heartbeat', .5]]);
+// ---- 105 «„Ich komme sofort nach Hause.“» (zoom lento): la Cosa lo repite en el porche, con la cabeza dando sacudidas
+shot(162.03, 'Z', 'slow', L => { const c = porchDing(L, 162.03, 163.97, 1, { ry: PI, tilt: Math.sin(L.T * 23) > .7 ? .3 : 0 }); onFace(c, 6.4, -.2, 0, 42, L.k, 4.2); }, [[.3, 'glitch', .3]]);
+// ---------- d: la Kammer, el Golf y las dos puertas (163,97 – 225,6 s) ----------
+const BACKOUT = V(HAX, 0, -48.2), KAMMERD = HA.kammer.pos;
+const kammerKids = (L, o = {}) => { kammerS(L); const c = sit(mats, KAX - 1.6, 1.0, -5, .1, L, { aLx: 1.1, aRx: 1.1, aLe: 1.6, aRe: 1.6, lean: .15, ...(o.mp || {}) }); const i = sit(ida, KAX + 1.6, .9, -4.8, -.3, L, { aLx: 1.3, aRx: 1.3, aLe: 1.6, aRe: 1.6, lean: .1, ...(o.ip || {}) }); attach(BUNNY, i.spine, [0, 1.2, .9], [0, 0, 0], .8); return { c, i }; };
+// ---- 106 «Ich habe aufgelegt.»: Mats cuelga de un toque y baja el móvil
+shot(163.97, 'C', null, L => { const c = hallMats(L, { x: .4, z: 9, ry: PI - .2, pose: L.lt < .3 ? GEST.phone_look : { aRx: .4, aRe: .6 } }); cara(c, L.T, { expr: 'scared', mouth: 'flat' }); onFace(c, 6, -.4, .3, 42, L.k, 5.4); }, [[.15, 'button', .6]]);
+// ---- 107 «Ich konnte es nicht ertragen, alles zweimal zu hören.»: se tapa los oídos y resbala por la pared hasta el suelo
+shot(165.14, 'W', null, L => { flur(L); const k = easeInOut(clamp(L.lt / 1.6)); const c = put(mats, HAX + 6.8, 0, 4, -PI / 2 - .2); actuar(c, 0, [[0, { aLx: 2.4, aRx: 2.4, aLz: -.3, aRz: -.3, aLe: 2.5, aRe: 2.5, crouch: .1 + k * .55, lean: .1 + k * .2, lLx: k * .7, lRx: k * .7, lLk: k * 1.2, lRk: k * 1.2, headX: .2 }]], { T: L.T, extra: shiver(L.T, 1.2) }); cara(c, L.T, { eyes: 'closed', mouth: 'grimace' });
+  onBody(c, 12, 0, .12, 42, L.k, 10); }, [[0, 'cloth', .5], [.6, 'slide', .4], [1.4, 'thud', .3]]);
+// ---- 108 «Ida stand oben an der Treppe,»: contrapicado de la escalera: Ida arriba, en el rellano
+shot(167.96, 'S', null, L => { flur(L); const p = HA.landing; const i = put(ida, p.x + 1.2, p.y, p.z + 1.6, 0); actuar(i, 0, [[0, { aLx: 1.2, aRx: 1.2, aLe: 1.2, aRe: 1.2, headX: .2 }]], { T: L.T }); attach(BUNNY, i.spine, [0, 1.2, .9], [0, 0, 0], .8); cara(i, L.T, { expr: 'worried' });
+  cm([HAX - 4.6, 4, 12, p.x + 1.2, p.y + 4, p.z, 30], [HAX - 4.6, 4.4, 10, p.x + 1.2, p.y + 4.2, p.z, 26], L.k); }, [[.2, 'wood_creak', .5]]);
+// ---- 109 «im Schlafanzug,»: Ida, medio dormida, se frota un ojo con su pijama de estrellas
+shot(169.37, 'C', null, L => { flur(L); const p = HA.landing; const i = put(ida, p.x + 1.2, p.y, p.z + 1.6, 0); actuar(i, 0, [[0, { aRx: 2.2, aRz: -.3, aRe: 2.3, aLx: .4, headX: .15 }]], { T: L.T }); cara(i, L.T, { expr: 'tired', eyes: 'half', mouth: 'o' }); onBody(i, 9, 0, .05, 44, L.k, 8); }, [[0, 'yawn_f', .5]]);
+// ---- 110 «mit ihrem Kuscheltier im Arm.»: el conejo de peluche, apretado contra su pecho
+shot(170.35, 'Z', null, L => { flur(L); const p = HA.landing; const i = put(ida, p.x + 1.2, p.y, p.z + 1.6, 0); actuar(i, 0, [[0, 'hug_self']], { T: L.T }); attach(BUNNY, i.spine, [0, 1.2, .9], [0, 0, 0], .8); cara(i, L.T, { expr: 'sad', mouth: 'flat' }); onFace(i, 4.6, -1.0, 0, 42, L.k, 4.0); }, [[0, 'cloth', .4]]);
+// ---- 111 «Ich habe sie in die Abstellkammer unter der Treppe getragen.»: Mats lleva a Ida a caballito hasta la puertecita bajo la escalera, que está abierta
+shot(171.67, 'W', null, L => { flur(L); HA.kammer.door.rotation.y = PI / 2 + 1.4; const c = walk(mats, L, HAX + 3, 2, PI + .28, 2.4, 0, { face: false, pose: { aLx: .8, aRx: .8, aLe: 1.6, aRe: 1.6, lean: .2 } }); cara(c, L.T, { expr: 'determined' });
+  attach(ida.root, c.spine, [0, .3, -1.5], [0, 0, 0], .76); ida.root.visible = true; actuar(ida, 0, [[0, { aLx: 1.9, aRx: 1.9, aLz: -.6, aRz: -.6, aLe: .9, aRe: .9, lLx: 1.2, lRx: 1.2, lLk: 1.4, lRk: 1.4 }]], { T: L.T }); cara(ida, L.T, { expr: 'worried' });
+  cm([HAX + 3, 7.4, -18, HAX + 2, 4.6, -1, 48], [HAX + 3, 7.2, -16.5, HAX + 2, 4.6, -1, 48], L.k); }, [[0, 'steps', .5], [1.4, 'wood_creak', .5]]);
+// ---- 112 «Wir saßen im Dunkeln auf den Schuhen,»: dentro de la Kammer: los dos sentados sobre los zapatos; la rendija de luz bajo la puerta
+shot(174.26, 'F', null, L => { const { c, i } = kammerKids(L); cara(c, L.T, { expr: 'worried' }); cara(i, L.T, { expr: 'sad' }); cm([KAX + 4, 6.4, 5, KAX, 3, -4.8, 50], [KAX + 3.4, 6, 4, KAX, 3, -4.8, 48], L.k); }, [[0, 'cloth', .4], [.5, 'drip', .3]]);
+// ---- 113 «die Tür zu.»: la puerta se cierra desde dentro y la rendija se estrecha hasta la oscuridad
+shot(175.97, 'C', null, L => { kammerS(L); const k = easeIn(clamp(L.lt / .6)); KA.door.rotation.y = (1 - k) * -1.1; KA.slit.material.emissiveIntensity = 4; const c = put(mats, KAX - .4, 0, 5.6, PI); actuar(c, 0, [[0, { aRx: 1.6, aRe: .4, lean: .1 }]], { T: L.T }); cara(c, L.T, { expr: 'scared' });
+  DARK = k * .35; cm([KAX - 1, 6, -4, KAX, 4.4, 8.6, 50], [KAX - 1, 6, -3.4, KAX, 4.4, 8.6, 50], L.k); }, [[.4, 'door_crash', .3], [.5, 'click_metal', .5]]);
+// ---- 114 «Sie fragte, ob Mama schon da ist.»: Ida, en la penumbra azul, susurra
+shot(176.82, 'S', null, L => { const { c, i } = kammerKids(L, { ip: { headY: -.4 } }); talk(i, L.T, 176.82, 178.43, 'sad'); cara(c, L.T, { expr: 'worried' }); onFace(i, 4.4, -.5, .3, 42, L.k, 3.9); }, [[0, 'whisper', .6]]);
+// ---- 115 «Ich sagte: „Fast.“»: Mats le sonríe forzado
+shot(178.43, 'C', null, L => { const { c, i } = kammerKids(L, { mp: { headY: .4 } }); cara(c, L.T, { eyes: 'half', mouth: kitLips(L.T, spoken(179.2, 179.8)) || 'smile' }); cara(i, L.T, { expr: 'sad' }); onFace(c, 4.6, -.4, -.4, 42, L.k, 4.0); bubble(c, 'Fast.', (L.lt - .8) / .2, 1.6); }, [[.8, 'whisper', .5]]);
+// ---- 116 «Sie fragte, warum wir in der Kammer sitzen.»: Ida inclina la cabeza, confusa
+shot(179.76, 'W', null, L => { const { c, i } = kammerKids(L, { ip: { headZ: .3, headY: -.4 } }); talk(i, L.T, 179.76, 181.55, 'confused'); cara(c, L.T, { expr: 'worried' }); onFace(i, 4.4, -.4, .2, 42, L.k, 3.9); }, [[0, 'whisper', .5]]);
+// ---- 117 «Ich sagte: „Das ist eine Türübung.“»: Mats se lleva el dedo a los labios; TÜRÜBUNG
+shot(181.55, 'C', null, L => { const { c, i } = kammerKids(L, { mp: { aRx: 2.3, aRz: .1, aRe: 2.6, headY: .4 } }); cara(c, L.T, { eyes: 'half', mouth: 'flat' }); cara(i, L.T, { expr: 'sad' }); badge('tag', 'TÜRÜBUNG', W / 2, H * .18, (L.lt - .6) / .2); onFace(c, 4.8, -.3, -.4, 42, L.k, 4.2); }, [[.1, 'whisper', .6], [.6, 'pop', .3]]);
+// ---- 118 «Und ich dachte immer wieder dasselbe.» (zoom lento): los ojos de Mats en la oscuridad; interrogaciones que giran
+shot(183.42, 'Z', 'slow', L => { const { c } = kammerKids(L); cara(c, L.T, { eyes: Math.sin(L.T * 2) > 0 ? 'side_l' : 'side_r', mouth: 'flat' }); onFace(c, 5, -.2, 0, 40, L.k, 3.6);
+  for (let k = 0; k < 3; k++) { const a = L.T * 1.5 + k * 2.1; badge('q', '?', W / 2 + Math.cos(a) * 300, H * .38 + Math.sin(a) * 160, (L.lt - k * .2) / .2, .9, .6); } }, [[0, 'hum_low', .5]]);
+// ---- 119 «Niemand kennt unser Wort außer uns.»: recuerdo cálido: Mama, Mats e Ida abrazados en el sofá; «NUR WIR»
+shot(185.21, 'B', null, L => { flur(L, { h: 20, m: 0 }); SEPIA = .35; const m = sit(mamaB, HAX + 24, 3.4, -32.4, 0, L, { aLx: 1.2, aRx: 1.2, aLz: -1.2, aRz: -1.2, aLe: .3, aRe: .3 }); laughF(m, L.T); const c = sit(mats, HAX + 20.6, 3.4, -32.2, .2, L, { aRx: 1.4, aRz: -.6, aRe: .5 }); cara(c, L.T, { expr: 'happy', mouth: 'open_smile' });
+  const i = sit(ida, HAX + 27.2, 3.4, -32.2, -.2, L, { aLx: 1.4, aLz: -.6, aLe: .5 }); laughF(i, L.T + .3); badge('tag', 'NUR WIR', W / 2, H * .17, (L.lt - .3) / .2); cm([HAX + 24, 7.4, -18, HAX + 24, 5, -32, 46], [HAX + 24, 7, -20, HAX + 24, 5, -32, 46], L.k); }, [[0, 'film_roll', .3], [.3, 'kids_laugh', .3]]);
+// ---- 120 «Nicht Frau Kessler.»: la Kessler en su porche niega con la cabeza; X
+shot(187.07, 'C', null, L => { strasse(L, { t: 'night' }); const p = KPORCH; const c = put(kessler, p.x + 2.4, p.y, p.z + .6, toDoorK + 1.4); actuar(c, 0, [[0, { ...GEST.shrug, headY: Math.sin(L.T * 9) * .4 }]], { T: L.T }); cara(c, L.T, { expr: 'confused', mouth: 'frown' });
+  badge('x', '', W / 2, H * .17, (L.lt - .4) / .2, 1, .9); lp(0, p.x + 4, 9, p.z + 4, 60, 0xffb860, 20); onFace(c, 6, -.3, 0, 42, L.k, 5.2); }, [[.4, 'thud', .4]]);
+// ---- 121 «Nicht meine Freunde.»: los tres amigos se encogen de hombros; X
+shot(188.4, 'W', null, L => { strasse(L, { t: 'day' }); [[-3.4, 36.6, .4, 4], [0, 35.6, 0, 5], [3.4, 36.6, -.4, 6]].forEach(([x, z, ry, i]) => { const k = put(KIDS[i], x, 0, z, ry); actuar(k, 0, [[0, 'shrug']], { T: L.T + i }); cara(k, L.T + i, { expr: 'confused' }); });
+  badge('x', '', W / 2, H * .17, (L.lt - .3) / .2, 1, .9); cm([0, 7.4, 50, 0, 5.4, 36, 44], [0, 7.2, 48, 0, 5.4, 36, 44], L.k); sh(V(0, 0, 36), 30); }, [[.3, 'thud', .4]]);
+// ---- 122 «Woher kannte dieses Ding also „Kuschelkeks“?» (zoom lento): de nuevo en la Kammer, los ojos de Mats muy abiertos; «?»
+shot(189.38, 'Z', 'slow', L => { const { c, i } = kammerKids(L); cara(c, L.T, { eyes: 'terror', mouth: 'flat' }); cara(i, L.T, { eyes: 'closed', mouth: 'flat' }); onFace(c, 5.4, -.2, 0, 40, L.k, 3.4); badge('q', '?', W / 2, H * .16, (L.lt - 1.2) / .2, 1, 1); }, [[1.2, 'creepy_ting', .5]]);
+// ---- 123 «Irgendwann wurde es draußen still.»: fuera: la calle de noche, quieta; el viento mueve las copas; nadie
+shot(191.93, 'B', null, L => { strasse(L, { t: 'night' }); scene.fog.density = .004; cm([10, 6, -14, 30, 6, -1.5, 46], [10, 6.2, -10, 30, 6, -1.5, 46], L.k); sh(V(30, 0, 0), 40); }, [[0, 'wind', .5], [.6, 'owl', .4]]);
+// ---- 124 «Ich bin aus der Kammer geschlichen»: la puertecita se abre y Mats sale de puntillas, agachado
+shot(193.75, 'S', null, L => { flur(L); HA.kammer.door.rotation.y = PI / 2 + easeOut(clamp(L.lt / .4)) * 1.3; const k = KAMMERD; const c = put(mats, k.x + .4 + L.lt * 1.6, 0, k.z, PI / 2); actuar(c, 0, [[0, { ...GEST.sneak, lLx: .65 + Math.sin(L.T * 6) * .3, lRx: .15 - Math.sin(L.T * 6) * .3 }]], { T: L.T }); cara(c, L.T, { expr: 'scared', eyes: 'side_r' });
+  cm([k.x + 9, 6, k.z + 7, k.x + 1.6, 3.6, k.z, 48], [k.x + 8.4, 5.6, k.z + 6, k.x + 2.2, 3.6, k.z, 48], L.k); }, [[0, 'wood_creak', .6], [.5, 'steps', .3]]);
+// ---- 125 «und habe noch mal durch den Türspion geschaut.»: otra vez el ojo en la mirilla (perfil)
+shot(195.27, 'Z', null, L => { flur(L); const c = put(mats, DOORIN.x + 1, .5, 18.2, 0); actuar(c, 0, [[0, { aLx: 1.6, aRx: 1.6, aLe: .4, aRe: .4, lean: .12, headX: -.15 }]], { T: L.T, extra: shiver(L.T, .5) }); cara(c, L.T, { eyes: 'squint', mouth: 'flat' });
+  const h = hp(c); cam([h.x - 7.4, h.y + .8, h.z - 6], [h.x, h.y - 1, h.z + .4], 44); }, [[0, 'cloth', .4]]);
+// ---- 126 «Das Verandalicht war an.»: POV: el farol del porche encendido, las polillas dando vueltas
+shot(197.15, 'I', null, L => { strasse(L, { t: 'night' }); const lpos = HMW(HM.doorX + 3.2, HM.B + 9.6, HM.frontZ + .8); moths(lpos, L.T); lp(0, lpos.x, lpos.y, lpos.z, 40, 0xffb860, 16); peephole(L, 1, { look: lpos.clone().add(V(-2, -1, 0)), fov: 70 }); }, [[0, 'hum', .4]]);
+// ---- 127 «Und darunter stand niemand.»: POV: el porche vacío
+shot(198.39, 'C', null, L => { strasse(L, { t: 'night' }); lp(0, PORCH.x, 10, PORCH.z + 2, 50, 0xffb860, 18); peephole(L, 1, { ty: 4.6, fov: 100 }); }, [[0, 'wind', .4]]);
+// ---- 128 «Die Veranda war leer.» (zoom lento): desde la calle: el porche vacío bajo el farol
+shot(199.75, 'Z', 'slow', L => { strasse(L, { t: 'night' }); moths(HMW(HM.doorX + 3.2, HM.B + 9.6, HM.frontZ + .8), L.T); cm([PORCH.x - 22, 6.4, PORCH.z, PORCH.x, 6, PORCH.z, 44], [PORCH.x - 13, 6.4, PORCH.z, PORCH.x, 6.2, PORCH.z, 40], L.k); sh(V(PORCH.x, 0, PORCH.z), 26); }, [[.2, 'crickets', .4]]);
+// ---- 129 «Dann huschten Scheinwerfer über die Wohnzimmerwand.»: la luz de unos faros barre la pared del salón; Mats se gira
+shot(200.91, 'W', null, L => { flur(L, { dark: true }); HA.sweep.material.opacity = Math.sin(clamp(L.lt / 2) * PI); HA.sweep.position.x = lerp(-6, 16, clamp(L.lt / 2)) + 16; const c = put(mats, HAX + 14, 0, -20, -.6 - L.k * .8); actuar(c, 0, [[0, { aLx: .3, aRx: .3, headY: .3 }]], { T: L.T }); cara(c, L.T, { expr: 'shock', mouth: 'o' });
+  cm([HAX + 10, 7, -6, HAX + 22, 6, -38, 50], [HAX + 11, 7, -8, HAX + 22, 6, -38, 50], L.k); }, [[0, 'car_pass', .6]]);
+// ---- 130 «Ich hörte Mamas alten Golf in die Einfahrt fahren.»: el Golf rojo gira hacia el camino de grava con los faros encendidos
+shot(203.19, 'R', null, L => { strasse(L, { t: 'night' }); const k = easeOut(clamp(L.lt / 2)); show(GOLF, lerp(2, 30, k), 0, lerp(-6, -22, k), lerp(PI, PI / 2, k)); GOLF.userData.lights(1);
+  cm([16, 8, 14, 30, 3, -22, 46], [18, 7.6, 12, 30, 3, -22, 46], L.k); sh(V(30, 0, -20), 30); }, [[0, 'car', .7], [1.2, 'gravel', .6]]);
+// ---- 131 «Die Autotür knallte.»: la puerta del coche se cierra de golpe
+shot(205.28, 'C', 'punch', L => { strasse(L, { t: 'night' }); show(GOLF, 34, 0, -22, PI / 2); GOLF.userData.lights(1); GOLF.userData.door.rotation.y = -(1 - easeIn(clamp(L.lt / .25))) * 1.1; const d = wpos(GOLF.userData.door);
+  cam([d.x - 9, d.y + 4.4, d.z - 9], [d.x + 1.6, d.y + 1.6, d.z], 44); }, [[.2, 'car_door', 1]]);
+// ---- 132 «Schritte auf dem Kies.»: plano bajo: unos pies con botas pisan la grava, junto al coche
+shot(206.39, 'W', null, L => { strasse(L, { t: 'night' }); show(GOLF, 34, 0, -22, PI / 2); GOLF.userData.lights(1); const m = walk(mama, L, 30, -16, -PI / 2 + .3, 2.4, 0, { face: false }); m.setFace({ eyes: 'normal', mouth: 'flat' });
+  const p = m.root.position; cam([p.x - 4, 1.4, p.z + 3], [p.x, 1, p.z], 46); }, [[0, 'gravel', .8]]);
+// ---- 133 «Schnelle Schritte.»: los pies corren
+shot(207.44, 'C', null, L => { strasse(L, { t: 'night' }); show(GOLF, 34, 0, -22, PI / 2); GOLF.userData.lights(1); const m = walk(mama, L, 28, -15, -PI / 2 + .4, 7, 0, { run: true, face: false }); const p = m.root.position; cam([p.x - 3, 1.6, p.z + 3.4], [p.x, 1, p.z], 48); }, [[0, 'gravel', 1]]);
+// ---- 134 «Als würde jemand rennen.»: una silueta corre hacia la casa a contraluz de los faros
+shot(208.28, 'S', null, L => { strasse(L, { t: 'night' }); show(GOLF, 34, 0, -22, PI / 2); GOLF.userData.lights(1); const m = walk(mama, L, 24, -18, .9, 7, 0, { run: true, face: false }); m.setFace({ eyes: 'closed', mouth: 'flat' }); const p = m.root.position;
+  cm([12, 6, -28, p.x, 4.6, p.z, 46], [13, 6, -27, p.x, 4.6, p.z, 46], L.k); sh(V(p.x, 0, p.z), 30); }, [[0, 'run_cobble', .7]]);
+// ---- 135 «Dann gar nichts mehr.»: el camino vacío: la puerta del coche abierta, los faros encendidos, nadie
+shot(209.26, 'B', null, L => { strasse(L, { t: 'night' }); show(GOLF, 34, 0, -22, PI / 2); GOLF.userData.lights(1); GOLF.userData.door.rotation.y = -1.1; DARK = .15 * L.k; cm([14, 9, -40, 32, 3, -20, 46], [15, 8.6, -38, 32, 3, -20, 44], L.k); sh(V(32, 0, -20), 30); }, [[0, 'silence_tick', .5]]);
+// ---- 136 «Ich stand im Flur, hielt die Luft an, Idas Hand in meiner.» (zoom lento): los dos de la mano en el pasillo, quietos
+shot(210.37, 'Z', 'slow', L => { flur(L, { dark: true }); const c = put(mats, HAX + .4, 0, -4, PI), i = put(ida, HAX + 2.6, 0, -4.4, PI - .2); actuar(c, 0, [[0, { aLx: .4, aLz: -.2, aLe: .2, headX: .05 }]], { T: L.T, breathe: false, extra: shiver(L.T, .5) }); actuar(i, 0, [[0, { aRx: .6, aRz: -.2, aLx: 1.3, aLe: 1.6 }]], { T: L.T, extra: shiver(L.T, .6) });
+  attach(BUNNY, i.aL.hand, [.4, -.7, .4], [0, 0, 0], .8); cara(c, L.T, { eyes: 'wide', mouth: 'flat', noBlink: true }); cara(i, L.T, { expr: 'scared' }); cm([HAX + 1.5, 6.4, -18, HAX + 1.5, 5, -4, 48], [HAX + 1.5, 6, -14, HAX + 1.5, 5, -4, 44], L.k); }, [[.3, 'breath', .4], [1.4, 'heartbeat', .5]]);
+// ---- 137 «Klopf.»: la puerta de casa se sacude (golpe)
+shot(213.19, 'C', 'punch', L => { flur(L, { dark: true }); HA.front.door.rotation.y = PI - rattle(L, 0, 1, 2) * .04; const p = PEEPW(); cam([p.x - 1, p.y - 2, p.z - 9], [p.x, p.y - 3, p.z], 46); }, [[0, 'knock', 1]]);
+// ---- 138 «Klopf.»: Mats da un respingo
+shot(214.02, 'C', 'punch', L => { flur(L, { dark: true }); const c = put(mats, HAX + .4, 0, -4, 0); actuar(c, L.lt, [[0, 'recoil']], { T: L.T }); cara(c, L.T, { eyes: 'terror', mouth: 'o' }); onFace(c, 4.6, -.3, 0, 40, L.k, 4.2); }, [[0, 'knock', 1]]);
+// ---- 139 «Klopf.»: Ida aprieta el conejo
+shot(214.71, 'C', 'punch', L => { flur(L, { dark: true }); const i = put(ida, HAX + 2.6, 0, -4.4, 0); actuar(i, 0, [[0, 'hug_self']], { T: L.T }); attach(BUNNY, i.spine, [0, 1.2, .9], [0, 0, 0], .8); cara(i, L.T, { eyes: 'terror', mouth: 'o' }); onFace(i, 4, -.6, 0, 40, L.k, 3.6); }, [[0, 'knock', 1]]);
+// ---- 140 «An der Haustür.»: plano amplio del pasillo: los dos niños, de espaldas, frente a la puerta de casa
+shot(215.19, 'W', null, L => { flur(L, { dark: true }); const c = put(mats, HAX + .4, 0, -4, 0), i = put(ida, HAX + 2.6, 0, -4.4, -.1); actuar(c, 0, [[0, { aLx: .4 }]], { T: L.T }); actuar(i, 0, [[0, { aRx: .6, aLx: 1.3, aLe: 1.6 }]], { T: L.T }); cara(c, L.T, { expr: 'scared' }); cara(i, L.T, { expr: 'scared' });
+  cm([HAX + 1.5, 9, -26, HAX + 1.5, 5.4, 19, 46], [HAX + 1.5, 8.6, -22, HAX + 1.5, 5.4, 19, 46], L.k); }, [[0, 'wind', .3]]);
+// ---- 141 «„Mats, ich bin’s!“»: la puerta de casa; por las ventanitas, la silueta de Mama
+shot(216.25, 'C', null, L => { flur(L, { dark: true }); HA.side.forEach(s => s.material.opacity = .25); const d = put(ding, DOORIN.x + 4.1, 0, 22.4, PI); creepF(d, L.T, .8); lp(0, DOORIN.x + 4.1, 8, 25, 80, 0xffb060, 16);
+  badge('bubble', 'Mats, ich bin’s!', W / 2, H * .2, (L.lt - .05) / .2); cm([DOORIN.x, 6.6, 8, DOORIN.x + 3, 6.2, 20, 44], [DOORIN.x + .4, 6.6, 10, DOORIN.x + 3, 6.2, 20, 40], L.k); }, [[0, 'creepy_ting', .5]]);
+// ---- 142 «Und bevor ich mich überhaupt umdrehen konnte:» (zoom lento): Mats empieza a girarse muy despacio
+shot(217.57, 'Z', 'slow', L => { flur(L, { dark: true }); const c = put(mats, HAX + .4, 0, -4, easeInOut(L.k) * .9); actuar(c, 0, [[0, { aLx: .4, headY: easeInOut(L.k) * .8 }]], { T: L.T, extra: shiver(L.T, .5) }); cara(c, L.T, { eyes: 'side_l', mouth: 'flat', noBlink: true }); onFace(c, 5.6, -.2, 0, 40, L.k, 4.2); }, [[0, 'breath', .4]]);
+// ---- 143 «Klopf.»: la puerta trasera se sacude; tras sus cristales, una silueta
+shot(220.04, 'C', 'punch', L => { flur(L, { dark: true }); HA.back.door.rotation.y = rattle(L, 0, 1, 2) * .04; const d = put(ding, HAX + 1, 2.2, -48.4, 0); creepF(d, L.T, .8); cam([HAX + 1, 7, -36], [HAX + 1, 6.6, -46], 44); }, [[0, 'knock', 1]]);
+// ---- 144 «Klopf.»: los dos se han dado la vuelta: caras de pánico
+shot(220.69, 'C', 'punch', L => { flur(L, { dark: true }); const c = put(mats, HAX + .4, 0, -4, PI), i = put(ida, HAX + 2.6, 0, -4.4, PI); actuar(c, 0, [[0, 'shock']], { T: L.T }); actuar(i, 0, [[0, 'shock']], { T: L.T }); cara(c, L.T, { eyes: 'terror', mouth: 'o' }); cara(i, L.T, { eyes: 'terror', mouth: 'o' });
+  cm([HAX + 1.5, 6.4, -13, HAX + 1.5, 5, -4, 44], [HAX + 1.5, 6.2, -12, HAX + 1.5, 5, -4, 42], L.k); }, [[0, 'knock', 1]]);
+// ---- 145 «Klopf.»: más cerca de los cristales de la puerta trasera: la sonrisa
+shot(221.41, 'C', 'punch', L => { flur(L, { dark: true }); HA.back.door.rotation.y = rattle(L, 0, 1, 2) * .04; const d = put(ding, HAX + 1, 2.2, -48, 0); creepF(d, L.T, 1); cam([HAX + 1, 7.2, -41], [HAX + 1, 7, -46], 40); }, [[0, 'knock', 1]]);
+// ---- 146 «An der Hintertür.»: plano amplio: los niños en medio del pasillo, entre las dos puertas
+shot(222.0, 'W', null, L => { flur(L, { dark: true }); const c = put(mats, HAX + .4, 0, -4, PI), i = put(ida, HAX + 2.6, 0, -4.4, PI); actuar(c, 0, [[0, { aLx: .4 }]], { T: L.T, extra: shiver(L.T, .6) }); actuar(i, 0, [[0, 'hug_self']], { T: L.T }); cara(c, L.T, { expr: 'scared' }); cara(i, L.T, { expr: 'scared' });
+  const d = put(ding, HAX + 1, 2.2, -48.4, 0); creepF(d, L.T, .9); cm([HAX + 1.5, 9.6, 17, HAX + 1.5, 5, -30, 46], [HAX + 1.5, 9.2, 15, HAX + 1.5, 5, -30, 46], L.k); }, [[0, 'wind', .3]]);
+// ---- 147 «„Mats, ich bin’s!“» (pantalla partida): arriba la puerta de casa con su silueta, abajo la puerta trasera con la otra; fundido
+shot(223.35, 'Z', 'slow', L => { flur(L, { dark: true }); HA.side.forEach(s => s.material.opacity = .25); const d = put(ding, DOORIN.x + 4.1, 0, 22.4, PI); creepF(d, L.T, 1); lp(0, DOORIN.x + 4.1, 8, 25, 80, 0xffb060, 16); cm([DOORIN.x + 1, 6.6, 10, DOORIN.x + 4, 6.4, 20, 40], [DOORIN.x + 1.6, 6.6, 12.5, DOORIN.x + 4, 6.4, 20, 34], L.k); }, [[0, 'creepy_ting', .6]],
+  L => { flur(L, { dark: true }); const d = put(ding, HAX + 1, 2.2, -48, 0); creepF(d, L.T, 1); cm([HAX + 1, 7.4, -36, HAX + 1, 6.8, -46, 46], [HAX + 1, 7.4, -39, HAX + 1, 6.8, -46, 42], L.k); });
 
 
 // ---------- transiciones, sonidos, render ----------
@@ -392,7 +734,7 @@ function renderShot(i, T, tr, a, fn = null) {
   composer.render();
 }
 // la mirilla: círculo con borde oscuro y viñeta, el resto negro
-function peepMask(c) { const cx = W / 2, cy = H * .44, r = W * .47; c.save(); c.fillStyle = '#000'; c.beginPath(); c.rect(0, 0, W, H); c.arc(cx, cy, r, 0, 7, true); c.fill('evenodd');
+function peepMask(c) { const cx = W / 2, cy = H * .44, r = W * .47; c.save(); c.fillStyle = '#000'; c.beginPath(); c.rect(0, 0, W, H); c.moveTo(cx + r, cy); c.arc(cx, cy, r, 0, 2 * PI, true); c.closePath(); c.fill('evenodd');
   const g = c.createRadialGradient(cx, cy, r * .55, cx, cy, r); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(.8, 'rgba(10,6,0,.35)'); g.addColorStop(1, 'rgba(0,0,0,.95)'); c.fillStyle = g; c.beginPath(); c.arc(cx, cy, r, 0, 7); c.fill();
   c.strokeStyle = 'rgba(200,150,60,.35)'; c.lineWidth = 6; c.beginPath(); c.arc(cx, cy, r - 3, 0, 7); c.stroke(); c.restore(); }
 function renderAt(T) {
