@@ -17,7 +17,7 @@ Documentos del repo que siguen siendo la referencia detallada (léelos al empeza
 - Cuando el vídeo esté listo, manda **solo el vídeo** (SendUserFile, `display: attach`). Descripción, comentario fijado y portadas **solo cuando los pida**.
 - El usuario no oye lo que tú no puedes oír: recuérdale escuchar la mezcla.
 - Cuando el usuario diga "ya puedes renderizar", **no hagas más revisiones**: lanza el render.
-- Rama: **la rama de desarrollo que indique la sesión** (en este chat `claude/wizardly-meitner-4vfi67`; antes `claude/trusting-newton-0hk9y9`) del repo `enzotiktok2212-lab/enzo-animar-claude`. El trabajo de otros chats vive en ramas `claude/*`: si falta una pieza, búscala con `git log --all`. Antes de cada push: `git fetch` + `git rebase`. Commit y push de todo (el hook lo exige), **nunca** los vídeos finales (>100 MB), el vídeo de referencia, sus fotogramas ni las capturas de revisión (`review/`, `review60/` → `.gitignore`).
+- Rama: **la rama de desarrollo que indique la sesión** (en este chat `claude/charming-euler-5lnaoi`, que ya une todas las ramas anteriores: wizardly-meitner, serene-clarke, determined-cerf, upbeat-maxwell, zen-clarke, chat-videos-in-dieser-stadt) del repo `enzotiktok2212-lab/enzo-animar-claude`. El trabajo de otros chats vive en ramas `claude/*`: si falta una pieza, búscala con `git log --all`. Antes de cada push: `git fetch` + `git rebase`. Commit y push de todo (el hook lo exige), **nunca** los vídeos finales (>100 MB), el vídeo de referencia, sus fotogramas ni las capturas de revisión (`review/`, `review60/` → `.gitignore`).
 
 ## 1. Flujo completo
 1. **Referencia** (MP4 que manda el usuario; los links de TikTok no se pueden abrir aquí):
