@@ -13,5 +13,5 @@ Motor: plantilla de `codewort`/`statue` (`src/main.js`, Hufenbach de `gort.js`).
 - [x] planos a, b, c (73 planos)
 - [x] revisión de todos los planos
 - [x] mezcla: renders/mezcla-final.wav (−12,6 LUFS). Si falta (contenedor nuevo): node cues.mjs; python3 sfx.py audio/cues.json audio/voz-sin-silencios.wav audio/musica-fondo.wav renders/mezcla.wav; python3 marca.py renders/mezcla.wav audio/campanita-recortada.wav renders/mezcla-final.wav
-- [ ] render EN MARCHA desde 03:3x UTC en calidad máxima (ss 1.5 + AO; 2838 fotogramas, ~2–3 h). Relanzar si se para: `nohup setsid ./watchdog.sh > renders/watchdog.log 2>&1 < /dev/null &` y `finish.sh` → renders/dickkopf.mp4
-- [ ] entrega (solo el vídeo) y desactivar las tareas programadas
+- [x] render en calidad máxima (ss 1.5 + AO) → renders/dickkopf.mp4 (94,6 s, −12,6 LUFS)
+- [x] entregado (27-11, 04:10 UTC) y tareas programadas desactivadas
