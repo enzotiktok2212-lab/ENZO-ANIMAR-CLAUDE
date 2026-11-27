@@ -531,3 +531,28 @@ scene('months', { focus: [540, 900] }, (p, lt) => {
   const b = 1 + 0.08 * Math.sin(lt * 9);
   ctx.save(); ctx.translate(540, 1160); ctx.scale(b, b); cbShape(cbP.rr(-220, -60, 440, 120, 60), CB.coral, { bb: [-60, 60], shade: 8 }); cbText('+ SEGUIR', 0, 24, 64, { color: '#fff' }); ctx.restore();
 });
+
+// ---------------------------------------------------------------- the cover (not part of the timeline)
+// Like the reference covers: a sunburst, the title in two sizes, the hero in close-up with a glow, a bubble and a prop.
+// Everything sits between y = 330 and y = 1480 so the top and bottom stay free for the app's interface.
+function drawCover(cv) {
+  ctx = cv.getContext('2d'); ctx.setTransform(1, 0, 0, 1, 0, 0); TT = 0.4; F = 10; B = 5; DEFER = null;
+  fillAll('#ff8a5c'); ctx.save(); ctx.translate(540, 1050); ctx.fillStyle = '#ffa476';
+  for (let i = 0; i < 20; i++) { ctx.beginPath(); ctx.moveTo(0, 0); ctx.arc(0, 0, 2600, i / 20 * TAU, (i + 0.5) / 20 * TAU); ctx.fill(); } ctx.restore();
+  cbGlow(540, 1150, 520, '#fff3d0', 0.75);
+  cbText('POR QUE É CHATO', 540, 430, 92, { color: '#fff', stroke: 20 });
+  cbText('NASCER EM', 540, 530, 92, { color: '#fff', stroke: 20 });
+  ctx.save(); ctx.shadowColor = 'rgba(0,0,0,0.3)'; ctx.shadowOffsetY = 10; cbText('SETEMBRO?', 540, 680, 160, { color: CB.yellow, stroke: 26 }); ctx.restore();
+  // the hero: Leo crying under a party hat, the calendar and the sweater's bubble
+  cbCalendar(860, 1010, 0.62, 9, { rot: 0.12, circle: 1 });
+  const P = { ...LEO(7), eyes: 'closed', mouth: 'shout', brows: -0.6, arms: ['down', 'down'], key: 'cover' };
+  cbPerson(500, 1560, 1.75, P);
+  const hy = 1560 - 1.75 * (48 + 112 - 18) - 1.75 * 112 * 0.78;
+  for (const sx of [-1, 1]) { ctx.save(); const tx = 500 + sx * 1.75 * 112 * 0.36; const g = ctx.createLinearGradient(0, hy + 20, 0, hy + 330); g.addColorStop(0, 'rgba(110,200,255,0.95)'); g.addColorStop(1, 'rgba(110,200,255,0.4)'); ctx.fillStyle = g; ctx.beginPath(); ctx.roundRect(tx - 16, hy + 20, 32, 300, 16); ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = '#3a8fd0'; ctx.stroke(); ctx.restore(); }
+  ctx.save(); ctx.translate(560, hy - 1.75 * 112 + 10); ctx.rotate(0.35); cbShape(cbP.poly([[-60, 0], [60, 0], [0, -170]]), CB.purple, { bb: [-170, 0], shade: 8 }); cbShape(cbP.ell(0, -176, 22, 22), CB.yellow, { flat: true, shade: 0, lw: 4 }); ctx.restore();
+  DEFER = null; cbBubble('PRESENTE DE NATAL?!', 760, 830, 640, 940, { size: 44, t: -1 });
+  for (const [x, y, s] of [[150, 900, 26], [930, 1300, 22], [180, 1300, 18], [880, 780, 18]]) cbSparkle(x, y, s);
+  for (const [x, y] of [[140, 1080], [220, 1180]]) cbHeart(x, y, 24, '#ff5577');
+  STYLE.post();
+}
+window.renderCover = () => { const c = document.createElement('canvas'); c.width = W; c.height = H; drawCover(c); return c.toDataURL('image/png'); };
