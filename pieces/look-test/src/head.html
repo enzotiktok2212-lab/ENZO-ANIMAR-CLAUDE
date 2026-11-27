@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Look test</title>
+<style>html,body{margin:0;height:100%;background:#1b1714;overflow:hidden}body{display:flex;align-items:center;justify-content:center}canvas{height:min(100vh,calc(100vw*16/9));width:auto;aspect-ratio:9/16;display:block}</style>
+</head><body><canvas id="c" width="1080" height="1920"></canvas>
+<script>
+"use strict";
+const FPS = 24, W = 1080, H = 1920, DURATION = 6.0, NFRAMES = Math.round(DURATION * FPS), LOOP_T = NFRAMES / FPS;
+const SAFE = { top: 240, bottom: 420, right: 140 }, HAND = 'sans-serif', CX = 540;
+const ERA_LIST = [[0, 3, () => sceneTest()], [3, 6, () => sceneClass()]];
+const TIMELINE = { width: W, height: H, fps: FPS, duration: DURATION, frames: NFRAMES, loop: LOOP_T, safe: SAFE, format: 'beat-cut',
+  shots: [{ id: 1, key: 'test', era: 0, t0: 0, t1: 3, title: 'test' }, { id: 2, key: 'class', era: 1, t0: 3, t1: 6, title: 'class' }], cuts: [3], morphs: [], cues: {}, acts: [], board: [], narration: [] };
+window.TIMELINE = TIMELINE;

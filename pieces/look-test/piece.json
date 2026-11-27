@@ -1,0 +1,2 @@
+{ "name": "look-test", "title": "Look test", "format": { "width": 1080, "height": 1920, "fps": 24, "duration": 3.0, "frames": 72 }, "style": "chibi",
+  "review": { "safe": { "top": 240, "bottom": 420, "right": 140 }, "refs": {} } }
