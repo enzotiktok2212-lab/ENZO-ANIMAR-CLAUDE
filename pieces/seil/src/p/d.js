@@ -47,7 +47,7 @@ shot(170.89, 'C', null, L => { const W_ = lotteWand(L, { lf: { expr: 'worried' }
 // 145 «Ich habe eine Nachricht mit der Welle losgeschickt:»: desde detrás de mí: grito hacia el mundo de abajo
 shot(172.093, 'W', null, L => { const W_ = lotteWand(L); const q = surf(48.6, 2.05, 3); const c = put(ich, q.x, q.y, q.z, -PI / 2); c.blob.visible = false; winterIch(c); rufen(c, L, 0, 1); const h = hp(c);
   for (let k = 0; k < 3; k++) { const ph = (L.lt * 1.2 + k / 3) % 1; FX2D.push(x => { x.save(); x.strokeStyle = `rgba(255,240,180,${(1 - ph) * .8})`; x.lineWidth = 12; x.beginPath(); x.arc(W / 2, H * .44, 80 + ph * 420, -2.6, -.5); x.stroke(); x.restore(); }); }
-  cm([h.x - 5, h.y + 2.6, h.z + 4.6, h.x - 30, h.y - 20, h.z - 6, 50], [h.x - 5.4, h.y + 2.8, h.z + 4.8, h.x - 30, h.y - 22, h.z - 6, 50], L.k); sh(h, 30); }, [[0, 'horn_blow', .9], [.1, 'shout_kid', .7]]);
+  cm([h.x - 12, h.y - 2, h.z + 4, h.x, h.y - .6, h.z, 44], [h.x - 11.4, h.y - 1.8, h.z + 3.8, h.x, h.y - .6, h.z, 44], L.k); sh(h, 30); }, [[0, 'horn_blow', .9], [.1, 'shout_kid', .7]]);
 // 146 «„Beide Seiten:»
 shot(174.34, 'C', 'punch', L => { const W_ = lotteWand(L); const q = surf(48.6, 2.05, 3); const c = put(ich, q.x, q.y, q.z, -PI / 2); c.blob.visible = false; winterIch(c); rufen(c, L, 0, 1); onFace(c, 7, -.4, -4.5, 40, L.k, 6); badge('tag', 'BEIDE SEITEN:', W / 2, H * .15, clamp(L.lt / .1), 1, 1.2); sh(hp(c), 14); }, [[0, 'horn_blow', .8]]);
 // 147 «Hört auf bei Sprung tausend.“»: «STOPP BEI SPRUNG 1000»
@@ -87,7 +87,7 @@ shot(189.829, 'W', null, L => { juntos(L, { lf: { expr: 'determined', mouth: 'ta
   cm([p.x - 26, p.y + 2, p.z + 2, p.x, p.y - 1, p.z, 44], [p.x - 22, p.y + 1.5, p.z + 1.6, p.x, p.y - 1, p.z, 42], L.k); sh(p, 26); }, [[0, 'crowd_murmur', .6]]);
 // 158 «Neunhundertachtundneunzig.» (zoom lento): «998»; nuestras caras, la cuerda pasa por debajo
 shot(191.08, 'W', 'slow', L => { juntos(L, { lf: { expr: 'determined', mouth: kitLips(L.T, spoken(191, 192.6)) || 'flat' }, if: { expr: 'determined', mouth: kitLips(L.T, spoken(191, 192.6)) || 'flat' }, phi: 1.2 + L.lt * .8 }); const p = hp(lotte).lerp(hp(ich), .5);
-  cm([p.x - 15, p.y + 1.6, p.z + 1, p.x, p.y - 1.2, p.z, 40], [p.x - 13, p.y + 1.6, p.z + .8, p.x, p.y - 1.2, p.z, 38], L.k); bigNum('998', clamp(L.lt / .15), 'gold', .16, 1.5); sh(p, 14); }, [[0, 'drum', .7]]);
+  cm([p.x - 15, p.y + 3, p.z + 1, p.x, p.y + 1.8, p.z, 40], [p.x - 13, p.y + 3, p.z + .8, p.x, p.y + 1.8, p.z, 38], L.k); bigNum('998', clamp(L.lt / .15), 'gold', .16, 1.5); sh(p, 14); }, [[0, 'drum', .7]]);
 // 159 «Neunhundertneunundneunzig.»: «999»: la cámara sale disparada hacia el mundo; la cuerda en lo alto, a punto…
 shot(192.88, 'C', 'punch', L => { juntos(L, { lf: { eyes: 'closed', mouth: 'flat', noBlink: true }, if: { eyes: 'closed', mouth: 'flat', noBlink: true }, phi: 2.6 + L.lt * .4 }); const p = hp(lotte).lerp(hp(ich), .5);
-  cm([p.x - 7, p.y + .3, p.z + .6, p.x, p.y - .6, p.z, 36], [p.x - 60, p.y + 30, p.z + 20, p.x, p.y - 10, p.z, 50], L.k, easeIn); bigNum('999', clamp(L.lt / .12), 'red', .16, 1.8); DARK = clamp((L.lt - 2.2) / .3); sh(p, 30); }, [[0, 'drum', .9], [.05, 'heartbeat', .7], [2.2, 'riser_cut', .6]]);
+  cm([p.x - 11, p.y + 2.4, p.z + .6, p.x, p.y + 1.8, p.z, 38], [p.x - 60, p.y + 30, p.z + 20, p.x, p.y - 10, p.z, 50], L.k, easeIn); bigNum('999', clamp(L.lt / .12), 'red', .16, 1.8); DARK = clamp((L.lt - 2.2) / .3); sh(p, 30); }, [[0, 'drum', .9], [.05, 'heartbeat', .7], [2.2, 'riser_cut', .6]]);

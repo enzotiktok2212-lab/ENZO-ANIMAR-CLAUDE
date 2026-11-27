@@ -42,7 +42,7 @@ shot(57.671, 'S', null, L => { welt(L, 0, 12); const tp = .9, zc = 12; cuerda(L,
   vecinos(L, [[-7, 6, .2], [7, 5, -.2]], tp, zc, VV, 8); orbit(V(0, 4, 12), lerp(15, 13, L.k), 0, .08, 44); badge3('tag', 'LOTTE', hp(lotte).add(V(0, 2.4, 0)), clamp((L.lt - .1) / .2)); sh(V(0, 0, 12), 22); }, [[.1, 'sparkle', .4], [.8, 'jump_spin', .6]]);
 // 55 «Sie hat immer eine Drehung eingebaut.»: desde abajo, a cámara lenta: Lotte gira en el aire justo sobre la cuerda
 shot(59.594, 'W', null, L => { welt(L, 0, 12); const tp = .55, zc = 12, v = 60; cuerda(L, tp, zc, v); drehSprung(lotte, L, tp, zc, v, .3, { x: 0, z: 12, J: 4.4, pose: { aLx: 2.6, aRx: 2.6, aLz: .3, aRz: .3 }, f: { eyes: 'closed', mouth: 'open_smile', noBlink: true } });
-  cm([2.4, 1.0, 19, 0, 5.4, 12, 46], [2, 1.0, 18.4, 0, 5.8, 12, 44], L.k); sh(V(0, 0, 12), 18); }, [[.4, 'rope_swish', .5], [.5, 'whoosh_soft', .5]]);
+  cm([2.4, 1.0, 19, 0, 3.8, 12, 46], [2, 1.0, 18.4, 0, 5.2, 12, 44], L.k); sh(V(0, 0, 12), 18); }, [[.4, 'rope_swish', .5], [.5, 'whoosh_soft', .5]]);
 // 56 «eingebaut.»: los vecinos aplauden su pirueta
 shot(60.654, 'F', null, L => { welt(L, 0, 12); const l = put(lotte, 0, 0, 12, 0); actuar(l, 0, [[0, { aLz: 1.2, aRz: 1.2, aLx: .4, aRx: .4 }]], { T: L.T }); grin(l, L.T);
   [[DX[14], -5, 7, .4], [DX[15], 5, 7, -.4], [oma, -2.6, 5, .2], [DX[16], 3, 4.5, -.2]].forEach(([c, x, z, r], i) => crowdGuy(c, x, z, L, i, { mode: 'clap', ry: r }));
@@ -98,7 +98,7 @@ shot(74.098, 'Z', null, L => { welt(L, 7, 10, { dusk: true }); const z = 80 + 90
   const i = put(ich, 7, 0, 6, PI); actuar(i, 0, [[0, { aRx: 1.7, aRe: .1, aLx: .3 }]], { T: L.T }); cara(i, L.T, { expr: 'shock' }); cam([7.6, 6.4, -6], [7, 4.4, 200], 40); sh(V(7, 0, 8), 18); }, [[0, 'wind', .6], [.6, 'rope_far', .5]]);
 // 70 «Und sie hat sich dabei noch gedreht.»: teleobjetivo: lejos, Lotte todavía hace su pirueta encima de la cuerda
 shot(75.293, 'S', null, L => { welt(L, 7, 600, { dusk: true, grass: false }); const z = 640 + L.lt * 60; setRope(-Math.asin(clamp(z / AZ))); const l = put(lotte, 7, ropeY(z) + 2.2, z, L.T * 5); l.blob.visible = false;
-  actuar(l, 0, [[0, { aLz: 1.3, aRz: 1.3, aLx: .3, aRx: .3, lRx: .4, lRk: .6 }]], { T: L.T }); cara(l, L.T, { eyes: 'closed', mouth: 'smile', noBlink: true }); cam([12, 7, z - 34], [7, 5, z], 22); sh(V(7, 0, z), 24); }, [[0, 'music_box', .5]]);
+  actuar(l, 0, [[0, { aLz: 1.3, aRz: 1.3, aLx: .3, aRx: .3, lRx: .4, lRk: .6 }]], { T: L.T }); cara(l, L.T, { eyes: 'closed', mouth: 'smile', noBlink: true }); cam([12, 6, z - 34], [7, 7.4, z], 22); sh(V(7, 0, z), 24); }, [[0, 'music_box', .5]]);
 // 71 «Wir sagen nicht „verpasst“.» (fundido): el pueblo en círculo, cabizbajo
 shot(76.725, 'W', null, L => { welt(L, 0, 0, { dusk: true }); const ring = [oma, mutter, DX[17], DX[18], DX[19], DX[20], DX[21], DX[22]]; ring.forEach((c, i) => { const a = i / ring.length * 6.28 + .3; put(c, Math.cos(a) * 6, 0, -14 + Math.sin(a) * 6, Math.atan2(-Math.cos(a), -Math.sin(a))); actuar(c, 0, [[0, { headX: .5, aLx: .3, aRx: .3, aLz: -.3, aRz: -.3, aLe: 1, aRe: 1 }]], { T: L.T + i }); cara(c, L.T + i, { expr: 'sad', eyes: 'down' }); });
   show(STEIN, 0, 0, -14); orbit(V(0, 2, -14), lerp(24, 21, L.k), .3, .5, 44); sh(V(0, 0, -14), 22); }, [[0, 'wind_soft', .5]]);

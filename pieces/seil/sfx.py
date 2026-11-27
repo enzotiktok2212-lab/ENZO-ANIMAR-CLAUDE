@@ -379,6 +379,7 @@ for _a, _b in [('rain', 'money_rain'), ('freeze', 'glass_crack'), ('rumble', 'bo
 LIB['fire_whoosh'] = (lambda s, c: norm(mx(bp(noise(1.0, s), 200, 3000) * adsr(1.0, .03, .5), lp(noise(1.0, s + 1), 120) * adsr(1.0, .01, .4) * 1.5)), .55)
 LIB['zap'] = (lambda s, c: norm(saw(glide(900, 200, .35), .35) * env(.35, .002, .2) + hp(noise(.35, s), 3000)[:int(.35 * SR)] * env(.35, .002, .1) * .6), .45)
 LIB['spit'] = (lambda s, c: norm(bp(noise(.22, s), 1500, 6000) * env(.22, .003, .08) + bp(noise(.22, s + 3), 300, 900) * env(.22, .02, .1) * .5), .5)
+
 # Sonidos grabados (plugins/.../blocky-3d/sfx-reales) que se mezclan con los sintetizados para más realismo
 import os as _os
 _RD = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '../../plugins/animate/skills/animate/styles/blocky-3d/sfx-reales')
@@ -530,9 +531,38 @@ for _a, _b in [('cash_reg', 'cash'), ('money_rain', 'coins'), ('money_burst', 'c
 # --- SCHUTZENGEL: alias ---
 LIB['crack'] = LIB['back_crack']
 
+
+# --- SEIL: trompetilla de latón, cuerda que barre el suelo, manivela gigante y alias ---
+def brass(f=330, d=.7, s=1):   # «¡SPRING!» por la trompetilla: diente de sierra con vibrato, filtrado como un cuerno, ataque con soplido
+    t = T(d); vib = 1 + .012 * np.sin(2 * np.pi * 5.5 * t); x = saw(f * vib, d) * .6 + saw(f * 2.005 * vib, d) * .25 + saw(f * .5, d) * .3
+    x = svf_bp(x, 900, 1.6) * .8 + lp(x, 2200) * .4; e = np.clip(t / .04, 0, 1) * np.clip((d - t) / .12, 0, 1)
+    return norm(x * e + bp(noise(d, s), 600, 3000) * np.exp(-t * 18) * .25)
+def rope_swish(d=.55, s=1):    # la cuerda de ropa pasa rozando el suelo: whoosh grave con aleteo de tela
+    t = T(d); e = np.exp(-((t - d * .45) / (d * .22)) ** 2); flap = 1 + .5 * np.sin(2 * np.pi * (28 + 20 * t) * t)
+    return norm((lp(noise(d, s), 700) * 1.0 + bp(noise(d, s + 1), 900, 2600) * .35 * flap) * e)
+LIB['horn_blow'] = (lambda s, c: brass(330 * R(s, .94, 1.06), .7, s), .6)
+LIB['horn_far'] = (lambda s, c: lp(brass(300, .8, s), 1200) * .7, .5)
+LIB['rope_swish'] = (lambda s, c: rope_swish(.55, s), .75)
+LIB['rope_far'] = (lambda s, c: norm(lp(noise(1.4, s), 260) * adsr(1.4, .6, .3)), .5)
+LIB['rope_whoosh_high'] = (lambda s, c: rope_swish(.9, s), .7)
+LIB['rope_drag'] = (lambda s, c: norm(lp(noise(1.0, s), 500) * adsr(1.0, .05, .5)), .5)
+LIB['rope_hit'] = (lambda s, c: norm(mx(impact(.5, 140, 50, .4, s), rope_swish(.4, s + 2))), .7)
+LIB['rope_falling'] = (lambda s, c: norm(lp(noise(1.2, s), 300) * adsr(1.2, .9, .9)), .6)
+LIB['crank'] = (lambda s, c: norm(mx(creak(1.0, 140, s), lp(noise(1.0, s + 4), 90) * adsr(1.0, .1, .6) * 1.5)), .6)
+LIB['creak_big'] = (lambda s, c: norm(creak(1.2, 110, s)), .55)
+for _a, _b in [('baby_shout', 'shout_f'), ('beep_monitor', 'monitor_beep'), ('broom', 'brush'), ('buckle', 'click_metal'), ('cart_wheels', 'wheels'), ('chime_sad', 'sad_tone'),
+               ('climb', 'struggle'), ('crowd_far_shout', 'shout_crowd'), ('crowd_hey', 'kids_cheer'), ('crowd_moan', 'crowd_tense'), ('crowd_shout', 'shout_crowd'), ('crowd_wave', 'shout_crowd'),
+               ('drum', 'hit_deep'), ('gasp_girl', 'gasp_f'), ('giggle', 'laugh_kid'), ('grab_cloth', 'cloth'), ('grip', 'hand_squeeze'), ('gulls', 'birds'), ('horn_grab', 'click_metal'),
+               ('jump_crowd', 'jump'), ('jump_spin', 'whoosh_soft'), ('kid_hm', 'hmm'), ('lace', 'cloth'), ('land_crowd', 'land'), ('laugh_kids', 'kids_laugh'), ('murmur_low', 'murmur_soft'),
+               ('music_box', 'musicbox2'), ('old_film', 'film_roll'), ('oma_huh', 'gasp_old'), ('organ_soft', 'chime_soft'), ('pling_low', 'sad_hit'), ('release', 'whoosh_down'), ('riser_cut', 'riser_short'),
+               ('rope_creak', 'wood_creak'), ('scream_far', 'scream_m'), ('shoelace', 'cloth'), ('shout_kid', 'shout'), ('shout_man', 'shout_m'), ('shush', 'shh'), ('slurp', 'sip'),
+               ('snail_slime', 'squeak'), ('sneeze', 'fake_sneeze'), ('steps_grass', 'steps_soft'), ('tap', 'click'), ('thunder', 'thunder_far'), ('water_lap', 'water_slosh'), ('whip', 'slap'),
+               ('wind_cold', 'wind_howl'), ('wind_high', 'wind_howl'), ('wrong_buzz', 'buzzer')]:
+    LIB[_a] = LIB[_b]
+
 if __name__ == '__main__':
     cues_f, voice_f, music_f, out_f = sys.argv[1:5]
-    cues = json.load(open(cues_f)); DUR = 162.4
+    cues = json.load(open(cues_f)); DUR = 195.4
     cues = fill_gaps(cues, DUR); print(len(cues), 'efectos; hueco máximo', max(np.diff(sorted([0] + [c['t'] for c in cues] + [DUR]))).round(2))
     TEN = {'riser', 'braam', 'riser_short', 'braam_short'}
     ten = render([c for c in cues if c['s'] in TEN], DUR); ten = norm(ten, 0.9)

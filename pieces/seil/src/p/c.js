@@ -51,7 +51,7 @@ shot(112.171, 'C', null, L => prenda(L, 7.2, 2.4), [[0, 'lace', .5]]);
 shot(112.942, 'W', null, L => { welt(L, WX + 40, 20, { snow: true, grass: false }); nah(WX + 40, 5.2, 20); const c = put(ich, WX + 40, 0, 24.5, PI); winterIch(c); hornHang(c, 0); actuar(c, 0, [[0, { aLx: .3, headY: .3 }]], { T: L.T }); cara(c, L.T, { expr: 'worried' });
   cm([WX + 44, 7, 32, WX + 40, 5, 20, 40], [WX + 50, 12, 46, WX + 40, 5, 20, 46], L.k); sh(V(WX + 40, 0, 22), 26); }, [[0, 'whoosh_soft', .5]]);
 // 102 «Auf manchen Sachen sind noch Namen»: una etiqueta bordada: «OMA ROSI»
-shot(114.256, 'Z', null, L => { welt(L, WX + 40, 20, { snow: true, grass: false }); nah(WX + 40, 5.2, 20); const X = WX + 40 - 35 + 3 + 4 * 4.9 - 1; cm([X + .6, 6.8, 34, X, 5.3, 22, 26], [X + .5, 6.6, 33, X, 5.3, 22, 24], L.k); sh(V(X, 0, 20), 10); }, [[0, 'pling_low', .4]]);
+shot(114.256, 'Z', null, L => { welt(L, WX + 40, 20, { snow: true, grass: false }); nah(WX + 40, 5.2, 20); const X = WX + 40 - 35 + 3 + 6 * 4.9 - 1; cm([X + .6, 6.8, 34, X, 5.3, 22, 26], [X + .5, 6.6, 33, X, 5.3, 22, 24], L.k); sh(V(X, 0, 20), 10); }, [[0, 'pling_low', .4]]);
 // 103 «Namen eingestickt.»: toco la etiqueta «PAUL» con el dedo, triste
 shot(115.336, 'C', null, L => { welt(L, WX + 40, 20, { snow: true, grass: false }); nah(WX + 40, 5.2, 20); const X = WX + 40 - 35 + 3 - 1; const c = put(ich, X + 1, 0, 24, PI - .2); winterIch(c); actuar(c, 0, [[0, { aRx: 1.5, aRz: -.1, aRe: .3, lean: .15, headX: .25 }]], { T: L.T }); cara(c, L.T, { expr: 'sad' });
   cm([X + 7, 8.4, 36, X + .6, 5.4, 22, 40], [X + 6.4, 8.2, 35, X + .6, 5.4, 22, 38], L.k); sh(V(X, 0, 22), 14); }, [[.2, 'cloth', .4], [.5, 'chime_sad', .4]]);

@@ -42,7 +42,7 @@ shot(3.877, 'F', null, L => { welt(L, 5, 24); const tp = .3, zc = 22; cuerda(L, 
   attach(BABYS[0], mutter.spine, [0, 1.05, 1.35], [0, 0, 0], .8); onBody(mutter, 11, -.1, .08, 42, L.k, 9.6); sh(V(5, 0, 22), 22); }, [[0, 'flash', .4], [.25, 'jump', .5], [.5, 'baby_coo', .5]]);
 // 7 «Ein Seil fegt über die»: a ras de suelo fuera del pueblo: la cuerda viene barriendo la pradera hacia la cámara
 shot(4.58, 'S', null, L => { welt(L, 70, 10, { day: false }); cuerda(L, .95, 18, 260);
-  cm([70, 2.2, 34, 70, 3.2, -40, 44], [70, 2.8, 30, 70, 3, -40, 46], L.k); sh(V(70, 0, 0), 40); }, [[.2, 'rope_far', .8], [.85, 'rope_swish', 1]]);
+  cm([70, 5, 34, 70, 1.6, -40, 44], [70, 5.4, 30, 70, 1.6, -40, 46], L.k); sh(V(70, 0, 0), 40); }, [[.2, 'rope_far', .8], [.85, 'rope_swish', 1]]);
 // 8 «ganze Welt.»: desde muy alto: la cuerda es una línea que barre la pradera con los pueblos
 shot(5.78, 'Z', null, L => { welt(L, 0, 0, { grass: false }); cuerda(L, .5, -60, 200);
   cm([60, 260, 360, 0, 0, -60, 46], [40, 300, 400, 0, 0, -80, 46], L.k); sh(V(0, 0, 0), 120); }, [[.1, 'wind', .5], [.3, 'rope_swish', .5]]);
@@ -148,7 +148,7 @@ shot(34.832, 'F', null, L => { welt(L, -40, -20, { dusk: true }); const tp = .7,
 shot(36.372, 'W', null, L => { welt(L, 600, 0, { dusk: true, grass: false }); wolken(); setRope(2 + L.lt * .5); grade.uniforms.sepia.value = .85; BW = .5; cm([700, 30, 260, TX, 200, 0, 44], [720, 34, 240, TX, 210, 0, 42], L.k); sh(V(TX, 0, 0), 80); }, [[.2, 'crank', .5], [.5, 'old_film', .4]]);
 // 38 «Wir sehen es kommen.»: yo en el pedestal mirando al horizonte con la mano de visera; a lo lejos la cuerda se acerca levantando polvo
 shot(38.472, 'C', null, L => { welt(L, -8, -8); const p = D1.peds[1]; const c = put(ich, p[0], 2.3, p[1], PI); c.blob.visible = false; hornHang(c, 0); actuar(c, 0, [[0, { aRx: 2.4, aRz: -.6, aRe: 2.3, headX: -.1 }]], { T: L.T }); cara(c, L.T, { expr: 'determined', eyes: 'squint' });
-  cuerda(L, 3.5, p[1], 300); onBody(c, 12, 1.15, .02, 42, L.k, 10.5); sh(V(p[0], 0, p[1]), 20); }, [[0, 'wind', .5], [.3, 'rope_far', .6]]);
+  cuerda(L, 3.5, p[1], 300); onBody(c, 12, .6, .02, 42, L.k, 10.5); sh(V(p[0], 0, p[1]), 20); }, [[0, 'wind', .5], [.3, 'rope_far', .6]]);
 // 39 «Wir hören es kommen.»: la mano en la oreja; el zumbido se acerca (ondas)
 shot(39.521, 'S', null, L => { welt(L, -8, -8); const p = D1.peds[1]; const c = put(ich, p[0], 2.3, p[1], PI - .6); c.blob.visible = false; hornHang(c, 0); actuar(c, 0, [[0, GEST.listen]], { T: L.T }); cara(c, L.T, { expr: 'worried', eyes: 'side_l' });
   for (let k = 0; k < 3; k++) { const q = ((L.lt * 1.4 + k / 3) % 1); FX2D.push(x => { x.save(); x.strokeStyle = `rgba(255,255,255,${(1 - q) * .7})`; x.lineWidth = 10; x.beginPath(); x.arc(W * .3, H * .4, 60 + q * 300, -1, 1); x.stroke(); x.restore(); }); }

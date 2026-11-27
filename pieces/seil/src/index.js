@@ -278,7 +278,7 @@ shot(3.877, 'F', null, L => { welt(L, 5, 24); const tp = .3, zc = 22; cuerda(L, 
   attach(BABYS[0], mutter.spine, [0, 1.05, 1.35], [0, 0, 0], .8); onBody(mutter, 11, -.1, .08, 42, L.k, 9.6); sh(V(5, 0, 22), 22); }, [[0, 'flash', .4], [.25, 'jump', .5], [.5, 'baby_coo', .5]]);
 // 7 «Ein Seil fegt über die»: a ras de suelo fuera del pueblo: la cuerda viene barriendo la pradera hacia la cámara
 shot(4.58, 'S', null, L => { welt(L, 70, 10, { day: false }); cuerda(L, .95, 18, 260);
-  cm([70, 2.2, 34, 70, 3.2, -40, 44], [70, 2.8, 30, 70, 3, -40, 46], L.k); sh(V(70, 0, 0), 40); }, [[.2, 'rope_far', .8], [.85, 'rope_swish', 1]]);
+  cm([70, 5, 34, 70, 1.6, -40, 44], [70, 5.4, 30, 70, 1.6, -40, 46], L.k); sh(V(70, 0, 0), 40); }, [[.2, 'rope_far', .8], [.85, 'rope_swish', 1]]);
 // 8 «ganze Welt.»: desde muy alto: la cuerda es una línea que barre la pradera con los pueblos
 shot(5.78, 'Z', null, L => { welt(L, 0, 0, { grass: false }); cuerda(L, .5, -60, 200);
   cm([60, 260, 360, 0, 0, -60, 46], [40, 300, 400, 0, 0, -80, 46], L.k); sh(V(0, 0, 0), 120); }, [[.1, 'wind', .5], [.3, 'rope_swish', .5]]);
@@ -384,7 +384,7 @@ shot(34.832, 'F', null, L => { welt(L, -40, -20, { dusk: true }); const tp = .7,
 shot(36.372, 'W', null, L => { welt(L, 600, 0, { dusk: true, grass: false }); wolken(); setRope(2 + L.lt * .5); grade.uniforms.sepia.value = .85; BW = .5; cm([700, 30, 260, TX, 200, 0, 44], [720, 34, 240, TX, 210, 0, 42], L.k); sh(V(TX, 0, 0), 80); }, [[.2, 'crank', .5], [.5, 'old_film', .4]]);
 // 38 «Wir sehen es kommen.»: yo en el pedestal mirando al horizonte con la mano de visera; a lo lejos la cuerda se acerca levantando polvo
 shot(38.472, 'C', null, L => { welt(L, -8, -8); const p = D1.peds[1]; const c = put(ich, p[0], 2.3, p[1], PI); c.blob.visible = false; hornHang(c, 0); actuar(c, 0, [[0, { aRx: 2.4, aRz: -.6, aRe: 2.3, headX: -.1 }]], { T: L.T }); cara(c, L.T, { expr: 'determined', eyes: 'squint' });
-  cuerda(L, 3.5, p[1], 300); onBody(c, 12, 1.15, .02, 42, L.k, 10.5); sh(V(p[0], 0, p[1]), 20); }, [[0, 'wind', .5], [.3, 'rope_far', .6]]);
+  cuerda(L, 3.5, p[1], 300); onBody(c, 12, .6, .02, 42, L.k, 10.5); sh(V(p[0], 0, p[1]), 20); }, [[0, 'wind', .5], [.3, 'rope_far', .6]]);
 // 39 «Wir hören es kommen.»: la mano en la oreja; el zumbido se acerca (ondas)
 shot(39.521, 'S', null, L => { welt(L, -8, -8); const p = D1.peds[1]; const c = put(ich, p[0], 2.3, p[1], PI - .6); c.blob.visible = false; hornHang(c, 0); actuar(c, 0, [[0, GEST.listen]], { T: L.T }); cara(c, L.T, { expr: 'worried', eyes: 'side_l' });
   for (let k = 0; k < 3; k++) { const q = ((L.lt * 1.4 + k / 3) % 1); FX2D.push(x => { x.save(); x.strokeStyle = `rgba(255,255,255,${(1 - q) * .7})`; x.lineWidth = 10; x.beginPath(); x.arc(W * .3, H * .4, 60 + q * 300, -1, 1); x.stroke(); x.restore(); }); }
@@ -451,7 +451,7 @@ shot(54.884, 'C', 'punch', L => { welt(L, -300, -260, { snow: true, grass: false
 shot(56.216, 'W', null, L => { welt(L, 0, 20); const x = 6 - L.lt * 3; show(KARREN, x, 0, 20, 0); const p = put(DX[12], x + 5.4, 0, 20, -PI / 2); actuar(p, 0, [[0, { ...walkP(L.T, 0), ...PUSH }]], { T: L.T }); cara(p, L.T, { expr: 'smile' });
   SNAILS.slice(0, 9).forEach((sn, i) => show(sn, x - 1.6 + (i % 3) * 1.4, 2.0 + Math.floor(i / 3) * .5, 19 - .9 + (i % 2) * 1.6, i, .7));
   [[oma, -6, 17, .5], [DX[13], -9, 22, .7], [ich, -4, 23, .3]].forEach(([c, x2, z2, r], i) => { put(c, x2, 0, z2, r); actuar(c, 0, [[0, i === 2 ? GEST.facepalm : 'shrug']], { T: L.T }); cara(c, L.T, { expr: i === 2 ? 'tired' : 'confused' }); });
-  orbit(V(0, 3, 20), lerp(30, 27, L.k), .05, .16, 46); sh(V(0, 0, 20), 24); }, [[0, 'cart_wheels', .6], [.4, 'murmur', .5]]);
+  orbit(V(1, 3, 20), lerp(30, 27, L.k), .05, .16, 46); sh(V(0, 0, 20), 24); }, [[0, 'cart_wheels', .6], [.4, 'murmur', .5]]);
 // 53 «Schnecken an.»: primer plano: un caracol baja del carro y se pasea por una bota
 shot(56.976, 'Z', null, L => { welt(L, 0, 20); show(KARREN, 4, 0, 20, 0); SNAILS.slice(0, 9).forEach((sn, i) => show(sn, 2.4 + (i % 3) * 1.4, 2.0 + Math.floor(i / 3) * .5, 19.1 + (i % 2) * 1.6, i, .7)); const sn = show(SNAILS[10], 1.2 - L.lt * .4, 0, 23, -PI / 2 + .3, 1.1);
   const o = put(oma, -1.5, 0, 24, .5); actuar(o, 0, [[0, { aLx: .8, aRx: .8, aLz: .4, aRz: .4, aLe: 1.6, aRe: 1.6, lean: .2, headX: .45 }]], { T: L.T }); cara(o, L.T, { eyes: 'wide', mouth: 'o' });
@@ -461,7 +461,7 @@ shot(57.671, 'S', null, L => { welt(L, 0, 12); const tp = .9, zc = 12; cuerda(L,
   vecinos(L, [[-7, 6, .2], [7, 5, -.2]], tp, zc, VV, 8); orbit(V(0, 4, 12), lerp(15, 13, L.k), 0, .08, 44); badge3('tag', 'LOTTE', hp(lotte).add(V(0, 2.4, 0)), clamp((L.lt - .1) / .2)); sh(V(0, 0, 12), 22); }, [[.1, 'sparkle', .4], [.8, 'jump_spin', .6]]);
 // 55 «Sie hat immer eine Drehung eingebaut.»: desde abajo, a cámara lenta: Lotte gira en el aire justo sobre la cuerda
 shot(59.594, 'W', null, L => { welt(L, 0, 12); const tp = .55, zc = 12, v = 60; cuerda(L, tp, zc, v); drehSprung(lotte, L, tp, zc, v, .3, { x: 0, z: 12, J: 4.4, pose: { aLx: 2.6, aRx: 2.6, aLz: .3, aRz: .3 }, f: { eyes: 'closed', mouth: 'open_smile', noBlink: true } });
-  cm([2.4, 1.0, 19, 0, 5.4, 12, 46], [2, 1.0, 18.4, 0, 5.8, 12, 44], L.k); sh(V(0, 0, 12), 18); }, [[.4, 'rope_swish', .5], [.5, 'whoosh_soft', .5]]);
+  cm([2.4, 1.0, 19, 0, 3.8, 12, 46], [2, 1.0, 18.4, 0, 5.2, 12, 44], L.k); sh(V(0, 0, 12), 18); }, [[.4, 'rope_swish', .5], [.5, 'whoosh_soft', .5]]);
 // 56 «eingebaut.»: los vecinos aplauden su pirueta
 shot(60.654, 'F', null, L => { welt(L, 0, 12); const l = put(lotte, 0, 0, 12, 0); actuar(l, 0, [[0, { aLz: 1.2, aRz: 1.2, aLx: .4, aRx: .4 }]], { T: L.T }); grin(l, L.T);
   [[DX[14], -5, 7, .4], [DX[15], 5, 7, -.4], [oma, -2.6, 5, .2], [DX[16], 3, 4.5, -.2]].forEach(([c, x, z, r], i) => crowdGuy(c, x, z, L, i, { mode: 'clap', ry: r }));
@@ -511,13 +511,13 @@ shot(72.265, 'F', 'slow', L => { welt(L, 7, 4, { dusk: true }); const tp = .55, 
   orbit(V(7, 3.4, 3), lerp(14, 11, L.k), .7, .06, 42); sh(V(7, 0, 3), 16); }, [[.5, 'rope_hit', .8], [.55, 'scream_girl', .6]]);
 // 68 «und mitgenommen,»: la cuerda se la lleva por la pradera, dando vueltas, las trenzas al viento
 shot(73.385, 'W', null, L => { welt(L, 7, 30, { dusk: true }); const v = 40, z = 6 + v * L.lt; cuerda(L, 0, 6, v); const l = put(lotte, 7, ropeY(z) + 1.2, z, 0); l.blob.visible = false; l.root.rotation.set(-1 + L.lt * 4, 0, L.lt * 8);
-  actuar(l, 0, [[0, { aLx: 2.6, aRx: 2.2, aLz: .9, aRz: .7, lLx: -.5, lRx: .7 }]], { T: L.T }); cara(l, L.T, { eyes: 'terror', mouth: 'o', noBlink: true }); cam([13, 7, z - 13], [7, 3.4, z], 44); sh(V(7, 0, z), 24); }, [[0, 'rope_drag', .7], [.2, 'scream_far', .5]]);
+  actuar(l, 0, [[0, { aLx: 2.6, aRx: 2.2, aLz: .9, aRz: .7, lLx: -.5, lRx: .7 }]], { T: L.T }); cara(l, L.T, { eyes: 'terror', mouth: 'o', noBlink: true }); cam([10, 13, z - 15], [7, 2.2, z], 44); sh(V(7, 0, z), 24); }, [[0, 'rope_drag', .7], [.2, 'scream_far', .5]]);
 // 69 «bis hinter den Horizont.»: desde el pueblo: un puntito en la cuerda que se aleja hasta el horizonte
 shot(74.098, 'Z', null, L => { welt(L, 7, 10, { dusk: true }); const z = 80 + 900 * easeIn(L.k); const phi = -Math.asin(clamp(z / AZ)); setRope(phi); const l = put(lotte, 7, ropeY(z) + 1.2, z, 0); l.blob.visible = false; l.root.rotation.set(-1, 0, L.T * 8); l.root.scale.setScalar(2.2);
   const i = put(ich, 7, 0, 6, PI); actuar(i, 0, [[0, { aRx: 1.7, aRe: .1, aLx: .3 }]], { T: L.T }); cara(i, L.T, { expr: 'shock' }); cam([7.6, 6.4, -6], [7, 4.4, 200], 40); sh(V(7, 0, 8), 18); }, [[0, 'wind', .6], [.6, 'rope_far', .5]]);
 // 70 «Und sie hat sich dabei noch gedreht.»: teleobjetivo: lejos, Lotte todavía hace su pirueta encima de la cuerda
 shot(75.293, 'S', null, L => { welt(L, 7, 600, { dusk: true, grass: false }); const z = 640 + L.lt * 60; setRope(-Math.asin(clamp(z / AZ))); const l = put(lotte, 7, ropeY(z) + 2.2, z, L.T * 5); l.blob.visible = false;
-  actuar(l, 0, [[0, { aLz: 1.3, aRz: 1.3, aLx: .3, aRx: .3, lRx: .4, lRk: .6 }]], { T: L.T }); cara(l, L.T, { eyes: 'closed', mouth: 'smile', noBlink: true }); cam([12, 7, z - 34], [7, 5, z], 22); sh(V(7, 0, z), 24); }, [[0, 'music_box', .5]]);
+  actuar(l, 0, [[0, { aLz: 1.3, aRz: 1.3, aLx: .3, aRx: .3, lRx: .4, lRk: .6 }]], { T: L.T }); cara(l, L.T, { eyes: 'closed', mouth: 'smile', noBlink: true }); cam([12, 6, z - 34], [7, 7.4, z], 22); sh(V(7, 0, z), 24); }, [[0, 'music_box', .5]]);
 // 71 «Wir sagen nicht „verpasst“.» (fundido): el pueblo en círculo, cabizbajo
 shot(76.725, 'W', null, L => { welt(L, 0, 0, { dusk: true }); const ring = [oma, mutter, DX[17], DX[18], DX[19], DX[20], DX[21], DX[22]]; ring.forEach((c, i) => { const a = i / ring.length * 6.28 + .3; put(c, Math.cos(a) * 6, 0, -14 + Math.sin(a) * 6, Math.atan2(-Math.cos(a), -Math.sin(a))); actuar(c, 0, [[0, { headX: .5, aLx: .3, aRx: .3, aLz: -.3, aRz: -.3, aLe: 1, aRe: 1 }]], { T: L.T + i }); cara(c, L.T + i, { expr: 'sad', eyes: 'down' }); });
   show(STEIN, 0, 0, -14); orbit(V(0, 2, -14), lerp(24, 21, L.k), .3, .5, 44); sh(V(0, 0, -14), 22); }, [[0, 'wind_soft', .5]]);
@@ -553,7 +553,7 @@ shot(89.239, 'Z', null, L => { welt(L, 300, 40); const c = walkTo(ich, L, 296 + 
 // 81 «Die Leute haben aufgehört, mich zu grüßen.»: saludo a los de un pueblo; me dan la espalda
 shot(90.874, 'S', null, L => { welt(L, 420, 226); const c = put(ich, 420, 0, 232, PI); hornHang(c, 0); actuar(c, 0, [[0, 'wave']], { T: L.T }); cara(c, L.T, { expr: 'smile' });
   [[DX[26], 415, 222], [DX[27], 421, 220], [DX[28], 426, 223]].forEach(([d, x, z], i) => { put(d, x, 0, z, lerp(0, PI, clamp((L.lt - .2 - i * .12) / .3))); actuar(d, 0, [[0, { aLz: -.1, aRz: -.1, headX: .1 }]], { T: L.T + i }); cara(d, L.T + i, { expr: 'sus' }); });
-  cm([419, 6.2, 246, 421, 4, 222, 42], [419.4, 6, 244, 421, 4, 222, 40], L.k); sh(V(421, 0, 226), 18); }, [[.3, 'cloth', .4], [.5, 'sigh', .4]]);
+  cm([436, 6, 232, 420, 4.4, 226, 44], [435, 6, 231, 420, 4.4, 226, 42], L.k); sh(V(421, 0, 226), 18); }, [[.3, 'cloth', .4], [.5, 'sigh', .4]]);
 // 82 «Im letzten Dorf»: el pueblo de pescadores junto al lago, al atardecer
 shot(92.636, 'W', null, L => { welt(L, FX, 10, { dusk: true }); [[DX[1], FX - 10, 12], [DX[2], FX + 6, 18], [DX[3], FX + 16, 10]].forEach(([d, x, z], i) => crowdGuy(d, x, z, L, i, { mode: i === 1 ? 'talk' : 'idle', ry: .3 }));
   cm([FX - 40, 26, -40, FX, 2, 30, 46], [FX - 36, 24, -36, FX, 2, 30, 46], L.k); sh(V(FX, 0, 20), 60); }, [[0, 'gulls', .6], [.2, 'water_lap', .5]]);
@@ -577,7 +577,7 @@ shot(99.586, 'W', null, L => { const [f, i] = fischer2(L); actuar(f, 0, [[0, { a
   orbit(V(FXX, 4, FZ), lerp(13, 15, L.k), PI - .3, .1, 42); sh(V(FXX, 0, FZ), 16); }, [[.2, 'cloth', .4], [.5, 'water_lap', .4]]);
 // ---------- c: ya no hay nadie, el invierno, la cuerda de cerca, la torre de personas y Lotte (100,68 – 152,43 s) ----------
 // Nieve desde x ≈ 960. Torre de Lotte en TX (cara al pueblo: ángulo π, x ≈ TX − tR(y)). Muro de gente real: wand(L, lista, a0, y0, filas, columnas).
-const WX = 1060;   // donde camino en invierno
+const WX = 1060; NOGRASS.push([858, -62, 884, -34]);   // donde camino en invierno
 const HORN_LOST = P_(horn()); outline(HORN_LOST, OP);
 const SNOWPILE = P_(new THREE.Group()); { for (let k = 0; k < 6; k++) { const s = sphere(1.4 + k * .2, mat(0xf2f6fc, { roughness: .85 }), SNOWPILE, Math.cos(k) * 2, .2, Math.sin(k * 1.7) * 2, 10, 6); s.scale.y = .4; } }
 // trozo de cuerda de primer plano pasando a mi lado (a lo largo de x, a la altura y, avanzando en z)
@@ -612,7 +612,7 @@ shot(106.40, 'F', null, L => { welt(L, WX, 20, { snow: true, grass: false }); co
   show(SNOWPILE, WX + 6, 0, 24); orbit(V(WX - 3, 3.4, 20), lerp(16, 14, L.k), 1.1, .08, 44); sh(V(WX, 0, 20), 20); }, [[0, 'blizzard', .8], [.3, 'snow_steps', .5]]);
 // 94 «Winter gekostet.»: la cuerda gigante pasa por encima de mí, alta, entre los copos
 shot(107.18, 'S', null, L => { welt(L, WX, 20, { snow: true, grass: false }); cuerda(L, .45, 20, 70); const c = put(ich, WX, -.5, 20, PI / 2); winterIch(c); hornHang(c, 0); actuar(c, 0, [[0, { headX: -.6, lean: -.1, ...GEST.hug_self, headY: 0 }]], { T: L.T }); cara(c, L.T, { eyes: 'up', mouth: 'o', noBlink: true });
-  cm([WX - 6, 1.2, 30, WX, 9, 14, 52], [WX - 5.6, 1.3, 29, WX, 10, 14, 52], L.k); sh(V(WX, 0, 20), 20); }, [[0, 'rope_whoosh_high', .8], [.4, 'blizzard', .5]]);
+  cm([WX - 3, 1.2, 31, WX + 1, 9, 14, 52], [WX - 2.8, 1.3, 30, WX + 1, 10, 14, 52], L.k); sh(V(WX, 0, 20), 20); }, [[0, 'rope_whoosh_high', .8], [.4, 'blizzard', .5]]);
 // 95 «Von Nahem ist das Seil gar kein Seil.»: la cuerda pasa despacio junto a mi cara; me acerco a mirarla
 shot(108.211, 'W', null, L => { welt(L, WX + 40, 20, { snow: true, grass: false }); const c = put(ich, WX + 40, 0, 24, PI); winterIch(c); hornHang(c, 0); actuar(c, 0, [[0, { lean: .2, headX: .15, aRx: 1.1, aRe: .5 }]], { T: L.T }); cara(c, L.T, { expr: 'confused' });
   nah(WX + 40, 5.2, 20 - L.lt * .6); cm([WX + 50, 8, 40, WX + 40, 4.6, 22, 42], [WX + 49, 7.6, 38, WX + 40, 4.6, 22, 40], L.k); sh(V(WX + 40, 0, 22), 18); }, [[0, 'rope_creak', .6], [.3, 'cloth', .4]]);
@@ -620,7 +620,7 @@ shot(108.211, 'W', null, L => { welt(L, WX + 40, 20, { snow: true, grass: false 
 shot(109.711, 'S', null, L => { welt(L, WX + 40, 20, { snow: true, grass: false }); nah(WX + 40, 5.2, 20); const k = WX + 40 - 35 + 3 + 3 * 4.9 + 2.2; cm([k + 3, 10, 28, k, 5.2, 20, 38], [k + 2.4, 9.6, 27, k, 5.2, 20, 36], L.k); sh(V(k, 0, 20), 14); }, [[0, 'rope_creak', .6]]);
 // 97-100 «Es sind Ärmel, Gürtel, Schals und Schnürsenkel.»: cada prenda en primer plano
 const prenda = (L, x, dy = .8, side = 1) => { welt(L, WX + 40, 20, { snow: true, grass: false }); nah(WX + 40, 5.2, 20); const X = WX + 40 + x; cm([X + 1.6 * side, 5.2 + dy + 3.4, 30.5, X, 5.2 + dy, 21, 36], [X + 1.2 * side, 5.2 + dy + 3.2, 29.5, X, 5.2 + dy, 21, 34], L.k); sh(V(X, 0, 20), 12); };
-shot(110.051, 'C', null, L => prenda(L, -7.5, 1.4), [[0, 'cloth', .6]]);
+shot(110.051, 'C', null, L => { prenda(L, -7.5, 1.4); const X = WX + 40 - 7.5; cm([X + 3, 13, 34, X, 6.4, 21, 32], [X + 2.6, 12.6, 33, X, 6.4, 21, 30], L.k); }, [[0, 'cloth', .6]]);
 shot(111.116, 'C', null, L => prenda(L, -2.6, 0, -1), [[0, 'buckle', .6]]);
 shot(111.731, 'C', null, L => prenda(L, 2.3, -1.6), [[0, 'cloth', .5]]);
 shot(112.171, 'C', null, L => prenda(L, 7.2, 2.4), [[0, 'lace', .5]]);
@@ -628,7 +628,7 @@ shot(112.171, 'C', null, L => prenda(L, 7.2, 2.4), [[0, 'lace', .5]]);
 shot(112.942, 'W', null, L => { welt(L, WX + 40, 20, { snow: true, grass: false }); nah(WX + 40, 5.2, 20); const c = put(ich, WX + 40, 0, 24.5, PI); winterIch(c); hornHang(c, 0); actuar(c, 0, [[0, { aLx: .3, headY: .3 }]], { T: L.T }); cara(c, L.T, { expr: 'worried' });
   cm([WX + 44, 7, 32, WX + 40, 5, 20, 40], [WX + 50, 12, 46, WX + 40, 5, 20, 46], L.k); sh(V(WX + 40, 0, 22), 26); }, [[0, 'whoosh_soft', .5]]);
 // 102 «Auf manchen Sachen sind noch Namen»: una etiqueta bordada: «OMA ROSI»
-shot(114.256, 'Z', null, L => { welt(L, WX + 40, 20, { snow: true, grass: false }); nah(WX + 40, 5.2, 20); const X = WX + 40 - 35 + 3 + 4 * 4.9 - 1; cm([X + .6, 6.4, 30, X, 5.3, 22, 30], [X + .5, 6.2, 29, X, 5.3, 22, 28], L.k); sh(V(X, 0, 20), 10); }, [[0, 'pling_low', .4]]);
+shot(114.256, 'Z', null, L => { welt(L, WX + 40, 20, { snow: true, grass: false }); nah(WX + 40, 5.2, 20); const X = WX + 40 - 35 + 3 + 6 * 4.9 - 1; cm([X + .6, 6.8, 34, X, 5.3, 22, 26], [X + .5, 6.6, 33, X, 5.3, 22, 24], L.k); sh(V(X, 0, 20), 10); }, [[0, 'pling_low', .4]]);
 // 103 «Namen eingestickt.»: toco la etiqueta «PAUL» con el dedo, triste
 shot(115.336, 'C', null, L => { welt(L, WX + 40, 20, { snow: true, grass: false }); nah(WX + 40, 5.2, 20); const X = WX + 40 - 35 + 3 - 1; const c = put(ich, X + 1, 0, 24, PI - .2); winterIch(c); actuar(c, 0, [[0, { aRx: 1.5, aRz: -.1, aRe: .3, lean: .15, headX: .25 }]], { T: L.T }); cara(c, L.T, { expr: 'sad' });
   cm([X + 7, 8.4, 36, X + .6, 5.4, 22, 40], [X + 6.4, 8.2, 35, X + .6, 5.4, 22, 38], L.k); sh(V(X, 0, 22), 14); }, [[.2, 'cloth', .4], [.5, 'chime_sad', .4]]);
@@ -665,8 +665,8 @@ shot(136.202, 'S', null, L => { welt(L, 1300, 0, { snow: true, grass: false, rin
 // 117 «Und so drehen sie eine Kurbel,»: la manivela gira, la cuerda sale disparada
 shot(137.202, 'C', 'punch', L => { welt(L, XT - 100, 0, { grass: false, snow: true, rings: false }); wolken(); setRope(L.lt * 2.4); const h = wpos(TURM.userData.crank); cm([h.x - 60, h.y + 10, 50, h.x, h.y - 6, 0, 44], [h.x - 56, h.y + 8, 46, h.x, h.y - 6, 0, 44], L.k); sh(h, 60); }, [[0, 'crank', .9], [.2, 'rope_swish', .6]]);
 // 118 «so groß wie ein Haus.»: yo, diminuto, en la nieve bajo la rueda de la manivela
-shot(138.562, 'W', null, L => { welt(L, XT - 30, 30, { grass: false, snow: true, rings: false }); wolken(); setRope(.5 + L.lt * 1.4); const h = wpos(TURM.userData.crank); const c = put(ich, h.x - 30, 0, 26, -1.4); winterIch(c); hornHang(c, 0); actuar(c, 0, [[0, { headX: -.6 }]], { T: L.T }); cara(c, L.T, { eyes: 'up', mouth: 'o' });
-  cm([h.x - 40, 3, 36, h.x, h.y * .7, 0, 62], [h.x - 39, 3.2, 35, h.x, h.y * .72, 0, 62], L.k); sh(V(h.x - 30, 0, 26), 24); }, [[0, 'crank', .6], [.3, 'rumble', .5]]);
+shot(138.562, 'W', null, L => { welt(L, XT - 30, 30, { grass: false, snow: true, rings: false }); wolken(); setRope(.5 + L.lt * 1.4); const h = wpos(TURM.userData.crank);
+  cm([h.x - 36, h.y + 14, 52, h.x + 20, h.y - 6, 0, 46], [h.x - 33, h.y + 13, 48, h.x + 20, h.y - 6, 0, 46], L.k); sh(h, 60); }, [[0, 'crank', .6], [.3, 'rumble', .5]]);
 // 119 «Drei Reihen weiter oben»: trepo por el muro de gente, de hombro en hombro; miro hacia arriba
 shot(140.16, 'Z', null, L => { const W_ = turmNah(L, 40, { rows: 5, cols: 4 }); const p = surf(41.6, 2, 3.4); const c = put(ich, p.x, p.y, p.z, -PI / 2 + .4); c.blob.visible = false; winterIch(c); hornHang(c, 0); actuar(c, 0, [[0, KLETTER(L.T)]], { T: L.T }); cara(c, L.T, { eyes: 'up', mouth: 'flat' }); c.root.rotation.y = PI / 2 * 0 + Math.PI * 1.5 + .6;
   cm([p.x - 14, p.y + 2, p.z + 4, p.x, p.y + 6, p.z, 44], [p.x - 13, p.y + 3, p.z + 3, p.x, p.y + 7, p.z, 44], L.k); badge('gold', '3 REIHEN', W / 2, H * .14, clamp((L.lt - .2) / .2), 1, .9); sh(p, 20); }, [[0, 'climb', .6], [.5, 'grunt', .4]]);
@@ -742,7 +742,7 @@ shot(170.89, 'C', null, L => { const W_ = lotteWand(L, { lf: { expr: 'worried' }
 // 145 «Ich habe eine Nachricht mit der Welle losgeschickt:»: desde detrás de mí: grito hacia el mundo de abajo
 shot(172.093, 'W', null, L => { const W_ = lotteWand(L); const q = surf(48.6, 2.05, 3); const c = put(ich, q.x, q.y, q.z, -PI / 2); c.blob.visible = false; winterIch(c); rufen(c, L, 0, 1); const h = hp(c);
   for (let k = 0; k < 3; k++) { const ph = (L.lt * 1.2 + k / 3) % 1; FX2D.push(x => { x.save(); x.strokeStyle = `rgba(255,240,180,${(1 - ph) * .8})`; x.lineWidth = 12; x.beginPath(); x.arc(W / 2, H * .44, 80 + ph * 420, -2.6, -.5); x.stroke(); x.restore(); }); }
-  cm([h.x + 2, h.y + 1.6, h.z + 6.5, h.x - 30, h.y - 22, h.z - 4, 50], [h.x + 2.2, h.y + 1.8, h.z + 6.8, h.x - 30, h.y - 24, h.z - 4, 50], L.k); sh(h, 30); }, [[0, 'horn_blow', .9], [.1, 'shout_kid', .7]]);
+  cm([h.x - 12, h.y - 2, h.z + 4, h.x, h.y - .6, h.z, 44], [h.x - 11.4, h.y - 1.8, h.z + 3.8, h.x, h.y - .6, h.z, 44], L.k); sh(h, 30); }, [[0, 'horn_blow', .9], [.1, 'shout_kid', .7]]);
 // 146 «„Beide Seiten:»
 shot(174.34, 'C', 'punch', L => { const W_ = lotteWand(L); const q = surf(48.6, 2.05, 3); const c = put(ich, q.x, q.y, q.z, -PI / 2); c.blob.visible = false; winterIch(c); rufen(c, L, 0, 1); onFace(c, 7, -.4, -4.5, 40, L.k, 6); badge('tag', 'BEIDE SEITEN:', W / 2, H * .15, clamp(L.lt / .1), 1, 1.2); sh(hp(c), 14); }, [[0, 'horn_blow', .8]]);
 // 147 «Hört auf bei Sprung tausend.“»: «STOPP BEI SPRUNG 1000»
@@ -770,22 +770,22 @@ shot(183.055, 'C', 'punch', L => { welt(L, -300, -260); show(PED2[0], -300, 0, -
 shot(184.529, 'S', null, L => { const W_ = turmNah(L, 40, { rows: 3, cols: 4, list: DX.slice(10, 22) }); const u = clamp((L.lt - .3) / .4); W_.forEach((c, i) => { applyPose(c, { aLz: lerp(1.45, .2, u), aRz: lerp(1.45, .2, u), aLx: u * 1.2, aRx: u * 1.2, aLe: .2, aRe: .2 }); cara(c, L.T + i, u > .3 ? { eyes: 'terror', mouth: 'scream' } : { expr: 'tired' }); });
   const p = surf(48); cm([p.x - 22, p.y + 2, p.z, p.x, p.y, p.z, 40], [p.x - 20, p.y + 2, p.z, p.x, p.y, p.z, 40], L.k); TINT = 'rgba(200,0,30,.18)'; sh(p, 24); }, [[.3, 'release', .6], [.5, 'gasp_crowd', .6]]);
 // 154 «Und die andere nicht.»: la cuerda da un latigazo y se desploma; oscuridad
-shot(185.861, 'W', null, L => { welt(L, 0, 0, { dusk: true, grass: false, rings: false }); const k = easeIn(clamp(L.lt / .8)); setRope(2.6 + k * 1.2); ROPE.position.y = -k * 140; cm([0, 3, 60, 0, 150, -200, 62], [0, 3, 58, 0, 130, -200, 62], L.k); DARK = clamp((L.lt - .5) / .4) * .55; TINT = RED; SHAKE = k * .6; }, [[0, 'whip', .9], [.5, 'boom', .8]]);
+shot(185.861, 'W', null, L => { welt(L, 0, 0, { dusk: true, grass: false, rings: false }); const k = easeIn(clamp(L.lt / .9)); setRope(PI); ROPE.position.y = -k * 390; cm([0, 3, 70, 0, 160, 0, 64], [0, 3, 68, 0, 120, 0, 64], L.k); DARK = clamp((L.lt - .5) / .4) * .55; TINT = RED; SHAKE = k * .6; }, [[0, 'whip', .9], [.5, 'boom', .8]]);
 // 155 «Ich bin raufgeklettert,»: subo por el muro hacia Lotte
 shot(186.97, 'Z', null, L => { const W_ = lotteWand(L, { lf: { expr: 'warm' } }); const q = surf(lerp(40.6, 44.6, L.k), 2.05, 2.8); const c = put(ich, q.x, q.y, q.z, PI / 2 - .4); c.blob.visible = false; winterIch(c); actuar(c, 0, [[0, KLETTER(L.T)]], { T: L.T }); cara(c, L.T, { expr: 'determined', eyes: 'up' });
   const p = hp(lotte); cm([p.x - 18, p.y - 4, p.z + 3, p.x, p.y - 4, p.z, 44], [p.x - 16, p.y - 3, p.z + 2.6, p.x, p.y - 3.4, p.z, 44], L.k); sh(p, 20); }, [[0, 'climb', .6]]);
 // 156 «bis Lotte mein Handgelenk gepackt hat.»: su mano agarra la mía
-shot(188.05, 'C', null, L => { const W_ = juntos(L, { lf: { expr: 'warm' }, if: { expr: 'happy' } }); applyPose(lotte, { aLz: 1.45, aRz: 1.45, aLe: .1, aRe: .1 }); const h = wpos(lotte.aR.hand);
-  cm([h.x - 13, h.y + 2, h.z + 1, h.x, h.y + 1.6, h.z, 40], [h.x - 12, h.y + 2, h.z + .9, h.x, h.y + 1.8, h.z, 38], L.k); sh(h, 12); }, [[.1, 'grip', .7], [.3, 'chime', .5]]);
+shot(188.05, 'C', null, L => { const W_ = juntos(L, { lf: { expr: 'warm' }, if: { expr: 'happy' } }); applyPose(lotte, { aLz: 1.45, aRz: 1.45, aLe: .1, aRe: .1 }); const h = hp(lotte).lerp(hp(ich), .5).add(V(0, -1.2, 0));
+  cm([h.x - 13, h.y + .6, h.z, h.x, h.y, h.z, 40], [h.x - 12, h.y + .6, h.z, h.x, h.y, h.z, 38], L.k); sh(h, 12); }, [[.1, 'grip', .7], [.3, 'chime', .5]]);
 // 157 «Jetzt zählen wir laut.»: los dos en el muro, entre todos; todos abren la boca para contar
 shot(189.829, 'W', null, L => { juntos(L, { lf: { expr: 'determined', mouth: 'talk' }, if: { expr: 'determined', mouth: 'talk' }, ff: n => ({ expr: 'determined', mouth: Math.sin(L.T * 9 + n) > 0 ? 'talk' : 'o' }) }); const p = hp(lotte).lerp(hp(ich), .5);
   cm([p.x - 26, p.y + 2, p.z + 2, p.x, p.y - 1, p.z, 44], [p.x - 22, p.y + 1.5, p.z + 1.6, p.x, p.y - 1, p.z, 42], L.k); sh(p, 26); }, [[0, 'crowd_murmur', .6]]);
 // 158 «Neunhundertachtundneunzig.» (zoom lento): «998»; nuestras caras, la cuerda pasa por debajo
 shot(191.08, 'W', 'slow', L => { juntos(L, { lf: { expr: 'determined', mouth: kitLips(L.T, spoken(191, 192.6)) || 'flat' }, if: { expr: 'determined', mouth: kitLips(L.T, spoken(191, 192.6)) || 'flat' }, phi: 1.2 + L.lt * .8 }); const p = hp(lotte).lerp(hp(ich), .5);
-  cm([p.x - 15, p.y + 1.2, p.z + 1, p.x, p.y + .4, p.z, 40], [p.x - 13, p.y + 1.2, p.z + .8, p.x, p.y + .4, p.z, 38], L.k); bigNum('998', clamp(L.lt / .15), 'gold', .16, 1.5); sh(p, 14); }, [[0, 'drum', .7]]);
+  cm([p.x - 15, p.y + 3, p.z + 1, p.x, p.y + 1.8, p.z, 40], [p.x - 13, p.y + 3, p.z + .8, p.x, p.y + 1.8, p.z, 38], L.k); bigNum('998', clamp(L.lt / .15), 'gold', .16, 1.5); sh(p, 14); }, [[0, 'drum', .7]]);
 // 159 «Neunhundertneunundneunzig.»: «999»: la cámara sale disparada hacia el mundo; la cuerda en lo alto, a punto…
 shot(192.88, 'C', 'punch', L => { juntos(L, { lf: { eyes: 'closed', mouth: 'flat', noBlink: true }, if: { eyes: 'closed', mouth: 'flat', noBlink: true }, phi: 2.6 + L.lt * .4 }); const p = hp(lotte).lerp(hp(ich), .5);
-  cm([p.x - 7, p.y + .3, p.z + .6, p.x, p.y - .6, p.z, 36], [p.x - 60, p.y + 30, p.z + 20, p.x, p.y - 10, p.z, 50], L.k, easeIn); bigNum('999', clamp(L.lt / .12), 'red', .16, 1.8); DARK = clamp((L.lt - 2.2) / .3); sh(p, 30); }, [[0, 'drum', .9], [.05, 'heartbeat', .7], [2.2, 'riser_cut', .6]]);
+  cm([p.x - 11, p.y + 2.4, p.z + .6, p.x, p.y + 1.8, p.z, 38], [p.x - 60, p.y + 30, p.z + 20, p.x, p.y - 10, p.z, 50], L.k, easeIn); bigNum('999', clamp(L.lt / .12), 'red', .16, 1.8); DARK = clamp((L.lt - 2.2) / .3); sh(p, 30); }, [[0, 'drum', .9], [.05, 'heartbeat', .7], [2.2, 'riser_cut', .6]]);
 // portadas: se hacen al final (node cover.mjs)
 window.renderCover = () => {};
 
