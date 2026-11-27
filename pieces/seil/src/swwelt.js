@@ -15,9 +15,9 @@ const noise = (w, h, base, cols, n, r0 = 1, r1 = 3, seed = 3) => canvasTex(w, h,
 // La cuerda da vueltas alrededor del eje X (a RA de altura, z = 0) dibujando una elipse muy ancha: semieje vertical B(x) y horizontal A(x).
 // En |x| < XF la parte de abajo va casi pegada al suelo en todo el mundo habitado (|z| < 400): por eso todos saltan.
 // Hacia las manivelas (±XT) la elipse se cierra hasta un círculo de radio CR.
-export const RA = 200, XF = 820, XT = 1500, CR = 20, TX = 1576, ROPE_R = 1.25, AZ = 3600;
+export const RA = 200, XF = 1000, XT = 1500, CR = 20, TX = 1576, ROPE_R = 1.25, AZ = 3600;
 const sx = x => { const k = clamp((Math.abs(x) - XF) / (XT - XF)); return k * k * (3 - 2 * k); };
-const sa = x => { const k = clamp((Math.abs(x) - XF) / 220); return k * k * (3 - 2 * k); };
+const sa = x => { const k = clamp((Math.abs(x) - XF) / 200); return k * k * (3 - 2 * k); };
 export const Bx = x => lerp(RA - ROPE_R, CR, sx(x)), Ax = x => lerp(AZ, Bx(x), sa(x));
 // fase φ: 0 = abajo (pasa por z = 0); al crecer φ la parte de abajo avanza hacia −z; π = arriba del todo (y = 2·RA)
 export const ropePt = (x, phi) => new THREE.Vector3(x, RA - Bx(x) * Math.cos(phi), -Ax(x) * Math.sin(phi));

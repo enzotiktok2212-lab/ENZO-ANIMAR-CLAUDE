@@ -90,7 +90,7 @@ function hideAll() {
   for (const c of POOL) { c.root.visible = false; c.head.visible = true; c.root.rotation.order = 'XYZ'; c.root.rotation.set(0, 0, 0); c.root.scale.setScalar(c.spec.scale || 1); applyPose(c, {}); c.setFace({}); if (c.root.parent !== scene) { c.root.parent.remove(c.root); scene.add(c.root); } c.blob.visible = true; c.blob.position.y = .06; c.aR.sh.rotation.y = 0; c.aL.sh.rotation.y = 0; }
   for (const p of PROPS) { p.visible = false; p.rotation.order = 'XYZ'; p.rotation.set(0, 0, 0); p.scale.setScalar(1); if (p.parent !== scene) { p.parent.remove(p); scene.add(p); } }
   for (const s of [...SPLASH, ...SPRAY]) s.visible = false;
-  ROPE.visible = false; RINGS.visible = false; TURM.visible = false; TURM2.visible = false; NAH.visible = false; SNOW.visible = false; GRASS.visible = false; WIESE.visible = false;
+  ROPE.visible = false; ROPE.position.set(0, 0, 0); RINGS.visible = false; TURM.visible = false; TURM2.visible = false; NAH.visible = false; SNOW.visible = false; GRASS.visible = false; WIESE.visible = false;
   for (const k in SETS) SETS[k].visible = false; FX2D.length = 0; FACES.length = 0; for (const l of LP) l.intensity = 0; LANT.intensity = 0;
   FILL.color.setRGB(1, .96, .91); sun.color.setRGB(1, .95, .86); grade.uniforms.vig.value = .4; grade.uniforms.flash.value = 0; grade.uniforms.lift.value = 0; grade.uniforms.sat.value = 1.2; grade.uniforms.sharp.value = .5; grade.uniforms.sepia.value = 0; DARK = 0; TINT = null; BIRDSON = 1; SHAKE = 0; DOF = 1; BW = 0; BLOOMMAX = .2; SUNOFF.set(-95, 105, 85); day(); }
 const use = (...n) => { for (const k of n) SETS[k].visible = true; };
@@ -171,7 +171,7 @@ function inPlot(x, z) { for (const [x0, z0, x1, z1] of NOGRASS) if (x > x0 && x 
   if (Math.abs(x - FX) < 210 && z > 26) return true; if (Math.abs(x - FX) < 80 && Math.abs(z - 5) < 12) return true; return false; }
 // hora dorada (como la referencia): sol bajo y cálido, cielo claro y largo
 function gold() { day(); sun.color.setRGB(1, .78, .52); sun.intensity = 2.8; setSky([.22, .46, .86], [.62, .74, .92], [1, .84, .66]); hemi.color.setRGB(.9, .86, .8); scene.fog.color.setRGB(.96, .86, .74); scene.fog.density = .00045; rim.color.setRGB(1, .7, .45); SUNOFF.set(-70, 60, 110); }
-function winter(L) { day(); setSky([.52, .6, .72], [.72, .78, .86], [.9, .92, .95]); sun.intensity = 1.4; sun.color.setRGB(.92, .95, 1); hemi.intensity = 1.25; hemi.color.setRGB(.9, .94, 1); scene.fog.color.setRGB(.86, .9, .95); scene.fog.density = .0022; BIRDSON = 0; SNOW.userData.update(L.T, CAMT); }
+function winter(L) { day(); setSky([.52, .6, .72], [.72, .78, .86], [.9, .92, .95]); sun.intensity = 1.4; sun.color.setRGB(.92, .95, 1); hemi.intensity = 1.25; hemi.color.setRGB(.9, .94, 1); scene.fog.color.setRGB(.86, .9, .95); scene.fog.density = .0022; BIRDSON = 0; POST.push(() => SNOW.userData.update(L.T, CAMT)); }
 // el mundo: alrededor de (gx, gz) crece la hierba alta. o.dusk / o.gold / o.snow; o.grass = false sin hierba; las torres siempre al fondo
 function welt(L, gx = 0, gz = 0, o = {}) { use('W'); WIESE.visible = true; if (o.grass !== false) GRASS.userData.at(gx, gz, inPlot, o.snow ? 1 : 0);
   if (o.snow) winter(L); else if (o.dusk) dusk(); else if (o.day) day(); else gold();
