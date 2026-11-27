@@ -1,0 +1,7 @@
+review*/
+rv*/
+*.log
+test/
+renders/
+partes-in/
+node_modules
