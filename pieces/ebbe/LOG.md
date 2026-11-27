@@ -16,6 +16,11 @@ En un contenedor nuevo: `cd /home/user/ENZO-ANIMAR-CLAUDE && ./preparar-entorno.
 - Planos (106) escritos y revisados (3 pasadas); mezcla hecha (`renders/mezcla-final.wav`, -12,5 LUFS; si el contenedor es nuevo, regenerarla con sfx.py + marca.py + fundido final 1 s).
 - Render: `nohup ./watchdog.sh > renders/watchdog.log 2>&1 &` (idempotente; al acabar ejecuta finish.sh -> renders/ebbe.mp4). Luego mandar SOLO el vídeo.
 
+## Render repartido (lanzado 27-11 06:46 UTC, ~6 fotogramas/min por sesión)
+- Aquí: `./rango.sh 0 433 4` (log en renders/rango-local.log).
+- 9 sesiones hijas renderizan 433-866, 866-1299, 1299-1732, 1732-2165, 2165-2598, 2598-3031, 3031-3464, 3464-3897, 3897-4323 y suben `pieces/ebbe/renders/partes/p*.mp4` a `claude/ebbe-render-1…9`.
+- Al terminar: para N en 1..9: `git fetch origin claude/ebbe-render-N && git checkout origin/claude/ebbe-render-N -- pieces/ebbe/renders/partes` (o `git archive`); `./juntar.sh renders/partes`; comprobar 4323 fotogramas; `./finish.sh` → renders/ebbe.mp4; mandar SOLO el vídeo.
+
 ## Pendiente (en orden)
 1. Prueba de look (`src/p/a.js` provisional) → ajustar luz y materiales.
 2. Planos `src/p/a.js…d.js` (~120, corte ~1,2 s) → `python3 armar.py`.
