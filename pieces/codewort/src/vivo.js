@@ -58,6 +58,15 @@ function drawKitFace(c, s) {
   if (s.freckles) { c.fillStyle = 'rgba(150,80,50,.5)'; for (const [x, y] of [[112, 312], [136, 326], [98, 334], [400, 312], [376, 326], [414, 334]]) { c.beginPath(); c.arc(x, y, 5, 0, 7); c.fill(); } }
   drawEyes(c, e, s);
   cell(IMG[`${style}_mouth`], MOUTH[m] ?? 0);
+  // sonrisa de la Cosa: de oreja a oreja (creep 0..1 = cuánto se estira), dientes apretados y encías oscuras
+  if (s.creep) { const k = s.creep, x0 = 256 - 105 - k * 140, x1 = 256 + 105 + k * 140, y0 = 312 - k * 46, yb = 372 + k * 26; c.save(); c.lineJoin = 'round'; c.lineCap = 'round';
+    const crescent = (o, i) => { c.beginPath(); c.moveTo(x0, y0); c.quadraticCurveTo(256, yb + o, x1, y0); c.quadraticCurveTo(256, yb + i, x0, y0); c.closePath(); };
+    c.fillStyle = '#3a0a10'; crescent(78, -34); c.fill();
+    c.save(); crescent(78, -34); c.clip(); c.fillStyle = '#f6f2e4'; crescent(58, -20); c.fill(); c.strokeStyle = 'rgba(70,40,30,.55)'; c.lineWidth = 3;
+    for (let i = 1; i < 16; i++) { const t = i / 16, x = x0 + (x1 - x0) * t; c.beginPath(); c.moveTo(x, y0 - 40); c.lineTo(x, yb + 80); c.stroke(); }
+    c.beginPath(); c.moveTo(x0, y0 + 4); c.quadraticCurveTo(256, yb + 16, x1, y0 + 4); c.lineWidth = 4; c.stroke(); c.restore();
+    c.strokeStyle = '#140406'; c.lineWidth = 8; crescent(78, -34); c.stroke();
+    c.lineWidth = 6; for (const x of [x0, x1]) { c.beginPath(); c.moveTo(x, y0); c.lineTo(x + (x < 256 ? -12 : 12), y0 - 18); c.stroke(); } c.restore(); }
   if (s.sweat) { c.fillStyle = 'rgba(120,200,255,.9)'; c.beginPath(); c.moveTo(440, 110); c.quadraticCurveTo(462, 160, 440, 172); c.quadraticCurveTo(418, 160, 440, 110); c.fill(); }
   if (s.veins) { c.strokeStyle = '#d62f3a'; c.lineWidth = 8; c.lineCap = 'round'; const x = 430, y = 70; c.beginPath(); c.moveTo(x - 20, y); c.lineTo(x, y + 10); c.lineTo(x - 6, y + 28); c.moveTo(x + 20, y); c.lineTo(x, y + 10); c.stroke(); }
   if (s.soot) { c.fillStyle = 'rgba(40,30,30,.4)'; for (const [x, y, r] of [[110, 300, 46], [380, 120, 40], [300, 430, 30]]) { c.beginPath(); c.ellipse(x, y, r, r * .6, .4, 0, 7); c.fill(); } }
@@ -67,7 +76,7 @@ function drawKitFace(c, s) {
 const EYE_P = {
   normal: [.78, .08, 0, 0, 0, 0, 1], wide: [1, 0, 0, 0, 14, -4, .8], half: [.42, .12, 0, .15, -4, 2, 1], squint: [.32, .4, 0, 0, -8, 10, 1],
   side_l: [.66, .1, -1, 0, 0, 2, 1], side_r: [.66, .1, 1, 0, 0, 2, 1], terror: [1, 0, 0, 0, 16, -12, .55], worried: [.72, .1, 0, .1, 6, -12, 1],
-  angry: [.6, .22, 0, 0, -10, 16, 1], scared: [.92, 0, 0, 0, 12, -14, .7], up: [.86, 0, 0, -1, 8, -2, 1], down: [.48, .05, 0, 1, -2, -4, 1], cry: [.62, .2, 0, .4, 6, -14, 1],
+  angry: [.6, .22, 0, 0, -10, 16, 1], scared: [.92, 0, 0, 0, 12, -14, .7], up: [.86, 0, 0, -1, 8, -2, 1], down: [.48, .05, 0, 1, -2, -4, 1], cry: [.62, .2, 0, .4, 6, -14, 1], stare: [1, 0, 0, -.1, 2, 4, .42],
 };
 function drawEyes(c, e, s) {
   const ink = '#1c1414', brow = s.browColor || '#2a1a10', iris = s.iris || '#3a2414', cx = [178, 334], cy = 206, RX = 33, RY = 37;
