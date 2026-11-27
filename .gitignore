@@ -10,3 +10,5 @@ plugins/**/review/
 
 # voice.wav is made from the narration mp3 with ffmpeg
 pieces/*/voice/voice.wav
+pieces/*/voice/voice-orig.wav
+pieces/*/voice/no-brasil.wav
