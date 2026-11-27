@@ -2,6 +2,8 @@
 
 Este proyecto se usa **solo** para hacer un tipo de video: storytimes verticales (9:16) en primera persona, en un mundo 3D de juguete con personajes de bloques, cortes cada ~2 s, cámara siempre en movimiento, subtítulos de una palabra amarilla y pop-ups de dinero.
 
+**Canal «In dieser Stadt» (alemán)**: usa primero la skill `in-dieser-stadt` (`.claude/skills/in-dieser-stadt/SKILL.md`); en ritmo (~1,2 s por plano), motor (`pieces/schutzengel/`) y trato con el usuario manda sobre lo de abajo. En un contenedor nuevo: `./preparar-entorno.sh`.
+
 Antes de planificar o animar cualquier video:
 1. Lee `plugins/animate/skills/animate/styles/blocky-3d/PRODUCCION.md` (el encargo detallado del usuario: **manda sobre lo demás**), `STYLE.md` (el estilo, con medidas) y `REFERENCIA.md` (el análisis plano por plano y la fórmula de guion en 13 bloques).
 2. Usa la skill `animate` (`plugins/animate/skills/animate/SKILL.md`) con `"style": "blocky-3d"`.
