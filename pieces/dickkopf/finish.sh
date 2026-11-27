@@ -1,4 +1,4 @@
 #!/bin/bash
 # Une los fotogramas con la mezcla final: H.264 1080×1920, 30 fps, AAC 192k.
 cd "$(dirname "$0")"
-ffmpeg -loglevel error -y -framerate 30 -i renders/frames/f%05d.jpg -i renders/mezcla-final.wav -map 0:v -map 1:a -c:v libx264 -preset slow -crf 17 -pix_fmt yuv420p -af afade=t=out:st=164.6:d=1 -c:a aac -b:a 192k -shortest -movflags +faststart renders/statue.mp4 && ls -la renders/statue.mp4
+ffmpeg -loglevel error -y -framerate 30 -i renders/frames/f%05d.jpg -i renders/mezcla-final.wav -map 0:v -map 1:a -c:v libx264 -preset slow -crf 17 -pix_fmt yuv420p -af afade=t=out:st=93.6:d=1 -c:a aac -b:a 192k -shortest -movflags +faststart renders/dickkopf.mp4 && ls -la renders/dickkopf.mp4

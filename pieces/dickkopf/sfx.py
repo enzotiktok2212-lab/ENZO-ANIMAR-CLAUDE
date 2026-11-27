@@ -570,9 +570,26 @@ LIB['thunder'] = LIB['thunder_far']
 LIB['wave'] = LIB['whoosh_soft']
 LIB['wind_night'] = LIB['wind_howl']
 LIB['wings_flap'] = LIB['flag_flutter']
+
+# ---- dickkopf: cabezas que se inflan/deshinchan, silbido de caída, golpe HUSS ----
+def _sweep(f0, f1, d, wob=0):
+    t = T(d); f = f0 * (f1 / f0) ** (t / d); ph = 2 * np.pi * np.cumsum(f) / SR
+    return np.sin(ph + wob * np.sin(2 * np.pi * 9 * t))
+def balloon_inflate(s=0, d=.55): t = T(d); x = _sweep(180, 620, d, 1.2) * .6 + _sweep(360, 1240, d, 1.2) * .25; x += noise(d, s) * .08; return norm(x * np.minimum(1, t / .04) * np.exp(-((t - d * .7) / d) ** 2 * 2) + 0)
+def deflate(s=0, d=1.0): t = T(d); x = _sweep(900, 160, d, 3) * (np.sin(2 * np.pi * 34 * t) > -.2) * .7 + noise(d, s) * .15; return norm(x * np.minimum(1, t / .02) * np.minimum(1, (d - t) / .15))
+def fall_whistle(s=0, d=.9): t = T(d); return norm(_sweep(2200, 700, d) * np.minimum(1, t / .05) * np.minimum(1, (d - t) / .1) * .8)
+LIB.update({
+ 'balloon_inflate': (lambda s, c: balloon_inflate(s), .5), 'deflate': (lambda s, c: deflate(s), .45), 'fall_whistle': (lambda s, c: fall_whistle(s), .4),
+ 'balloon_squeak': (lambda s, c: balloon_inflate(s, .3), .35), 'rocket': (lambda s, c: norm(whoosh(1.0, True, 200, 4000, s)), .5),
+})
+for _a, _b in [('huss', 'impact_soft'), ('aww', 'crowd_ohh'), ('bonk', 'boing'), ('candy_rustle', 'paper'), ('car_rock', 'metal_creak'), ('coo', 'pigeon_coo'),
+  ('crowd_applause', 'clap'), ('ding_idea', 'ding_good'), ('duck_squeak', 'squeak'), ('metal_thud', 'metal_hit'), ('mic_feedback', 'beep'), ('pose', 'sparkle'),
+  ('scissors', 'click_metal'), ('shoe_squeak', 'squeak'), ('shop_bell', 'door_bell'), ('squeeze', 'strain'), ('water_pour', 'pour'), ('water_splash', 'splash'),
+  ('whoosh_in', 'whoosh'), ('wind_cold', 'wind_howl'), ('zipper', 'zip')]:
+    LIB[_a] = LIB[_b]
 if __name__ == '__main__':
     cues_f, voice_f, music_f, out_f = sys.argv[1:5]
-    cues = json.load(open(cues_f)); DUR = 165.6
+    cues = json.load(open(cues_f)); DUR = 94.6
     cues = fill_gaps(cues, DUR); print(len(cues), 'efectos; hueco máximo', max(np.diff(sorted([0] + [c['t'] for c in cues] + [DUR]))).round(2))
     TEN = {'riser', 'braam', 'riser_short', 'braam_short'}
     ten = render([c for c in cues if c['s'] in TEN], DUR); ten = norm(ten, 0.9)
