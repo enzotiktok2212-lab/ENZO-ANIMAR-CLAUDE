@@ -5,7 +5,7 @@ description: Produce a German TikTok storytime for the channel «In dieser Stadt
 
 # «In dieser Stadt» — storytimes 3D en alemán
 
-Esta skill recoge **todo lo aprendido en los 29 vídeos** del canal (de `schlafstadt`, el primero, a `einpacken`, el último). Catálogo con temas, duraciones, RPM y lecciones de cada uno: [references/catalogo.md](references/catalogo.md). API del motor y recetas de código: [references/motor.md](references/motor.md). Checklist de revisión: [references/checklist.md](references/checklist.md).
+Esta skill recoge **todo lo aprendido en los ~40 vídeos** del canal (de `schlafstadt`, el primero, a `schutzengel` y `statue`, los últimos). Catálogo con temas, duraciones, RPM y lecciones de cada uno: [references/catalogo.md](references/catalogo.md). API del motor y recetas de código: [references/motor.md](references/motor.md). Checklist de revisión: [references/checklist.md](references/checklist.md).
 
 Documentos del repo que siguen siendo la referencia detallada (léelos al empezar):
 - `CLAUDE.md`, `ENCARGO-NUEVO-CHAT.md` (lecciones), `MENSAJE-NUEVO-CHAT.md`
@@ -17,7 +17,7 @@ Documentos del repo que siguen siendo la referencia detallada (léelos al empeza
 - Cuando el vídeo esté listo, manda **solo el vídeo** (SendUserFile, `display: attach`). Descripción, comentario fijado y portadas **solo cuando los pida**.
 - El usuario no oye lo que tú no puedes oír: recuérdale escuchar la mezcla.
 - Cuando el usuario diga "ya puedes renderizar", **no hagas más revisiones**: lanza el render.
-- Rama: `claude/trusting-newton-0hk9y9` del repo `enzotiktok2212-lab/enzo-animar-claude`. Antes de cada push: `git fetch` + `git rebase`. Commit y push de todo (el hook lo exige), **nunca** los vídeos finales (>100 MB), el vídeo de referencia, sus fotogramas ni las capturas de revisión (`review/`, `review60/` → `.gitignore`).
+- Rama: **la rama de desarrollo que indique la sesión** (en este chat `claude/wizardly-meitner-4vfi67`; antes `claude/trusting-newton-0hk9y9`) del repo `enzotiktok2212-lab/enzo-animar-claude`. El trabajo de otros chats vive en ramas `claude/*`: si falta una pieza, búscala con `git log --all`. Antes de cada push: `git fetch` + `git rebase`. Commit y push de todo (el hook lo exige), **nunca** los vídeos finales (>100 MB), el vídeo de referencia, sus fotogramas ni las capturas de revisión (`review/`, `review60/` → `.gitignore`).
 
 ## 1. Flujo completo
 1. **Referencia** (MP4 que manda el usuario; los links de TikTok no se pueden abrir aquí):
@@ -57,8 +57,11 @@ Documentos del repo que siguen siendo la referencia detallada (léelos al empeza
 - Todo el texto en pantalla en **alemán**; todo número dicho aparece en el mundo.
 
 ## 3. Plantilla y motor
-- Copia **la última pieza terminada** (mira `git log` en `pieces/`; hoy `pieces/adrian/`, antes `einpacken`, `hals`, `teddy`): `index.html, render.sh, render2.mjs, mids.mjs, sheet.py, cues.mjs, sfx.py, mezclar.sh, marca.py, finish.sh, cover.mjs, prep_audio.py, armar.py, package.json`, `src/*.js`, `src/caras/`, `audio/{campanita-recortada.wav,musica.mp3,musica-fondo.wav}`, y `node_modules` (o `npm install`).
+- **Al empezar un chat nuevo**: `./preparar.sh` (raíz del repo) instala faster-whisper, el modelo Whisper small en `/home/user/whisper-small/model` y `node_modules` de la plantilla, y comprueba ffmpeg/playwright (idempotente).
+- Copia **la última pieza terminada** (mira `git log` en `pieces/`; hoy `pieces/schutzengel/` —motor de mejor calidad: base `schlafwandler`/`schluck` con la luz realista de `frauenstadt`—, o `pieces/statue/`; antes `kaffee`, `neinhals`, `adrian`): `index.html, render.sh, render2.mjs, mids.mjs, sheet.py, cues.mjs, sfx.py, mezclar.sh, marca.py, finish.sh, cover.mjs, prep_audio.py, armar.py, package.json`, `src/*.js`, `src/caras/`, `audio/{campanita-recortada.wav,musica.mp3,musica-fondo.wav}`, y `node_modules` (o `npm install`).
 - Cambia: `DUR` en `src/main.js`, la duración en `render.sh`/`mezclar.sh`/`sfx.py` (`DUR =`), el **puerto** (`render.sh`, `cues.mjs`, `cover.mjs`, servidor `python3 -m http.server <puerto>`), el nombre en `finish.sh`, las horas de campanita en `marca.py` (0 s y cada ≤10 s al empezar frase).
+- **Motor de máxima calidad** (el de `schutzengel`): supermuestreo `?ss=1.5` por defecto, AO (`?ao=0` lo apaga), contornos (`outline`), grade HQ (sat 1,38, nitidez .6, viñeta ≤.32, bloom suave), bokeh opcional `?dof=1`. Si el render va justo de tiempo: `?ss=1.25` sin AO (`statue`) o `ss=1` sin AO ni bokeh (`knopf`).
+- **Render repartido** (≈6 s/fotograma en HQ): `./rango.sh A B 4` renderiza un tramo (idempotente); sesiones hijas hacen otros tramos y suben `partes-render/p*.mp4` (`./trozos.sh A B`, CRF 12) a ramas `claude/<pieza>-render-N`; aquí `./juntar.sh partes-render` y `./finish.sh`. `watchdog.sh` relanza el render si se para y llama a `finish.sh` al acabar.
 - Escenarios y reparto nuevos van en archivos propios (`gsets.js`, `gcast.js`…). Detalles del API: [references/motor.md](references/motor.md).
 
 ## 4. Sonido

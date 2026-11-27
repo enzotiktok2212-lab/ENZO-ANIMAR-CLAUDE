@@ -1,10 +1,10 @@
 Hola. Seguimos con mis vídeos de TikTok para Alemania (canal «In dieser Stadt»). Respóndeme siempre en español, con una o dos palabras salvo que te pida más, y dame la traducción de todo lo que esté en alemán.
 
 ## Repo y arranque
-- Repo `enzotiktok2212-lab/enzo-animar-claude`, rama **`claude/trusting-newton-0hk9y9`**. Antes de cada push: `git fetch` + `git rebase`. Haz commit y push de todo.
+- Repo `enzotiktok2212-lab/enzo-animar-claude`, rama **de desarrollo de la sesión** (antes `claude/trusting-newton-0hk9y9`; el trabajo de cada chat está en ramas `claude/*`). Antes de cada push: `git fetch` + `git rebase`. Haz commit y push de todo.
 - Lee y sigue al pie de la letra `ENCARGO-NUEVO-CHAT.md` (sobre todo «Lecciones») y `CLAUDE.md`.
-- Plantilla: **`pieces/teddy/`** (el último vídeo terminado; antes `pieces/goon/`). Copia sus scripts (`index.html`, `render.sh`, `render2.mjs`, `mids.mjs`, `sheet.py`, `cues.mjs`, `sfx.py`, `mezclar.sh`, `marca.py`, `finish.sh`, `cover.mjs`, `prep_audio.py`, `armar.py`) y su motor `src/`. Cambia la duración, el puerto (`render.sh`, `cues.mjs`, `cover.mjs`) y los nombres.
-- Whisper small: `pip install faster-whisper`; el modelo sale de npm `@skillninja/shortmovie-telop-model-p0..p3` (se unen las partes de `model.bin` en `/home/user/whisper-small/model`). Script: `plugins/animate/skills/animate/tools/transcribir.py`.
+- Plantilla: **`pieces/schutzengel/`** (el último vídeo terminado, motor de máxima calidad; antes `statue`, `kaffee`, `teddy`). Usa la skill `in-dieser-stadt` (`.claude/skills/in-dieser-stadt/`). Copia sus scripts (`index.html`, `render.sh`, `render2.mjs`, `mids.mjs`, `sheet.py`, `cues.mjs`, `sfx.py`, `mezclar.sh`, `marca.py`, `finish.sh`, `cover.mjs`, `prep_audio.py`, `armar.py`) y su motor `src/`. Cambia la duración, el puerto (`render.sh`, `cues.mjs`, `cover.mjs`) y los nombres.
+- Arranque: `./preparar.sh` lo instala todo. Whisper small: `pip install faster-whisper`; el modelo sale de npm `@skillninja/shortmovie-telop-model-p0..p3` (se unen las partes de `model.bin` en `/home/user/whisper-small/model`). Script: `plugins/animate/skills/animate/tools/transcribir.py`.
 - Los vídeos finales, el vídeo de referencia y las capturas de revisión **nunca** se suben al repo.
 - El contenedor se reinicia si la sesión queda inactiva: lanza el render como tarea en segundo plano de la sesión (Bash con run_in_background) y deja una comprobación con send_later; `render.sh` es idempotente.
 

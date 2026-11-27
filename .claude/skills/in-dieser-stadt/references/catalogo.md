@@ -1,4 +1,4 @@
-# Catálogo de todos los vídeos (rama `claude/trusting-newton-0hk9y9`, `pieces/`)
+# Catálogo de todos los vídeos (ramas `claude/*` del repo, `pieces/`)
 
 Orden cronológico. Dur = duración de la voz recortada (s). RPM según lo que contó el usuario (— = no lo dijo; «bajo» = 1,5–2 $).
 
@@ -42,6 +42,13 @@ Orden cronológico. Dur = duración de la voz recortada (s). RPM según lo que c
 | 32 | `flaschen` | «In dieser Stadt sitzt jeder auf einer Flasche. Und niemand hat mir je gesagt, warum.» — sin sillas, botellas = tapones de algo encerrado hace 300 años | — | — | terminado (portadas y descripción en `tiktok.md`) |
 
 | 33 | `knopf` | «In dieser Stadt wird jeder mit einem Knopf mitten auf dem Bauch geboren» — un botón para repetir un día; el Opa lo gastó por el nieto | — | (esperado alto: regla mágica + final familiar) | ✅ terminado (Lindenthal alpino, hospital; SS=1 sin AO ni bokeh) |
+| 34 | `frauenstadt` | «In dieser Stadt sind Frauenrechte heilig. So heilig, dass jeder Mann im Gefängnis geboren wird» — puntos por buenas obras | 135 | — | **motor con luz realista** (sin contornos, cielo con nubes, AO, desenfoque, supermuestreo); gancho con empujón y reja; regla de 1,98 m sin paralaje; portadas con margen |
+| 35 | `schluck` | «In dieser Stadt bekommst du jedes Mal Geld, wenn du ein Bier trinkst» — escalada 1→5→20 cervezas | 168 | — | motor de frauenstadt; atrezo de cerveza (Maß, botellas, Bierzähler, goldener Krug) |
+| 36 | `neinhals` | «In dieser Stadt wird dein Hals jedes Mal länger, wenn du Nein sagst» | 176 | — | **pregunta al espectador en los primeros 20 s** sobre alguien que conozca + respuesta del narrador (mamá); segunda llamada sutil a mitad; marcas en positivo (Porsche) |
+| 37 | `kaffee` | «In dieser Stadt macht dich Kaffee reich» — cada taza es dinero | 195 | — | 163 planos; alias de efectos; nota de traspaso `CONTINUAR.md` |
+| 38 | `schlafwandler` | «In dieser Stadt schlafwandelt jeder um drei Uhr nachts. Wenn du wach bist, tu so, als ob» | 223 | (esperado alto: regla + misterio) | 2 primeros planos rehechos; `watchdog.sh`; base del motor de schutzengel |
+| 39 | `schutzengel` | «In dieser Welt wird jeder mit zwei Schutzengeln geboren. Und sie sind immer Gegenteile» | 162 | (esperado alto: fantasía + familia) | corte cada ~1,2 s, 4 cambios de escena en 5 s; ángeles, alas, Tod/Leben; **render HQ repartido** entre 12 sesiones (`rango.sh`, `trozos.sh`, `juntar.sh`); guion sin preguntas al espectador |
+| 40 | `statue` | «In dieser Stadt wirst du zur Statue, wenn du ein Jahr lang keine Freundin oder keinen Freund hast» — solo un beso te libera | 166 | — | piedra progresiva, pedestal, Rolltreppe, lluvia; 130 planos; render a ss 1.25 sin AO (más rápido); portada centrada en el protagonista |
 
 \* `traumsammler` tiene `words.json` parcial; el vídeo final era más largo.
 
