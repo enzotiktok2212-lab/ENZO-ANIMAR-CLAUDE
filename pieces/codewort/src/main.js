@@ -47,6 +47,10 @@ const OLF = HQ ? 0 : 1; const OC = 3 * SS * OLF, OS = 2.2 * SS * OLF;
 const HAX = 2400, KAX = 3000, BUX = 3400, KLX = 4000, KZX = 4600, KUX = 5200, HFX = 6000;
 const SD = siedlung(scene), HM = SD.houses.MATS, HK = SD.houses.KESSLER, HBR = SD.houses.BRANDT;
 const HA = haus(scene, HAX), KA = kammer(scene, KAX), BU = buero(scene, BUX), KL = klasse(scene, KLX), KZ = kinderzimmer(scene, KZX), KU = kueche(scene, KUX), HF = hafen(scene, HFX);
+// cocina: la ventana del fondo es un hueco de verdad (x de -3 a 7, y de 6,7 a 13,3) con la noche detrás, para que la Cosa se asome
+{ const bw = KU.g.children[1], wm = bw.material; bw.visible = false; const g = KU.g; box(15, 17, .4, wm, 0, g, -10.5, 8.5, -14); box(11, 17, .4, wm, 0, g, 12.5, 8.5, -14); box(10, 6.7, .4, wm, 0, g, 2, 3.35, -14); box(10, 3.7, .4, wm, 0, g, 2, 15.15, -14);
+  KU.W.p.visible = false; const bg = textPlane(30, 20, 300, 200, (c, w, h) => { const s = c.createLinearGradient(0, 0, 0, h); s.addColorStop(0, '#04081a'); s.addColorStop(1, '#14203a'); c.fillStyle = s; c.fillRect(0, 0, w, h); c.fillStyle = '#08120c'; for (let i = 0; i < 14; i++) { c.beginPath(); c.moveTo(i * 24 - 10, h * .8); c.lineTo(i * 24 + 6, h * (.3 + (i % 3) * .08)); c.lineTo(i * 24 + 22, h * .8); c.fill(); } c.fillStyle = '#f4f0d8'; c.beginPath(); c.arc(w * .8, h * .18, 10, 0, 7); c.fill(); }, .9);
+  bg.position.set(2, 10, -26); g.add(bg); box(30, .4, 12, mat(0x1a2418, { roughness: 1 }), 0, g, 2, 4.6, -20); const KL_ = new THREE.PointLight(0x9ab0ff, 50, 14, 1.6); KL_.position.set(2, 12, -16.5); g.add(KL_); }
 const AUTUMN = new THREE.Group(); scene.add(AUTUMN); for (const [x, z, s] of [[-24, -60, 1.1], [24, -78, 1], [-24, -120, 1.2], [24, -128, .9], [-26, 20, 1], [26, 30, 1.1]]) herbstbaum(AUTUMN, x, z, s, x * 3 + z); AUTUMN.visible = false;
 // clase: puerta con ventanita en la pared izquierda (x = -20) y pasillo detrás para Herr Pohl
 const KDOOR = new THREE.Group(); { const g = KDOOR; g.position.set(KLX - 19.6, 0, 8); KL.g.parent.add(g); const dm = mat(0x8a5a32, { roughness: .5 }), wm = KL.g.children[2].material; KL.g.children[2].visible = false;
@@ -190,7 +194,7 @@ function kammerS(L) { use('KA'); inside(.12, 3); FILL.color.setRGB(.6, .7, 1); g
 function bueroS(L) { use('BU'); inside(.9, 30); FILL.color.setRGB(.9, .96, 1); BU.screens.forEach((s, i) => s.material.emissiveIntensity = 1.1 + Math.sin(L.T * 3 + i) * .1); }
 function schule(L) { use('KL'); inside(.95, 30); KL.BB.userData && KL.BB.userData.draw && 0; }
 function zimmer(L, night = true) { use('KZ'); if (KZ.CLOCK) KZ.CLOCK.visible = false; if (night) { inside(.5, 18); FILL.color.setRGB(1, .78, .5); if (KZ.WN) KZ.WN.p.material.map = KZ.WN.night; lp(1, KZX - 1, 8, -8, 30, 0xffc070, 26); } else { inside(.95, 38); if (KZ.WN) KZ.WN.p.material.map = KZ.WN.day; } }
-function kuecheS(L, near = false) { use('KU'); inside(1.0, 40); FILL.color.setRGB(1, .9, .74); KU.CH.forEach((c, i) => c.visible = near || i > 1); }
+function kuecheS(L, near = false) { use('KU'); inside(1.0, 40); FILL.color.setRGB(1, .9, .74); KU.CH.forEach((c, i) => c.visible = near || i > 1); if (KU.LMP) KU.LMP.visible = true; KU.T.visible = true; }
 function hafenS(L) { use('HF'); day(); setSky([.4, .5, .62], [.6, .66, .74], [.78, .8, .84]); scene.fog.density = .0022; BIRDSON = 1; }
 // coordenadas útiles de la casa de Mats (fuera): delante de la puerta, en el porche
 const HMW = (x, y, z) => HM.w(x, y, z), HKW = (x, y, z) => HK.w(x, y, z), HBW = (x, y, z) => HBR.w(x, y, z);

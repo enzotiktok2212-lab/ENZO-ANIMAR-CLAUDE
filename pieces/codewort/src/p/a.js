@@ -3,35 +3,41 @@
 // Casa por dentro (HAX): puerta de casa en z = 19,9 (DOORIN delante, mirando a +z), escalera al oeste, Kammer en x = -1,75, puerta trasera en z = -45,9.
 const KPORCH = HKW(HK.doorX, HK.B, HK.frontZ + 3.4), BPORCH = HBW(HBR.doorX, HBR.B, HBR.frontZ + 3.4);
 const toDoorM = HM.rot + PI, toDoorK = HK.rot + PI, toDoorB = HBR.rot + PI;   // mirar a la puerta desde el porche
+// encuadre a medida: desde c, el punto a queda a la altura yA de la pantalla y b a yB (0 arriba, 1 abajo), centrados en horizontal
+const fit2 = (c, a, b, yA = .55, yB = .3) => { const m = a.clone().add(b).multiplyScalar(.5), az = Math.atan2(m.x - c.x, m.z - c.z), el = q => Math.atan2(q.y - c.y, Math.hypot(q.x - c.x, q.z - c.z)), al = el(a), be = el(b);
+  const t = Math.max(.2, (be - al) / (2 * (yA - yB))), pch = al - (.5 - yA) * 2 * t; cam([c.x, c.y, c.z], [c.x + Math.sin(az) * Math.cos(pch) * 10, c.y + Math.sin(pch) * 10, c.z + Math.cos(az) * Math.cos(pch) * 10], clamp(2 * Math.atan(t) * 180 / PI, 22, 64)); };
+const frame2 = (a, b, back, up = .6, w = .45, fov = 44) => { const t = a.clone().lerp(b, w), d = t.clone().sub(a).setY(0).normalize(); cam([a.x - d.x * back, a.y + up, a.z - d.z * back], [t.x, t.y, t.z], fov); };
 const SUND = P_(sphere(38, new THREE.MeshBasicMaterial({ color: 0xffb060, fog: false }), scene, 0, 0, 0, 24, 16));
 // la puerta de casa por dentro se sacude (golpes) y el pomo gira solo
 const rattle = (L, t0, n = 3, rate = 3.2, amt = 1) => { const t = L.lt - t0; if (t < 0 || t > n / rate) return 0; const ph = (t * rate) % 1; return Math.exp(-ph * 9) * amt; };
 // ---- 1 «In dieser Stadt»: golpe de zoom en el Flur de noche: Mats retrocede de la puerta mientras el pomo gira solo, la cadena se tensa
 //      y por el cristal lateral se ve la silueta de la Cosa sonriendo
 shot(0, 'C', null, L => { flur(L, { h: 18, m: 10 }); const r = rattle(L, .05, 3, 3.6); HA.front.door.rotation.y = PI - r * .025; HA.front.knob.rotation.z = Math.sin(L.T * 20) * .6;
-  HA.side.forEach(s => s.material.opacity = .22); const d = put(ding, DOORIN.x + 4.1, 0, 22.4, PI); creepF(d, L.T, 1); lp(0, DOORIN.x + 4.1, 8, 25, 80, 0xffb060, 16);
-  const c = put(mats, DOORIN.x + .2, 0, 12.6 - easeOut(L.k) * 2, PI + .2); actuar(c, L.lt, [[0, 'idle'], [.08, 'recoil', { dur: .25 }]], { T: L.T, extra: shiver(L.T, 1) }); cara(c, L.T, { expr: 'scared', mouth: 'o' });
-  cm([DOORIN.x + 1.6, 6.2, -2, DOORIN.x + 1.8, 5.6, 18], [DOORIN.x + 1.4, 6.4, 0, DOORIN.x + 1.8, 5.8, 18], L.k, easeOut); }, [[0, 'knock', .8], [.28, 'knock', .8], [.55, 'chain_rattle', .6]]);
+  HA.side.forEach(s => s.material.opacity = .08); const d = put(ding, HAX + 5.6, 1.0, 20.9, PI); actuar(d, 0, [[0, { aLx: 2.4, aRx: 2.4, aLz: -.15, aRz: -.15, aLe: .3, aRe: .3, lean: .12 }]], { T: L.T }); creepF(d, L.T, 1); lp(0, HAX + 5.6, 9, 24, 90, 0xffb060, 14);
+  const c = put(mats, HAX + 3.4, 0, 11.6 - easeOut(L.k) * 1, PI + .25); actuar(c, L.lt, [[0, 'idle'], [.08, 'recoil', { dur: .25 }]], { T: L.T, extra: shiver(L.T, 1) }); cara(c, L.T, { expr: 'scared', mouth: 'o' });
+  fit2(V(HAX + 2.4, 7.6, lerp(1, 3, easeOut(L.k))), hp(c), hp(d), .56, .3); }, [[0, 'knock', .8], [.28, 'knock', .8], [.55, 'chain_rattle', .6]]);
 // ---- 2 «hat jede Familie»: en la cocina, Mama se inclina sobre la mesa y les cuchichea algo a Mats e Ida; Ida se ríe tapándose la boca
-shot(.84, 'W', 'punch', L => { kuecheS(L); const m = put(mamaB, KUX, 0, -8.6, 0); actuar(m, L.lt, [[0, { lean: .34, aLx: 1.0, aRx: 1.0, aLz: .1, aRz: .1, aLe: 1.2, aRe: 1.2, headX: .25, headY: Math.sin(L.T * 3) * .3 }]], { T: L.T }); cara(m, L.T, { expr: 'happy', mouth: Math.sin(L.T * 14) > 0 ? 'o' : 'smile', eyes: 'half' });
-  const c = sit(mats, KUX - 2.5, 2.8, -5.4, .25, L, { aLx: .9, aRx: .9, aLe: 1.4, aRe: 1.4, lean: .2, headZ: -.25 }); cara(c, L.T, { expr: 'happy', eyes: 'wide', mouth: 'smile' });
-  const i = sit(ida, KUX + 2.5, 2.8, -5.4, -.25, L, { aLx: 2, aRx: 2, aLe: 2.3, aRe: 2.3, lean: .1 + Math.sin(L.T * 16) * .04 }); cara(i, L.T, { eyes: 'happy', mouth: 'laugh' });
-  cm([KUX - 2, 9.6, 10, KUX, 5.4, -6.4, 48], [KUX + 1.2, 9.2, 8.6, KUX, 5.4, -6.4, 48], L.k); }, [[.05, 'whisper', .7], [.4, 'kids_laugh', .4]]);
+shot(.84, 'W', 'punch', L => { kuecheS(L); const d = put(ding, KUX + 4.5, 6.6, -15.0, 0); actuar(d, 0, [[0, { aLx: 1.9, aRx: 1.9, aLz: .6, aRz: .6, aLe: .5, aRe: .5, lean: .08, headZ: Math.sin(L.T * 2) * .06 }]], { T: L.T }); creepF(d, L.T, .9);
+  const m = put(mamaB, KUX + 2.6, 0, -9.2, -.2); actuar(m, L.lt, [[0, { lean: .34, aRx: 1.2, aRz: -.4, aRe: 1.6, headX: .2, headY: .4 }]], { T: L.T }); cara(m, L.T, { expr: 'happy', mouth: Math.sin(L.T * 14) > 0 ? 'o' : 'smile', eyes: 'half' });
+  const c = put(mats, KUX - .2, 0, -6.6, .2); actuar(c, 0, [[0, { lean: .1, headZ: -.25, aLx: .4, aRx: .4 }]], { T: L.T }); cara(c, L.T, { expr: 'happy', eyes: 'wide', mouth: 'smile' });
+  const i = put(ida, KUX + 1.8, 0, -6.2, -.25); actuar(i, 0, [[0, { aLx: 2, aRx: 2, aLe: 2.3, aRe: 2.3, lean: .1 + Math.sin(L.T * 16) * .04 }]], { T: L.T }); cara(i, L.T, { eyes: 'happy', mouth: 'laugh' });
+  KU.LMP.visible = false; KU.T.visible = false; KU.CH.forEach(ch => ch.visible = false); fit2(V(KUX + 1, 10.4, lerp(9, 7.6, L.k)), hp(c).add(V(1, 0, 0)), hp(d), .56, .3); }, [[.05, 'whisper', .7], [.4, 'kids_laugh', .4]]);
 // ---- 3 «ein geheimes Wort.»: primer plano: Mama le susurra al oído a Mats, que abre mucho los ojos; «PSST!» y «GEHEIM»
-shot(1.76, 'S', null, L => { kuecheS(L); const c = put(mats, KUX - 1, 0, 8.4, 0), m = put(mamaB, KUX + 1.9, 0, 8.1, -PI / 2); actuar(m, L.lt, [[0, { lean: .3, crouch: .16, aRx: 1.9, aRz: -.3, aRe: 2.1, headX: .1 }]], { T: L.T }); cara(m, L.T, { eyes: 'half', mouth: Math.sin(L.T * 18) > 0 ? 'o' : 'flat' });
+shot(1.76, 'S', null, L => { kuecheS(L); const d = put(ding, KUX + 4.5, 6.6, -15.0, 0); actuar(d, 0, [[0, { aLx: 1.9, aRx: 1.9, aLz: .6, aRz: .6, aLe: .5, aRe: .5, lean: .08, headZ: Math.sin(L.T * 2) * .06 }]], { T: L.T }); creepF(d, L.T, 1);
+  const c = put(mats, KUX + 1.6, 0, 7, 0), m = put(mamaB, KUX + 4.2, 0, 6.7, -PI / 2); actuar(m, L.lt, [[0, { lean: .3, crouch: .16, aRx: 1.9, aRz: -.3, aRe: 2.1, headX: .1 }]], { T: L.T }); cara(m, L.T, { eyes: 'half', mouth: Math.sin(L.T * 18) > 0 ? 'o' : 'flat' });
   actuar(c, L.lt, [[0, { aRx: 2.3, aRz: .1, aRe: 2.6, headY: .2 }]], { T: L.T }); cara(c, L.T, { eyes: 'wide', mouth: 'o' });
-  onFace(c, 5.6, -.2, -2.8, 40, L.k, 4.6); badge('tag', 'GEHEIM', W / 2, H * .18, (L.lt - .4) / .2); }, [[0, 'whisper', .8], [.45, 'pop', .4]]);
+  KU.LMP.visible = false; fit2(V(KUX + .6, 7.4, lerp(17, 16, L.k)), hp(c).add(V(1.2, 0, 0)), hp(d), .56, .3); badge('tag', 'GEHEIM', W / 2, H * .09, (L.lt - .4) / .2); }, [[0, 'whisper', .8], [.45, 'pop', .4]]);
 // ---- 4 «Wenn Mama nach Einbruch der Dunkelheit»: atardecer azul: Mama, de espaldas, sube los escalones del porche con el bolso; farol encendido, bosque detrás
 shot(3.09, 'Z', null, L => { strasse(L, { t: 'dusk', k: 1, lamps: true }); const p = PORCH; const s = clamp(L.lt / 1.3); const c = walk(mama, L, p.x - 9 + s * 5.4, p.z + .6, PI / 2, 0, 0, { y: Math.min(HM.B, s * 2.2) }); actuar(c, 0, [[0, { ...walkP(L.T, 0), aRx: .2, aRe: .6 }]], { T: L.T });
   attach(BAG, c.aR.hand, [0, -1.2, 0], [0, 0, 0], .9); breath(c, L.T); cara(c, L.T, { expr: 'neutral' }); lp(0, p.x + 3, 11, p.z, 50, 0xffb860, 26);
   cm([p.x - 22, 7, p.z + 7, p.x - 2, 5.6, p.z], [p.x - 17, 6.4, p.z + 5, p.x - 1, 5.8, p.z], L.k); sh(V(p.x, 0, p.z), 30); }, [[0, 'steps', .5], [.6, 'wood_creak', .4], [.2, 'owl', .3]]);
 // ---- 5 «heimkommt und es nicht kennt,»: en el porche: Mama llama a la puerta… y cuando dentro le preguntan el Wort, se encoge de hombros: «???»
 shot(4.51, 'F', null, L => { strasse(L, { t: 'night' }); const p = PORCH; const c = put(mama, p.x, p.y, p.z + .4, toDoorM); actuar(c, L.lt, [[0, knockP(L.T)], [.6, 'shrug', { dur: .3 }]], { T: L.T }); cara(c, L.T, L.lt > .6 ? { expr: 'confused', mouth: 'grimace' } : { expr: 'neutral' });
-  lp(0, p.x - 3, 10, p.z - 3, 60, 0xffb860, 26); badge('q', '???', W / 2, H * .2, (L.lt - .7) / .2); cm([p.x - 9.5, 7.4, p.z - 7, p.x, 5.8, p.z - .4, 42], [p.x - 8, 7, p.z - 5.6, p.x, 5.8, p.z - .2, 42], L.k); sh(V(p.x, 0, p.z), 26); }, [[.05, 'knock', .7], [.25, 'knock', .7], [.7, 'creepy_ting', .5]]);
+  lp(0, p.x - 3, 10, p.z - 3, 60, 0xffb860, 26); badge('q', '???', W / 2, H * .18, (L.lt - .7) / .2); cm([p.x - 13, 7.4, p.z - 5.6, p.x + .2, 5.8, p.z + .4, 42], [p.x - 11.6, 7.2, p.z - 4.8, p.x + .2, 5.8, p.z + .4, 42], L.k); sh(V(p.x, 0, p.z), 26); }, [[.05, 'knock', .7], [.25, 'knock', .7], [.7, 'creepy_ting', .5]]);
 // ---- 6 «machst du die Tür nicht auf.»: dentro: Mats engancha la cadena, gira el cerrojo y niega con la cabeza; X roja
-shot(6.01, 'C', null, L => { flur(L); const c = put(mats, DOORIN.x + .4, 0, DOORIN.z - .4, -.35); actuar(c, L.lt, [[0, { aRx: 1.9, aRz: .3, aRe: .6, headX: -.1 }], [.6, { aRx: .3, aLx: .2, headY: Math.sin(L.T * 12) * .45 }, { dur: .25 }]], { T: L.T }); cara(c, L.T, { expr: 'determined', mouth: 'flat' });
-  HA.front.thumb.rotation.z = clamp((L.lt - .3) / .2) * PI / 2; badge('x', '', W / 2, H * .2, (L.lt - .75) / .2, 1, 1.6);
-  cm([DOORIN.x - 4.2, 6.8, 19.4, DOORIN.x + .4, 5.2, 15.6, 42], [DOORIN.x - 3.6, 6.6, 19.6, DOORIN.x + .4, 5.2, 15.8, 42], L.k); }, [[.1, 'chain_rattle', .7], [.35, 'click_metal', .8], [.75, 'thud', .4]]);
+shot(6.01, 'C', null, L => { flur(L); const c = put(mats, DOORIN.x + .4, 0, DOORIN.z - 1, PI); actuar(c, L.lt, [[0, { aRx: -.8, aRz: -.2, aRe: .3, headX: -.05 }], [.6, { aRx: .3, aLx: .2, headY: Math.sin(L.T * 12) * .45 }, { dur: .25 }]], { T: L.T }); cara(c, L.T, { expr: 'determined', mouth: 'flat' });
+  HA.front.thumb.rotation.z = clamp((L.lt - .3) / .2) * PI / 2; badge('x', '', W / 2, H * .17, (L.lt - .75) / .2, 1, 1.6);
+  onFace(c, 6.4, -.2, 0, 42, L.k, 5.4); }, [[.1, 'chain_rattle', .7], [.35, 'click_metal', .8], [.75, 'thud', .4]]);
 // ---- 7 «Denn wenn es dunkel wird,»: grúa sobre la calle: el cielo pasa de atardecer a noche y las farolas se encienden una a una
 shot(7.52, 'W', null, L => { strasse(L, { t: 'dusk', k: 1 }); const n = Math.floor(L.k * 1.6 * SD.lamps.length); SD.lamps.forEach((l, i) => { const on = i < n; l.glass.material.emissiveIntensity = on ? 3.2 : .05; l.halo.material.opacity = on ? .75 : 0; l.puddle.material.opacity = on ? .3 : 0; });
   if (L.k > .5) { night(20); } walk(EXS[0], L, -13, 30, PI, 3, 0, { expr: 'neutral' }); walk(EXS[1], L, 13, -10, 0, 2.6, 1, { expr: 'worried' });
