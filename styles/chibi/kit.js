@@ -122,7 +122,9 @@ function cbPerson(x, y, s, P) {
   const D = CB_BODY[P.age || 'adult'], key = P.key || 'p';
   const bob = Math.sin(TT * TAU * 0.8 + key.length) * 3;   // idle breathing
   ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
-  cbFloorShadow(0, 0, D.torsoW * 0.85, 22, 0.34);
+  if (!P.noShadow) cbFloorShadow(0, 0, D.torsoW * 0.85, 22, 0.34);
+  if (P.lean) ctx.rotate(P.lean);
+  if (P.sq) ctx.scale(1 + P.sq, 1 - P.sq);
   const hipY = -D.leg, shY = hipY - D.torsoH + 18 + bob, headY = shY - D.head * 0.78 + bob * 0.5;
   const top = P.top || { type: 'hoodie', color: CB.coral };
   // legs + shoes
@@ -145,6 +147,8 @@ function cbPerson(x, y, s, P) {
       case 'cheek': return [sx * D.head * 0.55, headY + D.head * 0.35];
       case 'point': return [sx * (shX + 150), shY + 10];
       case 'chin': return [sx * 30, headY + D.head * 0.85];
+      case 'reach': return [sx * 60, shY + 40];
+      case 'hug': return [-sx * 40, shY + 70];
       default: return [sx * (shX + 16), hipY - 6];
     }
   };
@@ -167,7 +171,7 @@ function cbPerson(x, y, s, P) {
   for (const side of [-1, 1]) if (late(side)) drawArm(side, 'hand');
   if (P.hold) { ctx.save(); P.hold(0, shY); ctx.restore(); }
   ctx.restore();
-  return { head: [x, y + headY * s], top: y + (headY - D.head) * s, hands: y + (shY - D.head * 2.0) * s };
+  return { head: [x, y + headY * s], chest: y + (shY + 60) * s, top: y + (headY - D.head) * s, hands: y + (shY - D.head * 2.0) * s };
 }
 function cbTopDetail(top, tw, shY, hipY) {
   const c = top.color;
@@ -211,7 +215,8 @@ function cbHead(x, y, r, P) {
   const look = (P.look || 0) * r * 0.08, key = P.key || 'p';
   cbHairBack(x, y, r, hair);
   for (const sx of [-1, 1]) { cbShape(cbP.ell(x + sx * r * 0.98, y + r * 0.12, r * 0.2, r * 0.24), skin, { flat: true, shade: 4 }); }   // ears
-  const red = P.red || 0, face = red > 0 ? cbMix(skin, '#ff4436', red * 0.7) : skin;
+  const red = P.red || 0; let face = red > 0 ? cbMix(skin, '#ff4436', red * 0.7) : skin;
+  if (P.tint) face = cbMix(face, P.tint[0], P.tint[1]);
   cbShape(cbP.ell(x, y, r, r * 0.93), face, { bb: [y - r, y + r], shade: 14 });
   if (P.beard) cbShape(cbP.smooth([[x - r * 0.92, y + r * 0.05], [x - r * 0.8, y + r * 0.7], [x - r * 0.3, y + r * 1.04], [x + r * 0.3, y + r * 1.04], [x + r * 0.8, y + r * 0.7], [x + r * 0.92, y + r * 0.05], [x + r * 0.5, y + r * 0.42], [x - r * 0.5, y + r * 0.42]]), P.beard, { bb: [y, y + r], shade: 8 });
   cbHairFront(x, y, r, hair);
@@ -287,6 +292,13 @@ function cbHairFront(x, y, r, h) {
   } else if (h.style === 'tuft') {   // a newborn's tuft
     cbShape(cbP.smooth([[x - r * 0.12, y - r * 0.88], [x - r * 0.06, y - r * 1.2], [x + r * 0.2, y - r * 1.28], [x + r * 0.1, y - r * 1.06], [x + r * 0.12, y - r * 0.88]]), c, { bb, shade: 3 });
   }
+}
+// an inflatable swim ring (a duck ring), drawn around a waist at (x, y)
+function cbRing(x, y, rx, ry, c = CB.yellow, k = 1) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(1, k);
+  cbShape(() => { ctx.ellipse(0, 0, rx, ry, 0, 0, TAU); ctx.moveTo(rx * 0.55, 0); ctx.ellipse(0, 0, rx * 0.55, ry * 0.45, 0, 0, TAU, true); }, c, { bb: [-ry, ry], shade: 10 });
+  for (let i = 0; i < 4; i++) { const a = i / 4 * TAU + 0.4; ctx.save(); ctx.fillStyle = 'rgba(255,255,255,0.7)'; ctx.beginPath(); ctx.ellipse(Math.cos(a) * rx * 0.78, Math.sin(a) * ry * 0.72, rx * 0.1, ry * 0.12, 0, 0, TAU); ctx.fill(); ctx.restore(); }
+  ctx.restore();
 }
 // a newborn wrapped in a blanket; (x, y) = centre of the bundle
 function cbBaby(x, y, s, o = {}) {
@@ -463,7 +475,7 @@ function cbThought(x, y, r, draw) {   // thought bubble with a drawing inside
     ctx.save(); ctx.translate(x, y); ctx.scale(k, k);
     cbShape(cbP.multi(...Array.from({ length: 10 }, (_, i) => { const a = i / 10 * TAU; return cbP.ell(Math.cos(a) * r * 0.82, Math.sin(a) * r * 0.62, r * 0.36, r * 0.32); }), cbP.ell(0, 0, r * 0.9, r * 0.7)), '#ffffff', { flat: true, shade: 0, outer: true });
     cbShape(cbP.ell(r * 0.5, r * 0.95, 22, 18), '#fff', { flat: true, shade: 0 }); cbShape(cbP.ell(r * 0.75, r * 1.2, 13, 11), '#fff', { flat: true, shade: 0 });
-    ctx.save(); ctx.beginPath(); ctx.ellipse(0, 0, r * 0.95, r * 0.72, 0, 0, TAU); ctx.clip(); draw(); ctx.restore();
+    ctx.save(); ctx.beginPath(); ctx.ellipse(0, 0, r * 0.95, r * 0.72, 0, 0, TAU); ctx.clip(); ctx.translate(-x, -y); draw(); ctx.restore();
     ctx.restore();
   });
 }

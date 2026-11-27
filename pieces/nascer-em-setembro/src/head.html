@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Por que é chato nascer em setembro</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #1b1714; overflow: hidden; }
+  body { display: flex; align-items: center; justify-content: center; }
+  canvas { height: min(100vh, calc(100vw * 16 / 9)); width: auto; aspect-ratio: 9 / 16; display: block; cursor: pointer; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script>
+"use strict";
+// =====================================================================
+//  POR QUE É CHATO NASCER EM SETEMBRO — 9:16, 96s, 24fps, style "chibi".
+//  The voice is the clock: every cut sits on a word of voice/narracao.mp3 (WORDS, src/words.js).
+//  Hard cuts every ~1.4s (BRIDGES = []). A shot = [t0, scene, params]; shots longer than ~2.1s are split
+//  into two camera set-ups of the same action (params.base keeps the action's own start time).
+//  Characters stay centred (x = 540); captions sit at y = 1430, under the characters' feet.
+// =====================================================================
+const FPS = 24, W = 1080, H = 1920;
+const DURATION = 96.0;
+const NFRAMES = Math.round(DURATION * FPS);
+const LOOP_T = NFRAMES / FPS;
+const SAFE = { top: 240, bottom: 420, right: 140 };
+const HAND = '"Inter Display", "Inter", sans-serif';
+const CX = 540, CAP_Y = 1430;
+
+// [t0 (a word start), scene, params]
+const SHOT_SRC = [
+  [0.00, 'title', {}],
+  [1.02, 'cribBaby', {}],
+  [2.20, 'nurseLift', {}],
+  [3.06, 'calendar9', { from: 'hospital' }],
+  [4.38, 'dadDoor', { who: 'pai' }],
+  [5.72, 'sweaterPose', { who: 'pai' }],
+  [7.04, 'liftBaby', { who: 'pai', phase: 'lift' }],
+  [8.16, 'liftBaby', { who: 'pai', phase: 'shout' }],
+  [9.82, 'blushBed', { who: 'mae' }],
+  [11.06, 'pepper', { who: 'mae' }],
+  [12.20, 'ageCard', { age: 5, set: 'home' }],
+  [13.18, 'askPool', {}],
+  [14.84, 'poolClosed', {}],
+  [16.70, 'rainCurb', {}],
+  [18.30, 'ageCard', { age: 7, set: 'class' }],
+  [18.96, 'classInvites', {}],
+  [20.74, 'weekCakes', {}],
+  [21.96, 'threeParties', {}],
+  [22.90, 'aloneParty', {}],
+  [24.16, 'kidsRun', {}],
+  [25.32, 'pony', {}],
+  [26.02, 'shrug', {}],
+  [27.42, 'nurseryPacked', {}],
+  [28.96, 'flagUS', {}],
+  [30.18, 'cupcakes', {}],
+  [32.36, 'calendarRain', {}],
+  [33.72, 'day9', {}],
+  [34.84, 'babySea', {}],
+  [36.96, 'ukWard', {}],
+  [38.84, 'medal', {}],
+  [41.00, 'ageCard', { age: 9, set: 'store' }],
+  [41.74, 'shopList', {}],
+  [43.72, 'halloween', {}],
+  [45.60, 'cake', { spider: false }],
+  [46.46, 'cake', { spider: true }],
+  [47.90, 'ageCard', { age: 12, set: 'class' }],
+  [48.68, 'signAsk', {}],
+  [50.34, 'virgem', {}],
+  [51.18, 'classLaugh', {}],
+  [53.76, 'ageCard', { age: 16, set: 'bedroom' }],
+  [54.94, 'countBack', {}],
+  [57.06, 'december', {}],
+  [57.78, 'dadThought', {}],
+  [59.20, 'ohNo', {}],
+  [60.78, 'apartment', {}],
+  [62.64, 'boxArrives', {}],
+  [64.66, 'boxOpen', {}],
+  [66.14, 'note', {}],
+  [67.26, 'readNote', {}],
+  [69.96, 'loveSept', {}],
+  [72.72, 'goodNews', {}],
+  [73.94, 'ukLine', {}],
+  [75.76, 'crown', {}],
+  [77.40, 'testA', {}],
+  [79.00, 'sepAug', {}],
+  [80.64, 'ageCard', { age: 30, set: 'corridor' }],
+  [81.40, 'corridor', {}],
+  [82.34, 'calendar9', { from: 'hospital2' }],
+  [83.98, 'dadDoor', { who: 'leo' }],
+  [85.82, 'liftBaby', { who: 'leo', phase: 'lift' }],
+  [87.08, 'liftBaby', { who: 'leo', phase: 'shout' }],
+  [88.74, 'blushBed', { who: 'esposa' }],
+  [90.32, 'pepper', { who: 'esposa' }],
+  [91.42, 'family', {}],
+  [92.72, 'tagSomeone', {}],
+  [94.26, 'months', {}],
+];
