@@ -232,22 +232,34 @@ const money = (t, k, kind = 'gold', y = .12) => badge(kind, t, W / 2, H * y, k);
 // saludo: a dice el nombre de b (bocadillo desde la boca) y a b le salta una ráfaga de monedas con «+1 €»
 function greet(a, b, L, name, t0, slot = 0, o = {}) { const k = (L.lt - t0) * 3; if (L.lt > t0) bubble(a, name, k, o.dy ?? 1.6); if (L.lt > t0 + .18) { const h = hp(b); coinBurst(h.clone().add(V(0, 1.4, 0)), L.t0 + t0 + .18, L.T, o.n ?? 6, slot, { y0: b.root.position.y, vy: 9, spread: 2.6 }); plus(h.clone().add(V(0, 2.6, 0)), L.t0 + t0 + .2, L.T, o.plus ?? '+1 €'); } }
 
-// 1 «In dieser Stadt bekommst du»: GANCHO. Plaza de Rufingen (la Namensbank al fondo): la gente camina, de pronto se para, se saluda y
-// de cada boca sale un bocadillo con un nombre; al nombrado le saltan monedas de euro. Golpe de zoom + zoom lento.
-shot(0, 'C', 'hook', L => { stadt(L); const stop = L.lt > .32;
+// billetes de euro que caen girando (piscina propia; se esconden solos con hideAll)
+const NOTET = [['#d8506a', '#f4b8c4', '10'], ['#4a7ad8', '#b8d0f4', '20'], ['#e8902a', '#f8d4a8', '50']].map(([a, b, v]) => canvasTex(256, 128, (c, w, h) => {
+  const g = c.createLinearGradient(0, 0, w, 0); g.addColorStop(0, b); g.addColorStop(.5, '#fbf6ea'); g.addColorStop(1, b); c.fillStyle = g; c.fillRect(0, 0, w, h);
+  c.fillStyle = a; c.fillRect(0, 0, w, 14); c.fillRect(0, h - 14, w, 14); c.globalAlpha = .35; c.beginPath(); c.arc(w * .68, h / 2, 34, 0, 7); c.fill(); c.globalAlpha = 1;
+  c.strokeStyle = a; c.lineWidth = 4; c.strokeRect(6, 6, w - 12, h - 12); c.fillStyle = a; c.font = `700 54px ${FONT}`; c.textAlign = 'left'; c.textBaseline = 'middle'; c.fillText(v, 18, h / 2 + 2); c.font = `700 30px ${FONT}`; c.fillText('€', 26 + v.length * 30, h / 2 - 14);
+  c.textAlign = 'right'; c.font = `700 26px ${FONT}`; c.fillText('EURO', w - 18, h - 30); }));
+const NOTES = Array.from({ length: 36 }, (_, i) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(1.5, .75), new THREE.MeshStandardMaterial({ map: NOTET[i % 3], side: THREE.DoubleSide, roughness: .8 })); m.castShadow = true; m.userData.noOutline = true; return P_(m); });
+function notesRain(c, T0, T, n = 24, o = {}) { const t = T - T0; if (t < 0) return; const r0 = RNG(o.seed ?? 11), h = o.h ?? 9, sp = o.spread ?? 5;
+  NOTES.forEach((m, i) => { if (i >= n) return; const r = () => r0(); const x0 = (r() - .5) * sp * 2, z0 = (r() - .5) * sp * 1.4, d = r() * .5, v = 2.2 + r() * 1.4; const tt = t - d; if (tt < 0) return;
+    const y = Math.max(.05, c.y + h - tt * v); m.visible = true; m.position.set(c.x + x0 + Math.sin(tt * 3 + i) * .8, y, c.z + z0 + Math.cos(tt * 2.6 + i) * .5);
+    if (y <= .05) m.rotation.set(-PI / 2, 0, i); else m.rotation.set(Math.sin(tt * 4 + i) * 1.1 - .4, tt * 2.5 + i, Math.cos(tt * 3.4 + i) * .7); }); }
+// 1 «In dieser Stadt»: GANCHO (solo estas tres palabras). Plaza de Rufingen (la Namensbank al fondo): dos vecinos de perfil, frente a frente y
+// centrados; él saluda «HALLO, LENA!» y a Lena le saltan monedas de euro. Detrás, otras parejas hacen lo mismo. Golpe de zoom + zoom lento.
+shot(0, 'C', 'hook', L => { stadt(L);
   const A = [EXS[0], EXS[1]], B = [EXS[2], EXS[3]], C2 = [EXS[4], EXS[5]];
-  for (const [p, x, z, ry, nm, sl] of [[A, -1.5, 42, -PI / 2 + .55, 'HALLO, LENA!', 0], [B, -9.5, 36, PI / 2, 'MOIN, TOM!', 8], [C2, 9.5, 34, -PI / 2, 'SERVUS, ANNA!', 16]]) {
-    const [a, b] = p; if (!stop) { walk(a, L, x - Math.sin(ry) * 1.5, z, ry, 2.2, 1); walk(b, L, x - Math.sin(ry) * 6, z + .5, ry + PI, 2.2, 2); }
-    else { pose(a, x + Math.sin(ry) * .2, 0, z, ry, L, WAVE(L.T, sl), 'happy', { mouth: 'open_smile' }); pose(b, x - Math.sin(ry) * 3.0, 0, z + .5, ry + PI, L, { aRx: 2.2, aRz: .4, aRe: .6 }, 'joy', { mouth: 'open_smile' }); greet(a, b, L, nm, .36 + sl * .03, sl, { n: 5 }); } }
-  crowdBox(L, -26, 26, -6, 8, 10, 3, { mode: 'walk' }); crowdBox(L, -26, -16, 26, 34, 3, 4, { mode: 'talk' }); crowdBox(L, 16, 26, 26, 34, 3, 5, { mode: 'talk' });
-  cm([0, 6.4, 62, 0, 4.6, 38, 46], [0, 6, 57, 0, 4.6, 38, 44], L.k); SHC = V(0, 0, 40); },
-  [[.36, 'coin_jingle', .8], [.42, 'cash', .6], [.5, 'crowd_happy', .5], [.0, 'footsteps', .5]]);
-// 2 «jedes Mal einen Euro»: delante de la heladería: un chico grita «LENA!» y a Lena le salta otra ráfaga; contador 1 €
-shot(1.41, 'Z', 'punch', L => { stadt(L); const lena = EXS[1], paul = EXS[6];
-  pose(lena, -38, 0, 64, .5, L, L.lt > .25 ? { aLx: 1.9, aLz: 1.1, aRx: 1.9, aRz: 1.1, aLe: .3, aRe: .3 } : { aRx: .3 }, L.lt > .25 ? 'joy' : 'happy', { mouth: 'open_smile' });
-  pose(paul, -34.4, 0, 64.6, -PI / 2 - .3, L, WAVE(L.T, 2), 'happy', { mouth: 'open_smile' }); greet(paul, lena, L, 'LENA!', .12, 20, { n: 8 });
-  crowdBox(L, -42, -38, 54, 60, 2, 5, { mode: 'look' }); orb(L.k, V(-36.2, 3.4, 64.3), null, [18, .2, .16, 46], [15.5, .35, .12, 46]);
-  money('1 €', (L.lt - .3) * 3); }, [[.15, 'coin_jingle', .8], [.3, 'ding_reveal', .6]]);
+  for (const [p, x, z, nm, sl] of [[A, 0, 42, 'HALLO, LENA!', 0], [B, -10, 30, 'MOIN, TOM!', 8], [C2, 10, 28, 'SERVUS, ANNA!', 16]]) {
+    const [a, b] = p; if (sl) { pose(a, x - 2.1, 0, z, PI / 2 - .3, L, { aRx: 1, aRe: 1.2 }, 'happy', { mouth: 'open_smile' }); pose(b, x + 2.1, 0, z, -PI / 2 + .3, L, { aRx: .3 }, 'happy', { mouth: 'smile' }); continue; }
+    pose(a, x - 2.2, 0, z, PI / 2 - .65, L, WAVE(L.T, sl), 'happy', { mouth: 'open_smile' });
+    pose(b, x + 2.2, 0, z, -PI / 2 + .65, L, L.lt > .2 ? { aLx: 1.9, aLz: 1.1, aRx: 1.9, aRz: 1.1, aLe: .3, aRe: .3 } : { aRx: .3 }, 'joy', { mouth: 'open_smile' }); greet(a, b, L, nm, .08, sl, { n: 4 }); }
+  notesRain(V(0, 0, 42), L.t0 + .1, L.T, 22, { h: 4.5, spread: 3.2, seed: 5 }); crowdBox(L, -26, 26, -6, 8, 10, 3, { mode: 'walk' }); crowdBox(L, -26, -16, 18, 24, 3, 4, { mode: 'talk' }); crowdBox(L, 16, 26, 18, 24, 3, 5, { mode: 'talk' });
+  cm([0, 5.8, 66, 0, 4.2, 40, 46], [0, 5.6, 63, 0, 4.2, 40, 44], L.k); SHC = V(0, 0, 40); },
+  [[.1, 'coin_jingle', .8], [.16, 'cash_reg', .9], [.22, 'money_rain', .6], [.3, 'crowd_happy', .5], [.0, 'footsteps', .4]]);
+// 2 «bekommst du jedes Mal einen Euro»: delante de la heladería (sitio despejado, sin árbol): Paul grita «LENA!» y a Lena le salta otra ráfaga; contador 1 €
+shot(.854, 'Z', 'punch', L => { stadt(L); const lena = EXS[1], paul = EXS[6];
+  pose(lena, -24, 0, 56, .5, L, L.lt > .45 ? { aLx: 1.9, aLz: 1.1, aRx: 1.9, aRz: 1.1, aLe: .3, aRe: .3 } : { aRx: .3 }, L.lt > .45 ? 'joy' : 'happy', { mouth: 'open_smile' });
+  pose(paul, -20.4, 0, 56.6, -PI / 2 - .3, L, WAVE(L.T, 2), 'happy', { mouth: 'open_smile' }); greet(paul, lena, L, 'LENA!', .3, 20, { n: 8 });
+  crowdBox(L, -28, -25, 46, 51, 2, 5, { mode: 'look' }); orb(L.k, V(-22.2, 3.4, 56.3), null, [18, .2, .16, 46], [15.5, .35, .12, 46]);
+  money('1 €', (L.lt - .55) * 3); notesRain(V(-22.2, 0, 56.3), L.t0 + .5, L.T, 30, { h: 6.5, spread: 5 }); }, [[.33, 'coin_jingle', .8], [.55, 'cash_reg', .9], [.6, 'money_rain', .6]]);
 // 3 «wenn jemand deinen Namen sagt»: la Namensbank: el marcador gigante con los nombres que más ganan; la cámara sube hacia él
 shot(3.01, 'W', null, L => { stadt(L); crowdBox(L, -22, 22, -38, -26, 12, 6, { mode: i => ['look', 'point', 'talk'][i % 3], face: V(0, 18, -48) });
   cm([0, 6, 8, 0, 14, -48, 52], [0, 13, -4, 0, 18, -48, 50], L.k); }, [[.1, 'crowd_murmur', .5], [.6, 'click_set', .5]]);
@@ -260,11 +272,11 @@ shot(5.9, 'S', null, L => { stadt(L); const tom = EXS[3], fr = EXS[7]; pose(fr, 
   const j = L.lt > .3 ? Math.max(0, Math.sin((L.lt - .3) * 8)) * .8 : 0; pose(tom, 20, j, 92, -PI / 2 - .1, L, L.lt > .3 ? { aLx: 2.8, aLz: .5, aRx: 2.8, aRz: .5 } : {}, L.lt > .3 ? 'joy' : 'confused', { mouth: L.lt > .3 ? 'open_smile' : undefined });
   greet(fr, tom, L, 'HEY, TOM!', .08, 4, { n: 8 }); orb(L.k, V(17.6, 3.4, 92.5), null, [21, .15, .1, 46], [19, -.08, .08, 46]); money('+1 €', (L.lt - .3) * 3, 'green'); }, [[.3, 'coin_jingle', .8], [.35, 'cash', .5]]);
 // 6 «Unser Bürgermeister heißt»: Genau en la escalinata de la Namensbank saluda a la multitud que le aplaude
-shot(6.82, 'R', null, L => { stadt(L); pose(genau, 0, 4, -46.5, 0, L, WAVE(L.T, 1), 'happy', { mouth: 'open_smile' });
-  crowdBox(L, -20, 20, -42, -36, 12, 8, { mode: i => i % 3 ? 'cheer' : 'clap', face: V(0, 5, -46) }); badge('tag', 'BÜRGERMEISTER', W / 2, H * .12, (L.lt - .15) * 3);
-  cm([-5, 9.5, -31, 0, 6.8, -46.5, 46], [4, 9.2, -33, 0, 6.8, -46.5, 44], L.k); SHC = V(0, 4, -40); }, [[0, 'crowd_cheer', .6], [.2, 'applause', .5]]);
+shot(6.82, 'R', null, L => { stadt(L); pose(genau, 0, 0, -42.5, 0, L, WAVE(L.T, 1), 'happy', { mouth: 'open_smile' });
+  crowdBox(L, -20, -6, -40, -32, 6, 8, { mode: i => i % 3 ? 'cheer' : 'clap', face: V(0, 3, -42.5) }); crowdBox(L, 6, 20, -40, -32, 6, 18, { mode: i => i % 3 ? 'clap' : 'cheer', face: V(0, 3, -42.5), from: 6 }); badge('tag', 'BÜRGERMEISTER', W / 2, H * .12, (L.lt - .15) * 3);
+  cm([-4, 7.2, -27, 0, 4.6, -42.5, 46], [3, 7, -28.5, 0, 4.6, -42.5, 44], L.k); SHC = V(0, 0, -38); }, [[0, 'crowd_cheer', .6], [.2, 'applause', .5]]);
 // 7 «Genau.»: primer plano de Genau, orgulloso, con la Amtskette; su nombre en grande
-shot(7.84, 'C', 'punch', L => { stadt(L); pose(genau, 0, 4, -46.5, .15, L, { aRx: .5, aRz: -.3, aRe: 1.6, aLx: .5, aLz: -.3, aLe: 1.6, lean: -.05 }, 'smug', { mouth: 'grin' });
+shot(7.84, 'C', 'punch', L => { stadt(L); pose(genau, 0, 0, -42.5, .15, L, { aRx: .5, aRz: -.3, aRe: 1.6, aLx: .5, aLz: -.3, aLe: 1.6, lean: -.05 }, 'smug', { mouth: 'grin' });
   onFace(genau, 5.2, -.2, .6, 40, L.k, 4.6); badge('big', 'GENAU', W / 2, H * .13, (L.lt - .05) * 3.5); }, [[0, 'whoosh_up', .5], [.1, 'ding_reveal', .6]]);
 // 8 «Genau,»: dos vecinas en la terraza del café asienten: «Genau!» → monedas que salen volando hacia el Rathaus
 shot(8.56, 'G', null, L => { stadt(L); const a = EXS[8], b = EXS[9]; pose(a, 35, 0, 55, -PI / 2 + .6, L, { aRx: 1.2, aRe: 1.4, headX: .15 * Math.sin(L.T * 14) }, 'happy', { mouth: 'open_smile' }); pose(b, 32.5, 0, 57.5, PI - .5, L, { aLx: .6 }, 'happy', { mouth: 'smile' });
