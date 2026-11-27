@@ -545,10 +545,15 @@ function drawCover(cv) {
   ctx.save(); ctx.shadowColor = 'rgba(0,0,0,0.3)'; ctx.shadowOffsetY = 10; cbText('SETEMBRO?', 540, 680, 160, { color: CB.yellow, stroke: 26 }); ctx.restore();
   // the hero: Leo crying under a party hat, the calendar and the sweater's bubble
   cbCalendar(860, 1010, 0.62, 9, { rot: 0.12, circle: 1 });
-  const P = { ...LEO(7), eyes: 'closed', mouth: 'shout', brows: -0.6, arms: ['down', 'down'], key: 'cover' };
+  const P = { ...LEO(7), eyes: 'closed', mouth: 'frown', brows: -0.9, arms: ['down', 'down'], key: 'cover' };
   cbPerson(500, 1560, 1.75, P);
   const hy = 1560 - 1.75 * (48 + 112 - 18) - 1.75 * 112 * 0.78;
-  for (const sx of [-1, 1]) { ctx.save(); const tx = 500 + sx * 1.75 * 112 * 0.36; const g = ctx.createLinearGradient(0, hy + 20, 0, hy + 330); g.addColorStop(0, 'rgba(110,200,255,0.95)'); g.addColorStop(1, 'rgba(110,200,255,0.4)'); ctx.fillStyle = g; ctx.beginPath(); ctx.roundRect(tx - 16, hy + 20, 32, 300, 16); ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = '#3a8fd0'; ctx.stroke(); ctx.restore(); }
+  for (const sx of [-1, 1]) {   // tears: a stream from each eye down the cheek, then a drop
+    const tx = 500 + sx * 1.75 * 112 * 0.36, ty = hy + 1.75 * 112 * 0.16;
+    ctx.save(); ctx.fillStyle = 'rgba(120,200,255,0.92)'; ctx.strokeStyle = '#3a8fd0'; ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.moveTo(tx - 14, ty); ctx.quadraticCurveTo(tx + sx * 30, ty + 70, tx + sx * 18, ty + 120); ctx.lineTo(tx + sx * 46, ty + 120); ctx.quadraticCurveTo(tx + sx * 56, ty + 60, tx + 14, ty); ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.ellipse(tx + sx * 40, ty + 175, 13, 20, 0, 0, TAU); ctx.fill(); ctx.stroke(); ctx.restore();
+  }
   ctx.save(); ctx.translate(560, hy - 1.75 * 112 + 10); ctx.rotate(0.35); cbShape(cbP.poly([[-60, 0], [60, 0], [0, -170]]), CB.purple, { bb: [-170, 0], shade: 8 }); cbShape(cbP.ell(0, -176, 22, 22), CB.yellow, { flat: true, shade: 0, lw: 4 }); ctx.restore();
   DEFER = null; cbBubble('PRESENTE DE NATAL?!', 760, 830, 640, 940, { size: 44, t: -1 });
   for (const [x, y, s] of [[150, 900, 26], [930, 1300, 22], [180, 1300, 18], [880, 780, 18]]) cbSparkle(x, y, s);
