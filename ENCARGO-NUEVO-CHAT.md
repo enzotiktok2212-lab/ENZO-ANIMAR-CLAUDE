@@ -1,11 +1,11 @@
 # Encargo para un chat nuevo — storytimes «In dieser Stadt» (alemán, 3D tipo Roblox)
 
-Repo: enzotiktok2212-lab/enzo-animar-claude. Trabaja, haz commit y push siempre en la rama `claude/trusting-newton-0hk9y9` (antes de cada push: `git fetch` + `git rebase`, porque otras sesiones también suben ahí).
+Repo: enzotiktok2212-lab/enzo-animar-claude. Trabaja, haz commit y push siempre en la rama de la sesión (hoy `claude/chat-videos-in-dieser-stadt-lesp9e`) (antes de cada push: `git fetch` + `git rebase`, porque otras sesiones también suben ahí).
 Háblame siempre en español y dame traducción de todo lo que esté en alemán.
 
 ## Antes de empezar
 1. Lee `CLAUDE.md`, `plugins/animate/skills/animate/styles/blocky-3d/PRODUCCION.md`, `STYLE.md` y `REFERENCIA.md`.
-2. Usa como plantilla la carpeta **`pieces/adrian/`** (el último vídeo terminado; antes `pieces/einpacken/` y `pieces/goon/`): copia su estructura y scripts (`index.html`, `render.sh`, `render2.mjs`, `mids.mjs`, `sheet.py`, `cues.mjs`, `sfx.py`, `mezclar.sh`, `marca.py`, `finish.sh`, `cover.mjs`, `prep_audio.py`) y reutiliza el motor de `src/` (engine.js, vivo.js, props.js, gvolk.js, gort.js, gans.js…). Cambia duración, puerto y nombres.
+2. Usa como plantilla la carpeta **`pieces/schutzengel/`** (el último vídeo terminado, con el mejor motor): copia su estructura y scripts (`index.html`, `render.sh`, `render2.mjs`, `mids.mjs`, `sheet.py`, `cues.mjs`, `sfx.py`, `mezclar.sh`, `marca.py`, `finish.sh`, `cover.mjs`, `prep_audio.py`) y reutiliza el motor de `src/` (engine.js, vivo.js, props.js, gvolk.js, gort.js, gans.js…). Cambia duración, puerto y nombres.
 3. Los vídeos finales (>100 MB) NO van al repo: me los mandas como archivo. El vídeo de referencia y sus fotogramas nunca se suben.
 
 ## Flujo de trabajo
