@@ -29,7 +29,7 @@ Mit einem Plan.
 [excited][shouting] Sechs Euro!
 [curious] Auf dem alten Platz trainierte ein Junge im blauen Hoodie.
 [softly] Ganz allein.
-[excited][shouting][very fast] Jeder Ball: HUSS!
+[softly] Jeder Ball: [excited][shouting][very fast] HUSS!
 Neun Euro.
 [impressed] Am nächsten Tag, beim großen Spiel, machte der Junge im blauen Hoodie alle fertig.
 [excited] Sechzig Punkte.
@@ -49,4 +49,4 @@ Ich kaufte das Einkaufszentrum.
 Und den goldenen Whirlpool.
 [warmly] Und dem Jungen im blauen Hoodie baute ich den besten Platz der Welt.
 [deadpan] Er sagte nicht Danke.
-[excited][shouting][very fast] Er sagte: HUSS, HUSS, HUSS!
+[deadpan] Er sagte: [excited][shouting][very fast] HUSS, HUSS, [very fast] HUSS!
