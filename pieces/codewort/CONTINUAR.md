@@ -13,5 +13,5 @@ Mundo: `src/cwelt.js` (Siedlung, casa por dentro, Kammer, Büro), reparto `src/c
 - [x] planos a (0–50) b (50–106) c (106–164) d (164–225.6)
 - [x] revisión de todos los planos (50 % y 12 %)
 - [x] mezcla (renders/mezcla-final.wav, −12,8 LUFS; regenerar: node cues.mjs → python3 sfx.py audio/cues.json audio/voz-sin-silencios.wav audio/musica-fondo.wav renders/mezcla.wav → python3 marca.py renders/mezcla.wav audio/campanita-recortada.wav renders/mezcla-final.wav)
-- [ ] render EN MARCHA (ss=1.25 con AO; `nohup ./watchdog.sh > renders/watchdog.log &` lo relanza y llama a finish.sh; / `rango.sh`) y `finish.sh` → renders/codewort.mp4
+- [ ] render EN MARCHA (ss=1.25 sin AO (con AO iba a 14 fotogramas/min); `nohup ./watchdog.sh > renders/watchdog.log &` lo relanza y llama a finish.sh; / `rango.sh`) y `finish.sh` → renders/codewort.mp4
 - [ ] entrega (solo el vídeo)
