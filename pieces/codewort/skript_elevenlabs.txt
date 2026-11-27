@@ -1,0 +1,68 @@
+[serious] In dieser Stadt hat jede Familie ein geheimes Wort. Wenn Mama nach Einbruch der Dunkelheit heimkommt und es nicht kennt, machst du die Tür nicht auf.
+[ominous] Denn wenn es dunkel wird, kommen sie aus dem Wald. Mit dem Gesicht und der Stimme von jemandem, den du liebst.
+[whispers] Rein können sie nur, wenn du ihnen die Tür aufmachst.
+[serious] Deshalb gilt nach Sonnenuntergang: Wer klopft, sagt zuerst euer Familienwort.
+[amused] Frau Kessler von gegenüber schreit ihres jeden Abend an ihre eigene Haustür. [shouting] „Sauerkraut!“
+[deadpan] Sie wohnt ganz allein. Trotzdem schreit sie es ins leere Haus, bevor sie aufschließt. Nur zur Sicherheit.
+[mischievously] Inzwischen kennt die ganze Straße ihr Wort.
+[playful] Und mal ehrlich: Wer aus deiner Familie würde euer Wort als Erstes ausplaudern? Bei uns? Ganz klar: mein Opa.
+[ominous] Letzten Herbst haben die Brandts ihrem Vater die Tür aufgemacht. Ohne nach dem Wort zu fragen.
+[creepy] Am nächsten Morgen stand die ganze Familie an der Straßenbahn. Alle fünf. Alle mit demselben breiten Lächeln.
+[whispers] Die echten Brandts hat seitdem niemand mehr gesehen.
+[ominous] In ihrem Haus brennt jede Nacht jedes Licht. Und keiner da drin geht jemals schlafen.
+[matter-of-fact] In der Schule machen wir Türübungen.
+[amused] Herr Pohl klopft an unsere Klassentür, mit einer Gummimaske von unserer Rektorin.
+[shouting] Und achtundzwanzig Kinder brüllen: „Das Wort?“
+[proudly] Reingekommen ist er noch nie.
+[casual] Ich bin Mats. Ich bin zwölf.
+[embarrassed] Unser Familienwort ist „Kuschelkeks“.
+[embarrassed] Das habe ich mir mit fünf ausgedacht, aus einem Gute-Nacht-Lied, das Mama mir immer vorgesungen hat. Und jetzt hängt es an mir.
+[sighs] Ich würde mich lieber schnappen lassen, als es vor meinen Freunden zu sagen.
+[calm] Papa war auf Montage in Hamburg. Also waren nur ich und meine kleine Schwester Ida zu Hause. Sie ist sieben. Wir haben auf Mama gewartet.
+[calm] Im Winter geht die Sonne hier um halb fünf unter. Deshalb ist Mama immer spätestens um vier zu Hause.
+[slowly] Um halb fünf verschwand die Sonne hinter dem Wald.
+[nervous] Um halb sechs war es stockdunkel. Und Mama war immer noch nicht da.
+[tense] Um sechs Uhr zehn klopfte es.
+[sweetly] „Mats, ich bin’s. Lass mich rein.“
+[unsettled] Es war Mamas Stimme.
+[nervous] Ich habe durch den Türspion geschaut. Und da stand sie, auf der Veranda, in ihrem Wintermantel.
+[creepy] Sie lächelte. Ihr Lächeln ging fast bis zu den Ohren.
+[reassuring himself] Ich habe mir gesagt: Das macht der Türspion. Der zieht jedes Gesicht in die Breite.
+[cautiously] „Wie heißt das Wort?“, habe ich gefragt.
+[flat] „Kuschelkeks.“ Es war das richtige Wort.
+[tense] Meine Hand lag schon am Schloss.
+[ominous] Aber Mama hat „Kuschelkeks“ noch nie gesagt, ohne zu lachen. Kein einziges Mal, seit ich fünf bin.
+[whispers] Diesmal sagte sie es ganz flach. Als würde sie es von einem Schild ablesen.
+[determined] Also habe ich die Hand vom Schloss genommen. Und Mama auf dem Handy angerufen.
+[calm] Sie ging beim ersten Klingeln ran. Im Hintergrund klapperten Tastaturen und ein Kopierer lief.
+[warmly] „Hallo, Schatz. Ich bin noch im Büro. Was ist los?“
+[whispers] Ich flüsterte: „Mama, du stehst vor der Tür.“
+[pause] Dann war es lange still.
+[slowly] Als Mama wieder sprach, war ihre Stimme ganz ruhig. So ruhig wie damals, als Ida Fieber hatte.
+[calm] Sie sagte: „Mats, wer ist an der Tür?“
+[creepy][whispers] Und durch die Tür, mit derselben Stimme, einen Herzschlag später, sagte das Ding auf unserer Veranda: „Mats, wer ist an der Tür?“
+[horrified] Es hat nicht geraten, was Mama sagen würde. Es hat sie nachgemacht, während sie sprach.
+[whispers] Wort für Wort. Wie ein Echo. Zuerst durchs Handy, dann durch die Tür.
+[urgent] „Mach nicht auf“, sagte Mama. „Ich komme sofort nach Hause.“
+[creepy] Durch die Tür: „Ich komme sofort nach Hause.“
+[shaky] Ich habe aufgelegt. Ich konnte es nicht ertragen, alles zweimal zu hören.
+[softly] Ida stand oben an der Treppe, im Schlafanzug, mit ihrem Kuscheltier im Arm.
+[whispers] Ich habe sie in die Abstellkammer unter der Treppe getragen. Wir saßen im Dunkeln auf den Schuhen, die Tür zu.
+[softly] Sie fragte, ob Mama schon da ist. Ich sagte: „Fast.“
+[softly] Sie fragte, warum wir in der Kammer sitzen. Ich sagte: „Das ist eine Türübung.“
+[anxious] Und ich dachte immer wieder dasselbe.
+[whispers] Niemand kennt unser Wort außer uns. Nicht Frau Kessler. Nicht meine Freunde. Nicht mal Opa.
+[whispers] Woher kannte dieses Ding also „Kuschelkeks“?
+[tense][whispers] Irgendwann wurde es draußen still.
+[whispers] Ich bin aus der Kammer geschlichen und habe noch mal durch den Türspion geschaut.
+[whispers] Das Verandalicht war an. Und darunter stand niemand. Die Veranda war leer.
+[ominous] Dann huschten Scheinwerfer über die Wohnzimmerwand.
+[tense][fast] Ich hörte Mamas alten Golf in die Einfahrt fahren. Die Autotür knallte. Schritte auf dem Kies.
+[fast] Schnelle Schritte. Als würde jemand rennen.
+[silence][whispers] Dann gar nichts mehr.
+[whispers] Ich stand im Flur, hielt die Luft an, Idas Hand in meiner.
+[slowly] Klopf... Klopf... Klopf. [whispers] An der Haustür.
+[warmly] „Mats, ich bin’s!“
+[dramatic][whispers] Und bevor ich mich überhaupt umdrehen konnte:
+[slowly] Klopf... Klopf... Klopf. [whispers] An der Hintertür.
+[creepy] „Mats, ich bin’s!“
