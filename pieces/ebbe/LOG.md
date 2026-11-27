@@ -27,3 +27,6 @@ En un contenedor nuevo: `cd /home/user/ENZO-ANIMAR-CLAUDE && ./preparar-entorno.
 3. Revisión de todos los planos: `node mids.mjs "http://pieza/index.html?ss=1" rv all .5` + `python3 sheet.py rv`.
 4. Audio: `node cues.mjs` → alias en `sfx.py` → `python3 sfx.py …` → `marca.py` (sin campanita en 0; sonido-inicio en 0) → fundido.
 5. Render repartido (`rango.sh`, `trozos.sh`, `juntar.sh`) o `watchdog.sh` → `finish.sh` → mandar SOLO el vídeo.
+
+## Estado final
+- [x] Render completo (4323 fotogramas) y `renders/ebbe.mp4` (144,1 s, 1080×1920) entregado al usuario el 27-11 08:38 UTC. Pendiente solo si lo pide: descripción, comentario fijado y portadas.
