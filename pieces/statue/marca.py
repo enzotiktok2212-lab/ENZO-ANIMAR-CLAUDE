@@ -1,0 +1,10 @@
+# Campanita del usuario: en 0 ms y cada ~10 s al empezar una frase importante, ~3 dB por debajo de la voz.
+# python3 marca.py renders/mezcla.wav audio/campanita-recortada.wav renders/mezcla-final.wav
+import sys, subprocess
+mix, snd, out = sys.argv[1:4]
+T = [0.0, 9.83, 17.03, 24.86, 31.72, 40.67, 48.09, 56.06, 62.28, 71.97, 79.16, 88.37, 97.51, 104.79, 113.5, 122.08, 127.21, 135.76, 144.18, 153.52, 162.68]
+gaps = [b - a for a, b in zip(T, T[1:])]; assert max(gaps) <= 11, gaps
+f = ';'.join(f'[1:a]adelay={int(t*1000)}|{int(t*1000)},volume=-4.5dB[m{i}]' for i, t in enumerate(T))
+f += ';' + ''.join(f'[m{i}]' for i in range(len(T))) + f'amix=inputs={len(T)}:normalize=0[mk];[0:a][mk]amix=inputs=2:normalize=0:duration=first,alimiter=limit=0.8,volume=-1.4dB[o]'
+subprocess.run(['ffmpeg', '-loglevel', 'error', '-y', '-i', mix, '-i', snd, '-filter_complex', f, '-map', '[o]', '-ar', '44100', out], check=True)
+print(len(T), 'campanitas:', T, '; hueco máximo', round(max(gaps), 2))

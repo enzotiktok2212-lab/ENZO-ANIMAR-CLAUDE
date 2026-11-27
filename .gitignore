@@ -43,3 +43,7 @@ pieces/schutzengel/review/
 pieces/schutzengel/review60/
 pieces/schutzengel/rv/
 pieces/schutzengel/partes-in/
+pieces/statue/review*/
+pieces/statue/rv*/
+pieces/statue/*.log
+pieces/statue/test/
