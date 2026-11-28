@@ -1,0 +1,39 @@
+[mysterious] In dieser Stadt darf sich jeder, der morgens als Erster aufwacht, für diesen Tag alles wünschen, was er will.
+[excited] Du machst die Augen auf, sagst deinen Wunsch laut, und die Stadt erfüllt ihn sofort.
+[amused] Oma Hilde geht deshalb um neunzehn Uhr ins Bett, wacht um vier Uhr auf und ruft: [shouting] „Mein Garten soll wachsen!“
+[proud] Sie gewinnt fast jeden Tag, und ihre Kürbisse sind so groß wie Waschmaschinen.
+[playful] In der Nacht vor einer Mathearbeit stellt jedes Kind in der Stadt zwölf Wecker und betet, dass die Schule ausfällt.
+[serious] Denn einschlafen reicht nicht. Du musst auch wirklich als Erster aufwachen.
+[amused] Und der Hahn von Herrn Becker hat seit sieben Jahren kein einziges Mal gewonnen.
+[sighs] Ich bin der tiefste Schläfer der ganzen Stadt. [mischievously] Dabei weiß ich genau, was ich mir wünschen würde.
+[sad] Aber ich habe noch nie gewonnen. Nicht mal an meinem Geburtstag.
+[matter-of-fact] Ich schlafe überall in einer Sekunde ein. Im Bus, beim Friseur, und einmal sogar im Stehen, in der Schlange beim Bäcker.
+[amused] Wecker funktionieren bei mir nicht. Mama sagt, ich würde sogar ein Silvesterfeuerwerk verschlafen.
+[warmly] Das Einzige, was mich weckt, ist meine kleine Schwester Mia.
+[playful] Jeden Morgen um Viertel vor sieben springt sie auf mein Bett und schreit mir ins Ohr: [shouting] „Aufwachen!“
+[warmly] Sie ist fünf und kommt nie zu spät.
+[mysterious] Dann, eines Tages, eröffnete Herr Graufeld einen Laden für Ohrstöpsel in der Lindenstraße.
+[suspicious] Herr Graufeld war der Einzige in der Stadt, der bereit war, um Mitternacht aufzuwachen.
+[whispers] Also ging er um zwanzig Uhr in seinem stockdunklen Keller schlafen und stellte seinen Wecker auf null Uhr.
+[serious] Drei Klingeltöne, und er war wach. [sad] Oma hatte keine Chance.
+[ominous] In der ersten Nacht wünschte er sich, dass jede Glocke, jeder Hund und jede Hupe in der Stadt die ganze Nacht Lärm macht.
+[frustrated] Es war so laut, dass niemand mehr schlafen konnte. Und wer nicht schläft, kann auch nicht aufwachen.
+[angry] Also gewann Herr Graufeld jeden einzelnen Tag.
+[annoyed] Er verkaufte Ohrstöpsel für hundert Euro das Stück. Aber gegen einen Wunsch hilft kein Ohrstöpsel.
+[ominous] Und jeden Morgen wünschte er sich etwas Neues von uns.
+[upset] Am zweiten Tag unser ganzes Geld. Am vierten Tag Mias Fahrrad. Dann Omas Kürbisse.
+[sad] Am sechsten Tag gehörten ihm sogar unsere Häuser, und die ganze Stadt saß draußen auf dem Marktplatz.
+[tired] Papa stellte zwölf Wecker und trug drei Paar Ohrstöpsel. Trotzdem konnte er nicht schlafen.
+[tired] Oma zählte Schafe bis fünftausend.
+[frustrated] Mama kniff die Augen so fest zu, dass sie Kopfschmerzen bekam.
+[desperate] Nichts half. Glocken, Hunde, Hupen. Jede Minute.
+[calm] Um dreiundzwanzig Uhr siebenundfünfzig saß ich mit Mia auf einer Bank am Marktplatz. [yawns] Und ich gähnte.
+[realizing] Da fiel es mir ein. Man muss wirklich aufwachen. Und aufwachen kann nur, wer vorher geschlafen hat.
+[confident] Und bei diesem Lärm kann hier niemand schlafen. [mischievously] Außer mir.
+[softly] Ich gab Mia meine Uhr. „Weck mich um Mitternacht.“
+[tense] Um dreiundzwanzig Uhr neunundfünfzig und siebenundfünfzig Sekunden schlug die Kirchturmglocke direkt über uns.
+[whispers] Ich schlief, bevor sie fertig war.
+[tense] Mia starrte auf die Uhr, und die ganze Stadt schaute zu.
+[very slowly] Drei. Zwei. Eins.
+[excited] Sie sprang mit beiden Füßen auf mich drauf.
+[shouting] „AUFWACHEN!“

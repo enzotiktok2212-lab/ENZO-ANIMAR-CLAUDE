@@ -14,7 +14,7 @@ Documentos del repo que siguen siendo la referencia detallada (léelos al empeza
 ## 0. Reglas de trato con el usuario (fijas)
 - Habla **en español**, respuestas de **una o dos palabras** salvo que pida más; usa la menor cantidad de texto posible. Traduce siempre al español todo lo que esté en alemán.
 - **No cuentes el progreso del render.** Da una estimación de duración al lanzarlo (≈ 36–40 fotogramas/min con 4 procesos → 2:15 de vídeo ≈ 1 h 50 min).
-- Cuando el vídeo esté listo, manda **solo el vídeo** (SendUserFile, `display: attach`). Descripción, comentario fijado y portadas **solo cuando los pida**.
+- **Entrega (cambio del usuario, nov 2026)**: cuando el vídeo esté listo, manda **el vídeo junto con su portada y su descripción ya hechas** (SendUserFile, `display: attach`). Ten las portadas y la descripción preparadas mientras se renderiza.
 - El usuario no oye lo que tú no puedes oír: recuérdale escuchar la mezcla.
 - Cuando el usuario diga "ya puedes renderizar", **no hagas más revisiones**: lanza el render.
 - Rama: **la rama de desarrollo que indique la sesión** (en el chat «videos in dieser Stadt»: `claude/chat-videos-in-dieser-stadt-lesp9e`) del repo `enzotiktok2212-lab/enzo-animar-claude`; ya contiene todo el trabajo de las ramas anteriores (`trusting-newton`, `friendly-newton`, `sleepy-volta`…). Antes de cada push: `git fetch` + `git rebase`. Commit y push de todo (el hook lo exige), **nunca** los vídeos finales (>100 MB), el vídeo de referencia, sus fotogramas ni las capturas de revisión (`review/`, `review60/` → `.gitignore`).
