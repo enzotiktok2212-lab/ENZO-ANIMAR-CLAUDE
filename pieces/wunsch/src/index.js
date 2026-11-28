@@ -826,17 +826,17 @@ window.renderCover = async v => { await document.fonts.load('80px Lucky'); await
   if (v === 0) { town(L, 'night', V(0, 0, -64)); TURM.BL.intensity = 30; TURM.BELL.rotation.x = .4; TURM.setClock(0, 0, .8);
     const me = sit(ich, -.6, 1.5, -63.8, 0, L, { headZ: -.5, aLx: .4, aRx: .4, aLe: .5, aRe: .5 }); me.setFace({ eyes: 'closed', mouth: 'o' });
     const m = put(mia, 1.8, 1.5, -63.6, -.3); m.blob.visible = false; actuar(m, 0, [[0, { aRx: 2.6, aRe: .5, aRz: .3, aLx: .4, aLz: .3, crouch: .1 }]], { T }); m.setFace({ eyes: 'squint', mouth: 'grin' }); attach(UHR, m.aR.hand, [0, -.5, .4], [0, 0, 0], .5); UHR.userData.set('0:00', '#8aff6a');
-    [[SL[0], -9, -58], [SL[3], 9, -57], [SL[5], -14, -52], [SL[8], 14, -51], [SL[11], -5, -50], [SL[2], 6, -49]].forEach(([c, x, z], i) => { put(c, x, 0, z, faceTo(V(x, 0, z), V(0, 0, -62)) + PI); c.root.rotation.y = Math.atan2(-x, -64 - z); actuar(c, 0, [[0, { aLx: 2.2, aRx: 2.2, aLz: .25, aRz: .25, aLe: 2.3, aRe: 2.3, headX: .1 }]], { T }); c.setFace({ eyes: i % 2 ? 'wide' : 'squint', mouth: 'grimace' }); });
-    cam([0, 6.2, -42], [0, 9.4, -64], 50); finishCover();
+    [[SL[0], -7, -63], [SL[3], 7, -63], [SL[5], -10, -59], [SL[8], 10, -59], [SL[11], -6.5, -56], [SL[2], 6.5, -56]].forEach(([c, x, z], i) => { put(c, x, 0, z, faceTo(V(x, 0, z), V(0, 0, -62)) + PI); c.root.rotation.y = Math.atan2(-x, -64 - z); actuar(c, 0, [[0, { aLx: 2.2, aRx: 2.2, aLz: .25, aRz: .25, aLe: 2.3, aRe: 2.3, headX: .1 }]], { T }); c.setFace({ eyes: i % 2 ? 'wide' : 'squint', mouth: 'grimace' }); });
+    cam([0, 4.6, -40], [0, 6.4, -64], 46); finishCover();
     const [mx, my] = proj(hp(me)); ringMark(mx, my + 40, 120, 130); zText(mx - 120, my - 70, 1);
-    strokeTxt('WER ZUERST AUFWACHT…', W / 2, H * .2, 92, 'Lucky', ['#ffffff', '#ffe07a'], '#10142a', 22);
-    strokeTxt('DARF ALLES', W / 2, H * .7, 120, 'Lucky', ['#fff6a0', '#ffb020'], '#2a1400', 26); strokeTxt('WÜNSCHEN!', W / 2, H * .7 + 130, 136, 'Lucky', ['#fff6a0', '#ffb020'], '#2a1400', 28); }
+    strokeTxt('WER ZUERST AUFWACHT…', W / 2, H * .18, 92, 'Lucky', ['#ffffff', '#ffe07a'], '#10142a', 22);
+    strokeTxt('DARF ALLES', W / 2, H * .75, 120, 'Lucky', ['#fff6a0', '#ffb020'], '#2a1400', 26); strokeTxt('WÜNSCHEN!', W / 2, H * .75 + 130, 136, 'Lucky', ['#fff6a0', '#ffb020'], '#2a1400', 28); }
   else { town(L, 'day'); const C = V(0, 0, 30);
     const me = put(ichT, 0, 0, 30, 0); actuar(me, 0, [[0, { headZ: .5, headX: .2, aLz: .05, aRz: .05, aLe: .2, aRe: .2 }]], { T }); me.setFace({ eyes: 'closed', mouth: 'o' });
-    const e = put(emma, -6.4, 0, 28.6, .5); actuar(e, 0, [[0, { aLx: 2.6, aRx: 2.6, aLz: .5, aRz: .5, aLe: .3, aRe: .3 }]], { T }); laughF(e, T); LETTERS.slice(0, 8).forEach((l, i) => show(l, -6.4 + Math.cos(i) * 2.6, 6 + (i % 3) * 1.4, 29 + Math.sin(i) * 1.2, i, 1.3).rotation.set(.3 * i, i, 0));
-    show(PORSCHE, 9, 0, 22, -.7, 1); const b = sit(ben, 8.2, 2.2, 21.4, -.7, L, { aRx: 2.6, aRe: .3, aLx: 1.2 }); grin(b, T);
-    const l = put(lea, 5.6, 0, 33, -.4); actuar(l, 0, [[0, 'hold']], { T }); laughF(l, T); BUNDLES.slice(0, 10).forEach((bb, i) => show(bb, 4 + (i % 4) * 1.2, .25 + Math.floor(i / 4) * .5, 35.6, (i % 2) * .2, 1));
-    SPK.at(V(0, 0, 30), 3.3, 1, 5, 9, 34); cam([0, 6.4, 52], [0, 5, 28], 46); finishCover();
+    const e = put(emma, -4.6, 0, 31, .4); actuar(e, 0, [[0, { aLx: 2.6, aRx: 2.6, aLz: .5, aRz: .5, aLe: .3, aRe: .3 }]], { T }); laughF(e, T); LETTERS.slice(0, 8).forEach((l, i) => show(l, -4.6 + Math.cos(i) * 2.2, 6 + (i % 3) * 1.2, 31.5 + Math.sin(i) * 1, i, 1.1).rotation.set(.3 * i, i, 0));
+    show(PORSCHE, 6.5, 0, 25, -.5, 1); const b = sit(ben, 5.9, 2.2, 24.5, -.5, L, { aRx: 2.6, aRe: .3, aLx: 1.2 }); grin(b, T);
+    const l = put(lea, 4.2, 0, 33.5, -.4); actuar(l, 0, [[0, 'hold']], { T }); laughF(l, T); BUNDLES.slice(0, 10).forEach((bb, i) => show(bb, 2.4 + (i % 4) * 1.2, .25 + Math.floor(i / 4) * .5, 36, (i % 2) * .2, .8));
+    SPK.at(V(0, 0, 30), 3.3, 1, 5, 9, 34); cam([0, 6.6, 54], [0, 5, 29], 50); finishCover();
     const [mx, my] = proj(hp(me)); ringMark(mx, my + 30, 110, 130); zText(mx + 70, my - 60, .8);
     strokeTxt('1 WUNSCH', W / 2, H * .18, 150, 'Lucky', ['#ffffff', '#ffe07a'], '#10142a', 28); strokeTxt('PRO TAG', W / 2, H * .18 + 150, 130, 'Lucky', ['#fff6a0', '#ffb020'], '#2a1400', 26);
     strokeTxt('…ABER ICH SCHLAFE IMMER', W / 2, H * .82, 76, 'Lilita', '#ffffff', '#10142a', 18); }

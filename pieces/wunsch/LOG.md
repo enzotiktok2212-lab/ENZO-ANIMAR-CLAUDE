@@ -18,7 +18,9 @@ Hay una tarea programada cada hora («Retomar vídeo wunsch») que lee este arch
 ## Pendiente (en orden)
 1. Revisión: HECHA (3 pasadas).
 2. Audio: HECHO (renders/mezcla-final.wav, -12,5 LUFS; si el contenedor es nuevo, regenerarla con sfx.py + marca.py + fundido 1 s).
-3. Render: `nohup ./watchdog.sh > renders/watchdog.log 2>&1 &` (idempotente, al acabar ejecuta finish.sh → renders/wunsch.mp4).
+3. Render: `setsid nohup ./watchdog.sh >> renders/watchdog.log 2>&1 < /dev/null & disown` (si `pgrep -f watchdog.sh` no da nada y faltan fotogramas, relanzarlo) (idempotente, al acabar ejecuta finish.sh → renders/wunsch.mp4).
 4. Portadas (`src/p/z_cover.js` + `node cover.mjs`) y descripción (`descripcion.md`).
 5. Entregar vídeo + portada + descripción (SendUserFile) y desactivar la tarea programada.
 - Render lanzado 28-11 03:21 UTC con watchdog (≈4 s/fotograma, ~6 h).
+- 28-11 07:36 UTC: la sesión se reinició y el render se paró en 248/5280; relanzado (≈3,4 s/fotograma → listo ≈ 12:30 UTC).
+- Portadas hechas: `renders/portada-2.png` (la buena) y `portada-1.png`. Descripción en `descripcion.md`. Entregar: renders/wunsch.mp4 + portada-2.png + descripción.
