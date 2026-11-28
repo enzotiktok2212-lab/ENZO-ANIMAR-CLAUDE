@@ -1,0 +1,6 @@
+# wolke — análisis de la referencia (77 s, 576×1024, 24 fps, ~100 planos ≈ 0,8 s)
+Original (inglés doblado al alemán con IA): «In this world babies get a vape the second they're born».
+**Por qué se hizo viral**: regla absurda visible desde el fotograma 0 (bebé con vape en el hospital, médico sale volando por la ventana), misterio (¿quién robó el vape?) con giro doble (era el bebé; el vecino olía a mango por un mango real), y héroe débil (la nube más pequeña) que gana por su debilidad salvando a su hermano. Final con castigo gracioso que cierra el callback del brócoli.
+Estructura: gancho 0–7 s (hospital, ventana, robo) → reglas del mundo 7–19 (cueva hace 5000 años, sabores pizza/agua/brócoli/judías) → protagonista y concurso 19–36 (cartel 3 de enero, Vape de Oro, billete) → sospechoso 36–55 (vecino, «¿has mirado debajo de tu culo?», cámara) → giro 55–68 → concurso 3-2-1 PUFF, abuela, alcalde, bebé al cielo, escalera de nubes, lluvia 68–125 → premio y castigo.
+Cambios: Flocke/Marlon, 14 de marzo, 3000 años, kebab/Apfelschorle/coles/Leberwurst, Melocotón Turbo Supreme, 8 años de paga, 4 robos, paloma a Austria, 2 años de castigo.
+Mini-ganchos: «Einen Tag vor dem Vape-Tag», «Ich wusste genau, wer…», «war es nicht Marlon», «NEIN!», «Aber kleine Wolken…».
