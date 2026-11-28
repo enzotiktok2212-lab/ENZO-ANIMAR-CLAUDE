@@ -39,7 +39,7 @@ shot(36.62, 'C', 'punch', L => { use('GA'); day('day'); GA.CAL.forEach(k => k.sc
   badge('big', '=', W / 2, H * .3, (L.lt - .1) / .2, 1, 1.2); orb(L.k, V(GAX + 13.5, 3.4, -7), null, [20, .1, .14, 44], [17, -.05, .12, 42]); sh(V(GAX + 14, 0, -6), 22); },
   [[.02, 'impact', .4], [.2, 'machine_hum', .5], [.5, 'laugh_deep', .2]]);
 // 27 «In der Nacht vor einer Mathearbeit»: un niño en su escritorio de noche con un examen de mates («MATHE 5-»), sudando
-shot(37.63, 'F', null, L => { room('LZ', L, { night: true }); const c = KIDS[1]; sit(c, LZX - 9, 4.1, 1, 0, L, { aLx: 1.2, aRx: 1.2, aLe: 1.0, aRe: 1.0, aLz: -.2, aRz: -.2, headX: .35, lean: .2 }); show(LETTERS[0], LZX - 9, 5.2, 3.6, 0, 1.6).rotation.set(-1.0, 0, 0); cara(c, L.T, { expr: 'worried' }); sweat(c, L.T);
+shot(37.63, 'F', null, L => { room('LZ', L, { night: true }); const c = KIDS[1]; sit(c, LZX - 9, 4.1, 1, 0, L, { aLx: 1.2, aRx: 1.2, aLe: 1.0, aRe: 1.0, aLz: -.2, aRz: -.2, headX: .35, lean: .2 }); show(LETTERS[0], LZX - 9, 4.3, 2.6, 0, .7).rotation.set(-1.0, 0, 0); cara(c, L.T, { expr: 'worried' }); sweat(c, L.T);
   badge('red', 'MATHEARBEIT', W / 2, H * .2, (L.lt - .1) / .2, 1, .8);
   onBody(c, 13, .3, .16, 44, L.k, 10.5, .1, 2.4); sh(V(LZX - 9, 0, 1), 16); },
   [[.1, 'pencil', .5], [.6, 'gulp', .5], [.3, 'clock_tick', .4]]);
@@ -47,7 +47,7 @@ shot(37.63, 'F', null, L => { room('LZ', L, { night: true }); const c = KIDS[1];
 shot(38.89, 'W', null, L => { room('LZ', L, { night: true }); const c = put(KIDS[1], LZX - 2, 0, 6, -.6); const n = Math.min(12, Math.floor(L.lt / 1.6 * 12) + 1);
   actuar(c, 0, [[0, { aRx: 1.3 + Math.sin(L.T * 10) * .2, aRe: .4, lean: .3, crouch: .2 }]], { T: L.T }); cara(c, L.T, { expr: 'determined' });
   for (let i = 0; i < 12; i++) { const w = WK[i]; if (i >= n) continue; const a = i / 12 * PI * 2; show(w, LZX - 9 + Math.cos(a) * 5.6, i % 3 === 0 ? 4.5 : .1, -2 + Math.sin(a) * 6.8, -a + PI / 2, .9); clockAt(w, '6:00', ['#ff4a3a', '#7af0ff', '#ffd23f'][i % 3]); }
-  badge('num', String(n), W * .5, H * .2, 1, 1, 1.3); cm([LZX + 2, 15, 20, LZX - 6, 2, -1, 50], [LZX + 1, 13, 17, LZX - 6, 2.4, -1, 48], L.k); sh(V(LZX - 6, 0, 0), 22); },
+  badge('num', String(n), W * .5, H * .2, 1, 1, 1.3); cm([LZX, 12, 15, LZX - 5, 2.6, 1, 48], [LZX - 1, 11, 13, LZX - 5, 2.8, 1, 46], L.k); sh(V(LZX - 6, 0, 0), 22); },
   [[.05, 'click_metal', .5], [.3, 'click_metal', .5], [.55, 'click_metal', .5], [.8, 'click_metal', .5], [1.05, 'click_metal', .5], [1.3, 'click_metal', .5], [1.55, 'click_metal', .5]]);
 // 29 «und betet, dass die Schule ausfällt.»: de rodillas junto a la cama, manos juntas, mirando al cielo por la ventana; bocadillo «BITTE!»
 shot(40.67, 'R', null, L => { room('LZ', L, { night: true }); const c = put(KIDS[1], LZX - 9, 0, 8, 0); actuar(c, 0, [[0, { ...PRAY, crouch: .6, lLx: 1.4, lRx: 1.4, lLk: 1.9, lRk: 1.9, headX: -.3 }]], { T: L.T, weight: false }); c.root.position.y = -1.2 * (c.spec.scale || 1); c.setFace({ eyes: 'up', mouth: Math.sin(L.T * 9) > 0 ? 'talk' : 'o' });
@@ -100,5 +100,5 @@ shot(56.89, 'C', null, L => { room('KU', L); const T0 = V(KUX, 4.75, 0); show(KU
   const c = sit(ich, KUX - 3.4, 2.9, -5.6, 0, L, { lean: .75, headX: .3, aLx: 1.3, aRx: 1.3, aLe: 1.6, aRe: 1.6 }); c.setFace({ eyes: 'closed', mouth: 'o' }); zzz(c, L.T, .9);
   const m = put(mama, KUX + 4, 0, 6.6, PI + .5); actuar(m, 0, [[0, { aLx: 1.3, aRx: 1.3, aLz: -.2 - Math.sin(L.T * 12) * .2, aRz: -.2 - Math.sin(L.T * 12) * .2, aLe: 1.3, aRe: 1.3 }]], { T: L.T }); cara(m, L.T, { expr: 'happy', mouth: Math.sin(L.T * 8) > 0 ? 'talk' : 'smile' });
   const mi = put(miaT, KUX + 7.4, 0, 3, -PI / 2 - .3); actuar(mi, 0, [[0, { aLx: 2.6, aRx: 2.6, aLz: .4, aRz: .4 }]], { T: L.T }); laughF(mi, L.T); badge('gold', '12', W / 2, H * .2, (L.lt - .1) / .2, 1, 1.1);
-  cm([KUX - 11, 10, 6, KUX - 1, 5, -2, 46], [KUX - 10, 9.4, 4.6, KUX - 1, 5, -2.4, 44], L.k); sh(V(KUX, 0, 0), 18); },
+  cm([KUX + 6, 10, 12, KUX - 2, 5, -3, 48], [KUX + 5, 9.4, 10.4, KUX - 2, 5, -3.4, 46], L.k); sh(V(KUX, 0, 0), 18); },
   [[.05, 'party_horn', .5], [.2, 'kids_laugh', .4], [.5, 'snore', .5], [.9, 'party_horn', .3]]);

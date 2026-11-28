@@ -6,13 +6,13 @@ const WISH = (T, i = 0) => ({ aLx: 2.7 + Math.sin(T * 6 + i) * .15, aRx: 2.7 - M
 //   Mama una fracción antes: celebra con los brazos arriba entre chispas doradas; Papa llega tarde y se tapa la cara. Golpe de zoom + zoom lento.
 shot(0, 'C', 'hook', L => { room('SZ', L, { dawn: true }); const X = SZX; SZ.quilt.position.y = 4.55;
   const uM = easeOut(clamp((L.lt - .28) / .16)), uP = easeOut(clamp((L.lt - .62) / .16));
-  riseBed(mama, X + 3.2, -6.6, uM, L, uM > .9 ? { aLx: lerp(.3, 2.8, clamp((L.lt - .42) / .14)), aRx: lerp(.3, 2.8, clamp((L.lt - .42) / .14)), aLz: .5, aRz: .5, aLe: .3, aRe: .3, headX: -.25 } : {});
-  riseBed(papa, X - 3.2, -6.6, uP, L, uP > .9 ? { aRx: 2.3, aRz: -.45, aRe: 2.35, headX: .3 } : {});
+  riseBed(mama, X + 2.3, -6.6, uM, L, uM > .9 ? { aLx: lerp(.3, 2.8, clamp((L.lt - .42) / .14)), aRx: lerp(.3, 2.8, clamp((L.lt - .42) / .14)), aLz: .5, aRz: .5, aLe: .3, aRe: .3, headX: -.25 } : {});
+  riseBed(papa, X - 2.3, -6.6, uP, L, uP > .9 ? { aRx: 2.3, aRz: -.45, aRe: 2.35, headX: .3 } : {});
   if (L.lt < .28) sleepF(mama, L.T); else if (L.lt < .42) mama.setFace({ eyes: 'wide', mouth: 'o' }); else laughF(mama, L.T);
   if (L.lt < .62) sleepF(papa, L.T); else cara(papa, L.T, { eyes: 'squint', mouth: 'grimace' });
   if (L.lt > .42) { SPK.at(hp(mama).add(V(0, -1.5, 0)), L.T, clamp((L.lt - .42) / .2), 2.4, 6, 26); badge('gold', 'ERSTE!', W / 2, H * .17, (L.lt - .45) / .2, 1, 1.1); }
   show(WK[0], X + 10, 3.4, -8.2, -.3, .9); clockAt(WK[0], '6:00', '#ffd23f');
-  cm([X + 7, 10.6, 9.5, X + .3, 6.4, -5.2, 44], [X + 5.4, 9.8, 6.4, X + .3, 6.7, -5.4, 42], L.k); sh(V(X, 0, -2), 20); },
+  cm([X + 3.4, 11, 13, X, 7.2, -5.4, 48], [X + 2.6, 10.2, 10, X, 7.4, -5.6, 46], L.k); sh(V(X, 0, -2), 20); },
   [[.02, 'zoom_fast', .7], [.28, 'cloth', .7], [.32, 'gasp_f', .5], [.45, 'magic_hit', .7], [.48, 'cheer', .45], [.62, 'cloth', .5], [.7, 'sigh', .5]]);
 // 2 «der morgens als Erster aufwacht,»: Marktplatz al amanecer: un vecino en pijama sale corriendo al centro y salta con los brazos arriba («1.»); detrás, otros tres llegan bostezando
 shot(1.30, 'W', null, L => { town(L, 'dawn'); const c = SL[0], run = clamp(L.lt / .7);
@@ -62,7 +62,7 @@ shot(10.01, 'I', null, L => { town(L, 'day'); const c = put(emma, 0, 0, 30, 0); 
 shot(11.05, 'W', null, L => { town(L, 'day'); const c = put(emma, 0, 0, 30, PI); actuar(c, 0, [[0, { aRx: .3, aLx: .3, headX: -.05 }], [.6, 'shock', { dur: .25 }]], { T: L.T }); cara(c, L.T, { expr: L.lt < .6 ? 'smile' : 'gasp' });
   JUNG.forEach((j, i) => { const x0 = -12 + i * 8, t = clamp((L.lt - .25 - i * .06) / 1.2); put(j, x0 * (1 - t * .7), 0, 6 + t * 16, lerp(PI, 0, clamp(L.lt * 4 - i * .3))); if (L.lt > .35) actuar(j, 0, [[0, runP(L.T, i)]], { T: L.T }); else actuar(j, 0, [[0, walkP(L.T, i)]], { T: L.T });
     j.setFace({ eyes: 'happy', mouth: 'open_smile' }); badge3('heart', '', hp(j).add(V(0, 2.4, 0)), (L.lt - .3 - i * .05) / .2, .5 + Math.sin(L.T * 12 + i) * .06); });
-  orb(L.k, V(0, 3.4, 20), null, [32, PI / 2 + .25, .2, 46], [28, PI / 2 + .05, .18, 44]); sh(V(0, 0, 20), 34); },
+  orb(L.k, V(0, 3.4, 22), null, [28, .2, .14, 46], [24, .05, .12, 44]); sh(V(0, 0, 20), 34); },
   [[.25, 'whoosh', .5], [.35, 'run_cobble', .6], [.4, 'piano_note', .5], [.5, 'heartbeat', .5], [.9, 'gasp_f', .4]]);
 // 10 «Bis zum Abend bekam sie»: atardecer en la puerta de Emma: un chico tras otro le meten cartas por el buzón; las cartas se amontonan
 shot(12.68, 'S', null, L => { town(L, 'dusk'); const D = V(-40, 0, 30); const c = put(emma, D.x + 2, 0, D.z + 3, PI / 2); actuar(c, 0, [[0, 'hold']], { T: L.T }); cara(c, L.T, { expr: 'happy' });

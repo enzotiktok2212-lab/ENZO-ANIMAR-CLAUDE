@@ -16,8 +16,9 @@ Hay una tarea programada cada hora («Retomar vídeo wunsch») que lee este arch
 - Mundo `src/wwelt.js`, reparto `src/wvolk.js`. 116 planos escritos.
 
 ## Pendiente (en orden)
-1. Revisión: `node mids.mjs "http://pieza/index.html?ss=1" <dir> all .12` y `.6` + `python3 sheet.py <dir>`; corregir.
-2. Audio: `node cues.mjs` → alias que falten en `sfx.py` → `python3 sfx.py audio/cues.json audio/voz-sin-silencios.wav audio/musica-fondo.wav renders/mezcla.wav` → `python3 marca.py renders/mezcla.wav audio/campanita-recortada.wav renders/mezcla-marca.wav` → fundido 1 s → `renders/mezcla-final.wav`.
+1. Revisión: HECHA (3 pasadas).
+2. Audio: HECHO (renders/mezcla-final.wav, -12,5 LUFS; si el contenedor es nuevo, regenerarla con sfx.py + marca.py + fundido 1 s).
 3. Render: `nohup ./watchdog.sh > renders/watchdog.log 2>&1 &` (idempotente, al acabar ejecuta finish.sh → renders/wunsch.mp4).
 4. Portadas (`src/p/z_cover.js` + `node cover.mjs`) y descripción (`descripcion.md`).
 5. Entregar vídeo + portada + descripción (SendUserFile) y desactivar la tarea programada.
+- Render lanzado 28-11 03:21 UTC con watchdog (≈4 s/fotograma, ~6 h).

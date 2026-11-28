@@ -11,7 +11,7 @@ shot(58.34, 'S', null, L => { town(L, 'day'); const c = put(ichT, 0, 0, 40, .2);
 // 41 «Im Bus,»: dormido en el bus con la cabeza contra la ventana; la ciudad pasa fuera; una señora me mira
 shot(60.70, 'W', null, L => { use('BU'); inside(1.0, 40); BU.scroll(L.T); const c = sit(ichT, BUX - 2.9, 2.65, -3, 0, L, { ...LEANSLEEP, headZ: .55 }); c.setFace({ eyes: 'closed', mouth: 'o' }); zzz(c, L.T);
   sit(EX[5], BUX + 2.9, 2.65, -3, 0, L, { headY: .5 }); cara(EX[5], L.T, { expr: 'confused' }); sit(EX[6], BUX - 2.9, 2.65, -9, 0, L); cara(EX[6], L.T, { expr: 'neutral' });
-  cm([BUX + 1.6, 6.6, 1.2, BUX - 2.9, 4.8, -3.4, 50], [BUX + 1.2, 6.4, .6, BUX - 2.9, 4.8, -3.4, 46], L.k); sh(V(BUX, 0, -3), 16); },
+  cm([BUX + 2.4, 7, 2.6, BUX - 2.9, 4.8, -3.2, 56], [BUX + 2.2, 6.8, 2, BUX - 2.9, 4.8, -3.2, 52], L.k); sh(V(BUX, 0, -3), 16); },
   [[.02, 'wheels', .6], [.2, 'snore', .5]]);
 // 42 «beim Friseur,»: dormido en el sillón de la peluquería mientras la peluquera me corta un mechón
 shot(61.34, 'S', null, L => { use('SA'); inside(1.0, 42); const c = sit(ichT, SAX, 3.0, -4, PI, L, { ...LEANSLEEP, headZ: -.4 }); c.setFace({ eyes: 'closed', mouth: 'o' }); zzz(c, L.T);
@@ -19,11 +19,11 @@ shot(61.34, 'S', null, L => { use('SA'); inside(1.0, 42); const c = sit(ichT, SA
   cm([SAX - 3, 7.4, -11.5, SAX, 5.6, -3, 46], [SAX - 1.6, 7, -10.6, SAX, 5.6, -3, 42], L.k); sh(V(SAX, 0, -3), 14); },
   [[.02, 'zip', .4], [.2, 'snore', .4]]);
 // 43 «und einmal sogar im Stehen,»: de pie, balanceándome dormido, una burbuja de moco; el plano gira a mi alrededor
-shot(61.92, 'R', null, L => { use('BA'); inside(1.0, 40); const c = put(ichT, BAX + 3, 0, 8, PI - .5); actuar(c, 0, [[0, { ...LEANSLEEP, sx: Math.sin(L.T * 2.4) * .08, lean: .1 + Math.sin(L.T * 2.4) * .06 }]], { T: L.T }); c.setFace({ eyes: 'closed', mouth: 'o' }); zzz(c, L.T, 1.1);
+shot(61.92, 'R', null, L => { use('BA'); inside(1.0, 40); const c = put(ichT, BAX + 3, 0, 8, .3); actuar(c, 0, [[0, { ...LEANSLEEP, sx: Math.sin(L.T * 2.4) * .08, lean: .1 + Math.sin(L.T * 2.4) * .06 }]], { T: L.T }); c.setFace({ eyes: 'closed', mouth: 'o' }); zzz(c, L.T, 1.1);
   cm([BAX + 7, 6.5, 19, BAX + 3, 4.2, 8, 44], [BAX + 1, 6, 18, BAX + 3, 4.2, 8, 42], L.k); sh(V(BAX + 3, 0, 8), 16); },
   [[.05, 'snore', .6], [.8, 'snore', .4]]);
 // 44 «in der Schlange beim Bäcker.»: la cola de la panadería me adelanta; el panadero grita «NÄCHSTER!» y yo sigo dormido de pie
-shot(63.50, 'C', null, L => { use('BA'); inside(1.0, 40); const c = put(ichT, BAX + 3, 0, 8, PI - .5); actuar(c, 0, [[0, LEANSLEEP]], { T: L.T }); c.setFace({ eyes: 'closed', mouth: 'o' }); zzz(c, L.T);
+shot(63.50, 'C', null, L => { use('BA'); inside(1.0, 40); const c = put(ichT, BAX + 3, 0, 8, .3); actuar(c, 0, [[0, LEANSLEEP]], { T: L.T }); c.setFace({ eyes: 'closed', mouth: 'o' }); zzz(c, L.T);
   const b = put(baeck, BAX + 2, 0, -6, 0); actuar(b, 0, [[0, { aRx: 1.6, aRe: .2, aRz: -.1, aLx: .3 }]], { T: L.T }); talk(b, L.T, L.t0, L.t1, 'shout'); bubble(b, 'NÄCHSTER!', (L.lt - .1) / .2, 2.4);
   [EX[7], EX[8]].forEach((e, i) => { put(e, BAX + 5 - i * 3 + L.lt * 2, 0, 5 + i * 3 - L.lt * 2, PI - .3); actuar(e, 0, [[0, walkP(L.T, i)]], { T: L.T }); cara(e, L.T, { expr: 'smug' }); });
   cm([BAX - 3, 7, 20, BAX + 3, 4.2, 5, 46], [BAX - 2, 6.6, 18, BAX + 3, 4.2, 5, 44], L.k); sh(V(BAX + 2, 0, 2), 22); },
@@ -56,7 +56,7 @@ shot(71.68, 'W', null, L => { room('KZ', L, { dawn: true }); KZ.CLOCK.visible = 
   [[.1, 'clock_tick', .6], [.7, 'click_metal', .5]]);
 // 51 «springt sie auf mein Bett»: Mia salta desde la puerta y aterriza a cuatro patas sobre mi cama; el colchón rebota
 shot(73.12, 'R', null, L => { room('KZ', L, { dawn: true }); const c = lie(ich, KZX - 9, -7.4, 4.15, L); KZ.quilt.position.y = 4.6; sleepF(c, L.T);
-  saltar(mia, L.lt, .05, { h: 6, dur: .55, base: [KZX - 2, 0, 2], dx: -6, dz: -3 }); if (L.lt > .8) { put(mia, KZX - 8, 4.2, -1, 0); actuar(mia, 0, [[0, { crouch: .5, lean: .3, aLx: 1.2, aRx: 1.2 }]], { T: L.T }); } cara(mia, L.T, { expr: 'joy' });
+  put(mia, KZX - 2, 0, 2, -PI / 2 - .4); saltar(mia, L.lt, .05, { h: 6, dur: .55, base: [KZX - 2, 0, 2], dx: -6, dz: -3 }); if (L.lt > .8) { put(mia, KZX - 8, 4.2, -1, 0); actuar(mia, 0, [[0, { crouch: .5, lean: .3, aLx: 1.2, aRx: 1.2 }]], { T: L.T }); } cara(mia, L.T, { expr: 'joy' });
   cm([KZX - 1, 9.5, 7, KZX - 7, 5, -3, 48], [KZX - 2, 9, 5.6, KZX - 7.4, 5.2, -3, 46], L.k); sh(V(KZX - 6, 0, -2), 18); },
   [[.05, 'jump', .6], [.65, 'spring', .6], [.7, 'thud', .5]]);
 // 52 «und schreit mir ins Ohr:»: Mia, a cuatro patas, se acerca a mi oreja con la boca muy abierta
@@ -97,7 +97,7 @@ shot(85.20, 'F', 'slow', L => { town(L, 'night', V(0, 0, -60)); TURM.setClock(0,
   [[.1, 'owl', .4], [.4, 'bell_far', .6]]);
 // 61 «Also ging er um 20 Uhr»: Graufeld baja la escalera del sótano con una vela; el reloj de bolsillo marca 20:00
 shot(87.57, 'S', null, L => { use('KE'); inside(.35, 12); FILL.color.setRGB(1, .7, .4); lp(0, KEX - 8, 8, 2, 40, 0xffa040, 26); const t = clamp(L.lt / 1.6); const c = put(grau, KEX - 10, lerp(10, 2, t), lerp(-3, 6, t), PI); actuar(c, 0, [[0, { ...walkP(L.T * .6, 0), aRx: 1.2, aRe: 1.4 }]], { T: L.T }); cara(c, L.T, { expr: 'smug' });
-  badge('num', '20:00', W / 2, H * .2, (L.lt - .1) / .2, 1, 1.1); cm([KEX - 13.4, 10, 15, KEX - 10, 6.5, 2, 48], [KEX - 13, 8, 14, KEX - 10, 4.5, 4, 46], L.k); sh(V(KEX - 10, 0, 3), 16); },
+  badge('num', '20:00', W / 2, H * .2, (L.lt - .1) / .2, 1, 1.1); cm([KEX - 13.4, 12, 22, KEX - 10, 7, 3, 52], [KEX - 13, 10, 21, KEX - 10, 5, 5, 50], L.k); sh(V(KEX - 10, 0, 3), 16); },
   [[.1, 'wood_creak', .5], [.5, 'steps', .5], [1.0, 'wood_creak', .4]]);
 // 62 «in seinem stockdunklen Keller schlafen»: el sótano casi a oscuras: Graufeld en un catre, con la chistera sobre el pecho, sonriendo dormido
 shot(89.17, 'I', null, L => { use('KE'); inside(.22, 6); FILL.color.setRGB(.6, .7, 1); lp(0, KEX + 6, 6, 2, 16, 0x6a8aff, 18); const c = put(grau, KEX + 6, 3.3, 1.2, .3); c.root.rotation.x = -PI / 2; c.blob.visible = false; actuar(c, 0, [[0, { aLx: .6, aRx: .6, aLz: -.4, aRz: -.4, aLe: 1.4, aRe: 1.4 }]], { T: L.T, weight: false }); c.setFace({ eyes: 'closed', mouth: 'smirk' }); zzz(c, L.T, .8);
