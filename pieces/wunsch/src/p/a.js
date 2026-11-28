@@ -10,9 +10,9 @@ shot(0, 'C', 'hook', L => { room('SZ', L, { dawn: true }); const X = SZX; SZ.qui
   riseBed(papa, X - 3.2, -6.6, uP, L, uP > .9 ? { aRx: 2.3, aRz: -.45, aRe: 2.35, headX: .3 } : {});
   if (L.lt < .28) sleepF(mama, L.T); else if (L.lt < .42) mama.setFace({ eyes: 'wide', mouth: 'o' }); else laughF(mama, L.T);
   if (L.lt < .62) sleepF(papa, L.T); else cara(papa, L.T, { eyes: 'squint', mouth: 'grimace' });
-  if (L.lt > .42) { SPK.at(hp(mama).add(V(0, -1.5, 0)), L.T, clamp((L.lt - .42) / .2), 2.4, 6, 26); badge3('gold', 'ERSTE!', hp(mama).add(V(0, 3.2, 0)), (L.lt - .45) / .2, .9); }
+  if (L.lt > .42) { SPK.at(hp(mama).add(V(0, -1.5, 0)), L.T, clamp((L.lt - .42) / .2), 2.4, 6, 26); badge('gold', 'ERSTE!', W / 2, H * .17, (L.lt - .45) / .2, 1, 1.1); }
   show(WK[0], X + 10, 3.4, -8.2, -.3, .9); clockAt(WK[0], '6:00', '#ffd23f');
-  cm([X + 8.5, 12.5, 16, X + .6, 5.2, -4.6, 46], [X + 6.4, 10.2, 11.6, X + .8, 5.6, -4.8, 44], L.k); sh(V(X, 0, -2), 20); },
+  cm([X + 7, 10.6, 9.5, X + .3, 6.4, -5.2, 44], [X + 5.4, 9.8, 6.4, X + .3, 6.7, -5.4, 42], L.k); sh(V(X, 0, -2), 20); },
   [[.02, 'zoom_fast', .7], [.28, 'cloth', .7], [.32, 'gasp_f', .5], [.45, 'magic_hit', .7], [.48, 'cheer', .45], [.62, 'cloth', .5], [.7, 'sigh', .5]]);
 // 2 «der morgens als Erster aufwacht,»: Marktplatz al amanecer: un vecino en pijama sale corriendo al centro y salta con los brazos arriba («1.»); detrás, otros tres llegan bostezando
 shot(1.30, 'W', null, L => { town(L, 'dawn'); const c = SL[0], run = clamp(L.lt / .7);

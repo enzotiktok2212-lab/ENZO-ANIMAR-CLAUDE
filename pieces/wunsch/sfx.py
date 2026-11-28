@@ -530,6 +530,11 @@ for _a, _b in [('cash_reg', 'cash'), ('money_rain', 'coins'), ('money_burst', 'c
 # --- SCHUTZENGEL: alias ---
 LIB['crack'] = LIB['back_crack']
 
+
+# --- WUNSCH: bocina de coche (dos tonos) ---
+LIB['hupe'] = (lambda s, c: norm(lp(saw(glide(415, 410, .55), .55) + saw(glide(520, 515, .55), .55) * .8, 2600) * adsr(.55, .01, .7)), .5)
+LIB['water_whoosh'] = LIB['whoosh']
+
 if __name__ == '__main__':
     cues_f, voice_f, music_f, out_f = sys.argv[1:5]
     cues = json.load(open(cues_f)); DUR = 176.0

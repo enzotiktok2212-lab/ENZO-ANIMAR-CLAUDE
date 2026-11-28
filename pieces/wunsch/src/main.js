@@ -7,7 +7,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { THREE, W, H, FPS, makeRenderer, makeComposer, applyPose, V, lerp, clamp, easeOut, easeIn, easeInOut, spring, RNG, mat, box, sphere, cyl, textPlane, canvasTex, outline } from './engine.js';
 import { rimLight } from './roblox.js';
 import { FONT, bench, fountain, washer } from './props.js';
-import { skyDome, SKIES, applySky, skyEnvs, schild } from './ebwelt.js';
+import { skyDome, SKIES, applySky, skyEnvs, schild, bake } from './ebwelt.js';
 import { roestheim, salon, kellerO, fachwerkHaus } from './kwelt.js';
 import { kinderzimmer, schlafzimmer, kueche, wecker } from './swelt.js';
 import { baeckerei } from './gort.js';
@@ -33,10 +33,10 @@ const stage = document.getElementById('stage'); const renderer = makeRenderer(st
 const out = document.createElement('canvas'); out.width = W; out.height = H; stage.appendChild(out); const octx = out.getContext('2d');
 const scene = new THREE.Scene(); scene.fog = new THREE.FogExp2(0xcfe0f0, .0004);
 const QS = new URLSearchParams(location.search); const HQ = QS.get('hq') !== '0';
-const camera = new THREE.PerspectiveCamera(50, W / H, .3, 30000); const { composer, bloom, grade, ao } = makeComposer(renderer, scene, camera); ao.enabled = QS.get('ao') !== '0';
+const camera = new THREE.PerspectiveCamera(50, W / H, .3, 30000); const { composer, bloom, grade, ao } = makeComposer(renderer, scene, camera); ao.enabled = QS.get('ao') === '1';
 const bokeh = new BokehPass(scene, camera, { focus: 10, aperture: .0008, maxblur: .012 }); composer.insertPass(bokeh, 2); let DOF = 1;
 let CAMT = new THREE.Vector3(); { const la = camera.lookAt.bind(camera); camera.lookAt = (...a) => { if (a.length === 3) CAMT.set(...a); else CAMT.copy(a[0]); la(...a); }; }
-const SS = +(QS.get('ss') ?? 1.25); if (SS > 1) { renderer.setPixelRatio(SS); renderer.setSize(W, H); composer.setPixelRatio(SS); composer.setSize(W, H); grade.uniforms.px.value.set(1 / W, 1 / H); octx.imageSmoothingEnabled = true; octx.imageSmoothingQuality = 'high'; }
+const SS = +(QS.get('ss') ?? 1.0); if (SS > 1) { renderer.setPixelRatio(SS); renderer.setSize(W, H); composer.setPixelRatio(SS); composer.setSize(W, H); grade.uniforms.px.value.set(1 / W, 1 / H); octx.imageSmoothingEnabled = true; octx.imageSmoothingQuality = 'high'; }
 renderer.toneMapping = { agx: THREE.AgXToneMapping, aces: THREE.ACESFilmicToneMapping, neutral: THREE.NeutralToneMapping }[QS.get('tm') ?? 'neutral'];
 const ENVS = skyEnvs(renderer); const ROOMENV = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), .04).texture;
 const SKY = skyDome(); scene.add(SKY);
@@ -68,6 +68,9 @@ const KU = kueche(scene, KUX), KE = kellerO(scene, KEX), SA = salon(scene, SAX, 
 const PRI = pritsche(KE.g); PRI.position.set(6, 0, -2); PRI.rotation.y = .3;
 const GELD = geldberg(MZ.g, 7, 4, 26); GELD.position.set(9, 0, -6);
 for (let k = 0; k < 6; k++) for (const s of [-1, 1]) { box(2.8, .5, 2.4, mat(0x2a6ad8, { roughness: .7 }), .15, BU.g, s * 2.9, 2.4, -15 + k * 6); box(2.8, 2.8, .4, mat(0x2a6ad8, { roughness: .7 }), .1, BU.g, s * 2.9, 3.9, -16.2 + k * 6); }
+// unir la geometría estática (miles de mallas -> pocas llamadas de dibujo); lo que se mueve queda fuera
+TURM.BELL.userData.keep = true; TOWN.TRAM.userData.keep = true; GA.CAL.forEach(k => k.userData.keep = true); for (const R of [KZ, LZ]) { R.DOOR.userData.keep = true; R.CLOCK.userData.keep = true; } for (const R of [KZ, LZ, SZ, MZ, OZ]) R.quilt.userData.keep = true;
+if (QS.get('bake') !== '0') for (const g of [TG, KZ.g, LZ.g, SZ.g, MZ.g, OZ.g, KU.g, KE.g, SA.g, BA.g, BU.g, GA.g]) bake(g);
 const SETS = { TOWN: TG, KZ: KZ.g, LZ: LZ.g, SZ: SZ.g, MZ: MZ.g, OZ: OZ.g, KU: KU.g, KE: KE.g, SA: SA.g, BA: BA.g, BU: BU.g, GA: GA.g };
 for (const k in SETS) outline(SETS[k], OS);
 // ---------- reparto ----------
@@ -256,7 +259,7 @@ let COVER = null;
 function renderShot(i, T, tr, a) {
   const s = S[i], lt = T - s.t0, d = s.t1 - s.t0, L = { lt, k: clamp(lt / d), T, d, t0: s.t0, t1: s.t1 };
   hideAll(); BAD_.length = 0; s.fn(L); while (POST.length) POST.shift()();
-  if (HQ) { renderer.toneMappingExposure *= +(QS.get('exp') ?? 1); grade.uniforms.sharp.value = +(QS.get('sharp') ?? .55); grade.uniforms.vig.value = Math.min(grade.uniforms.vig.value, .38); bloom.strength = Math.min(bloom.strength, BLOOMMAX); ao.enabled = QS.get('ao') !== '0'; }
+  if (HQ) { renderer.toneMappingExposure *= +(QS.get('exp') ?? 1); grade.uniforms.sharp.value = +(QS.get('sharp') ?? .55); grade.uniforms.vig.value = Math.min(grade.uniforms.vig.value, .38); bloom.strength = Math.min(bloom.strength, BLOOMMAX); ao.enabled = QS.get('ao') === '1'; }
   if (BW > 0) { grade.uniforms.sat.value *= 1 - BW; grade.uniforms.sharp.value += BW * .6; }
   if (s.zoom === 'slow') { const e = easeIn(L.k); grade.uniforms.vig.value = lerp(grade.uniforms.vig.value, .8, e); camera.fov *= lerp(1, .82, e); }
   if (s.zoom === 'punch') { const e = clamp(lt / .18); camera.fov *= lerp(.72, 1, easeOut(e)); }

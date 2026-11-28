@@ -20,11 +20,11 @@ shot(99.65, 'W', null, L => { town(L, 'night', V(-36, 0, 20)); DOGS.forEach((d, 
 // 71 «und jede Hupe in der Stadt»: dos coches aparcados pitan con los faros encendidos
 shot(100.43, 'S', null, L => { town(L, 'night', V(0, 0, 110)); show(CARS[0], -6, 0, 112, .2, 1); show(CARS[1], 6, 0, 126, -.2, 1); const on = Math.sin(L.T * 18) > 0; lp(2, -6, 3, 118, on ? 60 : 10, 0xfff0c0, 30); lp(3, 6, 3, 132, on ? 10 : 60, 0xfff0c0, 30); noiseFX(V(-6, 4, 112), L.T, 1, '#ffd23f'); noiseFX(V(6, 4, 126), L.T + .3, 1, '#ffd23f');
   cm([2, 6, 146, 0, 3, 116, 46], [0, 5, 140, 0, 3, 116, 42], L.k); sh(V(0, 0, 118), 24); },
-  [[.0, 'horn_blast', .6], [.3, 'horn_blast', .5], [.6, 'car', .4]]);
+  [[.0, 'hupe', .6], [.3, 'hupe', .5], [.6, 'car', .4]]);
 // 72 «die ganze Nacht Lärm macht.»: vista aérea de Sternau de noche: ondas de ruido saliendo de todos lados
 shot(101.53, 'Z', null, L => { town(L, 'night', V(0, 0, 0)); bellSwing(L.T); TURM.BL.intensity = 30; for (const p of [V(0, 60, -80), V(-36, 4, 20), V(0, 4, 116), V(30, 4, -40), V(-20, 4, -60)]) noiseFX(p, L.T + p.x, .9);
   cm([60, 80, 120, 0, 10, -20, 50], [50, 90, 110, 0, 10, -20, 52], L.k); sh(V(0, 0, 0), 90); },
-  [[.0, 'bells', .5], [.2, 'bark', .4], [.5, 'horn_blast', .4], [.9, 'bark', .3]]);
+  [[.0, 'bells', .5], [.2, 'bark', .4], [.5, 'hupe', .4], [.9, 'bark', .3]]);
 // 73 «Es war so laut,»: un vecino en su cama, la almohada apretada contra la cabeza
 shot(103.15, 'I', null, L => { room('SZ', L, { night: true }); const c = SL[6]; riseBed(c, SZX + 3.2, -6.6, .7, L, { aLx: 2.4, aRx: 2.4, aLz: .3, aRz: .3, aLe: 2.3, aRe: 2.3, headX: .2 }); SZ.quilt.position.y = 4.55; cara(c, L.T, { eyes: 'squint', mouth: 'grimace_wide' }); noiseFX(hp(c), L.T, .8, '#ffd23f');
   cm([SZX + 7, 9, 6, SZX + 3, 5.4, -4.6, 42], [SZX + 6.4, 8.6, 4.6, SZX + 3, 5.6, -4.8, 38], L.k); sh(V(SZX + 3, 0, -4), 14); },
@@ -86,7 +86,7 @@ shot(125.15, 'I', null, L => { town(L, 'dusk'); show(SCH, -39, 2.6, 22, PI / 2, 
 // 85 «und die ganze Stadt saß draußen auf dem Marktplatz.»: grúa sobre la plaza de noche: todo el pueblo sentado en el suelo en pijama, con mantas, tapándose las orejas
 shot(127.70, 'W', 'slow', L => { plazaNight(L, 26, 'sitears', 101, { x0: -30, x1: 30, z0: -40, z1: 40 }); bellSwing(L.T, .4);
   cm([0, 16, 70, 0, 2, 0, 50], [0, 34, 60, 0, 0, -6, 52], L.k); sh(V(0, 0, 0), 60); },
-  [[.1, 'crowd_run', .3], [.3, 'bells', .3], [.8, 'bark', .3], [1.4, 'horn_blast', .3]]);
+  [[.1, 'crowd_run', .3], [.3, 'bells', .3], [.8, 'bark', .3], [1.4, 'hupe', .3]]);
 // 86 «Papa stellte 12 Wecker»: Papa sentado en la plaza rodeado de 12 despertadores; el contador sube
 shot(130.18, 'C', null, L => { plazaNight(L, 10, 'sitears', 111); const P = V(4, 0, 6); const c = sit(papa, P.x, .9, P.z, .2, L, { aRx: 1.2 + Math.sin(L.T * 9) * .2, aRe: .4, lean: .3 }); cara(c, L.T, { expr: 'determined' }); const n = Math.min(12, Math.floor(L.lt / 1.1 * 12) + 1);
   for (let i = 0; i < n; i++) { const a = i / 12 * PI * 2; show(WK[i], P.x + Math.cos(a) * 4, 0, P.z + Math.sin(a) * 4, -a + PI / 2, .9); clockAt(WK[i], '23:00', ['#ff4a3a', '#7af0ff', '#ffd23f'][i % 3]); }
@@ -125,7 +125,7 @@ shot(141.72, 'S', null, L => { town(L, 'night', V(-6, 0, 30)); DOGS.forEach((d, 
   [[.0, 'bark', .7], [.25, 'bark', .6]]);
 // 94 «Hupen.»: faros y bocina en primer plano
 shot(142.22, 'Z', 'punch', L => { town(L, 'night', V(0, 0, 112)); show(CARS[1], 0, 0, 112, 0, 1); lp(2, 0, 2.4, 118, Math.sin(L.T * 22) > 0 ? 80 : 20, 0xfff0c0, 30); noiseFX(V(0, 3, 117), L.T, 1, '#ffd23f'); cm([2, 4, 128, 0, 2.4, 114, 44], [1.4, 3.6, 125, 0, 2.4, 114, 40], L.k); sh(V(0, 0, 114), 14); },
-  [[.0, 'horn_blast', .7]]);
+  [[.0, 'hupe', .7]]);
 // 95 «Jede Minute.»: las agujas del reloj de la torre giran deprisa
 shot(142.78, 'R', null, L => { town(L, 'night', V(0, 0, -86)); const m = Math.floor(L.lt * 60) % 60; TURM.setClock(23, m, .6); cm([0, 44, -66, 0, 44, -86, 32], [0, 44, -68, 0, 44, -86, 28], L.k); sh(V(0, 40, -86), 20); },
   [[.0, 'clock_spin', .6], [.3, 'clock_tick', .4]]);
@@ -155,7 +155,7 @@ shot(151.58, 'S', null, L => { plazaNight(L, 8, 'sitears', 201, { z0: BZ + 12, z
 // 102 «Und bei diesem Lärm kann hier niemand schlafen.»: grúa por encima del pueblo despierto; ruido por todas partes
 shot(154.01, 'R', null, L => { plazaNight(L, 26, i => i % 2 ? 'sitears' : 'tired', 211, { x0: -30, x1: 30, z0: -40, z1: 40 }); bellSwing(L.T, .6); for (const p of [V(0, 60, -80), V(-30, 4, 10), V(24, 4, 0)]) noiseFX(p, L.T + p.x, .8);
   cm([-30, 24, 50, 0, 2, -10, 50], [-20, 30, 46, 0, 2, -14, 50], L.k); sh(V(0, 0, 0), 60); },
-  [[.0, 'bells', .4], [.4, 'bark', .3], [.9, 'horn_blast', .3], [1.4, 'yawn_big', .3]]);
+  [[.0, 'bells', .4], [.4, 'bark', .3], [.9, 'hupe', .3], [1.4, 'yawn_big', .3]]);
 // 103 «Außer mir.»: zoom lento a mi cara: sonrisa de lado
 shot(156.17, 'Z', 'slow', L => { plazaNight(L, 4, 'sitears', 221, { z0: BZ + 12, z1: BZ + 30 }); const c = benchSit(ich, -1, L, { aLx: .3, aRx: .3 }); cara(c, L.T, { eyes: 'squint', mouth: 'smirk' }); onFace(c, 6.4, .2, 0, 40, L.k, 4.4); sh(V(-1, 0, BZ), 12); },
   [[.1, 'whoosh_up', .3]]);

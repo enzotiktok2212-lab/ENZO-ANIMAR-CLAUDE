@@ -7,7 +7,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { THREE, W, H, FPS, makeRenderer, makeComposer, applyPose, V, lerp, clamp, easeOut, easeIn, easeInOut, spring, RNG, mat, box, sphere, cyl, textPlane, canvasTex, outline } from './engine.js';
 import { rimLight } from './roblox.js';
 import { FONT, bench, fountain, washer } from './props.js';
-import { skyDome, SKIES, applySky, skyEnvs, schild } from './ebwelt.js';
+import { skyDome, SKIES, applySky, skyEnvs, schild, bake } from './ebwelt.js';
 import { roestheim, salon, kellerO, fachwerkHaus } from './kwelt.js';
 import { kinderzimmer, schlafzimmer, kueche, wecker } from './swelt.js';
 import { baeckerei } from './gort.js';
@@ -33,10 +33,10 @@ const stage = document.getElementById('stage'); const renderer = makeRenderer(st
 const out = document.createElement('canvas'); out.width = W; out.height = H; stage.appendChild(out); const octx = out.getContext('2d');
 const scene = new THREE.Scene(); scene.fog = new THREE.FogExp2(0xcfe0f0, .0004);
 const QS = new URLSearchParams(location.search); const HQ = QS.get('hq') !== '0';
-const camera = new THREE.PerspectiveCamera(50, W / H, .3, 30000); const { composer, bloom, grade, ao } = makeComposer(renderer, scene, camera); ao.enabled = QS.get('ao') !== '0';
+const camera = new THREE.PerspectiveCamera(50, W / H, .3, 30000); const { composer, bloom, grade, ao } = makeComposer(renderer, scene, camera); ao.enabled = QS.get('ao') === '1';
 const bokeh = new BokehPass(scene, camera, { focus: 10, aperture: .0008, maxblur: .012 }); composer.insertPass(bokeh, 2); let DOF = 1;
 let CAMT = new THREE.Vector3(); { const la = camera.lookAt.bind(camera); camera.lookAt = (...a) => { if (a.length === 3) CAMT.set(...a); else CAMT.copy(a[0]); la(...a); }; }
-const SS = +(QS.get('ss') ?? 1.25); if (SS > 1) { renderer.setPixelRatio(SS); renderer.setSize(W, H); composer.setPixelRatio(SS); composer.setSize(W, H); grade.uniforms.px.value.set(1 / W, 1 / H); octx.imageSmoothingEnabled = true; octx.imageSmoothingQuality = 'high'; }
+const SS = +(QS.get('ss') ?? 1.0); if (SS > 1) { renderer.setPixelRatio(SS); renderer.setSize(W, H); composer.setPixelRatio(SS); composer.setSize(W, H); grade.uniforms.px.value.set(1 / W, 1 / H); octx.imageSmoothingEnabled = true; octx.imageSmoothingQuality = 'high'; }
 renderer.toneMapping = { agx: THREE.AgXToneMapping, aces: THREE.ACESFilmicToneMapping, neutral: THREE.NeutralToneMapping }[QS.get('tm') ?? 'neutral'];
 const ENVS = skyEnvs(renderer); const ROOMENV = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), .04).texture;
 const SKY = skyDome(); scene.add(SKY);
@@ -68,6 +68,9 @@ const KU = kueche(scene, KUX), KE = kellerO(scene, KEX), SA = salon(scene, SAX, 
 const PRI = pritsche(KE.g); PRI.position.set(6, 0, -2); PRI.rotation.y = .3;
 const GELD = geldberg(MZ.g, 7, 4, 26); GELD.position.set(9, 0, -6);
 for (let k = 0; k < 6; k++) for (const s of [-1, 1]) { box(2.8, .5, 2.4, mat(0x2a6ad8, { roughness: .7 }), .15, BU.g, s * 2.9, 2.4, -15 + k * 6); box(2.8, 2.8, .4, mat(0x2a6ad8, { roughness: .7 }), .1, BU.g, s * 2.9, 3.9, -16.2 + k * 6); }
+// unir la geometría estática (miles de mallas -> pocas llamadas de dibujo); lo que se mueve queda fuera
+TURM.BELL.userData.keep = true; TOWN.TRAM.userData.keep = true; GA.CAL.forEach(k => k.userData.keep = true); for (const R of [KZ, LZ]) { R.DOOR.userData.keep = true; R.CLOCK.userData.keep = true; } for (const R of [KZ, LZ, SZ, MZ, OZ]) R.quilt.userData.keep = true;
+if (QS.get('bake') !== '0') for (const g of [TG, KZ.g, LZ.g, SZ.g, MZ.g, OZ.g, KU.g, KE.g, SA.g, BA.g, BU.g, GA.g]) bake(g);
 const SETS = { TOWN: TG, KZ: KZ.g, LZ: LZ.g, SZ: SZ.g, MZ: MZ.g, OZ: OZ.g, KU: KU.g, KE: KE.g, SA: SA.g, BA: BA.g, BU: BU.g, GA: GA.g };
 for (const k in SETS) outline(SETS[k], OS);
 // ---------- reparto ----------
@@ -610,11 +613,11 @@ shot(99.65, 'W', null, L => { town(L, 'night', V(-36, 0, 20)); DOGS.forEach((d, 
 // 71 «und jede Hupe in der Stadt»: dos coches aparcados pitan con los faros encendidos
 shot(100.43, 'S', null, L => { town(L, 'night', V(0, 0, 110)); show(CARS[0], -6, 0, 112, .2, 1); show(CARS[1], 6, 0, 126, -.2, 1); const on = Math.sin(L.T * 18) > 0; lp(2, -6, 3, 118, on ? 60 : 10, 0xfff0c0, 30); lp(3, 6, 3, 132, on ? 10 : 60, 0xfff0c0, 30); noiseFX(V(-6, 4, 112), L.T, 1, '#ffd23f'); noiseFX(V(6, 4, 126), L.T + .3, 1, '#ffd23f');
   cm([2, 6, 146, 0, 3, 116, 46], [0, 5, 140, 0, 3, 116, 42], L.k); sh(V(0, 0, 118), 24); },
-  [[.0, 'horn_blast', .6], [.3, 'horn_blast', .5], [.6, 'car', .4]]);
+  [[.0, 'hupe', .6], [.3, 'hupe', .5], [.6, 'car', .4]]);
 // 72 «die ganze Nacht Lärm macht.»: vista aérea de Sternau de noche: ondas de ruido saliendo de todos lados
 shot(101.53, 'Z', null, L => { town(L, 'night', V(0, 0, 0)); bellSwing(L.T); TURM.BL.intensity = 30; for (const p of [V(0, 60, -80), V(-36, 4, 20), V(0, 4, 116), V(30, 4, -40), V(-20, 4, -60)]) noiseFX(p, L.T + p.x, .9);
   cm([60, 80, 120, 0, 10, -20, 50], [50, 90, 110, 0, 10, -20, 52], L.k); sh(V(0, 0, 0), 90); },
-  [[.0, 'bells', .5], [.2, 'bark', .4], [.5, 'horn_blast', .4], [.9, 'bark', .3]]);
+  [[.0, 'bells', .5], [.2, 'bark', .4], [.5, 'hupe', .4], [.9, 'bark', .3]]);
 // 73 «Es war so laut,»: un vecino en su cama, la almohada apretada contra la cabeza
 shot(103.15, 'I', null, L => { room('SZ', L, { night: true }); const c = SL[6]; riseBed(c, SZX + 3.2, -6.6, .7, L, { aLx: 2.4, aRx: 2.4, aLz: .3, aRz: .3, aLe: 2.3, aRe: 2.3, headX: .2 }); SZ.quilt.position.y = 4.55; cara(c, L.T, { eyes: 'squint', mouth: 'grimace_wide' }); noiseFX(hp(c), L.T, .8, '#ffd23f');
   cm([SZX + 7, 9, 6, SZX + 3, 5.4, -4.6, 42], [SZX + 6.4, 8.6, 4.6, SZX + 3, 5.6, -4.8, 38], L.k); sh(V(SZX + 3, 0, -4), 14); },
@@ -676,7 +679,7 @@ shot(125.15, 'I', null, L => { town(L, 'dusk'); show(SCH, -39, 2.6, 22, PI / 2, 
 // 85 «und die ganze Stadt saß draußen auf dem Marktplatz.»: grúa sobre la plaza de noche: todo el pueblo sentado en el suelo en pijama, con mantas, tapándose las orejas
 shot(127.70, 'W', 'slow', L => { plazaNight(L, 26, 'sitears', 101, { x0: -30, x1: 30, z0: -40, z1: 40 }); bellSwing(L.T, .4);
   cm([0, 16, 70, 0, 2, 0, 50], [0, 34, 60, 0, 0, -6, 52], L.k); sh(V(0, 0, 0), 60); },
-  [[.1, 'crowd_run', .3], [.3, 'bells', .3], [.8, 'bark', .3], [1.4, 'horn_blast', .3]]);
+  [[.1, 'crowd_run', .3], [.3, 'bells', .3], [.8, 'bark', .3], [1.4, 'hupe', .3]]);
 // 86 «Papa stellte 12 Wecker»: Papa sentado en la plaza rodeado de 12 despertadores; el contador sube
 shot(130.18, 'C', null, L => { plazaNight(L, 10, 'sitears', 111); const P = V(4, 0, 6); const c = sit(papa, P.x, .9, P.z, .2, L, { aRx: 1.2 + Math.sin(L.T * 9) * .2, aRe: .4, lean: .3 }); cara(c, L.T, { expr: 'determined' }); const n = Math.min(12, Math.floor(L.lt / 1.1 * 12) + 1);
   for (let i = 0; i < n; i++) { const a = i / 12 * PI * 2; show(WK[i], P.x + Math.cos(a) * 4, 0, P.z + Math.sin(a) * 4, -a + PI / 2, .9); clockAt(WK[i], '23:00', ['#ff4a3a', '#7af0ff', '#ffd23f'][i % 3]); }
@@ -715,7 +718,7 @@ shot(141.72, 'S', null, L => { town(L, 'night', V(-6, 0, 30)); DOGS.forEach((d, 
   [[.0, 'bark', .7], [.25, 'bark', .6]]);
 // 94 «Hupen.»: faros y bocina en primer plano
 shot(142.22, 'Z', 'punch', L => { town(L, 'night', V(0, 0, 112)); show(CARS[1], 0, 0, 112, 0, 1); lp(2, 0, 2.4, 118, Math.sin(L.T * 22) > 0 ? 80 : 20, 0xfff0c0, 30); noiseFX(V(0, 3, 117), L.T, 1, '#ffd23f'); cm([2, 4, 128, 0, 2.4, 114, 44], [1.4, 3.6, 125, 0, 2.4, 114, 40], L.k); sh(V(0, 0, 114), 14); },
-  [[.0, 'horn_blast', .7]]);
+  [[.0, 'hupe', .7]]);
 // 95 «Jede Minute.»: las agujas del reloj de la torre giran deprisa
 shot(142.78, 'R', null, L => { town(L, 'night', V(0, 0, -86)); const m = Math.floor(L.lt * 60) % 60; TURM.setClock(23, m, .6); cm([0, 44, -66, 0, 44, -86, 32], [0, 44, -68, 0, 44, -86, 28], L.k); sh(V(0, 40, -86), 20); },
   [[.0, 'clock_spin', .6], [.3, 'clock_tick', .4]]);
@@ -745,7 +748,7 @@ shot(151.58, 'S', null, L => { plazaNight(L, 8, 'sitears', 201, { z0: BZ + 12, z
 // 102 «Und bei diesem Lärm kann hier niemand schlafen.»: grúa por encima del pueblo despierto; ruido por todas partes
 shot(154.01, 'R', null, L => { plazaNight(L, 26, i => i % 2 ? 'sitears' : 'tired', 211, { x0: -30, x1: 30, z0: -40, z1: 40 }); bellSwing(L.T, .6); for (const p of [V(0, 60, -80), V(-30, 4, 10), V(24, 4, 0)]) noiseFX(p, L.T + p.x, .8);
   cm([-30, 24, 50, 0, 2, -10, 50], [-20, 30, 46, 0, 2, -14, 50], L.k); sh(V(0, 0, 0), 60); },
-  [[.0, 'bells', .4], [.4, 'bark', .3], [.9, 'horn_blast', .3], [1.4, 'yawn_big', .3]]);
+  [[.0, 'bells', .4], [.4, 'bark', .3], [.9, 'hupe', .3], [1.4, 'yawn_big', .3]]);
 // 103 «Außer mir.»: zoom lento a mi cara: sonrisa de lado
 shot(156.17, 'Z', 'slow', L => { plazaNight(L, 4, 'sitears', 221, { z0: BZ + 12, z1: BZ + 30 }); const c = benchSit(ich, -1, L, { aLx: .3, aRx: .3 }); cara(c, L.T, { eyes: 'squint', mouth: 'smirk' }); onFace(c, 6.4, .2, 0, 40, L.k, 4.4); sh(V(-1, 0, BZ), 12); },
   [[.1, 'whoosh_up', .3]]);
@@ -807,6 +810,37 @@ shot(174.30, 'C', 'punch', L => { plazaNight(L, 16, 'cheer', 341, { z0: BZ + 12,
   SPK.S.forEach(s => s.material.color.setHex(0xfff2a0)); SPK.at(V(-.4, 0, BZ), L.T, 1, 4, 9, 34); confetti(V(-.4, 2, BZ), L.t0, L.T, 40, 1.4); TURM.setClock(0, 0, .8);
   cm([0, 5.6, BZ + 13, -.3, 4.4, BZ, 44], [0, 5.4, BZ + 11, -.3, 4.4, BZ, 42], L.k); sh(V(0, 0, BZ), 16); },
   [[.0, 'scream_girl', .3], [.02, 'impact', .7], [.1, 'magic_hit', .7], [.2, 'cheer', .6], [.4, 'sparkle', .6]]);
+// ---------- portadas (fuera del vídeo; node cover.mjs) ----------
+// 1: noche en el Marktplatz: yo dormido en el banco (Zzz, círculo rojo), Mia encima con el reloj 0:00, el pueblo despierto tapándose las orejas,
+//    la torre con la campana detrás. «WER ZUERST AUFWACHT… DARF ALLES WÜNSCHEN»
+// 2: día: Emma con cartas de amor, Ben en el deportivo y Lea con una montaña de billetes alrededor de mí, que duermo de pie. «1 WUNSCH PRO TAG»
+function strokeTxt(t, x, y, size, font, fill, stroke, lw, rot = 0, maxW = W * .9) { const c = octx; c.save(); c.translate(x, y); c.rotate(rot); c.font = `${size}px ${font}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.lineJoin = 'round';
+  const tw = c.measureText(t).width, k = Math.min(1, maxW / tw); c.scale(k, k); c.shadowColor = 'rgba(0,0,0,.6)'; c.shadowBlur = 26; c.shadowOffsetY = 10; c.lineWidth = lw; c.strokeStyle = stroke; c.strokeText(t, 0, 0); c.shadowColor = 'transparent';
+  if (Array.isArray(fill)) { const g = c.createLinearGradient(0, -size / 2, 0, size / 2); g.addColorStop(0, fill[0]); g.addColorStop(1, fill[1]); c.fillStyle = g; } else c.fillStyle = fill; c.fillText(t, 0, 0); c.restore(); }
+function finishCover() { grade.uniforms.sharp.value = 1.5; grade.uniforms.vig.value = .6; grade.uniforms.sat.value = 1.55; grade.uniforms.blurAmt.value = 0; grade.uniforms.flash.value = 0; bloom.strength = Math.min(bloom.strength, .3); camera.updateProjectionMatrix();
+  SKY.position.copy(camera.position); sh(CAMT, 50); ao.enabled = true; bokeh.enabled = false; composer.render(); ao.enabled = false; octx.fillStyle = '#000'; octx.fillRect(0, 0, W, H); octx.imageSmoothingQuality = 'high'; octx.drawImage(renderer.domElement, 0, 0, W, H); }
+function ringMark(x, y, rx, ry, col = '#ff1a2e') { const c = octx; c.save(); c.lineWidth = 18; c.strokeStyle = col; c.shadowColor = 'rgba(0,0,0,.45)'; c.shadowBlur = 14; c.beginPath(); c.ellipse(x, y, rx, ry, -.06, .25, 6.05); c.stroke(); c.restore(); }
+function zText(x, y, s) { const c = octx; for (let i = 0; i < 3; i++) { c.save(); c.translate(x + i * 46, y - i * 70); c.font = `${(70 + i * 26) * s}px Lucky`; c.textAlign = 'center'; c.lineWidth = 14; c.strokeStyle = '#0e1226'; c.strokeText('Z', 0, 0); c.fillStyle = '#9ad8ff'; c.fillText('Z', 0, 0); c.restore(); } }
+window.renderCover = async v => { await document.fonts.load('80px Lucky'); await document.fonts.load('80px Lilita'); out.width = 2 * W; out.height = 2 * H; octx.setTransform(2, 0, 0, 2, 0, 0); octx.imageSmoothingEnabled = true; octx.imageSmoothingQuality = 'high';
+  const T = 30.3, L = { T, lt: .8, k: 1, t0: 29.5, t1: 31, d: 1.5 }; hideAll(); BAD_.length = 0; FX2D.length = 0; DOF = 0;
+  if (v === 0) { town(L, 'night', V(0, 0, -64)); TURM.BL.intensity = 30; TURM.BELL.rotation.x = .4; TURM.setClock(0, 0, .8);
+    const me = sit(ich, -.6, 1.5, -63.8, 0, L, { headZ: -.5, aLx: .4, aRx: .4, aLe: .5, aRe: .5 }); me.setFace({ eyes: 'closed', mouth: 'o' });
+    const m = put(mia, 1.8, 1.5, -63.6, -.3); m.blob.visible = false; actuar(m, 0, [[0, { aRx: 2.6, aRe: .5, aRz: .3, aLx: .4, aLz: .3, crouch: .1 }]], { T }); m.setFace({ eyes: 'squint', mouth: 'grin' }); attach(UHR, m.aR.hand, [0, -.5, .4], [0, 0, 0], .5); UHR.userData.set('0:00', '#8aff6a');
+    [[SL[0], -9, -58], [SL[3], 9, -57], [SL[5], -14, -52], [SL[8], 14, -51], [SL[11], -5, -50], [SL[2], 6, -49]].forEach(([c, x, z], i) => { put(c, x, 0, z, faceTo(V(x, 0, z), V(0, 0, -62)) + PI); c.root.rotation.y = Math.atan2(-x, -64 - z); actuar(c, 0, [[0, { aLx: 2.2, aRx: 2.2, aLz: .25, aRz: .25, aLe: 2.3, aRe: 2.3, headX: .1 }]], { T }); c.setFace({ eyes: i % 2 ? 'wide' : 'squint', mouth: 'grimace' }); });
+    cam([0, 6.2, -42], [0, 9.4, -64], 50); finishCover();
+    const [mx, my] = proj(hp(me)); ringMark(mx, my + 40, 120, 130); zText(mx - 120, my - 70, 1);
+    strokeTxt('WER ZUERST AUFWACHT…', W / 2, H * .2, 92, 'Lucky', ['#ffffff', '#ffe07a'], '#10142a', 22);
+    strokeTxt('DARF ALLES', W / 2, H * .7, 120, 'Lucky', ['#fff6a0', '#ffb020'], '#2a1400', 26); strokeTxt('WÜNSCHEN!', W / 2, H * .7 + 130, 136, 'Lucky', ['#fff6a0', '#ffb020'], '#2a1400', 28); }
+  else { town(L, 'day'); const C = V(0, 0, 30);
+    const me = put(ichT, 0, 0, 30, 0); actuar(me, 0, [[0, { headZ: .5, headX: .2, aLz: .05, aRz: .05, aLe: .2, aRe: .2 }]], { T }); me.setFace({ eyes: 'closed', mouth: 'o' });
+    const e = put(emma, -6.4, 0, 28.6, .5); actuar(e, 0, [[0, { aLx: 2.6, aRx: 2.6, aLz: .5, aRz: .5, aLe: .3, aRe: .3 }]], { T }); laughF(e, T); LETTERS.slice(0, 8).forEach((l, i) => show(l, -6.4 + Math.cos(i) * 2.6, 6 + (i % 3) * 1.4, 29 + Math.sin(i) * 1.2, i, 1.3).rotation.set(.3 * i, i, 0));
+    show(PORSCHE, 9, 0, 22, -.7, 1); const b = sit(ben, 8.2, 2.2, 21.4, -.7, L, { aRx: 2.6, aRe: .3, aLx: 1.2 }); grin(b, T);
+    const l = put(lea, 5.6, 0, 33, -.4); actuar(l, 0, [[0, 'hold']], { T }); laughF(l, T); BUNDLES.slice(0, 10).forEach((bb, i) => show(bb, 4 + (i % 4) * 1.2, .25 + Math.floor(i / 4) * .5, 35.6, (i % 2) * .2, 1));
+    SPK.at(V(0, 0, 30), 3.3, 1, 5, 9, 34); cam([0, 6.4, 52], [0, 5, 28], 46); finishCover();
+    const [mx, my] = proj(hp(me)); ringMark(mx, my + 30, 110, 130); zText(mx + 70, my - 60, .8);
+    strokeTxt('1 WUNSCH', W / 2, H * .18, 150, 'Lucky', ['#ffffff', '#ffe07a'], '#10142a', 28); strokeTxt('PRO TAG', W / 2, H * .18 + 150, 130, 'Lucky', ['#fff6a0', '#ffb020'], '#2a1400', 26);
+    strokeTxt('…ABER ICH SCHLAFE IMMER', W / 2, H * .82, 76, 'Lilita', '#ffffff', '#10142a', 18); }
+};
 
 
 // ---------- transiciones, sonidos, render ----------
@@ -828,7 +862,7 @@ let COVER = null;
 function renderShot(i, T, tr, a) {
   const s = S[i], lt = T - s.t0, d = s.t1 - s.t0, L = { lt, k: clamp(lt / d), T, d, t0: s.t0, t1: s.t1 };
   hideAll(); BAD_.length = 0; s.fn(L); while (POST.length) POST.shift()();
-  if (HQ) { renderer.toneMappingExposure *= +(QS.get('exp') ?? 1); grade.uniforms.sharp.value = +(QS.get('sharp') ?? .55); grade.uniforms.vig.value = Math.min(grade.uniforms.vig.value, .38); bloom.strength = Math.min(bloom.strength, BLOOMMAX); ao.enabled = QS.get('ao') !== '0'; }
+  if (HQ) { renderer.toneMappingExposure *= +(QS.get('exp') ?? 1); grade.uniforms.sharp.value = +(QS.get('sharp') ?? .55); grade.uniforms.vig.value = Math.min(grade.uniforms.vig.value, .38); bloom.strength = Math.min(bloom.strength, BLOOMMAX); ao.enabled = QS.get('ao') === '1'; }
   if (BW > 0) { grade.uniforms.sat.value *= 1 - BW; grade.uniforms.sharp.value += BW * .6; }
   if (s.zoom === 'slow') { const e = easeIn(L.k); grade.uniforms.vig.value = lerp(grade.uniforms.vig.value, .8, e); camera.fov *= lerp(1, .82, e); }
   if (s.zoom === 'punch') { const e = clamp(lt / .18); camera.fov *= lerp(.72, 1, easeOut(e)); }
