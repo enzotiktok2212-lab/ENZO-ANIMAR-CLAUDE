@@ -14,12 +14,12 @@ shot(98.57, 'C', 'punch', L => { town(L, 'night', V(0, 0, -86)); TURM.BL.intensi
   cm([0, 52, -44, 0, 62, -86, 44], [0, 54, -50, 0, 63, -86, 40], L.k); sh(V(0, 50, -86), 30); },
   [[.0, 'bells', .7], [.4, 'bells7', .5]]);
 // 70 «jeder Hund»: tres perros salchicha ladran en un portal
-shot(99.65, 'W', null, L => { town(L, 'night', V(-36, 0, 20)); DOGS.forEach((d, i) => { show(d, -38 + i * 3.2, 0, 20 + (i % 2) * 2, PI / 2 + (i - 1) * .3, 1.2); d.position.y = Math.abs(Math.sin(L.T * 14 + i)) * .4; }); noiseFX(V(-35, 3, 21), L.T, 1, '#ff8a4a');
-  cm([-24, 5, 34, -35, 2.4, 20, 44], [-26, 4.4, 30, -35, 2.4, 20, 40], L.k); sh(V(-35, 0, 20), 16); },
+shot(99.65, 'W', null, L => { town(L, 'night', V(-20, 0, 34)); DOGS.forEach((d, i) => { show(d, -24 + i * 3, 0, 34 + (i % 2) * 1.5, .5 + (i - 1) * .3, 1.2); d.position.y = Math.abs(Math.sin(L.T * 14 + i)) * .4; }); noiseFX(V(-21, 3, 35), L.T, 1, '#ff8a4a');
+  cm([-12, 5, 48, -21, 2.4, 34, 44], [-13, 4.4, 45, -21, 2.4, 34, 40], L.k); sh(V(-21, 0, 34), 16); },
   [[.0, 'bark', .7], [.25, 'bark', .6], [.5, 'growl', .4]]);
 // 71 «und jede Hupe in der Stadt»: dos coches aparcados pitan con los faros encendidos
-shot(100.43, 'S', null, L => { town(L, 'night', V(0, 0, 110)); show(CARS[0], -6, 0, 112, .2, 1); show(CARS[1], 6, 0, 126, -.2, 1); const on = Math.sin(L.T * 18) > 0; lp(2, -6, 3, 118, on ? 60 : 10, 0xfff0c0, 30); lp(3, 6, 3, 132, on ? 10 : 60, 0xfff0c0, 30); noiseFX(V(-6, 4, 112), L.T, 1, '#ffd23f'); noiseFX(V(6, 4, 126), L.T + .3, 1, '#ffd23f');
-  cm([2, 6, 146, 0, 3, 116, 46], [0, 5, 140, 0, 3, 116, 42], L.k); sh(V(0, 0, 118), 24); },
+shot(100.43, 'S', null, L => { town(L, 'night', V(0, 0, 110)); show(CARS[0], -1.2, 0, 98, .1, 1); show(CARS[1], 1.2, 0, 114, -.1, 1); const on = Math.sin(L.T * 18) > 0; lp(2, -1.2, 3, 104, on ? 60 : 10, 0xfff0c0, 30); lp(3, 1.2, 3, 120, on ? 10 : 60, 0xfff0c0, 30); noiseFX(V(-1.2, 4.5, 98), L.T, 1, '#ffd23f'); noiseFX(V(1.2, 4.5, 114), L.T + .3, 1, '#ffd23f');
+  cm([3, 7, 140, 0, 3, 106, 46], [2, 6, 134, 0, 3, 106, 42], L.k); sh(V(0, 0, 118), 24); },
   [[.0, 'hupe', .6], [.3, 'hupe', .5], [.6, 'car', .4]]);
 // 72 «die ganze Nacht Lärm macht.»: vista aérea de Sternau de noche: ondas de ruido saliendo de todos lados
 shot(101.53, 'Z', null, L => { town(L, 'night', V(0, 0, 0)); bellSwing(L.T); TURM.BL.intensity = 30; for (const p of [V(0, 60, -80), V(-36, 4, 20), V(0, 4, 116), V(30, 4, -40), V(-20, 4, -60)]) noiseFX(p, L.T + p.x, .9);
@@ -30,8 +30,8 @@ shot(103.15, 'I', null, L => { room('SZ', L, { night: true }); const c = SL[6]; 
   cm([SZX + 7, 9, 6, SZX + 3, 5.4, -4.6, 42], [SZX + 6.4, 8.6, 4.6, SZX + 3, 5.6, -4.8, 38], L.k); sh(V(SZX + 3, 0, -4), 14); },
   [[.0, 'bells', .3], [.2, 'cloth', .5], [.4, 'shout_m', .3]]);
 // 74 «dass niemand mehr schlafen konnte.»: ventanas de la plaza encendidas; en cada una, un vecino despierto con ojeras
-shot(104.25, 'R', null, L => { town(L, 'night', V(-44, 0, 10)); crowdBox(L, -45, -41, -10, 34, 6, 81, { list: SL, mode: 'tired', ry: PI / 2, jit: .1 }); bellSwing(L.T, .5);
-  cm([-14, 6, 34, -46, 5, 8, 46], [-16, 6, 28, -46, 5, 10, 44], L.k); sh(V(-40, 0, 12), 28); },
+shot(104.25, 'R', null, L => { town(L, 'night', V(0, 0, 24)); crowdBox(L, -7, 7, 18, 28, 6, 81, { list: SL, mode: i => i % 2 ? 'tired' : 'ears', jit: .2 }); bellSwing(L.T, .5);
+  cm([0, 6, 48, 0, 4, 22, 46], [0, 5.6, 44, 0, 4, 22, 44], L.k); sh(V(0, 0, 22), 24); },
   [[.0, 'yawn_big', .4], [.4, 'bark', .3], [.8, 'sigh', .4]]);
 // 75 «Und wer nicht schläft, kann auch nicht aufwachen.»: Oma en su cama con los ojos como platos mirando al techo; el despertador pasa de 3:59 a 4:00 y no pasa nada
 shot(105.87, 'S', null, L => { room('OZ', L, { night: true }); const c = lie(oma, OZX + 3.4, -6.6, 4.15, L); OZ.quilt.position.y = 4.55; c.setFace({ eyes: 'wide', mouth: 'flat' });
@@ -55,8 +55,8 @@ shot(113.58, 'I', null, L => { room('SZ', L, { night: true }); const c = lie(SL[
   [[.0, 'bells', .4], [.3, 'bark', .3], [.9, 'sigh', .4]]);
 // 79 «Und jeden Morgen wünschte er sich etwas Neues von uns.»: Graufeld en la plaza, señala la ciudad con una sonrisa codiciosa; chispas moradas en la mano
 shot(115.80, 'S', 'slow', L => { town(L, 'dawn'); const c = put(grau, 0, 0, 20, PI); actuar(c, 0, [[0, { aRx: 1.62, aRz: -.08, aRe: .05, aLx: .9, aLz: -.4, aLe: 1.6, headX: -.05 }]], { T: L.T }); cara(c, L.T, { eyes: 'squint', mouth: 'grin' });
-  SPK.S.forEach(s => s.material.color.setHex(0xc89aff)); SPK.at(wpos(c.aL.hand), L.T, 1, 1.2, 3, 16); crowdBox(L, -20, 20, -40, -20, 8, 91, { list: EX, mode: 'shock', face: V(0, 4, 20) });
-  cm([3, 6, 34, 0, 5, 8, 44], [2, 5.6, 30, 0, 5, 6, 40], L.k); sh(V(0, 0, 10), 30); },
+  SPK.S.forEach(s => s.material.color.setHex(0xc89aff)); SPK.at(wpos(c.aL.hand), L.T, 1, 1.2, 3, 16); crowdBox(L, -12, 12, 32, 44, 6, 91, { list: EX, mode: 'shock', face: V(0, 4, 20) });
+  cm([9, 6, 8, 0, 5, 22, 46], [7, 5.6, 10, 0, 5, 22, 42], L.k); sh(V(0, 0, 10), 30); },
   [[.1, 'evil_laugh', .4], [.6, 'magic_hit', .4]]);
 // 80 «Am zweiten Tag unser ganzes Geld.»: los billetes salen volando de la cartera de Papa hacia la tienda de Graufeld; «TAG 2»
 shot(118.55, 'W', null, L => { town(L, 'day'); const c = put(papa, -4, 0, 30, .4); actuar(c, 0, [[0, { aRx: 1.5, aRe: .4, aLx: 1.2, aLe: 1.3 }], [.5, 'shock', { dur: .25 }]], { T: L.T }); cara(c, L.T, { expr: L.lt < .5 ? 'neutral' : 'shock' });

@@ -62,25 +62,25 @@ shot(10.01, 'I', null, L => { town(L, 'day'); const c = put(emma, 0, 0, 30, 0); 
 shot(11.05, 'W', null, L => { town(L, 'day'); const c = put(emma, 0, 0, 30, PI); actuar(c, 0, [[0, { aRx: .3, aLx: .3, headX: -.05 }], [.6, 'shock', { dur: .25 }]], { T: L.T }); cara(c, L.T, { expr: L.lt < .6 ? 'smile' : 'gasp' });
   JUNG.forEach((j, i) => { const x0 = -12 + i * 8, t = clamp((L.lt - .25 - i * .06) / 1.2); put(j, x0 * (1 - t * .7), 0, 6 + t * 16, lerp(PI, 0, clamp(L.lt * 4 - i * .3))); if (L.lt > .35) actuar(j, 0, [[0, runP(L.T, i)]], { T: L.T }); else actuar(j, 0, [[0, walkP(L.T, i)]], { T: L.T });
     j.setFace({ eyes: 'happy', mouth: 'open_smile' }); badge3('heart', '', hp(j).add(V(0, 2.4, 0)), (L.lt - .3 - i * .05) / .2, .5 + Math.sin(L.T * 12 + i) * .06); });
-  orb(L.k, V(0, 3.4, 22), V(0, 3.4, 24), [20, PI + .35, .16, 46], [16, PI + .1, .14, 44]); sh(V(0, 0, 20), 34); },
+  orb(L.k, V(0, 3.4, 20), null, [32, PI / 2 + .25, .2, 46], [28, PI / 2 + .05, .18, 44]); sh(V(0, 0, 20), 34); },
   [[.25, 'whoosh', .5], [.35, 'run_cobble', .6], [.4, 'piano_note', .5], [.5, 'heartbeat', .5], [.9, 'gasp_f', .4]]);
 // 10 «Bis zum Abend bekam sie»: atardecer en la puerta de Emma: un chico tras otro le meten cartas por el buzón; las cartas se amontonan
 shot(12.68, 'S', null, L => { town(L, 'dusk'); const D = V(-40, 0, 30); const c = put(emma, D.x + 2, 0, D.z + 3, PI / 2); actuar(c, 0, [[0, 'hold']], { T: L.T }); cara(c, L.T, { expr: 'happy' });
   JUNG.slice(0, 3).forEach((j, i) => { put(j, D.x + 7 + i * 3.6, 0, D.z + 1 - i * .8, -PI / 2); actuar(j, 0, [[0, { aRx: 1.5 + Math.sin(L.T * 4 + i) * .2, aRe: .2, lean: .1 }]], { T: L.T }); j.setFace({ eyes: 'happy', mouth: 'smile' }); const l = LETTERS[i]; show(l, D.x + 5.8 + i * 3.6 - Math.min(L.lt * 2, 1.4), 4.4, D.z + 1.4 - i * .8, -PI / 2, 1); });
   LETTERS.slice(4, 16).forEach((l, i) => { const t = clamp(L.lt * 1.6 - i * .08); show(l, c.root.position.x + Math.sin(i * 2.1) * 1.2, .2 + i * .14 * t + (1 - t) * 6, c.root.position.z + 1.6 + Math.cos(i) * .8, i, 1.2).rotation.set(-PI / 2 + Math.sin(i) * .3, i, 0); });
-  orb(L.k, V(D.x + 4, 3.8, D.z + 1), null, [22, PI / 2 + .45, .16, 44], [18, PI / 2 + .2, .12, 42]); sh(V(D.x + 4, 0, D.z), 26); },
+  orb(L.k, V(D.x + 4, 3.8, D.z + 1), null, [24, .25, .16, 44], [20, .05, .12, 42]); sh(V(D.x + 4, 0, D.z), 26); },
   [[.1, 'paper', .5], [.4, 'paper', .5], [.7, 'pages', .5], [.2, 'steps', .4]]);
 // 11 «37 Liebesbriefe.»: Emma en su cama rodeada de cartas que llueven del techo; «37» en grande
 shot(13.80, 'Z', 'punch', L => { room('LZ', L); const c = put(emma, LZX - 9, sitY(emma, 3.9), -4, 0); c.blob.visible = false; actuar(c, 0, [[0, { lLx: 1.5, lRx: 1.5, aLx: 2.6, aRx: 2.6, aLz: .5, aRz: .5, aLe: .3, aRe: .3, headX: -.2 }]], { T: L.T, weight: false }); laughF(c, L.T);
   LETTERS.forEach((l, i) => { const q = RNG(i * 7 + 2); const y = 15 - ((L.T * (2 + q() * 1.5) + q() * 14) % 14); show(l, LZX - 9 + (q() - .5) * 12, y, -4 + (q() - .5) * 10, q() * 6, 1.3).rotation.set(L.T * 2 + i, L.T + i, 0); });
-  badge('red', '37', W / 2, H * .2, (L.lt - .05) / .2, 1, 1.6); badge('heart', '', W * .28, H * .26, (L.lt - .2) / .2, 1, .7); badge('heart', '', W * .72, H * .3, (L.lt - .3) / .2, 1, .55);
-  onBody(c, 16, .35, .25, 44, L.k, 12, .2, 2.4); sh(V(LZX - 9, 0, -4), 18); },
+  badge('red', '37', W / 2, H * .13, (L.lt - .05) / .2, 1, 1.4); badge('heart', '', W * .28, H * .26, (L.lt - .2) / .2, 1, .7); badge('heart', '', W * .72, H * .3, (L.lt - .3) / .2, 1, .55);
+  onBody(c, 20, .35, .12, 44, L.k, 16, .2, 2.4); sh(V(LZX - 9, 0, -4), 18); },
   [[.02, 'impact', .5], [.1, 'paper', .6], [.4, 'pages', .5], [.6, 'kids_laugh', .4], [.15, 'count', .5]]);
 // 12 «Ben hat sich einen Porsche gewünscht.»: Ben (gorra del revés) en la calle con las manos juntas; un remolino de chispas y aparece un deportivo amarillo
-shot(15.55, 'F', null, L => { town(L, 'day'); const B = V(0, 0, 140); const c = put(ben, B.x - 6, 0, B.z + 4, .5); const k = clamp((L.lt - .55) / .25);
+shot(15.55, 'F', null, L => { town(L, 'day'); const B = V(0, 0, 140); const c = put(ben, B.x - 3.4, 0, B.z + 5, .3); const k = clamp((L.lt - .55) / .25);
   actuar(c, 0, [[0, PRAY], [.6, 'shock', { dur: .25 }]], { T: L.T }); if (L.lt < .6) c.setFace({ eyes: 'closed', mouth: 'smile' }); else cara(c, L.T, { expr: 'gasp' });
-  SPK.at(V(B.x + 2, 0, B.z), L.T, k > 0 ? 1 : .3, 5, 6, 34); if (k > 0) show(PORSCHE, B.x + 2, 0, B.z, -.7, easeOut(k)).position.y = (1 - k) * 4;
-  orb(L.k, V(B.x - 1, 3.2, B.z + 2), null, [26, .6, .14, 46], [22, .35, .12, 44]); sh(V(B.x, 0, B.z), 30); },
+  SPK.at(V(B.x + 4, 0, B.z), L.T, k > 0 ? 1 : .3, 5, 6, 34); if (k > 0) show(PORSCHE, B.x + 4, 0, B.z, -.7, easeOut(k)).position.y = (1 - k) * 4;
+  orb(L.k, V(B.x, 3.2, B.z + 2), null, [28, .2, .14, 46], [24, .05, .12, 44]); sh(V(B.x, 0, B.z), 30); },
   [[.1, 'whisper', .35], [.55, 'magic_hit', .7], [.6, 'sparkle', .6], [.75, 'car', .5]]);
 // 13 «Mit 16.»: Ben al volante con gafas de sol, sonriendo; el motor ruge; «16» en grande
 shot(17.23, 'C', 'punch', L => { town(L, 'day'); const B = V(0, 0, 140); show(PORSCHE, B.x, 0, B.z, 0, 1); const c = sit(ben, B.x - 1.2, 2.2, B.z - 1, 0, L, { aLx: 1.2, aRx: 1.3, aLe: .4, aRe: .3, headX: -.05 }); grin(c, L.T);
@@ -94,9 +94,9 @@ shot(18.54, 'R', null, L => { town(L, 'day'); const B = V(0, 0, 140), t = clamp(
   crowdBox(L, B.x - 14, B.x - 8, B.z + 4, B.z + 18, 3, 9, { mode: 'shock' }); cm([B.x + 14, 8, B.z + 36, B.x, 3, B.z + 12, 48], [B.x + 10, 7, B.z + 32, B.x, 3, B.z + 16, 46], L.k); sh(V(B.x, 0, B.z + 14), 30); },
   [[.02, 'car_pass', .6], [.45, 'car_hit', .7], [.5, 'glass_crack', .4], [.6, 'gasp', .4]]);
 // 15 «Und Lea hat sich eine Million Euro gewünscht.»: Lea (gafas, jersey morado) en su cuarto, ojos cerrados y manos juntas; luego mira arriba: empiezan a caer billetes
-shot(19.54, 'I', null, L => { room('MZ', L); GELD.userData.setH(0); const c = put(lea, MZX - 2, 0, 3, .2); const k = clamp((L.lt - 1.1) / .3);
+shot(19.54, 'I', null, L => { room('MZ', L); GELD.userData.setH(0); const c = put(lea, MZX - 2, 0, 9.5, .2); const k = clamp((L.lt - 1.1) / .3);
   actuar(c, 0, [[0, PRAY], [1.15, { aLx: 2.4, aRx: 2.4, aLz: .6, aRz: .6, aLe: .5, aRe: .5, headX: -.4 }, { dur: .3 }]], { T: L.T }); if (L.lt < 1.1) c.setFace({ eyes: 'closed', mouth: 'smile' }); else cara(c, L.T, { expr: 'joy' });
-  SPK.at(V(MZX - 2, 0, 3), L.T, 1, 3, 7, 26); BUNDLES.forEach((b, i) => { const q = RNG(i * 3 + 1); if (k <= 0) return; const y = 15 - ((L.T * (3 + q() * 2) + q() * 13) % 13); show(b, MZX - 2 + (q() - .5) * 10, y, 3 + (q() - .5) * 8, q() * 6, .7).rotation.set(L.T * 3 + i, i, L.T + i); });
+  SPK.at(V(MZX - 2, 0, 3), L.T, 1, 3, 7, 26); BUNDLES.forEach((b, i) => { const q = RNG(i * 3 + 1); if (k <= 0) return; const y = 15 - ((L.T * (3 + q() * 2) + q() * 13) % 13); show(b, MZX - 2 + (q() - .5) * 10, y, 9.5 + (q() - .5) * 6, q() * 6, .7).rotation.set(L.T * 3 + i, i, L.T + i); });
   onBody(c, 17, .3, .14, 44, L.k, 13, .1); sh(V(MZX, 0, 0), 20); },
   [[.1, 'whisper', .4], [.9, 'magic_hit', .7], [1.15, 'money_rain', .7], [1.3, 'cash', .6]]);
 // 16 «Die Scheine stapelten sich in ihrem Zimmer»: los fajos crecen del suelo en montones y llenan el cuarto; Lea encima, riendo
@@ -111,7 +111,7 @@ shot(23.73, 'W', 'slow', L => { room('MZ', L); GELD.userData.setH(1); const c = 
   [[.05, 'money_rain', .5], [.4, 'thud', .5]]);
 // 18 «Und du?»: toda la plaza se gira a la vez y señala a cámara
 shot(24.78, 'C', 'punch', L => { town(L, 'day'); crowdBox(L, -16, 16, 14, 30, 14, 21, { mode: 'point', expr: 'happy', face: V(0, 4, 60), jit: .1 });
-  put(emma, -3, 0, 36, 0); put(ben, 3.5, 0, 35, 0); put(lea, 0, 0, 38.5, 0); for (const [c, i] of [[emma, 0], [ben, 1], [lea, 2]]) { actuar(c, 0, [[0, { aRx: 1.62, aRz: -.08, aRe: .05, aLz: .12, aLe: .25, lean: -.05 }]], { T: L.T }); cara(c, L.T, { expr: 'happy', mouth: 'open_smile' }); }
+  put(emma, -5, 0, 30, .15); put(ben, 5, 0, 30, -.15); put(lea, 0, 0, 29, 0); for (const [c, i] of [[emma, 0], [ben, 1], [lea, 2]]) { actuar(c, 0, [[0, { aRx: 1.62, aRz: -.08, aRe: .05, aLz: .12, aLe: .25, lean: -.05 }]], { T: L.T }); cara(c, L.T, { expr: 'happy', mouth: 'open_smile' }); }
   cm([0, 5.2, 54, 0, 4.6, 30, 44], [0, 5, 48, 0, 4.6, 30, 40], L.k); sh(V(0, 0, 32), 30); },
   [[.02, 'impact', .5], [.1, 'whoosh', .4]]);
 // 19 «Was würdest du dir wünschen?»: estrella fugaz sobre Sternau al atardecer; una gran «?» dorada

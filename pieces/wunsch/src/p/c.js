@@ -89,7 +89,7 @@ shot(82.55, 'I', null, L => { town(L, 'day'); cm([12, 7, 166, 20.3, 9.6, 162, 44
   [[.05, 'whoosh_up', .4], [.3, 'birds', .4]]);
 // 59 «Herr Graufeld war der Einzige in der Stadt,»: al atardecer, todos vuelven a casa bostezando; Graufeld, en medio de la plaza, es el único que va en dirección contraria
 shot(83.41, 'R', null, L => { town(L, 'dusk'); const c = put(grau, 0, 0, 30 - L.lt * 2.6, PI); actuar(c, 0, [[0, walkP(L.T * .7, 0)]], { T: L.T }); cara(c, L.T, { expr: 'smug' });
-  crowdBox(L, -16, 16, 14, 50, 10, 61, { mode: 'walk', ry: 0, jit: .1, speed: 2.4, list: EX }); orb(L.k, V(0, 3.6, 26), null, [24, PI + .4, .16, 46], [20, PI + .15, .14, 44]); sh(V(0, 0, 26), 30); },
+  crowdBox(L, -18, -7, 14, 50, 5, 61, { mode: 'walk', ry: 0, jit: .1, speed: 2.4, list: EX }); crowdBox(L, 7, 18, 14, 50, 5, 62, { mode: 'walk', ry: 0, jit: .1, speed: 2.4, list: EX }); orb(L.k, V(0, 3.6, 26), null, [24, PI + .4, .16, 46], [20, PI + .15, .14, 44]); sh(V(0, 0, 26), 30); },
   [[.1, 'steps', .5], [.6, 'yawn_big', .3]]);
 // 60 «der bereit war, um Mitternacht aufzuwachen.»: noche cerrada; el reloj de la torre marca las 12; Graufeld lo mira desde abajo, de espaldas a cámara con media cara iluminada
 shot(85.20, 'F', 'slow', L => { town(L, 'night', V(0, 0, -60)); TURM.setClock(0, 0, .6); const c = put(grau, 4, 0, -62, PI + .5); actuar(c, 0, [[0, { headX: -.5, aLx: .1, aRx: .1 }]], { T: L.T }); cara(c, L.T, { expr: 'smug' });
@@ -97,7 +97,7 @@ shot(85.20, 'F', 'slow', L => { town(L, 'night', V(0, 0, -60)); TURM.setClock(0,
   [[.1, 'owl', .4], [.4, 'bell_far', .6]]);
 // 61 «Also ging er um 20 Uhr»: Graufeld baja la escalera del sótano con una vela; el reloj de bolsillo marca 20:00
 shot(87.57, 'S', null, L => { use('KE'); inside(.35, 12); FILL.color.setRGB(1, .7, .4); lp(0, KEX - 8, 8, 2, 40, 0xffa040, 26); const t = clamp(L.lt / 1.6); const c = put(grau, KEX - 10, lerp(10, 2, t), lerp(-3, 6, t), PI); actuar(c, 0, [[0, { ...walkP(L.T * .6, 0), aRx: 1.2, aRe: 1.4 }]], { T: L.T }); cara(c, L.T, { expr: 'smug' });
-  badge('num', '20:00', W / 2, H * .2, (L.lt - .1) / .2, 1, 1.1); cm([KEX + 2, 9, 14, KEX - 9, 7, 2, 48], [KEX + 1, 7, 13, KEX - 9, 5, 3, 46], L.k); sh(V(KEX - 6, 0, 2), 16); },
+  badge('num', '20:00', W / 2, H * .2, (L.lt - .1) / .2, 1, 1.1); cm([KEX - 13.4, 10, 15, KEX - 10, 6.5, 2, 48], [KEX - 13, 8, 14, KEX - 10, 4.5, 4, 46], L.k); sh(V(KEX - 10, 0, 3), 16); },
   [[.1, 'wood_creak', .5], [.5, 'steps', .5], [1.0, 'wood_creak', .4]]);
 // 62 «in seinem stockdunklen Keller schlafen»: el sótano casi a oscuras: Graufeld en un catre, con la chistera sobre el pecho, sonriendo dormido
 shot(89.17, 'I', null, L => { use('KE'); inside(.22, 6); FILL.color.setRGB(.6, .7, 1); lp(0, KEX + 6, 6, 2, 16, 0x6a8aff, 18); const c = put(grau, KEX + 6, 3.3, 1.2, .3); c.root.rotation.x = -PI / 2; c.blob.visible = false; actuar(c, 0, [[0, { aLx: .6, aRx: .6, aLz: -.4, aRz: -.4, aLe: 1.4, aRe: 1.4 }]], { T: L.T, weight: false }); c.setFace({ eyes: 'closed', mouth: 'smirk' }); zzz(c, L.T, .8);
@@ -105,11 +105,11 @@ shot(89.17, 'I', null, L => { use('KE'); inside(.22, 6); FILL.color.setRGB(.6, .
   [[.05, 'drip', .5], [.4, 'snore', .4]]);
 // 63 «und stellte seinen Wecker auf»: su mano gira la ruedecita del despertador
 shot(91.05, 'W', null, L => { use('KE'); inside(.25, 8); lp(0, KEX + 2, 6, 2, 20, 0x6a8aff, 18); show(WK[0], KEX + 2, 2.8, 3, -.4, 1.3); clockAt(WK[0], ['23:00', '22:00', '0:00'][Math.min(2, Math.floor(L.lt / .5))], '#ff4a3a');
-  cm([KEX + 4.2, 5.6, 6.6, KEX + 2, 3.6, 3, 36], [KEX + 3.8, 5.2, 6, KEX + 2, 3.6, 3, 32], L.k); sh(V(KEX + 2, 0, 3), 10); },
+  cm([KEX + 5.6, 6.4, 9.6, KEX + 2, 3.6, 3, 40], [KEX + 5, 6, 8.8, KEX + 2, 3.6, 3, 36], L.k); sh(V(KEX + 2, 0, 3), 10); },
   [[.05, 'ratchet', .6], [.5, 'ratchet', .5], [1.0, 'click_metal', .5]]);
 // 64 «0 Uhr.»: el número 0:00 brilla en rojo
 shot(92.67, 'C', 'punch', L => { use('KE'); inside(.25, 8); lp(0, KEX + 2, 6, 2, 20, 0xff4a3a, 18); show(WK[0], KEX + 2, 2.8, 3, -.4, 1.3); clockAt(WK[0], '0:00', '#ff4a3a'); badge('red', '0:00', W / 2, H * .22, (L.lt - .05) / .2, 1, 1.3);
-  cm([KEX + 3.4, 4.6, 5.4, KEX + 2, 3.6, 3, 30], [KEX + 3.2, 4.4, 5, KEX + 2, 3.6, 3, 28], L.k); sh(V(KEX + 2, 0, 3), 10); },
+  cm([KEX + 4.6, 5.4, 8, KEX + 2, 3.6, 3, 40], [KEX + 4.2, 5.2, 7.4, KEX + 2, 3.6, 3, 36], L.k); sh(V(KEX + 2, 0, 3), 10); },
   [[.02, 'impact', .5], [.1, 'heartbeat', .5]]);
 // 65 «Drei Klingeltöne,»: medianoche: el despertador salta tres veces; «1», «2», «3»
 shot(93.55, 'Z', null, L => { use('KE'); inside(.3, 10); lp(0, KEX + 2, 6, 2, 26, 0xff6a4a, 18); const n = Math.min(3, Math.floor(L.lt / .28) + 1), j = Math.sin(L.T * 50) * .15 * (L.lt % .28 < .18 ? 1 : 0);
