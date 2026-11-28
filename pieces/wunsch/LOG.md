@@ -24,3 +24,6 @@ Hay una tarea programada cada hora («Retomar vídeo wunsch») que lee este arch
 - Render lanzado 28-11 03:21 UTC con watchdog (≈4 s/fotograma, ~6 h).
 - 28-11 07:36 UTC: la sesión se reinició y el render se paró en 248/5280; relanzado (≈3,4 s/fotograma → listo ≈ 12:30 UTC).
 - Portadas hechas: `renders/portada-2.png` (la buena) y `portada-1.png`. Descripción en `descripcion.md`. Entregar: renders/wunsch.mp4 + portada-2.png + descripción.
+
+## Entregado (2026-11-28 11:51)
+renders/wunsch.mp4 (176 s, 5280 fotogramas) + portada-2/1 + descripción entregados. Tarea programada desactivada.
