@@ -161,19 +161,19 @@ shot(156.17, 'Z', 'slow', L => { plazaNight(L, 4, 'sitears', 221, { z0: BZ + 12,
   [[.1, 'whoosh_up', .3]]);
 // 104 «Ich gab Mia meine Uhr.»: le paso mi reloj de pulsera a Mia; ella lo coge con las dos manos
 shot(156.89, 'W', null, L => { plazaNight(L, 4, 'sitears', 231, { z0: BZ + 12, z1: BZ + 30 }); const t = clamp(L.lt / .6); const c = benchSit(ich, -1, L, { aRx: 1.4, aRe: .3, aRz: .4, twist: -.2 }); cara(c, L.T, { expr: 'smile' });
-  const m = benchSit(mia, 1.2, L, { aLx: 1.3, aRx: 1.3, aLz: -.25, aRz: -.25, aLe: 1.0, aRe: 1.0 }); cara(m, L.T, { expr: 'gasp' }); const a = wpos(c.aR.hand), b = wpos(m.aL.hand); show(UHR, lerp(a.x, b.x, t), lerp(a.y, b.y, t), lerp(a.z, b.z, t) + .6, 0, .45); UHR.userData.set('23:58');
+  const m = benchSit(mia, 1.2, L, { aLx: 1.3, aRx: 1.3, aLz: -.25, aRz: -.25, aLe: 1.0, aRe: 1.0 }); cara(m, L.T, { expr: 'gasp' }); const a = wpos(c.aR.hand), b = wpos(m.aL.hand); show(UHR, lerp(a.x, b.x, t), lerp(a.y, b.y, t), lerp(a.z, b.z, t) + .6, 0, .22); UHR.userData.set('23:58');
   cm([.2, 4.6, BZ + 9, .1, 3.2, BZ, 40], [.2, 4.4, BZ + 8, .1, 3.2, BZ, 38], L.k); sh(V(0, 0, BZ), 10); },
   [[.1, 'watch_click', .5], [.5, 'cloth', .4]]);
 // 105 «„Weck mich um Mitternacht.“»: le hablo a Mia; ella asiente muy seria y aprieta el reloj
 shot(157.85, 'S', null, L => { plazaNight(L, 4, 'sitears', 241, { z0: BZ + 12, z1: BZ + 30 }); const c = benchSit(ich, -1, L, { aRx: .9, aRe: 1.2, aRz: .2, headY: -.4 }); talk(c, L.T, L.t0, L.t1);
-  const m = benchSit(mia, 1.2, L, { aLx: 1.2, aRx: 1.2, aLz: -.25, aRz: -.25, aLe: 1.2, aRe: 1.2, headY: .4, headX: Math.sin(L.T * 9) * .12 }); cara(m, L.T, { expr: 'determined' }); attach(UHR, m.aR.hand, [0, -.5, .4], [0, 0, 0], .45); UHR.userData.set('23:58');
+  const m = benchSit(mia, 1.2, L, { aLx: 1.2, aRx: 1.2, aLz: -.25, aRz: -.25, aLe: 1.2, aRe: 1.2, headY: .4, headX: Math.sin(L.T * 9) * .12 }); cara(m, L.T, { expr: 'determined' }); attach(UHR, m.aR.hand, [0, -.5, .4], [0, 0, 0], .22); UHR.userData.set('23:58');
   cm([3, 4.6, BZ + 9, .1, 3.4, BZ, 42], [2.6, 4.4, BZ + 8, .1, 3.4, BZ, 40], L.k); sh(V(0, 0, BZ), 10); },
   [[.6, 'cloth', .3]]);
 // 106 «Um 23 Uhr 59»: primer plano del reloj en las manos de Mia: 23:59
-shot(159.23, 'C', 'punch', L => { plazaNight(L, 2, 'sitears', 251, { z0: BZ + 12, z1: BZ + 20 }); show(UHR, 0, 4, BZ + 4, 0, 1); UHR.userData.set('23:59'); cm([0, 4.6, BZ + 10, 0, 4, BZ + 4, 34], [0, 4.4, BZ + 9, 0, 4, BZ + 4, 30], L.k); sh(V(0, 0, BZ + 4), 10); },
+shot(159.23, 'C', 'punch', L => { plazaNight(L, 2, 'sitears', 251, { z0: BZ + 12, z1: BZ + 20 }); show(UHR, 0, 4, BZ + 4, 0, 1); UHR.userData.set('23:59'); cm([0, 4.4, BZ + 13, 0, 4, BZ + 4, 40], [0, 4.3, BZ + 12, 0, 4, BZ + 4, 37], L.k); sh(V(0, 0, BZ + 4), 10); },
   [[.02, 'impact', .4], [.3, 'heartbeat', .5], [1.2, 'heartbeat', .5]]);
 // 107 «und 57 Sekunden»: el reloj muestra 23:59:57
-shot(161.21, 'Z', null, L => { plazaNight(L, 2, 'sitears', 261, { z0: BZ + 12, z1: BZ + 20 }); show(UHR, 0, 4, BZ + 4, 0, 1); UHR.userData.set('23:59:57'); cm([0, 4.6, BZ + 9, 0, 4, BZ + 4, 30], [0, 4.4, BZ + 8.4, 0, 4, BZ + 4, 28], L.k); sh(V(0, 0, BZ + 4), 10); },
+shot(161.21, 'Z', null, L => { plazaNight(L, 2, 'sitears', 261, { z0: BZ + 12, z1: BZ + 20 }); show(UHR, 0, 4, BZ + 4, 0, 1); UHR.userData.set('23:59:57'); cm([0, 4.4, BZ + 12, 0, 4, BZ + 4, 38], [0, 4.3, BZ + 11, 0, 4, BZ + 4, 35], L.k); sh(V(0, 0, BZ + 4), 10); },
   [[.1, 'tick', .6], [.6, 'heartbeat', .5]]);
 // 108 «schlug die Kirchturmglocke direkt über uns.»: desde abajo, el banco y la torre: la campana da un golpe enorme; onda expansiva; todos se tapan las orejas
 shot(162.71, 'C', 'punch', L => { plazaNight(L, 12, 'sitears', 271, { z0: BZ + 12, z1: BZ + 34 }); TURM.BL.intensity = 40; bellSwing(L.T * 1.3, 1.2); noiseFX(V(0, 62, -84), L.T, 1, '#ffffff'); grade.uniforms.flash.value = Math.max(0, .5 - L.lt * 2);
@@ -182,24 +182,24 @@ shot(162.71, 'C', 'punch', L => { plazaNight(L, 12, 'sitears', 271, { z0: BZ + 1
   [[.0, 'bells', .9], [.05, 'braam', .6], [.6, 'bell_far', .5]]);
 // 109 «Ich schlief, bevor sie fertig war.»: yo ya dormido apoyado en Mia, Zzz; Mia me mira con los ojos muy abiertos
 shot(165.12, 'I', null, L => { plazaNight(L, 6, 'sitears', 281, { z0: BZ + 12, z1: BZ + 30 }); const c = benchSit(ich, -.6, L, { headZ: -.55, lean: .1, aLz: .05, aRz: .05, twist: .2 }); c.setFace({ eyes: 'closed', mouth: 'o' }); zzz(c, L.T, 1.1);
-  const m = benchSit(mia, 1.2, L, { headY: .5, aLx: 1.2, aRx: 1.2, aLz: -.25, aRz: -.25, aLe: 1.2, aRe: 1.2 }); cara(m, L.T, { expr: 'gasp' }); attach(UHR, m.aR.hand, [0, -.5, .4], [0, 0, 0], .45); UHR.userData.set('23:59:58');
+  const m = benchSit(mia, 1.2, L, { headY: .5, aLx: 1.2, aRx: 1.2, aLz: -.25, aRz: -.25, aLe: 1.2, aRe: 1.2 }); cara(m, L.T, { expr: 'gasp' }); attach(UHR, m.aR.hand, [0, -.5, .4], [0, 0, 0], .22); UHR.userData.set('23:59:58');
   cm([1, 5, BZ + 12, .3, 3.4, BZ, 42], [.8, 4.6, BZ + 10, .3, 3.4, BZ, 40], L.k); sh(V(0, 0, BZ), 12); },
   [[.1, 'snore', .6], [.8, 'gasp_f', .3]]);
 // 110 «Mia starrte auf die Uhr,»: primer plano de Mia mirando el reloj fijamente; los segundos: 23:59:59
-shot(167.13, 'S', 'slow', L => { plazaNight(L, 2, 'sitears', 291, { z0: BZ + 12, z1: BZ + 20 }); const m = benchSit(mia, 1.2, L, { aLx: 1.5, aRx: 1.5, aLz: -.25, aRz: -.25, aLe: 1.4, aRe: 1.4, headX: .3 }); m.setFace({ eyes: 'down', mouth: 'flat' }); attach(UHR, m.aR.hand, [0, -.5, .4], [-.6, 0, 0], .45); UHR.userData.set('23:59:59');
-  onFace(m, 5.2, .1, .2, 40, L.k, 4); sh(V(1, 0, BZ), 10); },
+shot(167.13, 'S', 'slow', L => { plazaNight(L, 2, 'sitears', 291, { z0: BZ + 12, z1: BZ + 20 }); const m = benchSit(mia, 1.2, L, { aLx: 1.5, aRx: 1.5, aLz: -.25, aRz: -.25, aLe: 1.4, aRe: 1.4, headX: .3 }); m.setFace({ eyes: 'down', mouth: 'flat' }); attach(UHR, m.aR.hand, [0, -.5, .4], [-.6, 0, 0], .22); UHR.userData.set('23:59:59');
+  onFace(m, 6.4, .1, .2, 40, L.k, 5.2); sh(V(1, 0, BZ), 10); },
   [[.1, 'heartbeat', .6], [.8, 'tick', .5]]);
 // 111 «und die ganze Stadt schaute zu.»: todo el pueblo, en pijama, se gira hacia el banco conteniendo el aliento
 shot(168.58, 'W', null, L => { plazaNight(L, 24, 'look', 301, { x0: -24, x1: 24, z0: BZ + 8, z1: BZ + 44, face: V(0, 2, BZ), jit: .1, expr: 'gasp' }); benchSit(ich, -.6, L, { headZ: -.5 }); ich.setFace({ eyes: 'closed', mouth: 'o' }); benchSit(mia, 1.2, L, { aLx: 1.5, aRx: 1.5, aLe: 1.4, aRe: 1.4, headX: .3 }); mia.setFace({ eyes: 'down', mouth: 'flat' });
   cm([0, 10, BZ - 8, 0, 3, BZ + 22, 50], [0, 9, BZ - 6, 0, 3, BZ + 20, 48], L.k); sh(V(0, 0, BZ + 14), 30); },
   [[.1, 'crowd_run', .3], [.6, 'heartbeat', .5]]);
 // 112 «Drei.»: Mia levanta la vista con el reloj en alto: «3»
-shot(170.27, 'C', 'punch', L => { plazaNight(L, 4, 'look', 311, { z0: BZ + 14, z1: BZ + 30, face: V(0, 2, BZ), expr: 'gasp' }); const m = benchSit(mia, 1.2, L, { aRx: 2.4, aRe: .6, aRz: .2 }); cara(m, L.T, { expr: 'determined' }); attach(UHR, m.aR.hand, [0, -.5, .4], [0, 0, 0], .45); UHR.userData.set('3', '#ffd23f');
-  badge('red', '3', W / 2, H * .2, (L.lt - .02) / .15, 1, 1.6); onBody(m, 11, .2, .1, 42, L.k, 9.6, .2, 2.4); sh(V(1, 0, BZ), 12); },
+shot(170.27, 'C', 'punch', L => { plazaNight(L, 4, 'look', 311, { z0: BZ + 14, z1: BZ + 30, face: V(0, 2, BZ), expr: 'gasp' }); const m = benchSit(mia, 1.2, L, { aRx: 2.4, aRe: .6, aRz: .2 }); cara(m, L.T, { expr: 'determined' }); attach(UHR, m.aR.hand, [0, -.5, .4], [0, 0, 0], .22); UHR.userData.set('3', '#ffd23f');
+  badge('red', '3', W / 2, H * .2, (L.lt - .02) / .15, 1, 1.6); onBody(m, 15, .2, .1, 42, L.k, 13, .2, 2.4); sh(V(1, 0, BZ), 12); },
   [[.0, 'heartbeat', .8], [.02, 'tick', .6]]);
 // 113 «Zwei.»: corte al sótano: Graufeld duerme; su despertador marca 23:59… «2»
 shot(170.79, 'C', 'punch', L => { use('KE'); inside(.25, 8); lp(0, KEX + 2, 6, 2, 22, 0xff4a3a, 18); const c = put(grau, KEX + 6, 3.3, 1.2, .3); c.root.rotation.x = -PI / 2; c.blob.visible = false; actuar(c, 0, [[0, { aLx: .6, aRx: .6, aLz: -.4, aRz: -.4, aLe: 1.4, aRe: 1.4 }]], { T: L.T, weight: false }); c.setFace({ eyes: 'closed', mouth: 'smirk' });
-  show(WK[0], KEX + 2, 2.8, 3, -.4, 1.3); clockAt(WK[0], '23:59', '#ff4a3a'); badge('red', '2', W / 2, H * .2, (L.lt - .02) / .15, 1, 1.6); cm([KEX + 7, 7, 9, KEX + 3.4, 3.4, 1.4, 42], [KEX + 6.6, 6.6, 8.4, KEX + 3.4, 3.4, 1.4, 40], L.k); sh(V(KEX + 4, 0, 1), 12); },
+  show(WK[0], KEX + 2, 2.8, 3, -.4, 1.3); clockAt(WK[0], '23:59', '#ff4a3a'); badge('red', '2', W / 2, H * .2, (L.lt - .02) / .15, 1, 1.6); cm([KEX + 13, 10, 9, KEX + 4.6, 3.4, 0, 44], [KEX + 11.5, 9, 7.5, KEX + 4.6, 3.6, 0, 40], L.k); sh(V(KEX + 4, 0, 1), 14); },
   [[.0, 'heartbeat', .8], [.02, 'tick', .6]]);
 // 114 «Eins.»: Mia se pone de pie en el banco, flexiona las rodillas lista para saltar: «1»
 shot(171.46, 'C', 'punch', L => { plazaNight(L, 6, 'look', 321, { z0: BZ + 12, z1: BZ + 30, face: V(0, 2, BZ), expr: 'gasp' }); const c = benchSit(ich, -.6, L, { headZ: -.5 }); c.setFace({ eyes: 'closed', mouth: 'o' });
@@ -208,8 +208,8 @@ shot(171.46, 'C', 'punch', L => { plazaNight(L, 6, 'look', 321, { z0: BZ + 12, z
   [[.0, 'heartbeat', .8], [.02, 'tick', .6], [.4, 'anticip', .5]]);
 // 115 «Sie sprang mit beiden Füßen auf mich drauf.»: cámara lenta: Mia salta con los dos pies sobre mí; el reloj marca 0:00
 shot(172.22, 'F', null, L => { plazaNight(L, 10, 'look', 331, { z0: BZ + 12, z1: BZ + 34, face: V(0, 2, BZ), expr: 'gasp' }); const c = benchSit(ich, -.6, L, { headZ: -.5 }); c.setFace({ eyes: 'closed', mouth: 'o' });
-  saltar(mia, L.lt * .55, 0, { h: 5, dur: .7, base: [1.4, SEAT - .2, BZ + .2], dx: -1.6, dz: .2 }); mia.blob.visible = false; cara(mia, L.T, { expr: 'joy' }); attach(UHR, mia.aR.hand, [0, -.5, .4], [0, 0, 0], .45); UHR.userData.set('0:00', '#8aff6a');
-  cm([5, 4, BZ + 14, 0, 4.6, BZ, 46], [4, 5, BZ + 12, 0, 5, BZ, 44], L.k); sh(V(0, 0, BZ), 14); },
+  saltar(mia, L.lt * .55, 0, { h: 5, dur: .7, base: [1.4, SEAT - .2, BZ + .2], dx: -1.6, dz: .2 }); mia.blob.visible = false; cara(mia, L.T, { expr: 'joy' }); attach(UHR, mia.aR.hand, [0, -.5, .4], [0, 0, 0], .22); UHR.userData.set('0:00', '#8aff6a');
+  cm([5, 5, BZ + 19, 0, 6.6, BZ, 50], [4, 5.6, BZ + 17, 0, 6.8, BZ, 48], L.k); sh(V(0, 0, BZ), 14); },
   [[.05, 'whoosh_up', .5], [.7, 'jump', .5], [1.1, 'thud', .6]]);
 // 116 «„AUFWACHEN!“»: abro los ojos de golpe; Mia encima gritando; el reloj 0:00; chispas doradas explotan y todo el pueblo se levanta
 shot(174.30, 'C', 'punch', L => { plazaNight(L, 16, 'cheer', 341, { z0: BZ + 12, z1: BZ + 40, face: V(0, 2, BZ) }); bloom.strength = .5; const c = benchSit(ich, -.6, L, { aLx: .9, aRx: .9, aLz: .5, aRz: .5, aLe: 1.9, aRe: 1.9, lean: -.1 }); c.setFace({ eyes: 'wide', mouth: 'grimace_wide' });

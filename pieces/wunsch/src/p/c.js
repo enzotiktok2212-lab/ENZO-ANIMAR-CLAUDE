@@ -11,7 +11,7 @@ shot(58.34, 'S', null, L => { town(L, 'day'); const c = put(ichT, 0, 0, 40, .2);
 // 41 «Im Bus,»: dormido en el bus con la cabeza contra la ventana; la ciudad pasa fuera; una señora me mira
 shot(60.70, 'W', null, L => { use('BU'); inside(1.0, 40); BU.scroll(L.T); const c = sit(ichT, BUX - 2.9, 2.65, -3, 0, L, { ...LEANSLEEP, headZ: .55 }); c.setFace({ eyes: 'closed', mouth: 'o' }); zzz(c, L.T);
   sit(EX[5], BUX + 2.9, 2.65, -3, 0, L, { headY: .5 }); cara(EX[5], L.T, { expr: 'confused' }); sit(EX[6], BUX - 2.9, 2.65, -9, 0, L); cara(EX[6], L.T, { expr: 'neutral' });
-  cm([BUX + .4, 7, 10, BUX - 2, 5, -3, 46], [BUX - .2, 6.6, 8, BUX - 2.4, 5, -3, 44], L.k); sh(V(BUX, 0, -3), 16); },
+  cm([BUX + 1.6, 6.6, 1.2, BUX - 2.9, 4.8, -3.4, 50], [BUX + 1.2, 6.4, .6, BUX - 2.9, 4.8, -3.4, 46], L.k); sh(V(BUX, 0, -3), 16); },
   [[.02, 'wheels', .6], [.2, 'snore', .5]]);
 // 42 «beim Friseur,»: dormido en el sillón de la peluquería mientras la peluquera me corta un mechón
 shot(61.34, 'S', null, L => { use('SA'); inside(1.0, 42); const c = sit(ichT, SAX, 3.0, -4, PI, L, { ...LEANSLEEP, headZ: -.4 }); c.setFace({ eyes: 'closed', mouth: 'o' }); zzz(c, L.T);
@@ -20,13 +20,13 @@ shot(61.34, 'S', null, L => { use('SA'); inside(1.0, 42); const c = sit(ichT, SA
   [[.02, 'zip', .4], [.2, 'snore', .4]]);
 // 43 «und einmal sogar im Stehen,»: de pie, balanceándome dormido, una burbuja de moco; el plano gira a mi alrededor
 shot(61.92, 'R', null, L => { use('BA'); inside(1.0, 40); const c = put(ichT, BAX + 3, 0, 8, PI - .5); actuar(c, 0, [[0, { ...LEANSLEEP, sx: Math.sin(L.T * 2.4) * .08, lean: .1 + Math.sin(L.T * 2.4) * .06 }]], { T: L.T }); c.setFace({ eyes: 'closed', mouth: 'o' }); zzz(c, L.T, 1.1);
-  orb(L.k, V(BAX + 3, 3.6, 8), null, [14, PI - 1.2, .16, 42], [12, PI - .3, .12, 40]); sh(V(BAX + 3, 0, 8), 16); },
+  cm([BAX + 7, 6.5, 19, BAX + 3, 4.2, 8, 44], [BAX + 1, 6, 18, BAX + 3, 4.2, 8, 42], L.k); sh(V(BAX + 3, 0, 8), 16); },
   [[.05, 'snore', .6], [.8, 'snore', .4]]);
 // 44 «in der Schlange beim Bäcker.»: la cola de la panadería me adelanta; el panadero grita «NÄCHSTER!» y yo sigo dormido de pie
 shot(63.50, 'C', null, L => { use('BA'); inside(1.0, 40); const c = put(ichT, BAX + 3, 0, 8, PI - .5); actuar(c, 0, [[0, LEANSLEEP]], { T: L.T }); c.setFace({ eyes: 'closed', mouth: 'o' }); zzz(c, L.T);
   const b = put(baeck, BAX + 2, 0, -6, 0); actuar(b, 0, [[0, { aRx: 1.6, aRe: .2, aRz: -.1, aLx: .3 }]], { T: L.T }); talk(b, L.T, L.t0, L.t1, 'shout'); bubble(b, 'NÄCHSTER!', (L.lt - .1) / .2, 2.4);
   [EX[7], EX[8]].forEach((e, i) => { put(e, BAX + 5 - i * 3 + L.lt * 2, 0, 5 + i * 3 - L.lt * 2, PI - .3); actuar(e, 0, [[0, walkP(L.T, i)]], { T: L.T }); cara(e, L.T, { expr: 'smug' }); });
-  cm([BAX - 8, 8, 18, BAX + 2, 4, 2, 48], [BAX - 6.4, 7.4, 16, BAX + 2, 4.2, 2, 46], L.k); sh(V(BAX + 2, 0, 2), 22); },
+  cm([BAX - 3, 7, 20, BAX + 3, 4.2, 5, 46], [BAX - 2, 6.6, 18, BAX + 3, 4.2, 5, 44], L.k); sh(V(BAX + 2, 0, 2), 22); },
   [[.05, 'shout_m', .3], [.1, 'door_bell', .5], [.4, 'steps', .4], [.7, 'snore', .5]]);
 // 45 «Wecker funktionieren bei mir nicht.»: el despertador salta como loco en la mesilla y yo ni me muevo
 shot(64.44, 'Z', null, L => { room('KZ', L, { dawn: true }); const c = lie(ich, KZX - 9, -7.4, 4.15, L); KZ.quilt.position.y = 4.6; sleepF(c, L.T); zzz(c, L.T);
@@ -47,17 +47,17 @@ shot(68.83, 'I', null, L => { room('KZ', L, { dawn: true }); const c = lie(ich, 
   cm([KZX - 2, 9, 12, KZX + 9, 5, 0, 46], [KZX - 1, 9, 10, KZX + 11, 5, 1, 44], L.k); sh(V(KZX, 0, 0), 22); },
   [[.1, 'wood_creak', .6], [.6, 'door_open', .4]]);
 // 49 «ist meine kleine Schwester Mia.»: Mia (5) asoma por la puerta con una sonrisa traviesa; «MIA, 5»
-shot(70.07, 'C', 'punch', L => { room('KZ', L, { dawn: true }); KZ.DOOR.rotation.y = -1.2; const c = put(mia, KZX + 13, 0, 2, -PI / 2 - .3); actuar(c, 0, [[0, { aLx: .6, aLz: -.3, aLe: 1.6, aRx: .6, aRz: -.3, aRe: 1.6, crouch: .1, lean: .1 }]], { T: L.T }); cara(c, L.T, { eyes: 'squint', mouth: 'grin' });
-  badge('tag', 'MIA · 5', W / 2, H * .2, (L.lt - .15) / .2, 1, 1); onBody(c, 12, .1, .1, 40, L.k, 10, -.1, 2.6); sh(V(KZX + 12, 0, 2), 14); },
+shot(70.07, 'C', 'punch', L => { room('KZ', L, { dawn: true }); KZ.DOOR.rotation.y = -1.2; const c = put(mia, KZX + 8, 0, 2, -PI / 2 - .5); actuar(c, 0, [[0, { aLx: .6, aLz: -.3, aLe: 1.6, aRx: .6, aRz: -.3, aRe: 1.6, crouch: .1, lean: .1 }]], { T: L.T }); cara(c, L.T, { eyes: 'squint', mouth: 'grin' });
+  badge('tag', 'MIA · 5', W / 2, H * .2, (L.lt - .15) / .2, 1, 1); cm([KZX + 1, 4.2, 5, KZX + 8, 2.6, 2, 42], [KZX + 2, 4, 4.4, KZX + 8, 2.6, 2, 38], L.k); sh(V(KZX + 8, 0, 2), 14); },
   [[.02, 'impact', .4], [.2, 'kids_laugh', .4]]);
 // 50 «Jeden Morgen um Viertel vor sieben»: primer plano del despertador: 6:44 → 6:45
 shot(71.68, 'W', null, L => { room('KZ', L, { dawn: true }); KZ.CLOCK.visible = false; show(WK[0], KZX - 3.6, 3.4, -8.3, .1, 1.3); clockAt(WK[0], L.lt < .7 ? '6:44' : '6:45', L.lt < .7 ? '#ff4a3a' : '#ffd23f');
-  cm([KZX - 3.4, 6.2, -3.6, KZX - 3.6, 4.3, -8.3, 30], [KZX - 3.5, 5.6, -4.6, KZX - 3.6, 4.3, -8.3, 26], L.k); sh(V(KZX - 4, 0, -8), 10); },
+  cm([KZX - 3.4, 6.4, -1.6, KZX - 3.6, 4.3, -8.3, 36], [KZX - 3.5, 6, -2.4, KZX - 3.6, 4.3, -8.3, 32], L.k); sh(V(KZX - 4, 0, -8), 10); },
   [[.1, 'clock_tick', .6], [.7, 'click_metal', .5]]);
 // 51 «springt sie auf mein Bett»: Mia salta desde la puerta y aterriza a cuatro patas sobre mi cama; el colchón rebota
 shot(73.12, 'R', null, L => { room('KZ', L, { dawn: true }); const c = lie(ich, KZX - 9, -7.4, 4.15, L); KZ.quilt.position.y = 4.6; sleepF(c, L.T);
   saltar(mia, L.lt, .05, { h: 6, dur: .55, base: [KZX - 2, 0, 2], dx: -6, dz: -3 }); if (L.lt > .8) { put(mia, KZX - 8, 4.2, -1, 0); actuar(mia, 0, [[0, { crouch: .5, lean: .3, aLx: 1.2, aRx: 1.2 }]], { T: L.T }); } cara(mia, L.T, { expr: 'joy' });
-  cm([KZX + 4, 9, 10, KZX - 7, 4.6, -3, 48], [KZX + 2, 8.6, 8, KZX - 7.6, 4.8, -3, 46], L.k); sh(V(KZX - 6, 0, -2), 18); },
+  cm([KZX - 1, 9.5, 7, KZX - 7, 5, -3, 48], [KZX - 2, 9, 5.6, KZX - 7.4, 5.2, -3, 46], L.k); sh(V(KZX - 6, 0, -2), 18); },
   [[.05, 'jump', .6], [.65, 'spring', .6], [.7, 'thud', .5]]);
 // 52 «und schreit mir ins Ohr:»: Mia, a cuatro patas, se acerca a mi oreja con la boca muy abierta
 shot(74.24, 'S', null, L => { room('KZ', L, { dawn: true }); const c = lie(ich, KZX - 9, -7.4, 4.15, L); KZ.quilt.position.y = 4.6; sleepF(c, L.T);
@@ -82,10 +82,10 @@ shot(79.75, 'S', null, L => { town(L, 'day'); const c = put(grau, 18.4, 0, 170, 
   badge('tag', 'GEÖFFNET', W / 2, H * .22, (L.lt - .4) / .2, 1, 1); onBody(c, 15, .3, .12, 42, L.k, 12, .1); sh(V(19, 0, 170), 22); },
   [[.1, 'door_bell', .6], [.45, 'click_metal', .4], [.7, 'evil_laugh', .3]]);
 // 57 «für Ohrstöpsel»: primer plano del escaparate lleno de tapones de colores; «100 € DAS STÜCK»
-shot(81.15, 'Z', null, L => { town(L, 'day'); cm([14.6, 4.2, 173.6, 21.1, 3.4, 171.8, 42], [16.6, 3.8, 172.4, 21.1, 3.4, 171.8, 38], L.k); sh(V(20, 0, 172), 14); },
+shot(81.15, 'Z', null, L => { town(L, 'day'); cm([10.6, 4.6, 175, 21.1, 3.4, 171.8, 44], [12.4, 4.2, 174, 21.1, 3.4, 171.8, 42], L.k); sh(V(20, 0, 172), 14); },
   [[.1, 'pop', .4], [.3, 'pop', .3], [.5, 'pop', .3]]);
 // 58 «in der Lindenstraße.»: el letrero azul de la calle; panorámica hacia arriba
-shot(82.55, 'I', null, L => { town(L, 'day'); cm([12, 7, 166, 20.3, 9.6, 162, 44], [13, 9.4, 164.6, 20.3, 9.7, 162, 40], L.k); sh(V(20, 0, 164), 14); },
+shot(82.55, 'I', null, L => { town(L, 'day'); cm([8, 7, 168, 20.3, 9.4, 162, 46], [9, 8.6, 167, 20.3, 9.6, 162, 44], L.k); sh(V(20, 0, 164), 14); },
   [[.05, 'whoosh_up', .4], [.3, 'birds', .4]]);
 // 59 «Herr Graufeld war der Einzige in der Stadt,»: al atardecer, todos vuelven a casa bostezando; Graufeld, en medio de la plaza, es el único que va en dirección contraria
 shot(83.41, 'R', null, L => { town(L, 'dusk'); const c = put(grau, 0, 0, 30 - L.lt * 2.6, PI); actuar(c, 0, [[0, walkP(L.T * .7, 0)]], { T: L.T }); cara(c, L.T, { expr: 'smug' });
