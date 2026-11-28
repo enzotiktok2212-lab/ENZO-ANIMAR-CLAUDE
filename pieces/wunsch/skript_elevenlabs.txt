@@ -1,6 +1,10 @@
 [mysterious] In dieser Stadt darf sich jeder, der morgens als Erster aufwacht, für diesen Tag alles wünschen, was er will.
 [excited] Du machst die Augen auf, sagst deinen Wunsch laut, und die Stadt erfüllt ihn sofort.
-[amused] Oma Hilde geht deshalb um neunzehn Uhr ins Bett, wacht um vier Uhr auf und ruft: [shouting] „Mein Garten soll wachsen!“
+[cheerful] Lea hat sich eine Million Follower gewünscht. [amazed] Mittags waren es zwei Millionen.
+[mischievously] Jonas hat sich gewünscht, dass sich jedes Mädchen in ihn verliebt. [laughs] Am Abend standen sie bis zur Kirche Schlange vor seiner Tür.
+[playful] Und Emma hat sich gewünscht, dass sich alle Jungs in sie verlieben. [amused] Sogar Jonas.
+[curious] Und du? Was würdest du dir wünschen?
+[amused] Aber am häufigsten gewinnt Oma Hilde. Sie geht um neunzehn Uhr ins Bett, wacht um vier Uhr auf und ruft: [shouting] „Mein Garten soll wachsen!“
 [proud] Sie gewinnt fast jeden Tag, und ihre Kürbisse sind so groß wie Waschmaschinen.
 [playful] In der Nacht vor einer Mathearbeit stellt jedes Kind in der Stadt zwölf Wecker und betet, dass die Schule ausfällt.
 [serious] Denn einschlafen reicht nicht. Du musst auch wirklich als Erster aufwachen.
@@ -21,7 +25,7 @@
 [angry] Also gewann Herr Graufeld jeden einzelnen Tag.
 [annoyed] Er verkaufte Ohrstöpsel für hundert Euro das Stück. Aber gegen einen Wunsch hilft kein Ohrstöpsel.
 [ominous] Und jeden Morgen wünschte er sich etwas Neues von uns.
-[upset] Am zweiten Tag unser ganzes Geld. Am vierten Tag Mias Fahrrad. Dann Omas Kürbisse.
+[upset] Am zweiten Tag unser ganzes Geld. Am dritten Tag Leas Follower. Am vierten Tag Mias Fahrrad. Dann Omas Kürbisse.
 [sad] Am sechsten Tag gehörten ihm sogar unsere Häuser, und die ganze Stadt saß draußen auf dem Marktplatz.
 [tired] Papa stellte zwölf Wecker und trug drei Paar Ohrstöpsel. Trotzdem konnte er nicht schlafen.
 [tired] Oma zählte Schafe bis fünftausend.
