@@ -539,6 +539,16 @@ for _a, _b in [('airhorn', 'party_horn'), ('applause', 'clap'), ('baby_giggle', 
   ('sneeze', 'fake_sneeze'), ('stampede', 'crowd_run'), ('sticker', 'paper_slap'), ('stroller_roll', 'ball_roll'), ('water_jacuzzi', 'bubbling'), ('water_whoosh', 'splash'), ('yay', 'cheer_small'), ('crowd_happy', 'cheer'), ('night_crickets', 'crickets')]:
     if _a not in LIB and _b in LIB: LIB[_a] = LIB[_b]
 
+# --- WOLKE: alias (vape, nubes, fiesta, comida) ---
+for _a, _b in [('vape_puff', 'vape_out'), ('big_puff', 'fire_whoosh'), ('tiny_puff', 'dust_puff'), ('vape_hiss', 'steam'), ('vape_crackle', 'sizzle'), ('inhale_long', 'inhale_deep'), ('smoke_ring', 'soft_air'), ('poof', 'dust_puff'),
+  ('beep_small', 'camera_beep'), ('button_beep', 'button_click'), ('bite_crunch', 'munch'), ('chew_wet', 'chew'), ('slurp', 'sip'), ('yum', 'happy_hum'), ('bush_rustle', 'leaves'), ('camera_flash', 'camera_shutter'),
+  ('candle_out', 'blow'), ('cartoon_boing', 'boing'), ('choir_ah', 'choir'), ('choke', 'cough'), ('cough_group', 'cough'), ('cloth_rustle', 'cloth'), ('crowd_laugh', 'laugh_family'), ('crowd_oooh', 'crowd_ohh'),
+  ('cry_man', 'cry_m'), ('drum_hit', 'bass_hit'), ('footsteps_wood', 'steps_soft'), ('gag', 'spit'), ('vomit_gag', 'spit_take'), ('gum_pop', 'pop'), ('hmph', 'grumble'), ('hug_cloth', 'hug'), ('idea_ding', 'ding_idea'),
+  ('keyboard', 'typing'), ('laptop_open', 'lid_click'), ('laugh_man', 'laugh_m'), ('marker_circle', 'pen'), ('mic_feedback', 'zap'), ('page_flip', 'page_turn'), ('paper_rip', 'tape_rip'), ('pigeon_coo', 'crow'),
+  ('rain_drops', 'rain'), ('raspberry', 'spit'), ('safe_dial', 'dial'), ('scream_man', 'scream_m'), ('shrug', 'cloth'), ('sneak_steps', 'sneak'), ('snicker', 'chuckle_m'), ('sting', 'tension_hit'), ('sus_sting', 'mystery'),
+  ('stomach_growl', 'stomach'), ('stopwatch', 'tick_fast'), ('street_amb', 'street'), ('talk_mumble', 'murmur_soft'), ('tape_hiss', 'tv_static'), ('thunder', 'thunder_roll'), ('whistle_crowd', 'whistle'), ('yodel', 'oompah'), ('party_horn', 'party_horn')]:
+    if _a not in LIB and _b in LIB: LIB[_a] = LIB[_b]
+
 if __name__ == '__main__':
     cues_f, voice_f, music_f, out_f = sys.argv[1:5]
     cues = json.load(open(cues_f)); DUR = 116.1
